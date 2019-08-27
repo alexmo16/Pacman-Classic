@@ -8,4 +8,4 @@ build:
   script: javac ./src/inDev/Main.java
   artifacts:
     paths:
-     - Pacman.*
+     - Main.*

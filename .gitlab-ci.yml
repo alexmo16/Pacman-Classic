@@ -1,0 +1,11 @@
+image: openjdk:11-jdk-slim
+
+stages:
+  - build
+
+build:
+  stage: build
+  script: javac ./src/inDev/Main.java
+  artifacts:
+    paths:
+     - ./src/inDev/Main.*

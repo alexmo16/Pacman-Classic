@@ -1,0 +1,11 @@
+image: java:11
+
+stages:
+  - build
+
+build:
+  stage: build
+  script: /usr/lib/jvm/java-11-openjdk-amd64/bin/javac ./src/inDev/Main.java
+  artifacts:
+    paths:
+     - Pacman.*

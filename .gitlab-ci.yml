@@ -5,7 +5,7 @@ stages:
 
 build:
   stage: build
-  script: javac ./src/inDev/Main.java
+  script: javac ./src/inDev/Pacman.java
   artifacts:
     paths:
-     - ./src/inDev/Main.*
+     - ./src/inDev/Pacman.*

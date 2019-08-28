@@ -1,4 +1,4 @@
-package inDev;
+package com.pacman.inDev;
 
 public class Pacman {
 	

@@ -1,12 +1,12 @@
 /**
  * 
  */
-package unittests;
+package com.pacman.unittests;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import inDev.Pacman;
+import com.pacman.inDev.Pacman;
 
 /**
  * @author Alexis Morel

@@ -3,42 +3,65 @@ package com.pacman.engine;
 import com.pacman.engine.EngineUtils;
 import com.pacman.engine.IGame;
 
-public class GameContainer implements Runnable 
+/**
+ * Classe principale de l'engin de jeu,
+ * Engine, gère donc la gameloop de Pac-Man.
+ * @author Alexis Morel
+ */
+public class Engine implements Runnable 
 {
 	private Thread thread;
 	private IGame game;
 	
 	private boolean isRunning = false;
 	private boolean isPause = false;
-	private final double UPDATE_CAP = 1.0/60.0;
+	private final double UPDATE_RATE = 1.0/60.0; // pour avoir 60 fps dans notre jeu.
 	
-	public GameContainer( IGame game )
+	/**
+	 * @author Alexis Morel
+	 */
+	public Engine( IGame game )
 	{
 		this.game = game;
 	}
 	
+	/**
+	 * @author Alexis Morel
+	 */
 	public void start()
 	{
 		thread = new Thread( this ) ;
 		thread.run();
 	}
 	
+	/**
+	 * @author Alexis Morel
+	 */
 	public void stop()
 	{
 		isRunning = false;
 		isPause = false;
 	}
 	
+	/**
+	 * @author Alexis Morel
+	 */
 	public void pauseGame()
 	{
 		isPause = true;
 	}
 	
+	/**
+	 * @author Alexis Morel
+	 */
 	public void resumeGame()
 	{
 		isPause = false;
 	}
 	
+	/**
+	 * @author Alexis Morel
+	 */
 	public void run()
 	{
 		isRunning = true;
@@ -65,36 +88,43 @@ public class GameContainer implements Runnable
 			unprocessedTime += deltaTime;
 			
 			// Pour mettre à jour l'affichage seulement si l'Update a été fait.
-			while( unprocessedTime >= UPDATE_CAP )
+			while( unprocessedTime >= UPDATE_RATE )
 			{
-				unprocessedTime -= UPDATE_CAP;
+				unprocessedTime -= UPDATE_RATE;
 				render = true;
 				game.update( this );
 			}
 			
+			// Si on a rien à afficher, on sleep.
 			if( render )
 			{
 				// TODO render game
 			}
 			else
 			{
-				rest();
+				rest( 1 );
 			}
 		}
 	}
 	
-	
-	private void rest()
+	/**
+	 * @author Alexis Morel
+	 */
+	private void rest( int sleepTime )
 	{
 		try 
 		{
-			Thread.sleep( 1 );
+			Thread.sleep( sleepTime ); // 1ms, à voir s'il faut modifier cette valeur.
 		} catch ( InterruptedException e ) 
 		{
 			e.printStackTrace();
 		}
 	}
 	
+    /**
+     * sert à geler le thread tant et aussi longtemps que le jeu roule et que l'état de pause est demandé.
+     * @author Alexis Morel
+     */
 	private void freeze()
 	{
 		try

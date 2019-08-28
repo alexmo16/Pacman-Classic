@@ -3,20 +3,22 @@ package com.pacman.engine;
 import com.pacman.engine.EngineUtils;
 import com.pacman.engine.IGame;
 import com.pacman.engine.Inputs;
+import com.pacman.game.Settings;
 
 /**
  * Classe principale de l'engin de jeu,
- * Engine, gère donc la gameloop de Pac-Man.
+ * Engine, gï¿½re donc la gameloop de Pac-Man.
  */
 public class Engine implements Runnable 
 {
 	private Thread thread;
 	private IGame game;
 	private Inputs inputs;
+	private Window window;
+	private Settings settings;
 	
 	private boolean isRunning = false;
 	private boolean isPause = false;
-	private final double UPDATE_RATE = 1.0/60.0; // pour avoir 60 fps dans notre jeu.
 	
 	public Engine( IGame game )
 	{
@@ -25,6 +27,8 @@ public class Engine implements Runnable
 	
 	public void startGame()
 	{
+		settings = new Settings();
+		window = new Window( settings );
 		thread = new Thread( this ) ;
 		thread.run();
 	}
@@ -87,16 +91,17 @@ public class Engine implements Runnable
 			unprocessedTime += deltaTime;
 			
 			// Pour mettre a jour l'affichage seulement si l'Update a ete fait.
-			while( unprocessedTime >= UPDATE_RATE )
+			while( unprocessedTime >= settings.getUPDATE_RATE() )
 			{
-				unprocessedTime -= UPDATE_RATE;
+				unprocessedTime -= settings.getUPDATE_RATE();
 				render = true;
 				update();
 			}
 			
-			// Si on a rien à afficher, on sleep.
+			// Si on a rien a afficher, on sleep.
 			if( render )
 			{
+				window.update();
 				// TODO render game
 			}
 			else
@@ -116,7 +121,7 @@ public class Engine implements Runnable
 	{
 		try 
 		{
-			Thread.sleep( sleepTime ); // 1ms, à voir s'il faut modifier cette valeur.
+			Thread.sleep( sleepTime ); // 1ms, a voir s'il faut modifier cette valeur.
 		} catch ( InterruptedException e ) 
 		{
 			e.printStackTrace();
@@ -124,7 +129,7 @@ public class Engine implements Runnable
 	}
 	
     /**
-     * sert à geler le thread tant et aussi longtemps que le jeu roule et que l'état de pause est demandé.
+     * sert a geler le thread tant et aussi longtemps que le jeu roule et que l'ï¿½tat de pause est demandï¿½.
      */
 	private void freeze()
 	{

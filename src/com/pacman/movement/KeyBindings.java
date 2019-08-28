@@ -5,11 +5,15 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class KeyBindings extends JFrame {
-    DrawPanel drawPanel = new DrawPanel();
+	private static final long serialVersionUID = 1L;
+	
+	DrawPanel drawPanel = new DrawPanel();
     
     public KeyBindings(){
         Action rightAction = new AbstractAction(){
-            public void actionPerformed(ActionEvent e) {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e) {
             	if (drawPanel.pacman.getX()+drawPanel.pacman.getWidth()<drawPanel.getPanelWidth()) {
 	            	drawPanel.pacman.setLocation(drawPanel.pacman.getX()+10, drawPanel.pacman.getY());
 	                drawPanel.repaint();
@@ -18,7 +22,9 @@ public class KeyBindings extends JFrame {
         };
         
         Action leftAction = new AbstractAction(){
-            public void actionPerformed(ActionEvent e) {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e) {
             	if (drawPanel.pacman.getX()>0) {
             		drawPanel.pacman.setLocation(drawPanel.pacman.getX()-10, drawPanel.pacman.getY());
 	                drawPanel.repaint();
@@ -27,7 +33,12 @@ public class KeyBindings extends JFrame {
         };
         
         Action downAction = new AbstractAction(){
-            public void actionPerformed(ActionEvent e) {
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e) {
             	if (drawPanel.pacman.getY()+drawPanel.pacman.getHeight()<drawPanel.getPanelHeight()) {
             		drawPanel.pacman.setLocation(drawPanel.pacman.getX(), drawPanel.pacman.getY()+10);
 	                drawPanel.repaint();
@@ -36,7 +47,9 @@ public class KeyBindings extends JFrame {
         };
         
         Action upAction = new AbstractAction(){
-            public void actionPerformed(ActionEvent e) {
+			private static final long serialVersionUID = 1L;
+
+			public void actionPerformed(ActionEvent e) {
             	if (drawPanel.pacman.getY()>0) {
             		drawPanel.pacman.setLocation(drawPanel.pacman.getX(), drawPanel.pacman.getY()-10);
                     drawPanel.repaint();            		
@@ -69,7 +82,11 @@ public class KeyBindings extends JFrame {
     }
 
     private class DrawPanel extends JPanel {
-    	int WIDTH = 800;
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		int WIDTH = 800;
     	int HEIGHT = 600;
     	Rectangle pacman = new Rectangle(50, 50, 50, 50);
     	

@@ -64,7 +64,7 @@ public class Engine implements Runnable
 	
 	/**
 	 *  On ne doit pas appeler cette methode directement. 
-	 *  Passer plutot par start.
+	 *  Passer plutot par startGame.
 	 */
 	public void run()
 	{	

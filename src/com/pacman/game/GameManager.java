@@ -10,4 +10,10 @@ public class GameManager implements IGame
 	{
 		
 	}
+	
+	@Override
+	public void init()
+	{
+		
+	}
 }

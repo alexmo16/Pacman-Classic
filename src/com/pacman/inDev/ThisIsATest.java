@@ -1,6 +1,6 @@
 package com.pacman.inDev;
 
-public class Pacman {
+public class ThisIsATest {
 	
 	public static int twoPlustwoIsFour() {
 		return 2 + 2;

@@ -2,6 +2,7 @@ package com.pacman.engine;
 
 import com.pacman.engine.EngineUtils;
 import com.pacman.engine.IGame;
+import com.pacman.engine.Inputs;
 
 /**
  * Classe principale de l'engin de jeu,
@@ -11,6 +12,7 @@ public class Engine implements Runnable
 {
 	private Thread thread;
 	private IGame game;
+	private Inputs inputs;
 	
 	private boolean isRunning = false;
 	private boolean isPause = false;
@@ -21,13 +23,13 @@ public class Engine implements Runnable
 		this.game = game;
 	}
 	
-	public void start()
+	public void startGame()
 	{
 		thread = new Thread( this ) ;
 		thread.run();
 	}
 	
-	public void stop()
+	public void stopGame()
 	{
 		isRunning = false;
 		isPause = false;
@@ -43,10 +45,26 @@ public class Engine implements Runnable
 		isPause = false;
 	}
 	
-	public void run()
+	public void init ()
 	{
+		inputs = new Inputs();
+		game.init();
 		isRunning = true;
 		isPause = false;
+	}
+	
+	public Inputs getInputs()
+	{
+		return inputs;
+	}
+	
+	/**
+	 *  On ne doit pas appeler cette methode directement. 
+	 *  Passer plutot par start.
+	 */
+	public void run()
+	{	
+		init();
 		
 		boolean render = false;
 		double firstTime = 0;
@@ -68,12 +86,12 @@ public class Engine implements Runnable
 			lastTime = firstTime;
 			unprocessedTime += deltaTime;
 			
-			// Pour mettre à jour l'affichage seulement si l'Update a été fait.
+			// Pour mettre a jour l'affichage seulement si l'Update a ete fait.
 			while( unprocessedTime >= UPDATE_RATE )
 			{
 				unprocessedTime -= UPDATE_RATE;
 				render = true;
-				game.update( this );
+				update();
 			}
 			
 			// Si on a rien à afficher, on sleep.
@@ -86,6 +104,12 @@ public class Engine implements Runnable
 				rest( 1 );
 			}
 		}
+	}
+	
+	private void update()
+	{
+		game.update( this );
+		inputs.update();
 	}
 	
 	private void rest( int sleepTime )

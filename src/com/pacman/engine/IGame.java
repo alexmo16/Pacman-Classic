@@ -8,4 +8,6 @@ import com.pacman.engine.Engine;
 public interface IGame 
 {
 	public void update( Engine engine );
+	
+	public void init();
 }

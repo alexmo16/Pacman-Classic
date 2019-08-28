@@ -6,7 +6,6 @@ import com.pacman.engine.IGame;
 /**
  * Classe principale de l'engin de jeu,
  * Engine, gère donc la gameloop de Pac-Man.
- * @author Alexis Morel
  */
 public class Engine implements Runnable 
 {
@@ -17,51 +16,33 @@ public class Engine implements Runnable
 	private boolean isPause = false;
 	private final double UPDATE_RATE = 1.0/60.0; // pour avoir 60 fps dans notre jeu.
 	
-	/**
-	 * @author Alexis Morel
-	 */
 	public Engine( IGame game )
 	{
 		this.game = game;
 	}
 	
-	/**
-	 * @author Alexis Morel
-	 */
 	public void start()
 	{
 		thread = new Thread( this ) ;
 		thread.run();
 	}
 	
-	/**
-	 * @author Alexis Morel
-	 */
 	public void stop()
 	{
 		isRunning = false;
 		isPause = false;
 	}
 	
-	/**
-	 * @author Alexis Morel
-	 */
 	public void pauseGame()
 	{
 		isPause = true;
 	}
 	
-	/**
-	 * @author Alexis Morel
-	 */
 	public void resumeGame()
 	{
 		isPause = false;
 	}
 	
-	/**
-	 * @author Alexis Morel
-	 */
 	public void run()
 	{
 		isRunning = true;
@@ -107,9 +88,6 @@ public class Engine implements Runnable
 		}
 	}
 	
-	/**
-	 * @author Alexis Morel
-	 */
 	private void rest( int sleepTime )
 	{
 		try 
@@ -123,7 +101,6 @@ public class Engine implements Runnable
 	
     /**
      * sert à geler le thread tant et aussi longtemps que le jeu roule et que l'état de pause est demandé.
-     * @author Alexis Morel
      */
 	private void freeze()
 	{

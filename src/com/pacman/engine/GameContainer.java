@@ -1,21 +1,25 @@
 package com.pacman.engine;
 
 import com.pacman.engine.EngineUtils;
+import com.pacman.engine.IGame;
 
 public class GameContainer implements Runnable 
 {
 	private Thread thread;
+	private IGame game;
+	
 	private boolean isRunning = false;
 	private boolean isPause = false;
 	private final double UPDATE_CAP = 1.0/60.0;
 	
-	public GameContainer()
-	{		
+	public GameContainer( IGame game )
+	{
+		this.game = game;
 	}
 	
 	public void start()
 	{
-		thread = new Thread( this );
+		thread = new Thread( this ) ;
 		thread.run();
 	}
 	
@@ -65,7 +69,7 @@ public class GameContainer implements Runnable
 			{
 				unprocessedTime -= UPDATE_CAP;
 				render = true;
-				// TODO Update game
+				game.update( this );
 			}
 			
 			if( render )
@@ -107,11 +111,5 @@ public class GameContainer implements Runnable
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	public static void main(String args[])
-	{
-		GameContainer container = new GameContainer();
-		container.start();
 	}
 }

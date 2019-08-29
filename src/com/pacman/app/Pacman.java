@@ -8,9 +8,10 @@ public class Pacman
 	/*
 	 * It all starts here!
 	 */
-	public static void main(String[] args) 
+	public static void main( String[] args ) 
 	{
-		Engine engine = new Engine(new GameManager());
+		Engine engine = Engine.getInstance();
+		engine.setGame( new GameManager() );
 		engine.startGame();
 	}
 

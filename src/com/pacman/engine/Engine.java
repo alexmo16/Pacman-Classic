@@ -7,9 +7,10 @@ import com.pacman.game.Settings;
 
 /**
  * Classe principale de l'engin de jeu,
- * Engine, g�re donc la gameloop de Pac-Man.
+ * Engine, gere donc la gameloop de Pac-Man.
+ * @Singleton
  */
-public class Engine implements Runnable 
+public class Engine implements Runnable
 {
 	private Thread thread;
 	private IGame game;
@@ -20,17 +21,44 @@ public class Engine implements Runnable
 	private boolean isRunning = false;
 	private boolean isPause = false;
 	
-	public Engine( IGame game )
+	private static Engine instance;
+	
+	private Engine() {} // parce que c'est un singleton
+	
+	public static Engine getInstance()
+	{
+		if ( instance == null )
+		{
+			instance = new Engine();		
+		}
+		
+		return instance;
+	}
+	
+	public boolean getIsRunning()
+	{
+		return isRunning;
+	}
+	
+	public boolean getIsPause()
+	{
+		return isPause;
+	}
+	
+	public void setGame( IGame game )
 	{
 		this.game = game;
 	}
 	
 	public void startGame()
 	{
-		settings = new Settings();
-		window = new Window( settings );
-		thread = new Thread( this ) ;
-		thread.run();
+		if ( game != null && !isRunning )
+		{
+			settings = new Settings();
+			window = new Window( settings );
+			thread = new Thread( this ) ;
+			thread.run();	
+		}
 	}
 	
 	public void stopGame()
@@ -49,14 +77,6 @@ public class Engine implements Runnable
 		isPause = false;
 	}
 	
-	public void init ()
-	{
-		inputs = new Inputs( window );
-		game.init();
-		isRunning = true;
-		isPause = false;
-	}
-	
 	public Inputs getInputs()
 	{
 		return inputs;
@@ -68,6 +88,11 @@ public class Engine implements Runnable
 	 */
 	public void run()
 	{	
+		if ( game == null )
+		{
+			return;
+		}
+		
 		init();
 		
 		boolean render = false;
@@ -109,6 +134,14 @@ public class Engine implements Runnable
 				rest( 1 );
 			}
 		}
+	}
+	
+	private void init ()
+	{
+		inputs = new Inputs( window );
+		game.init();
+		isRunning = true;
+		isPause = false;
 	}
 	
 	private void update()

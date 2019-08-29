@@ -1,16 +1,19 @@
 package com.pacman.gum;
 
-import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
-public class Gum extends JPanel implements StaticObject{
+public class Gum extends Rectangle{
 	
 	private static final long serialVersionUID = 1L;
-	
-	protected int posX;
-	protected int posY;
-	
-	
-	
-	
 
+	public Gum(int x, int y) {
+		setBounds(x, y, 32, 32);
+	}
+	
+	public void render(Graphics g) {
+		g.setColor(Color.yellow);
+		g.fillRect(x, y, 32, 32);
+	}
 }

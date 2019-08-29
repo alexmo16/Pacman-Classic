@@ -18,8 +18,8 @@ public class Engine implements Runnable
 	private Window window;
 	private Settings settings;
 	
-	private boolean isRunning = false;
-	private boolean isPause = false;
+	private static boolean isRunning = false;
+	private static boolean isPause = false;
 	
 	private static Engine instance;
 	
@@ -61,7 +61,7 @@ public class Engine implements Runnable
 		}
 	}
 	
-	public void stopGame()
+	public static void stopGame()
 	{
 		isRunning = false;
 		isPause = false;

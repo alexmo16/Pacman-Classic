@@ -1,5 +1,7 @@
 package com.pacman.engine;
 
+import java.awt.Graphics2D;
+
 import com.pacman.engine.EngineUtils;
 import com.pacman.engine.IGame;
 import com.pacman.engine.Inputs;
@@ -17,6 +19,7 @@ public class Engine implements Runnable
 	private Inputs inputs;
 	private Window window;
 	private Settings settings;
+	private Renderer renderer;
 	
 	private static boolean isRunning = false;
 	private static boolean isPause = false;
@@ -54,8 +57,6 @@ public class Engine implements Runnable
 	{
 		if ( game != null && !isRunning )
 		{
-			settings = new Settings();
-			window = new Window( settings );
 			thread = new Thread( this ) ;
 			thread.run();	
 		}
@@ -80,6 +81,11 @@ public class Engine implements Runnable
 	public Inputs getInputs()
 	{
 		return inputs;
+	}
+	
+	public Renderer getRenderer()
+	{
+		return renderer;
 	}
 	
 	/**
@@ -126,19 +132,26 @@ public class Engine implements Runnable
 			// Si on a rien a afficher, on sleep.
 			if( render )
 			{
+				renderer.clear();
+				game.render( renderer );
 				window.update();
-				// TODO render game
 			}
 			else
 			{
 				rest( 1 );
 			}
 		}
+		
+		window.clear();
 	}
 	
 	private void init ()
 	{
+		settings = new Settings();
+		window = new Window( settings );
 		inputs = new Inputs( window );
+		renderer = new Renderer( (Graphics2D)window.getGraphics(), settings );
+		
 		game.init();
 		isRunning = true;
 		isPause = false;

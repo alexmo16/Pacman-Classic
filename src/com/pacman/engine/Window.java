@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
@@ -16,7 +15,6 @@ import com.pacman.game.Settings;
 public class Window implements WindowListener
 {
 	private JFrame frame;
-	private BufferedImage image;
 	private Canvas canvas;
 	private BufferStrategy bs;
 	private Graphics g;
@@ -24,7 +22,6 @@ public class Window implements WindowListener
 	
 	public Window(Settings s)
 	{
-		image = new BufferedImage(s.getWidth(), s.getHeight(), BufferedImage.TYPE_INT_RGB);
 		canvas = new Canvas();
 		Dimension dim = new Dimension((int) (s.getWidth() * s.getScale()), (int) (s.getHeight() * s.getScale()));
 		canvas.setPreferredSize(dim);
@@ -49,8 +46,13 @@ public class Window implements WindowListener
 	
 	public void update()
 	{
-		g.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
 		bs.show();
+	}
+	
+	public void clear()
+	{
+		frame.setVisible(false);
+		frame.dispose();
 	}
 	
 	public JFrame getFrame()
@@ -61,6 +63,11 @@ public class Window implements WindowListener
 	public Canvas getCanvas()
 	{
 		return canvas;
+	}
+	
+	public Graphics getGraphics()
+	{
+		return g;
 	}
 
 	@Override

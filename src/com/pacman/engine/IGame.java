@@ -8,7 +8,9 @@ import com.pacman.game.Settings;
  */
 public interface IGame 
 {	
+	public void init();
+	
 	public void update( Engine engine );
 	
-	public void init();
+	public void render( Renderer renderer );
 }

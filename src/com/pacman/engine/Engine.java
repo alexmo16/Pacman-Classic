@@ -51,7 +51,7 @@ public class Engine implements Runnable
 	
 	public void init ()
 	{
-		inputs = new Inputs();
+		inputs = new Inputs( window );
 		game.init();
 		isRunning = true;
 		isPause = false;

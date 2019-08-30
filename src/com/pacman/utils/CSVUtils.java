@@ -1,9 +1,7 @@
 package com.pacman.utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class CSVUtils 
 {
@@ -24,7 +22,7 @@ public class CSVUtils
     {
         List<String> result = new ArrayList<>();
 
-        if (cvsLine == null && cvsLine.isEmpty())
+        if (cvsLine == null || cvsLine.isEmpty())
         {
             return result;
         }

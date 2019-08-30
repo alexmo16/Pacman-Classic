@@ -23,4 +23,5 @@
 hs_err_pid*
 /bin/
 
-/sonarqube-7.9.1
+/sonar-scanner
+sonar-project.properties

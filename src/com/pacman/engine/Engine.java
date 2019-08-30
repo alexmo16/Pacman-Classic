@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import com.pacman.engine.EngineUtils;
 import com.pacman.engine.IGame;
 import com.pacman.engine.Inputs;
-import com.pacman.game.Settings;
 
 /**
  * Classe principale de l'engin de jeu,
@@ -18,7 +17,7 @@ public class Engine implements Runnable
 	private IGame game;
 	private Inputs inputs;
 	private Window window;
-	private Settings settings;
+	private ISettings settings;
 	private Renderer renderer;
 	
 	private static boolean isRunning = false;
@@ -122,9 +121,9 @@ public class Engine implements Runnable
 			unprocessedTime += deltaTime;
 			
 			// Pour mettre a jour l'affichage seulement si l'Update a ete fait.
-			while( unprocessedTime >= settings.getUPDATE_RATE() )
+			while( unprocessedTime >= settings.getUpdateRate() )
 			{
-				unprocessedTime -= settings.getUPDATE_RATE();
+				unprocessedTime -= settings.getUpdateRate();
 				render = true;
 				update();
 			}
@@ -147,7 +146,7 @@ public class Engine implements Runnable
 	
 	private void init ()
 	{
-		settings = new Settings();
+		settings = game.getSettings();
 		window = new Window( settings );
 		inputs = new Inputs( window );
 		renderer = new Renderer( (Graphics2D)window.getGraphics(), settings );

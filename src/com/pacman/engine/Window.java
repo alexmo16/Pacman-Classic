@@ -10,8 +10,6 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-import com.pacman.game.Settings;
-
 public class Window implements WindowListener
 {
 	private JFrame frame;
@@ -20,7 +18,7 @@ public class Window implements WindowListener
 	private Graphics g;
 	
 	
-	public Window(Settings s)
+	public Window(ISettings s)
 	{
 		canvas = new Canvas();
 		Dimension dim = new Dimension((int) (s.getWidth() * s.getScale()), (int) (s.getHeight() * s.getScale()));

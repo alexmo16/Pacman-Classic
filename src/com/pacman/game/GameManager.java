@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 import com.pacman.engine.Engine;
 import com.pacman.engine.IGame;
+import com.pacman.engine.ISettings;
 import com.pacman.engine.Renderer;
 import com.pacman.game.DynamicObject;
 
@@ -12,6 +13,7 @@ public class GameManager implements IGame
 
 	Rectangle pacman = new Rectangle(10,10,50,50);
 	String direction = "right";
+	Settings settings = new Settings();
 
 	
 	@Override
@@ -33,5 +35,11 @@ public class GameManager implements IGame
 	{
 		/*Font smallFont = new Font("Helvetica", Font.BOLD, 14);
 		renderer.drawText( "360 no scope", smallFont, Color.white, x, y);*/
+	}
+	
+	@Override
+	public ISettings getSettings()
+	{
+		return settings;
 	}
 }

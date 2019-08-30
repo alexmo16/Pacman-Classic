@@ -6,8 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-import com.pacman.game.Settings;
-
 public class Renderer 
 {
 
@@ -15,7 +13,7 @@ public class Renderer
 	private int width;
 	private int height;
 	
-	public Renderer( Graphics2D g2d, Settings s )
+	public Renderer( Graphics2D g2d, ISettings s )
 	{
 		this.g2d = g2d;
 		width = s.getWidth();

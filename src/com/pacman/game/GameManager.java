@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import com.pacman.engine.Engine;
 import com.pacman.engine.IGame;
-import com.pacman.engine.ISettings;
 import com.pacman.engine.Renderer;
 import com.pacman.game.DynamicObject;
 import com.pacman.utils.CSVUtils;
@@ -104,18 +103,15 @@ public class GameManager implements IGame
 	{
 		direction = DynamicObject.getInstance().getNewDirection(direction);
 		DynamicObject.getInstance().updatePosition(pacman, direction);
-
 	}
 
 	@Override
 	public void render(Renderer renderer ) 
 	{
-		/*Font smallFont = new Font("Helvetica", Font.BOLD, 14);
-		renderer.drawText( "360 no scope", smallFont, Color.white, x, y);*/
 	}
 	
 	@Override
-	public ISettings getSettings()
+	public Settings getSettings()
 	{
 		return settings;
 	}

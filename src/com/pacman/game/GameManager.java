@@ -13,7 +13,7 @@ import com.pacman.engine.Engine;
 import com.pacman.engine.IGame;
 import com.pacman.engine.Inputs;
 import com.pacman.engine.Renderer;
-import com.pacman.game.DynamicObject;
+import com.pacman.game.objects.DynamicObject;
 import com.pacman.utils.CSVUtils;
 
 public class GameManager implements IGame

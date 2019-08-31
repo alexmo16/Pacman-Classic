@@ -1,4 +1,4 @@
-package com.pacman.gum;
+package com.pacman.game.objects;
 
 import java.awt.Rectangle;
 

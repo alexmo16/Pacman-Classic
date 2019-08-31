@@ -14,6 +14,7 @@ public class Settings implements ISettings
 	private final double UPDATE_RATE = 1.0/60.0; // pour avoir 60 fps dans notre jeu. 
 	private String mapFilePath = System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt";
 	private int mutedButton = KeyEvent.VK_M;
+	private String spritesFilepath = System.getProperty("user.dir") + File.separator + "assets" + File.separator + "pacmanTiles.png";
 	
 	@Override
 	public String getTitle() 
@@ -69,14 +70,24 @@ public class Settings implements ISettings
 		return UPDATE_RATE;
 	}
 
-	public String getMapFilePath() 
-	{
+	@Override
+	public String getMapFilePath() {
 		return mapFilePath;
 	}
 
-	public void setMapFilePath(String mapFilePath)
-	{
+	@Override
+	public void setMapFilePath(String mapFilePath) {
 		this.mapFilePath = mapFilePath;
+	}
+
+	@Override
+	public String getSpritesFilepath() {
+		return spritesFilepath;
+	}
+
+	@Override
+	public void setSpritesFilepath(String spritesFilepath) {
+		this.spritesFilepath = spritesFilepath;
 	}
 
 	public int getMutedButton() 

@@ -98,7 +98,7 @@ public class Game extends Canvas implements Runnable{
 		Game game = new Game();
 		JFrame frame = new JFrame();
 		frame.setTitle(Game.TITLE);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.add(game);
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

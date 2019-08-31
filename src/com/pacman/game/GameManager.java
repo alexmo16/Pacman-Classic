@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import com.pacman.engine.Engine;
 import com.pacman.engine.IGame;
+import com.pacman.engine.Inputs;
 import com.pacman.engine.Renderer;
 import com.pacman.game.DynamicObject;
 import com.pacman.utils.CSVUtils;
@@ -24,6 +25,30 @@ public class GameManager implements IGame
 	public void init()
 	{
 		loadMapInfosFromFile();
+	}
+	
+	@Override
+	public void update(Engine engine)
+	{
+		direction = DynamicObject.getInstance().getNewDirection(direction);
+		DynamicObject.getInstance().updatePosition(pacman, direction);
+		
+		Inputs inputs = engine.getInputs();
+		if ( inputs.isKeyDown( settings.getMutedButton() ) )
+		{
+			Engine.toggleMute();
+		}
+	}
+
+	@Override
+	public void render(Renderer renderer ) 
+	{
+	}
+	
+	@Override
+	public Settings getSettings()
+	{
+		return settings;
 	}
 	
 	private void loadMapInfosFromFile()
@@ -97,22 +122,4 @@ public class GameManager implements IGame
 			System.out.print("\n");
 		}
 	}*/
-	
-	@Override
-	public void update(Engine engine)
-	{
-		direction = DynamicObject.getInstance().getNewDirection(direction);
-		DynamicObject.getInstance().updatePosition(pacman, direction);
-	}
-
-	@Override
-	public void render(Renderer renderer ) 
-	{
-	}
-	
-	@Override
-	public Settings getSettings()
-	{
-		return settings;
-	}
 }

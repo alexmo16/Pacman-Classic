@@ -166,7 +166,7 @@ public class Engine implements Runnable
 		window = new Window( settings );
 		inputs = new Inputs( window );
 		renderer = new Renderer( (Graphics2D)window.getGraphics(), settings );
-		
+		renderer.clear();
 		game.init();
 		isRunning = true;
 		isPause = false;

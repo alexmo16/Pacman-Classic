@@ -18,4 +18,12 @@ public interface ISettings {
 	public void setScale(float scale);
 
 	public double getUpdateRate();
+
+	public String getMapFilePath();
+
+	public void setMapFilePath(String mapFilePath);
+
+	public String getSpritesFilepath();
+
+	public void setSpritesFilepath(String spritesFilepath);
 }

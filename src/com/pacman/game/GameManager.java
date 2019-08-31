@@ -22,6 +22,8 @@ public class GameManager implements IGame
 
 	Rectangle pacman = null;
 	Rectangle futurPacman = null;
+	Rectangle maybeFuturPacman = null;
+	String oldDirection = "right";
 	String direction = "right";
 	private int x = 1;
 	private int buffer = 0;
@@ -50,15 +52,26 @@ public class GameManager implements IGame
 	public void update(Engine engine)
 	{
 		direction = DynamicObject.getInstance().getNewDirection(direction);
+		maybeFuturPacman = new Rectangle(pacman);
 		futurPacman = new Rectangle(pacman);
 		DynamicObject.getInstance().updatePosition(futurPacman, direction);
+		DynamicObject.getInstance().updatePosition(maybeFuturPacman, oldDirection);
+		
 		
 		checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map,20,20);
 		System.out.println("position x : "+pacman.getX()+" et y :"+pacman.getY());
 		System.out.println(checkCollision);
 		
 		if (checkCollision == false) {
-			DynamicObject.getInstance().updatePosition(pacman, direction);		
+			DynamicObject.getInstance().updatePosition(pacman, direction);
+			oldDirection = direction;
+		} else {
+			
+			checkCollision = CollisionManager.getInstance().collisionWall(maybeFuturPacman,map,20,20);
+			if (checkCollision == false) {
+				DynamicObject.getInstance().updatePosition(pacman, oldDirection);
+			}
+
 		}
 
 		

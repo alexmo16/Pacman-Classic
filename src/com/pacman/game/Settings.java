@@ -1,5 +1,7 @@
 package com.pacman.game;
 
+import java.io.File;
+
 import com.pacman.engine.ISettings;
 
 public class Settings implements ISettings {
@@ -8,6 +10,7 @@ public class Settings implements ISettings {
 	private int width = 800, height = 600;
 	private float scale = 1.0f;
 	private final double UPDATE_RATE = 1.0/60.0; // pour avoir 60 fps dans notre jeu. 
+	private String mapFilePath = System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt";
 	
 	@Override
 	public String getTitle() {
@@ -52,5 +55,13 @@ public class Settings implements ISettings {
 	@Override
 	public double getUpdateRate() {
 		return UPDATE_RATE;
+	}
+
+	public String getMapFilePath() {
+		return mapFilePath;
+	}
+
+	public void setMapFilePath(String mapFilePath) {
+		this.mapFilePath = mapFilePath;
 	}
 }

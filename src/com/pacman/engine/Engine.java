@@ -22,6 +22,7 @@ public class Engine implements Runnable
 	
 	private static boolean isRunning = false;
 	private static boolean isPause = false;
+	private static boolean isMuted = false;
 	
 	private static Engine instance;
 	
@@ -37,14 +38,29 @@ public class Engine implements Runnable
 		return instance;
 	}
 	
-	public boolean getIsRunning()
+	public static boolean getIsRunning()
 	{
 		return isRunning;
 	}
 	
-	public boolean getIsPause()
+	public static boolean getIsPause()
 	{
 		return isPause;
+	}
+	
+	public static boolean getIsMuted()
+	{
+		return isMuted;
+	}
+	
+	public static void setIsMuted( boolean isSoundMuted )
+	{
+		isMuted = isSoundMuted;
+	}
+	
+	public static void toggleMute()
+	{
+		isMuted = !isMuted;
 	}
 	
 	public void setGame( IGame game )

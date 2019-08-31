@@ -7,12 +7,20 @@ import java.io.IOException;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import com.pacman.engine.Engine;
 import com.pacman.engine.Sound;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class SoundTest 
 {
+	@BeforeEach
+	void testSetMuteToFalse()
+	{
+		Engine.setIsMuted( false );
+	}
+	
 	@Test
 	void testEmptyFilePath() 
 	{
@@ -62,29 +70,34 @@ class SoundTest
 	void testFileOKNoLoopback() 
 	{
 		boolean isException = false;
+		boolean isPlayed = false;
 		try 
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			sound.play();
+			isPlayed = sound.play();
 		} catch ( UnsupportedAudioFileException | IOException | LineUnavailableException e ) 
 		{
 			isException = true;
 		}
 		
 		assertFalse( isException );
+		assertTrue( isPlayed );
 	}
 	
 	@Test
 	void testFileOKWithLoopback() 
 	{
 		boolean isException = false;
+		boolean isPlayed = false;
 		try 
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav", true );
-			sound.play();
+			isPlayed = sound.play();
+			assertTrue( isPlayed );
 			
 			sound = new Sound( "./tests/testAssets/clip.wav", false );
-			sound.play();
+			isPlayed = sound.play();
+			assertTrue( isPlayed );
  
 		} catch ( UnsupportedAudioFileException | IOException | LineUnavailableException e ) 
 		{
@@ -92,16 +105,18 @@ class SoundTest
 		}
 		
 		assertFalse( isException );
+		assertTrue( isPlayed );
 	}
 	
 	@Test
 	void testStartStop() 
 	{
 		boolean isException = false;
+		boolean isPlayed = false;
 		try 
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav", true );
-			sound.play();
+			isPlayed = sound.play();
 			sound.stop();
 		} catch ( UnsupportedAudioFileException | IOException | LineUnavailableException e ) 
 		{
@@ -109,5 +124,25 @@ class SoundTest
 		}
 		
 		assertFalse( isException );
+		assertTrue( isPlayed );
+	}
+	
+	@Test
+	void testMute() 
+	{
+		boolean isException = false;
+		boolean isPlayed = false;
+		try 
+		{
+			Sound sound = new Sound( "./tests/testAssets/clip.wav", true );
+			Engine.setIsMuted( true );
+			isPlayed = sound.play();
+		} catch ( UnsupportedAudioFileException | IOException | LineUnavailableException e ) 
+		{
+			isException = true;
+		}
+		
+		assertFalse( isException );
+		assertFalse( isPlayed );
 	}
 }

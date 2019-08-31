@@ -39,10 +39,16 @@ public class Sound
 		
 	}
 	
-	public void play()
+	public boolean play()
 	{
-		audioClip.setFramePosition( 0 );
-		audioClip.start();
+		if ( !Engine.getIsMuted() )
+		{
+			audioClip.setFramePosition( 0 );
+			audioClip.start();
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public void stop()

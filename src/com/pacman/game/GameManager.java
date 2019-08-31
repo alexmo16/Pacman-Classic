@@ -21,23 +21,36 @@ public class GameManager implements IGame
 	private int[][] map = null;
 	private int xMapSize = 0, yMapSize = 0;
 	
+	private boolean isPlaying = true;
+	
 	@Override
 	public void init()
 	{
 		loadMapInfosFromFile();
+		isPlaying = true;
 	}
 	
 	@Override
 	public void update(Engine engine)
-	{
-		direction = DynamicObject.getInstance().getNewDirection(direction);
-		DynamicObject.getInstance().updatePosition(pacman, direction);
-		
+	{	
 		Inputs inputs = engine.getInputs();
 		if ( inputs.isKeyDown( settings.getMutedButton() ) )
 		{
 			Engine.toggleMute();
 		}
+		
+		if ( inputs.isKeyDown( settings.getPauseButton() ) )
+		{
+			isPlaying = !isPlaying;
+			Engine.setIsMuted( !isPlaying );
+		}
+		
+		if ( isPlaying )
+		{
+			direction = DynamicObject.getInstance().getNewDirection(direction);
+			DynamicObject.getInstance().updatePosition(pacman, direction);
+		}
+		
 	}
 
 	@Override

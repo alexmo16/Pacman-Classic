@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
+import com.pacman.engine.CollisionManager;
 import com.pacman.engine.Engine;
 import com.pacman.engine.IGame;
 import com.pacman.engine.Inputs;
@@ -19,45 +20,50 @@ import com.pacman.utils.CSVUtils;
 public class GameManager implements IGame
 {
 
-	Rectangle pacman = new Rectangle(10,10,50,50);
+	Rectangle pacman = null;
 	String direction = "right";
 	private int x = 1;
 	private int buffer = 0;
 	Image pacmanSprite;
+	Image wallSprite;
 	Settings settings = new Settings();
 	private int[][] map = null;
 	private int xMapSize = 0, yMapSize = 0;
-	
-	private boolean isPlaying = true;
+	private boolean checkCollision = true;
 	
 	@Override
 	public void init()
 	{
 		loadMapInfosFromFile();
-		isPlaying = true;
+		pacman = new Rectangle(10,10,settings.getWidth()/xMapSize-5,settings.getHeight()/yMapSize-5);
+		for (int x=0; x<xMapSize;x++) {
+			for (int y=0; y<yMapSize;y++) {
+				System.out.print(map[x][y]+" ");
+			}
+			System.out.println("");
+		}
+
 	}
 	
 	@Override
 	public void update(Engine engine)
-	{	
+	{
+		direction = DynamicObject.getInstance().getNewDirection(direction);
+		
+		
+		checkCollision = CollisionManager.getInstance().collisionWall(pacman,map,xMapSize,yMapSize);
+		System.out.println("position x : "+pacman.getX()+" et y :"+pacman.getY());
+		System.out.println(checkCollision);
+		
+		
+		DynamicObject.getInstance().updatePosition(pacman, direction);
+		
 		Inputs inputs = engine.getInputs();
 		if ( inputs.isKeyDown( settings.getMutedButton() ) )
 		{
 			Engine.toggleMute();
 		}
-		
-		if ( inputs.isKeyDown( settings.getPauseButton() ) )
-		{
-			isPlaying = !isPlaying;
-			Engine.setIsMuted( !isPlaying );
-		}
-		
-		if ( isPlaying )
-		{
-			direction = DynamicObject.getInstance().getNewDirection(direction);
-			DynamicObject.getInstance().updatePosition(pacman, direction);
-		}
-		
+
 	}
 
 	@Override
@@ -71,11 +77,26 @@ public class GameManager implements IGame
 			}
 			buffer = 1;
 		}
+		
+		for (int x=0; x<xMapSize;x++) {
+			for (int y=0; y<yMapSize;y++) {
+				if (map[x][y]>0) {
+					try {
+						wallSprite = ImageIO.read(new File("assets"+File.separator+"wall.png"));
+						renderer.drawImage(wallSprite, x*28, y*31);
+					} catch (IOException e) {
+					}
+				}
+			}
+			
+		}
+		
 		try {
 			pacmanSprite = ImageIO.read(new File("assets"+File.separator+"pacman_"+direction+"_"+x+".png"));
 			renderer.drawImage(pacmanSprite, (int) pacman.getX(), (int) pacman.getY());
 		} catch (IOException e) {
 		}
+
 	}
 	
 	@Override

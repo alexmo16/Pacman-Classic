@@ -22,26 +22,27 @@ public class CollisionManager {
 	{
 		
 		//Rcupration des coordonnes de 2 angles opposs du pacman
-		int x1 = (int) obj.getMinX(); //coordonnes de l'angle haut-gauche du pacman
-		int y1 = (int) obj.getMinY(); 
+		int xMin = (int) obj.getMinX(); //coordonnes de l'angle haut-gauche du pacman
+		int yMin = (int) obj.getMinY(); 
 		
-		int x2 = (int) obj.getMaxX(); //coordonnes de l'angle bas-droit du pacman
-		int y2 = (int) obj.getMaxY();
+		int xMax = (int) obj.getMaxX(); //coordonnes de l'angle bas-droit du pacman
+		int yMax = (int) obj.getMaxY();
+				
+		int caseXMin = xMin/nbColumn;
+		int caseYMin = yMin/nbLine;
 		
-		int caseX1 = x1/nbColumn;
-		int caseY1 = y1/nbLine;
+		int caseXMax = xMax/nbColumn;
+		int caseYMax = yMax/nbLine;
 		
-		int caseX2 = x2/nbColumn;
-		int caseY2 = y2/nbLine;
-		
+		System.out.println(map[caseXMax][caseYMax]);
+		System.out.println(map[caseXMin][caseYMin]);
 
-		if (map[caseY1][caseX1] != 1 || map[caseY2][caseX2] != 1)
-		{
-			//System.out.println("collision avec mur");
-			return true;
+		if (map[caseXMin][caseYMin] == 0 & map[caseXMin][caseYMax] == 0 & map[caseXMax][caseYMin] == 0 & map[caseXMax][caseYMax] == 0 ) {
+				return false;
 		}
 
-		return false;
+
+		return true;
 	}
 		public boolean collisionObj(Rectangle obj1, Rectangle obj2)
 		{

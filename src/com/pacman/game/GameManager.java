@@ -21,6 +21,7 @@ public class GameManager implements IGame
 {
 
 	Rectangle pacman = null;
+	Rectangle futurPacman = null;
 	String direction = "right";
 	private int x = 1;
 	private int buffer = 0;
@@ -35,7 +36,7 @@ public class GameManager implements IGame
 	public void init()
 	{
 		loadMapInfosFromFile();
-		pacman = new Rectangle(10,10,settings.getWidth()/xMapSize-5,settings.getHeight()/yMapSize-5);
+		pacman = new Rectangle(3*600/30-20,3*660/33-20,19,19);
 		for (int x=0; x<xMapSize;x++) {
 			for (int y=0; y<yMapSize;y++) {
 				System.out.print(map[x][y]+" ");
@@ -49,14 +50,17 @@ public class GameManager implements IGame
 	public void update(Engine engine)
 	{
 		direction = DynamicObject.getInstance().getNewDirection(direction);
+		futurPacman = new Rectangle(pacman);
+		DynamicObject.getInstance().updatePosition(futurPacman, direction);
 		
-		
-		checkCollision = CollisionManager.getInstance().collisionWall(pacman,map,xMapSize,yMapSize);
+		checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map,20,20);
 		System.out.println("position x : "+pacman.getX()+" et y :"+pacman.getY());
 		System.out.println(checkCollision);
 		
-		
-		DynamicObject.getInstance().updatePosition(pacman, direction);
+		if (checkCollision == false) {
+			DynamicObject.getInstance().updatePosition(pacman, direction);		
+		}
+
 		
 		Inputs inputs = engine.getInputs();
 		if ( inputs.isKeyDown( settings.getMutedButton() ) )
@@ -80,10 +84,10 @@ public class GameManager implements IGame
 		
 		for (int x=0; x<xMapSize;x++) {
 			for (int y=0; y<yMapSize;y++) {
-				if (map[x][y]>0) {
+				if (map[x][y]==0) {
 					try {
-						wallSprite = ImageIO.read(new File("assets"+File.separator+"wall.png"));
-						renderer.drawImage(wallSprite, x*28, y*31);
+						wallSprite = ImageIO.read(new File("assets"+File.separator+"wall.png")).getScaledInstance(20, 20, Image.SCALE_FAST );
+						renderer.drawImage(wallSprite, x*600/30, y*660/33);
 					} catch (IOException e) {
 					}
 				}
@@ -92,7 +96,7 @@ public class GameManager implements IGame
 		}
 		
 		try {
-			pacmanSprite = ImageIO.read(new File("assets"+File.separator+"pacman_"+direction+"_"+x+".png"));
+			pacmanSprite = ImageIO.read(new File("assets"+File.separator+"pacman.png")).getScaledInstance(20, 20, Image.SCALE_FAST);
 			renderer.drawImage(pacmanSprite, (int) pacman.getX(), (int) pacman.getY());
 		} catch (IOException e) {
 		}

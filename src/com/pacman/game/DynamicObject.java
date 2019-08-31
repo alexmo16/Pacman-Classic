@@ -35,16 +35,16 @@ public class DynamicObject {
 	
 	public void updatePosition(Rectangle object, String direction) {
 		if (direction.contentEquals("up")) {
-			object.setLocation((int)object.getX(),(int)object.getY()-4);
+			object.setLocation((int)object.getX(),(int)object.getY()-1);
 		}
 		if (direction.contentEquals("down")) {
-			object.setLocation((int)object.getX(),(int)object.getY()+4);
+			object.setLocation((int)object.getX(),(int)object.getY()+1);
 		}
 		if (direction.contentEquals("right")) {
-			object.setLocation((int)object.getX()+4,(int)object.getY());
+			object.setLocation((int)object.getX()+1,(int)object.getY());
 		}
 		if (direction.contentEquals("left")) {
-			object.setLocation((int)object.getX()-4,(int)object.getY());
+			object.setLocation((int)object.getX()-1,(int)object.getY());
 		}
 	}
 }

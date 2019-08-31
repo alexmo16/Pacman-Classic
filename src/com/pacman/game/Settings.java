@@ -9,7 +9,7 @@ public class Settings implements ISettings
 {
 
 	private String title = "Pac-Man";
-	private int width = 800, height = 600;
+	private int width = 600, height = 800;
 	private float scale = 1.0f;
 	private final double UPDATE_RATE = 1.0/60.0; // pour avoir 60 fps dans notre jeu. 
 	private String mapFilePath = System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt";

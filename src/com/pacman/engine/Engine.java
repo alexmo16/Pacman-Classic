@@ -1,39 +1,83 @@
 package com.pacman.engine;
 
+import java.awt.Graphics2D;
+
 import com.pacman.engine.EngineUtils;
 import com.pacman.engine.IGame;
 import com.pacman.engine.Inputs;
-import com.pacman.game.Settings;
 
 /**
  * Classe principale de l'engin de jeu,
- * Engine, g�re donc la gameloop de Pac-Man.
+ * Engine, gere donc la gameloop de Pac-Man.
+ * @Singleton
  */
-public class Engine implements Runnable 
+public class Engine implements Runnable
 {
 	private Thread thread;
 	private IGame game;
 	private Inputs inputs;
 	private Window window;
-	private Settings settings;
+	private ISettings settings;
+	private Renderer renderer;
 	
-	private boolean isRunning = false;
-	private boolean isPause = false;
+	private static boolean isRunning = false;
+	private static boolean isPause = false;
+	private static boolean isMuted = false;
 	
-	public Engine( IGame game )
+	private static Engine instance;
+	
+	private Engine() {} // parce que c'est un singleton
+	
+	public static Engine getInstance()
+	{
+		if ( instance == null )
+		{
+			instance = new Engine();		
+		}
+		
+		return instance;
+	}
+	
+	public static boolean getIsRunning()
+	{
+		return isRunning;
+	}
+	
+	public static boolean getIsPause()
+	{
+		return isPause;
+	}
+	
+	public static boolean getIsMuted()
+	{
+		return isMuted;
+	}
+	
+	public static void setIsMuted( boolean isSoundMuted )
+	{
+		isMuted = isSoundMuted;
+	}
+	
+	public static void toggleMute()
+	{
+		isMuted = !isMuted;
+	}
+	
+	public void setGame( IGame game )
 	{
 		this.game = game;
 	}
 	
 	public void startGame()
 	{
-		settings = new Settings();
-		window = new Window( settings );
-		thread = new Thread( this ) ;
-		thread.run();
+		if ( game != null && !isRunning )
+		{
+			thread = new Thread( this ) ;
+			thread.run();	
+		}
 	}
 	
-	public void stopGame()
+	public static void stopGame()
 	{
 		isRunning = false;
 		isPause = false;
@@ -49,17 +93,14 @@ public class Engine implements Runnable
 		isPause = false;
 	}
 	
-	public void init ()
-	{
-		inputs = new Inputs();
-		game.init();
-		isRunning = true;
-		isPause = false;
-	}
-	
 	public Inputs getInputs()
 	{
 		return inputs;
+	}
+	
+	public Renderer getRenderer()
+	{
+		return renderer;
 	}
 	
 	/**
@@ -68,6 +109,11 @@ public class Engine implements Runnable
 	 */
 	public void run()
 	{	
+		if ( game == null )
+		{
+			return;
+		}
+		
 		init();
 		
 		boolean render = false;
@@ -75,6 +121,7 @@ public class Engine implements Runnable
 		double lastTime = EngineUtils.getCurrentTimeInMillis();
 		double deltaTime = 0;
 		double unprocessedTime = 0;
+		double sleepTime = 0;
 		
 		while( isRunning )
 		{
@@ -91,9 +138,9 @@ public class Engine implements Runnable
 			unprocessedTime += deltaTime;
 			
 			// Pour mettre a jour l'affichage seulement si l'Update a ete fait.
-			while( unprocessedTime >= settings.getUPDATE_RATE() )
+			while( unprocessedTime >= settings.getUpdateRate() )
 			{
-				unprocessedTime -= settings.getUPDATE_RATE();
+				unprocessedTime -= settings.getUpdateRate();
 				render = true;
 				update();
 			}
@@ -101,14 +148,34 @@ public class Engine implements Runnable
 			// Si on a rien a afficher, on sleep.
 			if( render )
 			{
+				renderer.clear();
+				game.render( renderer );
 				window.update();
-				// TODO render game
 			}
 			else
 			{
-				rest( 1 );
+				sleepTime = settings.getUpdateRate() - deltaTime;
+				if ( sleepTime <= 0 )
+				{
+					sleepTime = 1;
+				}
+				rest( sleepTime );
 			}
 		}
+		
+		window.clear();
+	}
+	
+	private void init ()
+	{
+		settings = game.getSettings();
+		window = new Window( settings );
+		inputs = new Inputs( window );
+		renderer = new Renderer( (Graphics2D)window.getGraphics(), settings );
+		renderer.clear();
+		game.init();
+		isRunning = true;
+		isPause = false;
 	}
 	
 	private void update()
@@ -117,11 +184,11 @@ public class Engine implements Runnable
 		inputs.update();
 	}
 	
-	private void rest( int sleepTime )
+	private void rest( double sleepTime )
 	{
 		try 
 		{
-			Thread.sleep( sleepTime ); // 1ms, a voir s'il faut modifier cette valeur.
+			Thread.sleep( (long) sleepTime ); // 1ms, a voir s'il faut modifier cette valeur.
 		} catch ( InterruptedException e ) 
 		{
 			e.printStackTrace();

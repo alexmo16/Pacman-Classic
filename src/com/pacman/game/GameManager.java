@@ -34,9 +34,9 @@ public class GameManager implements IGame
 		window.getFrame().add(maze);
 		window.getFrame().pack();
 		
-		pacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction);
-		maybeFuturPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction);
-		futurPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction);
+		pacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
+		maybeFuturPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
+		futurPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
 		map = maze.getmazeData().getTiles();
 		
 		isPlaying = true;

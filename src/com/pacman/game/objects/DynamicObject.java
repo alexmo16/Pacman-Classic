@@ -2,6 +2,8 @@ package com.pacman.game.objects;
 
 import java.awt.Rectangle;
 
+import com.pacman.game.Settings;
+
 public abstract class DynamicObject extends GameObject {
 	
 	private static final long serialVersionUID = 1L;
@@ -12,8 +14,8 @@ public abstract class DynamicObject extends GameObject {
 		this.direction = null;
 	}
 	
-	public DynamicObject(int x, int y, int width, int height, String direction) {
-		super(x,y,width,height);
+	public DynamicObject(int x, int y, int width, int height, String direction, Settings s) {
+		super(x,y,width,height, s);
 		this.direction = direction;
 	}
 	

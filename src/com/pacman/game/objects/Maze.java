@@ -26,6 +26,7 @@ public class Maze extends JPanel
 		mazeWidth = s.getMazeData().getWidth();
 		mazeData = s.getMazeData();
 		spritesManager = s.getSpritesManager();
+		setBackground(Color.BLACK);
 	}
 
     @Override
@@ -40,7 +41,6 @@ public class Maze extends JPanel
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g.create();
         int size = Math.min(getWidth(), getHeight()) / mazeHeight;
-        setBackground(Color.BLACK);
         
         int y = (getHeight() - (size * mazeHeight)) / 2;
         for (int horz = 0; horz < mazeHeight; horz++) 

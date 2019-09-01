@@ -2,7 +2,6 @@ package com.pacman.engine;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -21,11 +20,6 @@ public class Window implements WindowListener
 	public Window(ISettings s)
 	{
 		canvas = new Canvas();
-		Dimension dim = new Dimension((int) (s.getMinWindowWidth() * s.getScale()), (int) (s.getMinWindowHeight() * s.getScale()));
-		canvas.setPreferredSize(dim);
-		canvas.setMaximumSize(dim);
-		canvas.setMinimumSize(dim);
-		
 		frame = new JFrame(s.getTitle());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());

@@ -1,16 +1,20 @@
 package com.pacman.game;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
 import com.pacman.engine.Engine;
 import com.pacman.engine.IGame;
 import com.pacman.engine.Inputs;
 import com.pacman.engine.Renderer;
-import com.pacman.game.objects.DynamicObject;;
+import com.pacman.engine.Window;
+import com.pacman.game.objects.DynamicObject;
+import com.pacman.game.objects.Maze;;
 
 public class GameManager implements IGame
 {
@@ -21,12 +25,16 @@ public class GameManager implements IGame
 	private int buffer = 0;
 	Image pacmanSprite;
 	Settings settings = new Settings();
+	Maze maze = new Maze(settings);
 	
 	private boolean isPlaying = true;
 	
 	@Override
-	public void init()
+	public void init(Window window)
 	{
+		window.getFrame().setPreferredSize(new Dimension(settings.getMinWindowWidth(), settings.getMinWindowHeight()));
+		window.getFrame().add(maze);
+		window.getFrame().pack();
 		isPlaying = true;
 	}
 	

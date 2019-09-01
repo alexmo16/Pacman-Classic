@@ -33,4 +33,25 @@ public abstract class DynamicObject extends GameObject {
 			object.setLocation((int)object.getX()-1,(int)object.getY());
 		}
 	}
+
+	public static void tunnel(Rectangle object, String direction)
+	{
+		switch(direction)
+		{
+		case "right":
+			object.setLocation(0,(int)object.getY());
+			break;
+		case "left":
+			object.setLocation(600-19,(int)object.getY());
+			break;
+		case "up":
+			object.setLocation((int)object.getX(),660-20);
+			break;
+		case "down":
+			object.setLocation((int)object.getX(),0);
+			break;
+		default:
+			break;
+		}
+	}
 }

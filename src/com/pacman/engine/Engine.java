@@ -1,7 +1,5 @@
 package com.pacman.engine;
 
-import java.awt.Graphics2D;
-
 import com.pacman.engine.EngineUtils;
 import com.pacman.engine.IGame;
 import com.pacman.engine.Inputs;

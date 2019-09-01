@@ -32,7 +32,6 @@ public class Window implements WindowListener
 		frame.add(canvas, BorderLayout.CENTER);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
 		frame.setVisible(true);
 		
 		canvas.createBufferStrategy(2);

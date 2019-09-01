@@ -62,7 +62,6 @@ public class GameManager implements IGame
 		if ( isPlaying )
 		{
 			direction = PacmanObject.getNewDirection(direction);
-			System.out.println(pacman.getX());
 			maybeFuturPacman.setLocation((int)pacman.getX(),(int)pacman.getY());
 			futurPacman.setLocation((int)pacman.getX(),(int)pacman.getY());
 			DynamicObject.updatePosition(futurPacman, direction);

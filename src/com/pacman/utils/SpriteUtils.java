@@ -8,39 +8,54 @@ import javax.swing.ImageIcon;
 
 public class SpriteUtils 
 {	
-	public static int[][] getSpritesCoordsFromSheet(String spritesSheetFilePath, int blockSize)
+	public static Image getSpritesSheetImage(String spritesSheetFilePath)
 	{
 		Image spritesSheet = null;
-		int[][] spritesCoords = null;
 		try
 		{
     		if (Files.exists(Paths.get(spritesSheetFilePath))) 
     		{
     			if ((spritesSheet = new ImageIcon(spritesSheetFilePath).getImage()) == null)
     			{
-    				throw new Error("Failed to load the sprits sheet in Image object");
+    				throw new Exception("Failed to load the sprits sheet in Image object");
     			}
-    			
-        		if (spritesSheet.getHeight(null) % blockSize != 0)
-        		{
-        			throw new Error("Block size " + blockSize + " is not compatible with height " + spritesSheet.getHeight(null));
-        		}
-        		
-        		if (spritesSheet.getWidth(null) % blockSize != 0)
-        		{
-        			throw new Error("Block size " + blockSize + " is not compatible with width " + spritesSheet.getWidth(null));
-        		}
     		} 
     		else 
     		{
-    			throw new Error("Couldn't find file: " + spritesSheetFilePath);
+    			throw new Exception("Couldn't find file: " + spritesSheetFilePath);
     		}
-    		
+		}
+        catch (Exception e)
+        {
+        	spritesSheet = null;
+        	System.out.println("Exception in getSpritesSheetImage : " + e.toString());
+        }
+		
+		return spritesSheet;
+	}
+	
+	public static int[][] getSpritesCoordsFromSheet(Image spritesSheet, int blockSize)
+	{
+		int[][] spritesCoords = null;
+		try
+		{
+			if (spritesSheet == null)
+			{
+				throw new Exception("Image is null");
+			}
+			else if (spritesSheet.getHeight(null) % blockSize != 0)
+			{
+				throw new Exception("Block size " + blockSize + " is not compatible with sprites sheet height " + spritesSheet.getHeight(null));
+			}
+			else if (spritesSheet.getWidth(null) % blockSize != 0)
+			{
+				throw new Exception("Block size " + blockSize + " is not compatible with sprites sheet width " + spritesSheet.getWidth(null));
+			}
 
     		int xSize = spritesSheet.getWidth(null) / blockSize;
     		int ySize = spritesSheet.getHeight(null) / blockSize;
-    		
     		spritesCoords = new int[xSize * ySize][4];
+    		
     		for (int y = 0; y < ySize; y++)
     		{
     			for (int x = 0; x < xSize; x++)

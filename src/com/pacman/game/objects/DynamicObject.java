@@ -1,4 +1,4 @@
-package com.pacman.game;
+package com.pacman.game.objects;
 
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;

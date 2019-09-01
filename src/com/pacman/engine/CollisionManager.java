@@ -19,16 +19,16 @@ public class CollisionManager {
 		return instance;
 	}
 	
-	public boolean collisionWall(DynamicObject obj, int[][] map, int nbColumn, int nbLine) 
+	public int collisionWall(DynamicObject obj, int[][] map, int nbColumn, int nbLine) 
 	
 	{
 		
-		//Rcupration des coordonnes de 2 angles opposs du pacman
-		int xMin = (int) obj.getMinX(); //coordonnes de l'angle haut-gauche du pacman
-		int yMin = (int) obj.getMinY(); 
 		
-		int xMax = (int) obj.getMaxX(); //coordonnes de l'angle bas-droit du pacman
-		int yMax = (int) obj.getMaxY();
+		int xMin = (int) obj.getRectangle().getMinX(); //coordonnes de l'angle haut-gauche du pacman
+		int yMin = (int) obj.getRectangle().getMinY(); 
+		
+		int xMax = (int) obj.getRectangle().getMaxX(); //coordonnes de l'angle bas-droit du pacman
+		int yMax = (int) obj.getRectangle().getMaxY();
 				
 		int caseXMin = xMin/nbColumn;
 		int caseYMin = yMin/nbLine;
@@ -38,16 +38,24 @@ public class CollisionManager {
 		
 
 
-		if (map[caseXMin][caseYMin] == 0 & map[caseXMin][caseYMax] == 0 & map[caseXMax][caseYMin] == 0 & map[caseXMax][caseYMax] == 0 ) {
-				return false;
+		
+		if ((caseXMin == 0 & caseXMax == 0 )||(caseXMin == 29 & caseXMax == 30 ) || (caseYMin == 0 & caseYMax == 0 ) || (caseYMin == 32 & caseYMax == 32 ))	
+		{
+			return 2;
+		}
+		
+		else if (map[caseXMin][caseYMin] == 0 & map[caseXMin][caseYMax] == 0 & map[caseXMax][caseYMin] == 0 & map[caseXMax][caseYMax] == 0 ) 
+		{
+			return 0;
 		}
 
+		return 1;
 
-		return true;
+
 	}
 		public boolean collisionObj(GameObject obj1, GameObject obj2)
 		{
-			return obj1.intersects(obj2);			
+			return obj1.getRectangle().intersects(obj2.getRectangle());			
 		}
 	}
 	

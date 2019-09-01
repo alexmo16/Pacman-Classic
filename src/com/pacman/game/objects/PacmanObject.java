@@ -29,6 +29,8 @@ public class PacmanObject extends DynamicObject {
 		return direction;
 	}
 	
+	
+	
 
 	
 }

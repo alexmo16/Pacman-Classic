@@ -2,7 +2,6 @@ package com.pacman.game.objects;
 
 import java.awt.Rectangle;
 
-
 public abstract class DynamicObject extends GameObject {
 	
 	private static final long serialVersionUID = 1L;

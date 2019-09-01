@@ -2,16 +2,25 @@ package com.pacman.game.objects;
 
 import java.awt.Rectangle;
 
-public abstract class GameObject extends Rectangle{
+import javax.swing.JComponent;
+
+public abstract class GameObject extends JComponent{
 
 	private static final long serialVersionUID = 1L;
-
+	protected Rectangle object = null;
+	
 	public GameObject(int x, int y, int width, int height ) {
-		super(x, y, width, height);
+		super();
+		this.object = new Rectangle(x, y, width, height);
 
 	}
 		
 	public GameObject() {
 		super();
+		this.object = new Rectangle();
+	}
+	
+	public Rectangle getRectangle() {
+		return this.object;
 	}
 }

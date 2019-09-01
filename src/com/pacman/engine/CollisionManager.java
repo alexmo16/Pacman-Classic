@@ -1,8 +1,8 @@
 package com.pacman.engine;
 
 
-import com.pacman.game.object.DynamicObject;
-import com.pacman.game.object.GameObject;
+import com.pacman.game.objects.DynamicObject;
+import com.pacman.game.objects.GameObject;
 
 
 public class CollisionManager {

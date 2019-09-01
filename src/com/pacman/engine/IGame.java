@@ -7,7 +7,7 @@ import com.pacman.engine.Engine;
  */
 public interface IGame 
 {	
-	public void init();
+	public void init(Window window);
 	
 	public void update( Engine engine );
 	

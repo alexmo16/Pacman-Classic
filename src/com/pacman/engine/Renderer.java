@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 
 public class Renderer 
 {
@@ -15,9 +14,9 @@ public class Renderer
 	
 	public Renderer( Graphics2D g2d, ISettings s )
 	{
-		this.g2d = g2d;
-		width = s.getWidth();
-		height = s.getHeight();
+		this.g2d = g2d; 
+		width = s.getMinWindowWidth();
+		height = s.getMinWindowHeight();
 	}
 	
 	public void drawText( String text, Font font, Color color, int x, int y )
@@ -32,9 +31,14 @@ public class Renderer
 		g2d.drawImage( image, x, y, null );
 	}
 	
+	public void drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2)
+	{
+		g2d.drawImage(img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
+	}
+	
 	public void clear()
 	{
-		Image image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		drawImage( image, 0, 0 );
+		g2d.setColor( Color.black );
+		g2d.fillRect( 0, 0, width, height );
 	}
 }

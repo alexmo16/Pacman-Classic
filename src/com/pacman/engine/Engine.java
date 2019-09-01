@@ -121,6 +121,7 @@ public class Engine implements Runnable
 		double lastTime = EngineUtils.getCurrentTimeInMillis();
 		double deltaTime = 0;
 		double unprocessedTime = 0;
+		double sleepTime = 0;
 		
 		while( isRunning )
 		{
@@ -153,7 +154,12 @@ public class Engine implements Runnable
 			}
 			else
 			{
-				rest( 1 );
+				sleepTime = settings.getUpdateRate() - deltaTime;
+				if ( sleepTime <= 0 )
+				{
+					sleepTime = 1;
+				}
+				rest( sleepTime );
 			}
 		}
 		
@@ -166,8 +172,8 @@ public class Engine implements Runnable
 		window = new Window( settings );
 		inputs = new Inputs( window );
 		renderer = new Renderer( (Graphics2D)window.getGraphics(), settings );
-		
-		game.init();
+		renderer.clear();
+		game.init(window);
 		isRunning = true;
 		isPause = false;
 	}
@@ -178,11 +184,11 @@ public class Engine implements Runnable
 		inputs.update();
 	}
 	
-	private void rest( int sleepTime )
+	private void rest( double sleepTime )
 	{
 		try 
 		{
-			Thread.sleep( sleepTime ); // 1ms, a voir s'il faut modifier cette valeur.
+			Thread.sleep( (long) sleepTime ); // 1ms, a voir s'il faut modifier cette valeur.
 		} catch ( InterruptedException e ) 
 		{
 			e.printStackTrace();

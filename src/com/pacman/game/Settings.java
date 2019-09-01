@@ -7,8 +7,7 @@ import com.pacman.engine.ISettings;
 
 public class Settings implements ISettings 
 {	
-	private final String spritesFilepath = System.getProperty("user.dir") + File.separator + "assets" + File.separator + "pacmanTiles.png",
-						 title = "Pac-Man";
+	private final String title = "Pac-Man";
 	
 	private final int mutedButton = KeyEvent.VK_M, 
 					  pauseButton = KeyEvent.VK_P,
@@ -21,9 +20,8 @@ public class Settings implements ISettings
 	
 	private final MazeData mazeData = new MazeData(new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"));
 	
-	public String getSpritesFilepath() {
-		return spritesFilepath;
-	}
+	private final SpritesManager spritesManager = new SpritesManager(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "pacmanTiles.png", 48);
+	
 
 	@Override
 	public String getTitle() {
@@ -63,5 +61,9 @@ public class Settings implements ISettings
 	@Override
 	public MazeData getMazeData() {
 		return mazeData;
+	}
+
+	public SpritesManager getSpritesManager() {
+		return spritesManager;
 	}
 }

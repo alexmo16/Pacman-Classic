@@ -25,6 +25,11 @@ public class SpritesManager
 		return spritesCoords[tileNumber - 1];
 	}
 
+	public int[] getGumCoords()
+	{		
+		return spritesCoords[12];
+	}
+	
 	public Image getSpritesSheet() 
 	{
 		return spritesSheet;

@@ -12,11 +12,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="mockito-junit-jupiter-3.0.6.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="mockito-core-3.0.6.jar">
 		<attributes>
 			<attribute name="module" value="true"/>

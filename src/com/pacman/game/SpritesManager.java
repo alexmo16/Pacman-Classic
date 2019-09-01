@@ -24,6 +24,10 @@ public class SpritesManager
 		
 		return spritesCoords[tileNumber - 1];
 	}
+	
+	public int[] getPacmanCoords() {
+		return spritesCoords[12];
+	}
 
 	public int[] getGumCoords()
 	{		

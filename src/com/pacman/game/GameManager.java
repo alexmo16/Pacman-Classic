@@ -20,7 +20,7 @@ public class GameManager implements IGame
 	PacmanObject futurPacman;
 	PacmanObject maybeFuturPacman;
 	String oldDirection = "right", direction = "right";
-	private boolean checkCollision = true;
+	private int checkCollision = 1;
 	private int[][] map = null;
 	Image pacmanSprite;
 	Settings settings = new Settings();
@@ -66,16 +66,36 @@ public class GameManager implements IGame
 			DynamicObject.updatePosition(futurPacman.getRectangle(), direction);
 			DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
 
-
 			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map,20,20);
 			
-			if (checkCollision == false) {
+			if(checkCollision == 2)
+			{
+				switch(direction)
+				{
+				case "right":
+					pacman.getRectangle().setLocation(0,(int)pacman.getRectangle().getY());
+					break;
+				case "left":
+					pacman.getRectangle().setLocation(600-19,(int)pacman.getRectangle().getY());
+					break;
+				case "up":
+					pacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),660-20);
+					break;
+				case "down":
+					pacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),0);
+					break;
+				default:
+					break;
+				}
+			}
+			
+			if (checkCollision == 0) {
 				DynamicObject.updatePosition(pacman.getRectangle(), direction);
 				oldDirection = direction;
 			} else {
 				
 				checkCollision = CollisionManager.getInstance().collisionWall(maybeFuturPacman,map,20,20);
-				if (checkCollision == false) {
+				if (checkCollision == 0) {
 					DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
 				}
 

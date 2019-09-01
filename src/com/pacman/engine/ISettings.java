@@ -1,29 +1,14 @@
 package com.pacman.engine;
 
+import com.pacman.game.Maze;
+
 public interface ISettings {
 	public String getTitle();
-	
-	public void setTitle(String title);
-	
-	public int getWidth();
-	
-	public void setWidth(int width);
-	
-	public int getHeight();
-	
-	public void setHeight(int height);
-	
+	public int getMutedButton();
+	public int getPauseButton();
+	public int getMinWindowWidth();
+	public int getMinWindowHeight();
 	public float getScale();
-	
-	public void setScale(float scale);
-
 	public double getUpdateRate();
-
-	public String getMapFilePath();
-
-	public void setMapFilePath(String mapFilePath);
-
-	public String getSpritesFilepath();
-
-	public void setSpritesFilepath(String spritesFilepath);
+	public Maze getMaze();
 }

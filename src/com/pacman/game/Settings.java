@@ -6,112 +6,62 @@ import java.io.File;
 import com.pacman.engine.ISettings;
 
 public class Settings implements ISettings 
-{
-
-	private String title = "Pac-Man";
-	private int width = 800, height = 600;
-	private float scale = 1.0f;
-	private final double UPDATE_RATE = 1.0/60.0; // pour avoir 60 fps dans notre jeu. 
-	private String mapFilePath = System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt";
-	private String spritesFilepath = System.getProperty("user.dir") + File.separator + "assets" + File.separator + "pacmanTiles.png";
-	private int mutedButton = KeyEvent.VK_M;
-	private int pauseButton = KeyEvent.VK_P;
+{	
+	private final String spritesFilepath = System.getProperty("user.dir") + File.separator + "assets" + File.separator + "pacmanTiles.png",
+						 title = "Pac-Man";
 	
-	@Override
-	public String getTitle() 
-	{
-		return title;
-	}
+	private final int mutedButton = KeyEvent.VK_M, 
+					  pauseButton = KeyEvent.VK_P,
+				  	  minWindowWidth = 800, 
+				  	  minWindowHeight = 600;
 	
-	@Override
-	public void setTitle(String title) 
-	{
-		this.title = title;
-	}
+	private final float scale = 1.0f;
 	
-	@Override
-	public int getWidth() 
-	{
-		return width;
-	}
+	private final double updateRate = 1.0 / 60.0; // pour avoir 60 fps dans notre jeu.
 	
-	@Override
-	public void setWidth(int width) 
-	{
-		this.width = width;
-	}
+	private final Maze maze = new Maze(new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"));
 	
-	@Override
-	public int getHeight() 
-	{
-		return height;
-	}
-	
-	@Override
-	public void setHeight(int height) 
-	{
-		this.height = height;
-	}
-	
-	@Override
-	public float getScale() 
-	{
-		return scale;
-	}
-	
-	@Override
-	public void setScale(float scale) 
-	{
-		this.scale = scale;
-	}
-
-	@Override
-	public double getUpdateRate() 
-	{
-		return UPDATE_RATE;
-	}
-
-	@Override
-	public String getMapFilePath()
-	{
-		return mapFilePath;
-	}
-
-	@Override
-	public void setMapFilePath(String mapFilePath) 
-	{
-		this.mapFilePath = mapFilePath;
-	}
-
-	@Override
-	public String getSpritesFilepath() 
-	{
+	public String getSpritesFilepath() {
 		return spritesFilepath;
 	}
 
 	@Override
-	public void setSpritesFilepath(String spritesFilepath)
-	{
-		this.spritesFilepath = spritesFilepath;
+	public String getTitle() {
+		return title;
 	}
 
-	public int getMutedButton() 
-	{
+	@Override
+	public int getMutedButton() {
 		return mutedButton;
 	}
 
-	public void setMutedButton(int mutedButton) 
-	{
-		this.mutedButton = mutedButton;
-	}
-
-	public int getPauseButton() 
-	{
+	@Override
+	public int getPauseButton() {
 		return pauseButton;
 	}
 
-	public void setPauseButton(int pauseButton) 
-	{
-		this.pauseButton = pauseButton;
+	@Override
+	public int getMinWindowWidth() {
+		return minWindowWidth;
+	}
+
+	@Override
+	public int getMinWindowHeight() {
+		return minWindowHeight;
+	}
+
+	@Override
+	public float getScale() {
+		return scale;
+	}
+
+	@Override
+	public double getUpdateRate() {
+		return updateRate;
+	}
+
+	@Override
+	public Maze getMaze() {
+		return maze;
 	}
 }

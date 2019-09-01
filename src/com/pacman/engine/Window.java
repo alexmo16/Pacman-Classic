@@ -21,7 +21,7 @@ public class Window implements WindowListener
 	public Window(ISettings s)
 	{
 		canvas = new Canvas();
-		Dimension dim = new Dimension((int) (s.getWidth() * s.getScale()), (int) (s.getHeight() * s.getScale()));
+		Dimension dim = new Dimension((int) (s.getMinWindowWidth() * s.getScale()), (int) (s.getMinWindowHeight() * s.getScale()));
 		canvas.setPreferredSize(dim);
 		canvas.setMaximumSize(dim);
 		canvas.setMinimumSize(dim);

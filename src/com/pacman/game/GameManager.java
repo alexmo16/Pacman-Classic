@@ -1,7 +1,6 @@
 package com.pacman.game;
 
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -20,11 +19,10 @@ import com.pacman.utils.CSVUtils;
 public class GameManager implements IGame
 {
 
-	Rectangle pacman = null;
-	Rectangle futurPacman = null;
-	Rectangle maybeFuturPacman = null;
-	String oldDirection = "right";
-	String direction = "right";
+	PacmanObject pacman;
+	PacmanObject futurPacman;
+	PacmanObject maybeFuturPacman;
+	String oldDirection = "right", direction = "right";
 	private int x = 1;
 	private int buffer = 0;
 	Image pacmanSprite;
@@ -38,38 +36,34 @@ public class GameManager implements IGame
 	public void init()
 	{
 		loadMapInfosFromFile();
-		pacman = new Rectangle(3*600/30-20,3*660/33-20,19,19);
-		for (int x=0; x<xMapSize;x++) {
-			for (int y=0; y<yMapSize;y++) {
-				System.out.print(map[x][y]+" ");
-			}
-			System.out.println("");
-		}
+		pacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction);
+		maybeFuturPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction);
+		futurPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction);
+		
 
 	}
 	
 	@Override
 	public void update(Engine engine)
 	{
-		direction = DynamicObject.getInstance().getNewDirection(direction);
-		maybeFuturPacman = new Rectangle(pacman);
-		futurPacman = new Rectangle(pacman);
-		DynamicObject.getInstance().updatePosition(futurPacman, direction);
-		DynamicObject.getInstance().updatePosition(maybeFuturPacman, oldDirection);
-		
+		direction = PacmanObject.getNewDirection(direction);
+		maybeFuturPacman.setLocation((int)pacman.getX(),(int)pacman.getY());
+		futurPacman.setLocation((int)pacman.getX(),(int)pacman.getY());
+		DynamicObject.updatePosition(futurPacman, direction);
+		DynamicObject.updatePosition(maybeFuturPacman, oldDirection);
+
 		
 		checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map,20,20);
-		System.out.println("position x : "+pacman.getX()+" et y :"+pacman.getY());
-		System.out.println(checkCollision);
+
 		
 		if (checkCollision == false) {
-			DynamicObject.getInstance().updatePosition(pacman, direction);
+			DynamicObject.updatePosition(pacman, direction);
 			oldDirection = direction;
 		} else {
 			
 			checkCollision = CollisionManager.getInstance().collisionWall(maybeFuturPacman,map,20,20);
 			if (checkCollision == false) {
-				DynamicObject.getInstance().updatePosition(pacman, oldDirection);
+				DynamicObject.updatePosition(pacman, oldDirection);
 			}
 
 		}

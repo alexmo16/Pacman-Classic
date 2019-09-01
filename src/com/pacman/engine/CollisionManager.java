@@ -1,6 +1,8 @@
 package com.pacman.engine;
 
-import java.awt.Rectangle;
+
+import com.pacman.game.DynamicObject;
+import com.pacman.game.GameObject;
 
 
 public class CollisionManager {
@@ -17,7 +19,7 @@ public class CollisionManager {
 		return instance;
 	}
 	
-	public boolean collisionWall(Rectangle obj, int[][] map, int nbColumn, int nbLine) 
+	public boolean collisionWall(DynamicObject obj, int[][] map, int nbColumn, int nbLine) 
 	
 	{
 		
@@ -34,8 +36,7 @@ public class CollisionManager {
 		int caseXMax = xMax/nbColumn;
 		int caseYMax = yMax/nbLine;
 		
-		System.out.println(map[caseXMax][caseYMax]);
-		System.out.println(map[caseXMin][caseYMin]);
+
 
 		if (map[caseXMin][caseYMin] == 0 & map[caseXMin][caseYMax] == 0 & map[caseXMax][caseYMin] == 0 & map[caseXMax][caseYMax] == 0 ) {
 				return false;
@@ -44,7 +45,7 @@ public class CollisionManager {
 
 		return true;
 	}
-		public boolean collisionObj(Rectangle obj1, Rectangle obj2)
+		public boolean collisionObj(GameObject obj1, GameObject obj2)
 		{
 			return obj1.intersects(obj2);			
 		}

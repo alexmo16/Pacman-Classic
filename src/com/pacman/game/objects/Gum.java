@@ -1,19 +1,28 @@
 package com.pacman.game.objects;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.Graphics2D;
 
-public class Gum extends Rectangle{
-	
+import com.pacman.game.Settings;
+
+public class Gum extends StaticObject{
+
 	private static final long serialVersionUID = 1L;
-
-	public Gum(int x, int y) {
-		setBounds(x, y, 32, 32);
+	protected final int SCORE = 10;
+	
+	public Gum() {
+		super();
 	}
 	
-	public void render(Graphics g) {
-		g.setColor(Color.yellow);
-		g.fillRect(x, y, 32, 32);
+	public Gum(int x, int y, int width, int height, Settings s) {
+		super(x, y, width, height, s);
+		
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		Graphics2D g2d = (Graphics2D) g.create();
+		int size = Math.min(getWidth(), getHeight()) / mazeHeight;
 	}
 }

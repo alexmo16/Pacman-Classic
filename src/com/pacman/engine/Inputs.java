@@ -39,7 +39,10 @@ public class Inputs implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) 
 	{
-		typed = e.getKeyChar();
+		if ( e != null )
+		{
+			typed = e.getKeyChar();
+		}
 	}
 	
 	public char getTyped()
@@ -65,4 +68,13 @@ public class Inputs implements KeyListener {
 		}
 	}
 	
+	public final boolean[] getCurrentKeys()
+	{
+		return keys;
+	}
+	
+	public final boolean[] getLastKeys()
+	{
+		return lastPressedKeys;
+	}
 }

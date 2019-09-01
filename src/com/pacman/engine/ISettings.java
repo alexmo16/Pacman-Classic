@@ -1,6 +1,6 @@
 package com.pacman.engine;
 
-import com.pacman.game.Maze;
+import com.pacman.game.MazeData;
 
 public interface ISettings {
 	public String getTitle();
@@ -10,5 +10,5 @@ public interface ISettings {
 	public int getMinWindowHeight();
 	public float getScale();
 	public double getUpdateRate();
-	public Maze getMaze();
+	public MazeData getMazeData();
 }

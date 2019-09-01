@@ -19,7 +19,7 @@ public class Settings implements ISettings
 	
 	private final double updateRate = 1.0 / 60.0; // pour avoir 60 fps dans notre jeu.
 	
-	private final Maze maze = new Maze(new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"));
+	private final MazeData mazeData = new MazeData(new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"));
 	
 	public String getSpritesFilepath() {
 		return spritesFilepath;
@@ -61,7 +61,7 @@ public class Settings implements ISettings
 	}
 
 	@Override
-	public Maze getMaze() {
-		return maze;
+	public MazeData getMazeData() {
+		return mazeData;
 	}
 }

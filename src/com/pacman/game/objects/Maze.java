@@ -34,9 +34,10 @@ public class Maze extends JPanel
         return new Dimension(mazeWidth, mazeHeight);
     }
     
-    protected void paintComponent(Graphics g) 
+    @Override
+	public void paint(Graphics g) 
     {
-        super.paintComponent(g);
+        super.paint(g);
         Graphics2D g2d = (Graphics2D) g.create();
         int size = Math.min(getWidth(), getHeight()) / mazeHeight;
         setBackground(Color.BLACK);

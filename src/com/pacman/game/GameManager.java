@@ -11,7 +11,6 @@ import javax.imageio.ImageIO;
 import com.pacman.engine.Engine;
 import com.pacman.engine.IGame;
 import com.pacman.engine.Inputs;
-import com.pacman.engine.Renderer;
 import com.pacman.engine.Window;
 import com.pacman.game.objects.DynamicObject;
 import com.pacman.game.objects.Maze;;
@@ -32,7 +31,6 @@ public class GameManager implements IGame
 	@Override
 	public void init(Window window)
 	{
-		window.getFrame().setPreferredSize(new Dimension(settings.getMinWindowWidth(), settings.getMinWindowHeight()));
 		window.getFrame().add(maze);
 		window.getFrame().pack();
 		isPlaying = true;
@@ -62,7 +60,7 @@ public class GameManager implements IGame
 	}
 
 	@Override
-	public void render(Renderer renderer) 
+	public void render(Window window) 
 	{
 		buffer += 1;
 		if (buffer == 10) {
@@ -72,11 +70,14 @@ public class GameManager implements IGame
 			}
 			buffer = 1;
 		}
-		try {
-			pacmanSprite = ImageIO.read(new File("assets"+File.separator+"pacman_"+direction+"_"+x+".png"));
-			renderer.drawImage(pacmanSprite, (int) pacman.getX(), (int) pacman.getY());
-		} catch (IOException e) {
-		}
+		
+		window.getFrame().repaint();
+	
+		//try {
+		//	pacmanSprite = ImageIO.read(new File("assets"+File.separator+"pacman_"+direction+"_"+x+".png"));
+		//	renderer.drawImage(pacmanSprite, (int) pacman.getX(), (int) pacman.getY());
+		//} catch (IOException e) {
+		//}
 	}
 	
 	@Override

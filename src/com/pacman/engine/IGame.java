@@ -11,7 +11,7 @@ public interface IGame
 	
 	public void update( Engine engine );
 	
-	public void render( Renderer renderer );
+	public void render(Window window);
 	
 	public ISettings getSettings();
 }

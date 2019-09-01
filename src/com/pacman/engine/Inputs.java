@@ -17,7 +17,7 @@ public class Inputs implements KeyListener {
     public Inputs( Window window )
 	{
 		this.window = window;
-		this.window.getCanvas().addKeyListener( this );
+		this.window.getFrame().addKeyListener(this);
 	}
 	
 	public void update()

@@ -18,7 +18,6 @@ public class Engine implements Runnable
 	private Inputs inputs;
 	private Window window;
 	private ISettings settings;
-	private Renderer renderer;
 	
 	private static boolean isRunning = false;
 	private static boolean isPause = false;
@@ -98,11 +97,6 @@ public class Engine implements Runnable
 		return inputs;
 	}
 	
-	public Renderer getRenderer()
-	{
-		return renderer;
-	}
-	
 	/**
 	 *  On ne doit pas appeler cette methode directement. 
 	 *  Passer plutot par startGame.
@@ -148,9 +142,7 @@ public class Engine implements Runnable
 			// Si on a rien a afficher, on sleep.
 			if( render )
 			{
-				renderer.clear();
-				game.render( renderer );
-				window.update();
+				game.render(window);
 			}
 			else
 			{
@@ -171,8 +163,6 @@ public class Engine implements Runnable
 		settings = game.getSettings();
 		window = new Window( settings );
 		inputs = new Inputs( window );
-		renderer = new Renderer( (Graphics2D)window.getGraphics(), settings );
-		renderer.clear();
 		game.init(window);
 		isRunning = true;
 		isPause = false;

@@ -1,4 +1,4 @@
-package com.pacman.game;
+package com.pacman.game.object;
 
 import java.awt.event.KeyEvent;
 

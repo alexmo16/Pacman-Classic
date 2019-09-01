@@ -22,8 +22,6 @@ public class GameManager implements IGame
 	String oldDirection = "right", direction = "right";
 	private boolean checkCollision = true;
 	private int[][] map = null;
-	private int x = 1;
-	private int buffer = 0;
 	Image pacmanSprite;
 	Settings settings = new Settings();
 	Maze maze = new Maze(settings);
@@ -62,26 +60,26 @@ public class GameManager implements IGame
 		if ( isPlaying )
 		{
 			direction = PacmanObject.getNewDirection(direction);
-			maybeFuturPacman.setLocation((int)pacman.getX(),(int)pacman.getY());
-			futurPacman.setLocation((int)pacman.getX(),(int)pacman.getY());
-			DynamicObject.updatePosition(futurPacman, direction);
-			DynamicObject.updatePosition(maybeFuturPacman, oldDirection);
-
 			
-			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map,20,20);
+			maybeFuturPacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),(int)pacman.getRectangle().getY());
+			futurPacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),(int)pacman.getRectangle().getY());
+			DynamicObject.updatePosition(futurPacman.getRectangle(), direction);
+			DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
 
+
+			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map,20,20);
 			
 			if (checkCollision == false) {
-				DynamicObject.updatePosition(pacman, direction);
+				DynamicObject.updatePosition(pacman.getRectangle(), direction);
 				oldDirection = direction;
 			} else {
 				
 				checkCollision = CollisionManager.getInstance().collisionWall(maybeFuturPacman,map,20,20);
 				if (checkCollision == false) {
-					DynamicObject.updatePosition(pacman, oldDirection);
+					DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
 				}
 
-			}	
+			}
 		}
 		
 	}
@@ -89,22 +87,8 @@ public class GameManager implements IGame
 	@Override
 	public void render(Window window) 
 	{
-		buffer += 1;
-		if (buffer == 10) {
-			x += 1;
-			if (x == 4) {
-				x = 1;
-			}
-			buffer = 1;
-		}
 		
 		window.getFrame().repaint();
-	
-		//try {
-		//	pacmanSprite = ImageIO.read(new File("assets"+File.separator+"pacman_"+direction+"_"+x+".png"));
-		//	renderer.drawImage(pacmanSprite, (int) pacman.getX(), (int) pacman.getY());
-		//} catch (IOException e) {
-		//}
 	}
 	
 	@Override

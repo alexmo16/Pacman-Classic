@@ -24,11 +24,11 @@ public class CollisionManager {
 	{
 		
 		//Rcupration des coordonnes de 2 angles opposs du pacman
-		int xMin = (int) obj.getMinX(); //coordonnes de l'angle haut-gauche du pacman
-		int yMin = (int) obj.getMinY(); 
+		int xMin = (int) obj.getRectangle().getMinX(); //coordonnes de l'angle haut-gauche du pacman
+		int yMin = (int) obj.getRectangle().getMinY(); 
 		
-		int xMax = (int) obj.getMaxX(); //coordonnes de l'angle bas-droit du pacman
-		int yMax = (int) obj.getMaxY();
+		int xMax = (int) obj.getRectangle().getMaxX(); //coordonnes de l'angle bas-droit du pacman
+		int yMax = (int) obj.getRectangle().getMaxY();
 				
 		int caseXMin = xMin/nbColumn;
 		int caseYMin = yMin/nbLine;
@@ -47,7 +47,7 @@ public class CollisionManager {
 	}
 		public boolean collisionObj(GameObject obj1, GameObject obj2)
 		{
-			return obj1.intersects(obj2);			
+			return obj1.getRectangle().intersects(obj2.getRectangle());			
 		}
 	}
 	

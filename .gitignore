@@ -23,5 +23,6 @@
 hs_err_pid*
 /bin/
 
+/src/com/pacman/inDev/
 /sonar-scanner
 sonar-project.properties

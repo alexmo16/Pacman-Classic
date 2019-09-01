@@ -67,26 +67,12 @@ public class GameManager implements IGame
 			DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
 
 			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map,20,20);
+			System.out.println("x "+pacman.getRectangle().getX()+" y "+pacman.getRectangle().getY());
 			
 			if(checkCollision == 2)
 			{
-				switch(direction)
-				{
-				case "right":
-					pacman.getRectangle().setLocation(0,(int)pacman.getRectangle().getY());
-					break;
-				case "left":
-					pacman.getRectangle().setLocation(600-19,(int)pacman.getRectangle().getY());
-					break;
-				case "up":
-					pacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),660-20);
-					break;
-				case "down":
-					pacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),0);
-					break;
-				default:
-					break;
-				}
+				DynamicObject.tunnel(pacman.getRectangle(), direction);
+
 			}
 			
 			if (checkCollision == 0) {

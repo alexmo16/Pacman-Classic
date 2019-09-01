@@ -2,7 +2,6 @@ package com.pacman.game;
 
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 
@@ -88,7 +87,7 @@ public class GameManager implements IGame
 				}
 
 			}
-			System.out.println(checkCollision+" posi : "+pacman.getX()+" posi2 : "+pacman.getY());
+			
 		}
 		
 	}

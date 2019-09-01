@@ -26,7 +26,6 @@ public class PacmanObject extends DynamicObject {
 		} else if(Engine.getInstance().getInputs().isKeyDown(KeyEvent.VK_LEFT)) {
 			direction = "left";
 		}
-		System.out.println(direction);
 		return direction;
 	}
 	

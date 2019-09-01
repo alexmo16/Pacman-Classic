@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
-import com.pacman.engine.Engine;
+import com.pacman.engine.Inputs;
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
 
@@ -25,24 +25,29 @@ public class PacmanObject extends DynamicObject {
 		spritesManager = settings.getSpritesManager();
 	}
 	
-	public static String getNewDirection(String direction) {
-		if (Engine.getInstance().getInputs().isKeyDown(KeyEvent.VK_UP)) {
+	public static String getNewDirection(Inputs inputs, String direction) {
+		if ( inputs == null )
+		{
+			return direction;
+		}
+		
+		if (inputs.isKeyDown(KeyEvent.VK_UP)) {
 			direction = "up";
-		} else if(Engine.getInstance().getInputs().isKeyDown(KeyEvent.VK_DOWN)) {
+		} 
+		else if(inputs.isKeyDown(KeyEvent.VK_DOWN)) {
 			direction = "down";
-		} else if(Engine.getInstance().getInputs().isKeyDown(KeyEvent.VK_RIGHT)) {
+		} 
+		else if(inputs.isKeyDown(KeyEvent.VK_RIGHT)) {
 			direction = "right";
-		} else if(Engine.getInstance().getInputs().isKeyDown(KeyEvent.VK_LEFT)) {
+		} 
+		else if(inputs.isKeyDown(KeyEvent.VK_LEFT)) {
 			direction = "left";
 		}
 		return direction;
 	}
 	
-
-	
     @Override
-	public void paint(Graphics g) 
-    {
+	public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g.create();
 
@@ -51,9 +56,4 @@ public class PacmanObject extends DynamicObject {
 
         g2d.dispose();
     }
-	
-	
-	
-
-	
 }

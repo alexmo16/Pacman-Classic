@@ -59,7 +59,7 @@ public class GameManager implements IGame
 		
 		if ( isPlaying )
 		{
-			direction = PacmanObject.getNewDirection(direction);
+			direction = PacmanObject.getNewDirection(engine.getInputs(), direction);
 			
 			maybeFuturPacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),(int)pacman.getRectangle().getY());
 			futurPacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),(int)pacman.getRectangle().getY());

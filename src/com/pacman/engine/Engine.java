@@ -1,5 +1,7 @@
 package com.pacman.engine;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.pacman.engine.EngineUtils;
 import com.pacman.engine.IGame;
 import com.pacman.engine.Inputs;
@@ -12,12 +14,12 @@ import com.pacman.engine.Inputs;
 public class Engine implements Runnable
 {
 	private Thread thread;
-	private IGame game;
-	private Inputs inputs;
-	private Window window;
-	private ISettings settings;
+	private static IGame game;
+	private static Inputs inputs;
+	private static Window window;
+	private static ISettings settings;
 	
-	private static boolean isRunning = false;
+	private static AtomicBoolean isRunning = new AtomicBoolean( false );
 	private static boolean isPause = false;
 	private static boolean isMuted = false;
 	
@@ -25,10 +27,24 @@ public class Engine implements Runnable
 	
 	private Engine() {} // parce que c'est un singleton
 	
-	public static Engine getInstance()
+	public static Engine getInstance( Window window, IGame game )
 	{
 		if ( instance == null )
 		{
+			if ( game == null  || window == null )
+			{
+				return null;
+			}
+			
+			Engine.game = game;
+			settings = game.getSettings();
+			if ( settings == null )
+			{
+				return null;
+			}
+			
+			Engine.window = window;
+			inputs = new Inputs( Engine.window );
 			instance = new Engine();		
 		}
 		
@@ -37,7 +53,7 @@ public class Engine implements Runnable
 	
 	public static boolean getIsRunning()
 	{
-		return isRunning;
+		return isRunning.get();
 	}
 	
 	public static boolean getIsPause()
@@ -60,23 +76,18 @@ public class Engine implements Runnable
 		isMuted = !isMuted;
 	}
 	
-	public void setGame( IGame game )
-	{
-		this.game = game;
-	}
-	
 	public void startGame()
 	{
-		if ( game != null && !isRunning )
+		if ( game != null && !isRunning.get() )
 		{
 			thread = new Thread( this ) ;
-			thread.run();	
+			thread.start();	
 		}
 	}
 	
 	public static void stopGame()
 	{
-		isRunning = false;
+		isRunning.set( false );
 		isPause = false;
 	}
 	
@@ -101,11 +112,6 @@ public class Engine implements Runnable
 	 */
 	public void run()
 	{	
-		if ( game == null )
-		{
-			return;
-		}
-		
 		init();
 		
 		boolean render = false;
@@ -115,7 +121,7 @@ public class Engine implements Runnable
 		double unprocessedTime = 0;
 		double sleepTime = 0;
 		
-		while( isRunning )
+		while( isRunning.get() )
 		{
 			if ( isPause )
 			{
@@ -156,13 +162,10 @@ public class Engine implements Runnable
 		window.clear();
 	}
 	
-	private void init ()
+	private void init()
 	{
-		settings = game.getSettings();
-		window = new Window( settings );
-		inputs = new Inputs( window );
 		game.init(window);
-		isRunning = true;
+		isRunning.set( true );
 		isPause = false;
 	}
 	
@@ -192,7 +195,7 @@ public class Engine implements Runnable
 		{
 			synchronized ( this ) 
 			{
-				while( isPause && isRunning )
+				while( isPause && isRunning.get() )
 				{
 					wait();
 				}

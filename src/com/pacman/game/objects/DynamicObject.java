@@ -2,6 +2,8 @@ package com.pacman.game.objects;
 
 import java.awt.Rectangle;
 
+import com.pacman.game.Settings;
+
 public abstract class DynamicObject extends GameObject {
 	
 	private static final long serialVersionUID = 1L;
@@ -12,8 +14,8 @@ public abstract class DynamicObject extends GameObject {
 		this.direction = null;
 	}
 	
-	public DynamicObject(int x, int y, int width, int height, String direction) {
-		super(x,y,width,height);
+	public DynamicObject(int x, int y, int width, int height, String direction, Settings s) {
+		super(x,y,width,height, s);
 		this.direction = direction;
 	}
 	
@@ -31,6 +33,27 @@ public abstract class DynamicObject extends GameObject {
 		}
 		if (direction.contentEquals("left")) {
 			object.setLocation((int)object.getX()-1,(int)object.getY());
+		}
+	}
+
+	public static void tunnel(Rectangle object, String direction)
+	{
+		switch(direction)
+		{
+		case "right":
+			object.setLocation(0,(int)object.getY());
+			break;
+		case "left":
+			object.setLocation(600-19,(int)object.getY());
+			break;
+		case "up":
+			object.setLocation((int)object.getX(),660-20);
+			break;
+		case "down":
+			object.setLocation((int)object.getX(),0);
+			break;
+		default:
+			break;
 		}
 	}
 }

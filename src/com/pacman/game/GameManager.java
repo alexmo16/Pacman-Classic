@@ -34,9 +34,9 @@ public class GameManager implements IGame
 		window.getFrame().add(maze);
 		window.getFrame().pack();
 		
-		pacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction);
-		maybeFuturPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction);
-		futurPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction);
+		pacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
+		maybeFuturPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
+		futurPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
 		map = maze.getmazeData().getTiles();
 		
 		isPlaying = true;
@@ -67,26 +67,12 @@ public class GameManager implements IGame
 			DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
 
 			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map,20,20);
+			System.out.println("x "+pacman.getRectangle().getX()+" y "+pacman.getRectangle().getY());
 			
 			if(checkCollision == 2)
 			{
-				switch(direction)
-				{
-				case "right":
-					pacman.getRectangle().setLocation(0,(int)pacman.getRectangle().getY());
-					break;
-				case "left":
-					pacman.getRectangle().setLocation(600-19,(int)pacman.getRectangle().getY());
-					break;
-				case "up":
-					pacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),660-20);
-					break;
-				case "down":
-					pacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),0);
-					break;
-				default:
-					break;
-				}
+				DynamicObject.tunnel(pacman.getRectangle(), direction);
+
 			}
 			
 			if (checkCollision == 0) {

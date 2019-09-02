@@ -67,4 +67,5 @@ public class Maze extends JPanel
 	{
 		return mazeData;
 	}
+	
 }

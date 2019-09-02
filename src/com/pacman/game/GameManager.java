@@ -1,9 +1,12 @@
 package com.pacman.game;
 
-import java.awt.Image;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.pacman.engine.CollisionManager;
@@ -25,20 +28,38 @@ public class GameManager implements IGame
 	PacmanObject maybeFuturPacman;
 	ArrayList<Gum> gumList;
 	ArrayList<PacGum> pacGumList;
-	String oldDirection = "right", direction = "right";
+	String oldDirection = "left", direction = "left";
 	private int checkCollision = 1;
-	Image pacmanSprite;
 	Settings settings = new Settings();
 	InGame inGame = new InGame(settings);
 	int startingPosition[];
 	double pacmanBox;
 	
-	private boolean isPlaying = true;
+	
+	private boolean isPlaying = false;
 	private boolean isStartingNewGame = true;
 	
 	Sound startMusic;
 	Sound gameSiren;
+	Sound chomp;
 	boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
+	
+	LineListener startingMusicListener = new LineListener() 
+	{
+		@Override
+		public void update( LineEvent event ) 
+		{
+			if ( event.getType() == LineEvent.Type.STOP ) 
+			{
+				if ( startMusic != null )
+				{
+					startMusic.stop();
+				}
+				isPlaying = true;
+				gameSiren.playLoopBack();
+            }
+		}
+	};
 	
 	@Override
 	public void init(Window window)
@@ -62,11 +83,6 @@ public class GameManager implements IGame
 		window.getFrame().add(inGame);
 		window.getFrame().pack();
 		
-		/*
-		for (Gum gum : gumList) {
-			System.out.println(gumList.indexOf(gum) + " : " + gum.toString());
-		}
-		*/
 
 		// TODO mettre ca a true seulement quand on clic sur le start button
 		isStartingNewGame = true;
@@ -81,19 +97,14 @@ public class GameManager implements IGame
 			togglePauseGame();
 		}
 		
-		/*if ( isStartingNewGame )
+		if ( isStartingNewGame )
 		{
-			startMusic.playSynchronously();
+			startMusic.play( startingMusicListener );
 			isStartingNewGame = false;
-			isPlaying = true;
-			gameSiren.playLoopBack();
-		}*/
-		isPlaying = true;
-		
+		}		
 		
 		if ( isPlaying )
 		{
-			
 			if( inputs.isKeyDown( settings.getMutedButton() ) )
 			{
 				toggleUserMuteSounds();
@@ -155,6 +166,7 @@ public class GameManager implements IGame
 		{
 			startMusic = new Sound( "./assets/pacman_beginning.wav" );
 			gameSiren = new Sound( "./assets/siren.wav" );
+			chomp = new Sound("." + File.separator + "assets" + File.separator + "pacman_chomp.wav");
 		} catch (UnsupportedAudioFileException | IOException e) 
 		{
 			System.out.println( "Unable to load sounds!!" );
@@ -166,7 +178,7 @@ public class GameManager implements IGame
 	
 	private void createGameObjects()
 	{
-		startingPosition = new int []{2,2};
+		startingPosition = settings.getMazeData().getStartPosition();;
 		pacmanBox = 0.9;
 		pacman = new PacmanObject(startingPosition[0],startingPosition[1],pacmanBox,pacmanBox,direction, settings);
 		maybeFuturPacman = new PacmanObject(startingPosition[0],startingPosition[1],pacmanBox,pacmanBox,direction, settings);
@@ -213,7 +225,7 @@ public class GameManager implements IGame
 	private void checkGumCollision() {
 		for (Gum gum : gumList) {
 			if (CollisionManager.collisionObj(pacman, gum)) {
-				pacman.eatGum(gum);
+				pacman.eatGum(gum, inGame.getScoreBar());
 				gumList.remove(gum);
 				gum.setVisible(false);
 				gum = null;
@@ -225,7 +237,7 @@ public class GameManager implements IGame
 	private void checkPacGumCollision() {
 		for (PacGum pacGum : pacGumList) {
 			if (CollisionManager.collisionObj(pacman, pacGum)) {
-				pacman.eatGum(pacGum);
+				pacman.eatGum(pacGum, inGame.getScoreBar());
 				pacGumList.remove(pacGum);
 				pacGum.setVisible(false);
 				pacGum = null;

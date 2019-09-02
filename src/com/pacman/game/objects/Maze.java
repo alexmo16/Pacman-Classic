@@ -67,4 +67,9 @@ public class Maze extends JPanel
 	{
 		return mazeData;
 	}
+	
+	public int[] getStartPosition() {
+		int [] a = {10,10};
+		return a;
+	}
 }

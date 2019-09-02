@@ -6,7 +6,12 @@ import com.pacman.game.objects.GameObject;
 
 
 public class CollisionManager {
+	int[][] map = Engine.getMap();
+	int mapH = Engine.getHeight();
+	int mapW = Engine.getWidth();
 	
+	
+	//singleton
 	private static CollisionManager instance;
 	
 	public static CollisionManager getInstance()
@@ -19,7 +24,9 @@ public class CollisionManager {
 		return instance;
 	}
 	
-	public int collisionWall(DynamicObject obj, int[][] map) 
+	
+	
+	public int collisionWall(DynamicObject obj) 
 	
 	{
 		
@@ -34,7 +41,7 @@ public class CollisionManager {
 
 
 		
-		if ((xMin == 0 & xMax == 0 )||(xMin == 29 & xMax == 30 ) || (yMin == 0 & yMax == 0 ) || (yMin == 32 & yMax == 32 ))	
+		if ((xMin == 0 & xMax == 0 )||(xMin == mapW - 1 & xMax == mapW - 1 ) || (yMin == 0 & yMax == 0 ) || (yMin == mapH - 1 & yMax == mapH - 1 ))	
 		{
 			return 2;
 		}

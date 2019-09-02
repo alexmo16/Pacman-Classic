@@ -98,7 +98,7 @@ public class GameManager implements IGame
 			DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
 			pacman.updatePosition();
 
-			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map);
+			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman);
 			System.out.println(checkCollision);
 			
 			if(checkCollision == 2)
@@ -112,7 +112,7 @@ public class GameManager implements IGame
 				oldDirection = direction;
 			} else {
 				
-				checkCollision = CollisionManager.getInstance().collisionWall(maybeFuturPacman,map);
+				checkCollision = CollisionManager.getInstance().collisionWall(maybeFuturPacman);
 				if (checkCollision == 0) {
 					DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
 				}

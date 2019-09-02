@@ -22,6 +22,9 @@ public class Engine implements Runnable
 	private static AtomicBoolean isRunning = new AtomicBoolean( false );
 	private static boolean isPause = false;
 	private static boolean isMuted = false;
+	private static int[][] map;
+	private static int mapH;
+	private static int mapW;
 	
 	private static Engine instance;
 	
@@ -38,6 +41,9 @@ public class Engine implements Runnable
 			
 			Engine.game = game;
 			settings = game.getSettings();
+			map = settings.getMazeData().getTiles();
+			mapH = settings.getMazeData().getHeight();
+			mapW = settings.getMazeData().getWidth();
 			if ( settings == null )
 			{
 				return null;
@@ -162,6 +168,21 @@ public class Engine implements Runnable
 		window.clear();
 	}
 	
+	public static int[][] getMap()
+	{
+		return map;
+	}
+	
+	public static int getHeight()
+	{
+		return mapH;
+	}
+	
+	public static int getWidth()
+	{
+		return mapW; 
+	}
+	
 	private void init()
 	{
 		game.init(window);
@@ -206,4 +227,6 @@ public class Engine implements Runnable
 			e.printStackTrace();
 		}
 	}
+	
+	
 }

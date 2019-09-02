@@ -26,9 +26,29 @@ public class Gum extends StaticObject{
 	
 	@Override
 	public void paint(Graphics g) {
-		super.paint(g);
-		Graphics2D g2d = (Graphics2D) g.create();
-		int size = Math.min(getWidth(), getHeight()) / mazeHeight;
+		super.paintComponent(g);
+        int size = Math.min(getWidth(), getHeight()) / mazeHeight;
+        
+        int y = (getHeight() - (size * mazeHeight)) / 2;
+        for (int horz = 0; horz < mazeHeight; horz++) 
+        {
+            int x = (getWidth() - (size * mazeWidth)) / 2;
+            for (int vert = 0; vert < mazeWidth; vert++) 
+            {
+            	
+            	int type = mazeData.getTile(vert, horz);
+            	
+            	if (type == 0)
+            	{
+            		int[] k = spritesManager.getGumCoords();
+
+            		g.drawImage(spritesManager.getSpritesSheet(), x, y, x + size, y + size, k[0], k[1], k[2], k[3], null);
+            	}
+            	
+                x += size;
+            }
+            y += size;
+        }
 	}
 	
 	public static ArrayList<Gum> generateGumList(Settings s) {
@@ -36,9 +56,8 @@ public class Gum extends StaticObject{
 		
 		for (int x = 0; x < mazeHeight; x++) {
 			for (int y = 0; y < mazeWidth; y++) {
-				int type = mazeData.getTile(y, x);
 				
-				if (type == 0) {
+				if (mazeData.getTile(y, x) == 0) {
 					gumList.add(new Gum(x, y, 10, 10, s));
 				}
 			}

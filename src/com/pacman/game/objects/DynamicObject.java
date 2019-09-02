@@ -1,6 +1,7 @@
 package com.pacman.game.objects;
 
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 import com.pacman.game.Settings;
 
@@ -25,36 +26,36 @@ public abstract class DynamicObject extends GameObject {
 	
 	
 	
-	public static void updatePosition(Rectangle object, String direction) {
+	public static void updatePosition(Rectangle2D.Float object, String direction) {
 		if (direction.contentEquals("up")) {
-			object.setLocation((int)object.getX(),(int)object.getY()-1);
+			object.setRect(object.getX(),object.getY()-1,object.getWidth(),object.getHeight());
 		}
 		if (direction.contentEquals("down")) {
-			object.setLocation((int)object.getX(),(int)object.getY()+1);
+			object.setRect(object.getX(),object.getY()+1,object.getWidth(),object.getHeight());
 		}
 		if (direction.contentEquals("right")) {
-			object.setLocation((int)object.getX()+1,(int)object.getY());
+			object.setRect(object.getX()+1,object.getY(),object.getWidth(),object.getHeight());
 		}
 		if (direction.contentEquals("left")) {
-			object.setLocation((int)object.getX()-1,(int)object.getY());
+			object.setRect(object.getX()-1,object.getY(),object.getWidth(),object.getHeight());
 		}
 	}
 
-	public static void tunnel(Rectangle object, String direction)
+	public static void tunnel(Rectangle2D.Float object, String direction)
 	{
 		switch(direction)
 		{
 		case "right":
-			object.setLocation(0,(int)object.getY());
+			object.setRect(0,(int)object.getY(),object.getWidth(),object.getHeight());
 			break;
 		case "left":
-			object.setLocation(600-19,(int)object.getY());
+			object.setRect(600-19,(int)object.getY(),object.getWidth(),object.getHeight());
 			break;
 		case "up":
-			object.setLocation((int)object.getX(),660-20);
+			object.setRect((int)object.getX(),660-20,object.getWidth(),object.getHeight());
 			break;
 		case "down":
-			object.setLocation((int)object.getX(),0);
+			object.setRect((int)object.getX(),0,object.getWidth(),object.getHeight());
 			break;
 		default:
 			break;

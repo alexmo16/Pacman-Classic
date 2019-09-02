@@ -40,6 +40,7 @@ public class GameManager implements IGame
 	@Override
 	public void init(Window window)
 	{	
+		pacman = new PacmanObject(2,2,2,2,direction,settings);
 		createGameObjects();
 		loadMusics();
 		inGame.addGameObject(pacman);
@@ -83,8 +84,8 @@ public class GameManager implements IGame
 		if ( isPlaying )
 		{
 			direction = PacmanObject.getNewDirection(engine.getInputs(), direction);
-            maybeFuturPacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),(int)pacman.getRectangle().getY());
-            futurPacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),(int)pacman.getRectangle().getY());
+            maybeFuturPacman.getRectangle().setRect(pacman.getRectangle().getX(),pacman.getRectangle().getY(),pacman.getRectangle().getWidth(),pacman.getRectangle().getHeight());
+            futurPacman.getRectangle().setRect(pacman.getRectangle().getX(),pacman.getRectangle().getY(),pacman.getRectangle().getWidth(),pacman.getRectangle().getHeight());
 			DynamicObject.updatePosition(futurPacman.getRectangle(), direction);
 			DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
 			pacman.updatePosition(oldDirection);

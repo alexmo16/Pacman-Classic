@@ -45,10 +45,14 @@ public class PacmanObject extends DynamicObject {
 		return direction;
 	}
 	
+	public void updatePosition()
+	{
+		x = (int) this.object.getX() + 123;
+    	y = (int) this.object.getY() - 12;
+	}
+	
     @Override
 	public void paint(Graphics g) {
-    	int x = (int) this.object.getX()+123;
-    	int y = (int) this.object.getY()-12;
     	int size = 17 /*(int) this.object.getWidth()*/;
     	
         super.paint(g);

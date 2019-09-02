@@ -44,6 +44,11 @@ public class Sound
 		{
 			try 
 			{
+				if ( audioClip.isOpen() )
+				{
+					audioClip.close();
+				}
+				
 				audioClip.open( inputStream );
 			} catch (LineUnavailableException | IOException e) 
 			{
@@ -53,8 +58,29 @@ public class Sound
 			audioClip.start();
 			return true;
 		}
-		
 		return false;
+	}
+	
+	public boolean playSynchronously()
+	{
+		if ( Engine.getIsMuted() )
+		{
+			return false;
+		}
+		
+		play();
+		while( audioClip.getFramePosition() < audioClip.getFrameLength() )
+		{
+			try 
+			{
+				Thread.sleep( 5 );
+			} catch (InterruptedException e) 
+			{
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	public void stop()

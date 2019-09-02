@@ -39,13 +39,16 @@ public class Gum extends StaticObject{
 
 	}
 	
-	public static ArrayList<Gum> generateGumList(Settings s) {
+	public static ArrayList<Gum> generateGumList(Settings s) 
+	{
 		ArrayList<Gum> gumList = new ArrayList<>();
 		
-		for (int y = 0; y < mazeHeight; y++) {
-			for (int x = 0; x < mazeWidth; x++) {
-				
-				if (mazeData.getTile(x, y) == 0) {
+		for (int y = 0; y < mazeHeight; y++) 
+		{
+			for (int x = 0; x < mazeWidth; x++) 
+			{
+				if (mazeData.getTile(x, y) == 30) 
+				{
 					gumList.add(new Gum(x, y, 10, 10, s));
 				}
 			}

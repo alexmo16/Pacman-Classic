@@ -8,6 +8,7 @@ public abstract class DynamicObject extends GameObject {
 	
 	private static final long serialVersionUID = 1L;
 	protected String direction;
+	static double speed = 0.1;
 	
 	public DynamicObject() {
 		super();
@@ -30,16 +31,16 @@ public abstract class DynamicObject extends GameObject {
 	
 	public static void updatePosition(Rectangle2D.Double object, String direction) {
 		if (direction.contentEquals("up")) {
-			object.setRect(object.getX(),object.getY()-0.1,object.getWidth(),object.getHeight());
+			object.setRect(object.getX(),object.getY()-speed,object.getWidth(),object.getHeight());
 		}
 		if (direction.contentEquals("down")) {
-			object.setRect(object.getX(),object.getY()+0.1,object.getWidth(),object.getHeight());
+			object.setRect(object.getX(),object.getY()+speed,object.getWidth(),object.getHeight());
 		}
 		if (direction.contentEquals("right")) {
-			object.setRect(object.getX()+0.1,object.getY(),object.getWidth(),object.getHeight());
+			object.setRect(object.getX()+speed,object.getY(),object.getWidth(),object.getHeight());
 		}
 		if (direction.contentEquals("left")) {
-			object.setRect(object.getX()-0.1,object.getY(),object.getWidth(),object.getHeight());
+			object.setRect(object.getX()-speed,object.getY(),object.getWidth(),object.getHeight());
 		}
 	}
 

@@ -31,7 +31,7 @@ public abstract class CollisionManager{
 
 
 		
-		if ((xMin == 0 & xMax == 0 )||(xMin == mapW - 1 & xMax == mapW - 1 ) || (yMin == 0 & yMax == 0 ) || (yMin == mapH - 1 & yMax == mapH - 1 ))	
+		if ((xMin <= 0 & xMax <= 0 )||(xMin >= mapW - 1 & xMax >= mapW - 1 ) || (yMin <= 0 & yMax <= 0 ) || (yMin >= mapH - 1 & yMax >= mapH - 1 ))	
 		{
 			return 2;
 		}

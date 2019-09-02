@@ -46,8 +46,9 @@ public class PacmanObject extends DynamicObject {
 		return direction;
 	}
 	
-	public void updatePosition()
+	public void updatePosition(String direction)
 	{
+		this.direction = direction;
 		x = (int) this.object.getX() + 123;
     	y = (int) this.object.getY() - 12;
 	}

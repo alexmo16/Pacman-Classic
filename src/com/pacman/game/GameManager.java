@@ -79,7 +79,7 @@ public class GameManager implements IGame
             futurPacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),(int)pacman.getRectangle().getY());
 			DynamicObject.updatePosition(futurPacman.getRectangle(), direction);
 			DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
-			pacman.updatePosition();
+			pacman.updatePosition(oldDirection);
 
 			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map,20,20);
 			

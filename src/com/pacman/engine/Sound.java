@@ -16,14 +16,17 @@ public class Sound
 	private File file;
 	private AudioInputStream inputStream;
 	private Clip audioClip;
-	private LineListener listener;
+	private LineListener defaultListener;
+	private boolean isRunning = false;
+	
 	
 	public Sound( String path ) throws UnsupportedAudioFileException, IOException
 	{
 		file = new File( path ).getAbsoluteFile();
 		inputStream = AudioSystem.getAudioInputStream( file );
+		
 		Sound that = this;
-		listener = new LineListener() 
+		defaultListener = new LineListener() 
 		{
 			@Override
 			public void update( LineEvent event ) 
@@ -36,7 +39,12 @@ public class Sound
 		};
 	}
 	
-	public boolean play()
+	/**
+	 *  Si vous voulez utilisez le listener par default, il faut mettre null comme valeur. Attention si vous implemente votre propre listener, il faut appeler la methode stop.
+	 * @param listener
+	 * @return boolean
+	 */
+	public boolean play( LineListener listener )
 	{
 		if ( Engine.getIsMuted() )
 		{
@@ -57,30 +65,10 @@ public class Sound
 			return false;
 		}
 		audioClip.setFramePosition( 0 );
+		listener = listener == null ? defaultListener : listener;
 		audioClip.addLineListener( listener );
+		isRunning = true;
 		audioClip.start();
-		return true;
-	}
-	
-	public boolean playSynchronously()
-	{
-		if ( Engine.getIsMuted() )
-		{
-			return false;
-		}
-		
-		play();
-		while( audioClip != null && audioClip.getFramePosition() < audioClip.getFrameLength() )
-		{
-			try 
-			{
-				Thread.sleep( 5 );
-			} catch (InterruptedException e) 
-			{
-				return false;
-			}
-		}
-
 		return true;
 	}
 	
@@ -89,7 +77,8 @@ public class Sound
 		if ( audioClip != null )
 		{
 			audioClip.stop();
-			audioClip.close();	
+			audioClip.close();
+			isRunning = false;
 		}
 		audioClip = null;
 		inputStream = null;
@@ -101,7 +90,7 @@ public class Sound
 		{
 			return false;
 		}
-		try 
+		try
 		{
 			inputStream = AudioSystem.getAudioInputStream( file );
 			audioClip = AudioSystem.getClip();
@@ -121,7 +110,13 @@ public class Sound
 			return false;
 		}
 		audioClip.setFramePosition( 0 );
+		isRunning = true;
 		audioClip.loop( Clip.LOOP_CONTINUOUSLY );
 		return true;
+	}
+	
+	public boolean getIsRunning()
+	{
+		return isRunning;
 	}
 }

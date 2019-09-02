@@ -62,7 +62,7 @@ class Settings implements ISettings
 	@Override
 	public MazeData getMazeData() 
 	{
-		return null;
+		return new MazeData( null );
 	}
 
 	@Override

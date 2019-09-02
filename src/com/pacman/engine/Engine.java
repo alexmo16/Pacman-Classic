@@ -41,13 +41,14 @@ public class Engine implements Runnable
 			
 			Engine.game = game;
 			settings = game.getSettings();
-			map = settings.getMazeData().getTiles();
-			mapH = settings.getMazeData().getHeight();
-			mapW = settings.getMazeData().getWidth();
-			if ( settings == null )
+			if ( settings == null || settings.getMazeData() == null )
 			{
 				return null;
 			}
+			
+			map = settings.getMazeData().getTiles();
+			mapH = settings.getMazeData().getHeight();
+			mapW = settings.getMazeData().getWidth();
 			
 			Engine.window = window;
 			inputs = new Inputs( Engine.window );

@@ -20,11 +20,10 @@ public class PacmanObject extends DynamicObject {
 		spritesManager = settings.getSpritesManager();
 	}
 	
-	public PacmanObject(int x, int y, double width, double height, String direction, Settings s) {
+	public PacmanObject(double x, double y, double width, double height, String direction, Settings s) {
 		super(x,y,width,height,direction, s);
 		spritesManager = settings.getSpritesManager();
 	}
-	
 	public static String getNewDirection(Inputs inputs, String direction) {
 		if ( inputs == null )
 		{

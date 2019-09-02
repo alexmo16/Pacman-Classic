@@ -49,6 +49,10 @@ public class GameManager implements IGame
 			inGame.addGameObject(gum);
 		}
 		
+		for (Gum gum : gumList) {
+			System.out.println("Gum " + gumList.indexOf(gum) + " : " + gum.toString());
+		}
+		
 		inGame.init();
 		
 		window.getFrame().add(inGame);
@@ -90,7 +94,6 @@ public class GameManager implements IGame
 				toggleUserMuteSounds();
 			}
 			
-			System.out.println("pacman x : "+pacman.getRectangle().getX()+" et pacman y : "+pacman.getRectangle().getY()+" et w : "+pacman.getRectangle().getWidth()+" et h : "+pacman.getRectangle().getWidth());;			
 			direction = PacmanObject.getNewDirection(engine.getInputs(), direction);
             maybeFuturPacman.getRectangle().setRect(pacman.getRectangle().getX(),pacman.getRectangle().getY(),pacman.getRectangle().getWidth(),pacman.getRectangle().getHeight());
             futurPacman.getRectangle().setRect(pacman.getRectangle().getX(),pacman.getRectangle().getY(),pacman.getRectangle().getWidth(),pacman.getRectangle().getHeight());
@@ -99,15 +102,8 @@ public class GameManager implements IGame
 			pacman.updatePosition();
 
 			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map);
-			System.out.println(checkCollision);
 			
-			for (Gum gum : gumList) {
-				if (CollisionManager.getInstance().collisionObj(pacman, gum)){
-					pacman.eatGum(gum);
-					gumList.remove(gum);
-				}
-			}
-			System.out.println(pacman.getScore());
+			
 			if(checkCollision == 2)
 			{
 				DynamicObject.tunnel(pacman.getRectangle(), direction);

@@ -69,9 +69,8 @@ public class PacmanObject extends DynamicObject {
     	int size = Math.min(getWidth(), getHeight()) / mazeHeight;
 		double x = (int) this.object.getX();
 		double y = (int) this.object.getY();
-		
-		x = x * size + (getWidth() - (size * mazeWidth)) / 2;
-		y = y * size + (getHeight() - (size * mazeHeight)) / 2;
+		x = x * size + (getWidth() - (size * mazeWidth)) / 2 - size/2;
+		y = y * size + (getHeight() - (size * mazeHeight)) / 2 - size/2;
 
     	
         super.paintComponent(g);

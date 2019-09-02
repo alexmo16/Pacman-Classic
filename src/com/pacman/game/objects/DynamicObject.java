@@ -24,6 +24,9 @@ public abstract class DynamicObject extends GameObject {
 	}
 	
 	
+	public void setDirection(String dir) {
+		this.direction = dir;
+	}
 	
 	public static void updatePosition(Rectangle2D.Double object, String direction) {
 		if (direction.contentEquals("up")) {

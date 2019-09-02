@@ -127,6 +127,10 @@ public class Engine implements Runnable
 		double unprocessedTime = 0;
 		double sleepTime = 0;
 		
+		double frameTime = 0;
+		int frames = 0;
+		int fps = 0;
+		
 		while( isRunning.get() )
 		{
 			if ( isPause )
@@ -140,6 +144,7 @@ public class Engine implements Runnable
 			deltaTime = firstTime - lastTime;
 			lastTime = firstTime;
 			unprocessedTime += deltaTime;
+			frameTime += deltaTime;
 			
 			// Pour mettre a jour l'affichage seulement si l'Update a ete fait.
 			while( unprocessedTime >= settings.getUpdateRate() )
@@ -149,10 +154,19 @@ public class Engine implements Runnable
 				update();
 			}
 			
+			if ( frameTime >= 1.0 )
+			{
+				frameTime = 0;
+				fps = frames;
+				//System.out.println(fps);
+				frames = 0;
+			}
+			
 			// Si on a rien a afficher, on sleep.
 			if( render )
 			{
 				window.getFrame().repaint();
+				frames++;
 			}
 			else
 			{

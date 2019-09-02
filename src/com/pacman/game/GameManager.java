@@ -109,7 +109,7 @@ public class GameManager implements IGame
 			
 			checkGumCollision();
 			checkPacGumCollision();
-			
+
 			if(checkCollision == 2)
 			{
 				DynamicObject.tunnel(pacman.getRectangle(), direction);
@@ -121,6 +121,10 @@ public class GameManager implements IGame
 			} else {
 				
 				checkCollision = CollisionManager.collisionWall(maybeFuturPacman);
+				if (checkCollision == 2) {
+					DynamicObject.tunnel(pacman.getRectangle(), oldDirection);
+					pacman.setDirection(oldDirection);
+				}
 				if (checkCollision == 0) {
 					DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
 					pacman.setDirection(oldDirection);

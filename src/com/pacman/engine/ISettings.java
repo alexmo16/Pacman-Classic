@@ -11,4 +11,5 @@ public interface ISettings {
 	public float getScale();
 	public double getUpdateRate();
 	public MazeData getMazeData();
+	public int[] getAuthTiles();
 }

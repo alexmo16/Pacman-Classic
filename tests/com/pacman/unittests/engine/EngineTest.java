@@ -64,6 +64,11 @@ class Settings implements ISettings
 	{
 		return null;
 	}
+
+	@Override
+	public int[] getAuthTiles() {
+		return null;
+	}
 }
 
 class EngineTest 

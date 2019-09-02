@@ -1,32 +1,22 @@
 package com.pacman.engine;
 
 
+import com.pacman.game.MazeData;
 import com.pacman.game.objects.DynamicObject;
 import com.pacman.game.objects.GameObject;
 
 
-public class CollisionManager {
-	int[][] map = Engine.getMap();
-	int mapH = Engine.getHeight();
-	int mapW = Engine.getWidth();
-	
-	
-	//singleton
-	private static CollisionManager instance;
-	
-	public static CollisionManager getInstance()
-	{
-		if ( instance == null )
-		{
-			instance = new CollisionManager();		
-		}
-		
-		return instance;
-	}
+public abstract class CollisionManager{
+	static int[][] map = Engine.getMap();
+	static int mapH = Engine.getHeight();
+	static int mapW = Engine.getWidth();
+	static int[] authTiles;
+	static ISettings settings;
+
 	
 	
 	
-	public int collisionWall(DynamicObject obj) 
+	public static int collisionWall(DynamicObject obj) 
 	
 	{
 		
@@ -46,7 +36,7 @@ public class CollisionManager {
 			return 2;
 		}
 		
-		else if (map[xMin][yMin] == 0 & map[xMin][yMax] == 0 & map[xMax][yMin] == 0 & map[xMax][yMax] == 0 ) 
+		else if (isAuth(xMin,yMin) & isAuth(xMin,yMax) & isAuth(xMax,yMin) & isAuth(xMax,yMax)) 
 		{
 			return 0;
 		}
@@ -55,10 +45,33 @@ public class CollisionManager {
 
 
 	}
-		public boolean collisionObj(GameObject obj1, GameObject obj2)
+		public static boolean collisionObj(GameObject obj1, GameObject obj2)
 		{
 			return obj1.getRectangle().intersects(obj2.getRectangle());			
 		}
+		
+		
+		private static boolean isAuth(int x,int y)
+		{
+			for (int i : authTiles) 
+			{
+				if (map[x][y] == i)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		public static void setSettings(ISettings settings)
+		{
+			CollisionManager.settings = settings;
+			authTiles = settings.getAuthTiles();
+		}
+
+
+		
 	}
+
 	
 

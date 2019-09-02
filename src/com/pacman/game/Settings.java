@@ -22,6 +22,7 @@ public class Settings implements ISettings
 	
 	private final SpritesManager spritesManager = new SpritesManager(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "pacmanTiles.png", 48);
 	
+	private final int[] authTiles = {0,30,40,50,60};
 
 	@Override
 	public String getTitle() {
@@ -65,5 +66,11 @@ public class Settings implements ISettings
 
 	public SpritesManager getSpritesManager() {
 		return spritesManager;
+	}
+	
+	@Override
+	public int[] getAuthTiles()
+	{
+		return authTiles;
 	}
 }

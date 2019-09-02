@@ -37,6 +37,7 @@ public class GameManager implements IGame
 	@Override
 	public void init(Window window)
 	{	
+		pacman = new PacmanObject(2,2,2,2,direction,settings);
 		createGameObjects();
 		loadMusics();
 		inGame.addGameObject(pacman);

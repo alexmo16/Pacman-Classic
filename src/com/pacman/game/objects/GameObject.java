@@ -1,6 +1,8 @@
 package com.pacman.game.objects;
 
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
+
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
 
@@ -12,7 +14,7 @@ public abstract class GameObject extends JPanel{
 	protected final int mazeHeight, mazeWidth;
 	protected final SpritesManager spritesManager; 
 	
-	protected Rectangle object = null;
+	protected Rectangle2D.Float object = null;
 	
 	protected int x;
 	protected int y;
@@ -22,7 +24,7 @@ public abstract class GameObject extends JPanel{
 		this.mazeHeight = s.getMazeData().getHeight();
 		this.mazeWidth = s.getMazeData().getWidth();
 		this.spritesManager = s.getSpritesManager();
-		this.object = new Rectangle(x, y, width, height);
+		this.object = new Rectangle2D.Float(x, y, width, height);
 		setOpaque(false);
 	}
 		
@@ -31,11 +33,11 @@ public abstract class GameObject extends JPanel{
 		this.mazeHeight = 0;
 		this.mazeWidth = 0;
 		this.spritesManager = null;
-		this.object = new Rectangle();
+		this.object = new Rectangle2D.Float();
 		setOpaque(false);
 	}
 	
-	public Rectangle getRectangle() {
+	public Rectangle2D.Float getRectangle() {
 		return this.object;
 	}
 }

@@ -44,7 +44,10 @@ public class GameManager implements IGame
 		createGameObjects();
 		loadMusics();
 		inGame.addGameObject(pacman);
-		inGame.addGameObject(gumList.get(3));
+		for (Gum gum : gumList) {
+			inGame.addGameObject(gum);
+		}
+		
 		inGame.init();
 		
 		window.getFrame().add(inGame);

@@ -60,12 +60,12 @@ public class PacmanObject extends DynamicObject {
 	public void paintComponent(Graphics g) {
     	
     	int size = Math.min(getWidth(), getHeight()) / mazeHeight;
-		double x = (int) this.object.getX();
-		double y = (int) this.object.getY();
+		double x = this.object.getX();
+		double y = this.object.getY();
 		
 		x = (x * size) + ((getWidth() - (size * mazeWidth) - (size / 2)) / 2);
 		y = (y * size) + ((getHeight() - (size * mazeHeight) - (size / 2)) / 2);
-    	
+
         super.paintComponent(g);
         int[] k = spritesManager.getPacmanCoords(this.getDirection());
         g.drawImage(spritesManager.getSpritesSheet(), (int)x, (int)y, (int)x+(2*size), (int)y+(2*size), k[0], k[1], k[2], k[3], null);

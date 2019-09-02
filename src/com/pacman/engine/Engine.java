@@ -147,7 +147,7 @@ public class Engine implements Runnable
 			frameTime += deltaTime;
 			
 			// Pour mettre a jour l'affichage seulement si l'Update a ete fait.
-			while( unprocessedTime >= settings.getUpdateRate() )
+			while( unprocessedTime >= 1.0 )
 			{
 				unprocessedTime -= settings.getUpdateRate();
 				render = true;

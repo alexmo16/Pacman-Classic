@@ -218,7 +218,7 @@ public class GameManager implements IGame
 	private void checkGumCollision() {
 		for (Gum gum : gumList) {
 			if (CollisionManager.collisionObj(pacman, gum)) {
-				pacman.eatGum(gum);
+				pacman.eatGum(gum, inGame.getScoreBar());
 				gumList.remove(gum);
 				gum.setVisible(false);
 				gum = null;
@@ -230,7 +230,7 @@ public class GameManager implements IGame
 	private void checkPacGumCollision() {
 		for (PacGum pacGum : pacGumList) {
 			if (CollisionManager.collisionObj(pacman, pacGum)) {
-				pacman.eatGum(pacGum);
+				pacman.eatGum(pacGum, inGame.getScoreBar());
 				pacGumList.remove(pacGum);
 				pacGum.setVisible(false);
 				pacGum = null;

@@ -25,7 +25,7 @@ public class InGame extends JPanel
 	GridBagConstraints gbcBottomPane;
 	Maze maze;
 	PausePane pausePane;
-	public static ScoreBar scoreBar;
+	ScoreBar scoreBar;
     
 	public InGame(Settings s)
 	{	
@@ -56,12 +56,6 @@ public class InGame extends JPanel
 	public ScoreBar getScoreBar() {
 		return scoreBar;
 	}
-	
-	
-	public static ScoreBar getStaticScoreBar() {
-		return scoreBar;
-	}
-
 
 	public void togglePausePane()
 	{

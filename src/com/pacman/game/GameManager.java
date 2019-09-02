@@ -31,6 +31,7 @@ public class GameManager implements IGame
 	InGame inGame = new InGame(settings);
 	int startingPosition[];
 	double pacmanBox;
+	
 	private boolean isPlaying = true;
 	private boolean isStartingNewGame = true;
 	
@@ -87,7 +88,6 @@ public class GameManager implements IGame
 		
 		if ( isPlaying )
 		{
-
 			
 			if( inputs.isKeyDown( settings.getMutedButton() ) )
 			{
@@ -100,7 +100,7 @@ public class GameManager implements IGame
 			DynamicObject.updatePosition(futurPacman.getRectangle(), direction);
 			DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
 
-			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map);
+			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman);
 			
 			
 			if(checkCollision == 2)
@@ -112,7 +112,7 @@ public class GameManager implements IGame
 				oldDirection = direction;
 			} else {
 				
-				checkCollision = CollisionManager.getInstance().collisionWall(maybeFuturPacman,map);
+				checkCollision = CollisionManager.getInstance().collisionWall(maybeFuturPacman);
 				if (checkCollision == 0) {
 					DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
 				}

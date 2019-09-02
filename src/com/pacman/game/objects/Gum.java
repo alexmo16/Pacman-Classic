@@ -18,6 +18,10 @@ public class Gum extends StaticObject{
 		super(x, y, width, height, s);
 		
 	}
+	public int getPoint()
+	{
+		return this.SCORE;
+	}
 	
 	@Override
 	public void paint(Graphics g) {

@@ -1,6 +1,6 @@
 package com.pacman.game;
 
-import java.awt.Image;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -29,7 +29,6 @@ public class GameManager implements IGame
 	ArrayList<PacGum> pacGumList;
 	String oldDirection = "right", direction = "right";
 	private int checkCollision = 1;
-	Image pacmanSprite;
 	Settings settings = new Settings();
 	InGame inGame = new InGame(settings);
 	int startingPosition[];
@@ -81,11 +80,6 @@ public class GameManager implements IGame
 		window.getFrame().add(inGame);
 		window.getFrame().pack();
 		
-		/*
-		for (Gum gum : gumList) {
-			System.out.println(gumList.indexOf(gum) + " : " + gum.toString());
-		}
-		*/
 
 		// TODO mettre ca a true seulement quand on clic sur le start button
 		isStartingNewGame = true;

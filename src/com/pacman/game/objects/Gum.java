@@ -50,7 +50,7 @@ public class Gum extends StaticObject{
 			
 			for (int x = 0; x < mazeWidth; x++) {	
 				
-				if (mazeData.getTile(x, y) == 0) {
+				if (mazeData.getTile(x, y) == 30) {
 					
 					gumList.add(new Gum(x + 0.25, y + 0.25, 0.5, 0.5, s));
 				}

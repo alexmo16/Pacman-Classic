@@ -7,7 +7,7 @@ import com.pacman.game.Settings;
 
 public class Gum extends StaticObject{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2208175145272051306L;
 	protected final int SCORE = 10;
 	
 	

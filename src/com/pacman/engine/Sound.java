@@ -70,7 +70,7 @@ public class Sound
 		}
 		
 		play();
-		while( audioClip.getFramePosition() < audioClip.getFrameLength() )
+		while( audioClip != null && audioClip.getFramePosition() < audioClip.getFrameLength() )
 		{
 			try 
 			{
@@ -80,7 +80,7 @@ public class Sound
 				return false;
 			}
 		}
-		stop();
+
 		return true;
 	}
 	

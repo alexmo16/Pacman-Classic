@@ -3,7 +3,7 @@ package com.pacman.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CSVUtils 
+public class CSVUtils
 {
     private static final char DEFAULT_SEPARATOR = ',';
     private static final char DEFAULT_QUOTE = '"';
@@ -13,7 +13,7 @@ public class CSVUtils
         return parseLine(cvsLine, DEFAULT_SEPARATOR, DEFAULT_QUOTE);
     }
 
-    public static List<String> parseLine(String cvsLine, char separators) 
+    public static List<String> parseLine(String cvsLine, char separators)
     {
         return parseLine(cvsLine, separators, DEFAULT_QUOTE);
     }
@@ -44,51 +44,47 @@ public class CSVUtils
 
         char[] chars = cvsLine.toCharArray();
 
-        for (char ch : chars) 
+        for (char ch : chars)
         {
-            if (inQuotes) 
+            if (inQuotes)
             {
                 startCollectChar = true;
-                if (ch == customQuote) 
+                if (ch == customQuote)
                 {
                     inQuotes = false;
                     doubleQuotesInColumn = false;
-                } 
-                else 
+                } else
                 {
-                    if (ch == '\"') 
+                    if (ch == '\"')
                     {
                         if (!doubleQuotesInColumn)
                         {
                             curVal.append(ch);
                             doubleQuotesInColumn = true;
                         }
-                    } 
-                    else 
+                    } else
                     {
                         curVal.append(ch);
                     }
 
                 }
-            } 
-            else
+            } else
             {
-                if (ch == customQuote) 
+                if (ch == customQuote)
                 {
                     inQuotes = true;
-                    
-                    if (chars[0] != '"' && customQuote == '\"') 
+
+                    if (chars[0] != '"' && customQuote == '\"')
                     {
                         curVal.append('"');
                     }
 
-                    if (startCollectChar) 
+                    if (startCollectChar)
                     {
                         curVal.append('"');
                     }
 
-                } 
-                else if (ch == separators)
+                } else if (ch == separators)
                 {
 
                     result.add(curVal.toString());
@@ -96,17 +92,13 @@ public class CSVUtils
                     curVal = new StringBuffer();
                     startCollectChar = false;
 
-                } 
-                else if 
-                (ch == '\r') 
+                } else if (ch == '\r')
                 {
                     continue;
-                } 
-                else if (ch == '\n')
+                } else if (ch == '\n')
                 {
                     break;
-                } 
-                else 
+                } else
                 {
                     curVal.append(ch);
                 }

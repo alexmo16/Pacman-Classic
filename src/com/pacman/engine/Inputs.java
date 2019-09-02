@@ -3,78 +3,79 @@ package com.pacman.engine;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Inputs implements KeyListener {
-	
-	private Window window;
-	
-	private static final int SUPPORTED_KEYS = 256; 
+public class Inputs implements KeyListener
+{
 
-	private final boolean[] keys = new boolean[ SUPPORTED_KEYS ];
-	private final boolean[] lastPressedKeys = new boolean[ SUPPORTED_KEYS ];
-	
-	private char typed = 0;
-	
-    public Inputs( Window window )
-	{
-		this.window = window;
-		this.window.getFrame().addKeyListener(this);
-	}
-	
-	public void update()
-	{
-		System.arraycopy( keys, 0, lastPressedKeys, 0, SUPPORTED_KEYS );
-		typed = (char)0;
-	}
-	
-	public boolean isKeyDown( int keyCode )
-	{
-		return keys[ keyCode ] && !lastPressedKeys[ keyCode ];
-	}
-	
-	public boolean isKeyUp( int keyCode )
-	{
-		return !keys[ keyCode ] && lastPressedKeys[ keyCode ];
-	}
-	
-	@Override
-	public void keyTyped(KeyEvent e) 
-	{
-		if ( e != null )
-		{
-			typed = e.getKeyChar();
-		}
-	}
-	
-	public char getTyped()
-	{
-		return typed;
-	}
+    private Window window;
 
-	@Override
-	public void keyPressed(KeyEvent e) 
-	{
-		if ( e.getKeyCode() < SUPPORTED_KEYS )
-		{
-			keys[ e.getKeyCode() ] = true;
-		}
-	} 
+    private static final int SUPPORTED_KEYS = 256;
 
-	@Override
-	public void keyReleased(KeyEvent e) 
-	{
-		if ( e.getKeyCode() < SUPPORTED_KEYS )
-		{
-			keys[ e.getKeyCode() ] = false;
-		}
-	}
-	
-	public final boolean[] getCurrentKeys()
-	{
-		return keys;
-	}
-	
-	public final boolean[] getLastKeys()
-	{
-		return lastPressedKeys;
-	}
+    private final boolean[] keys = new boolean[SUPPORTED_KEYS];
+    private final boolean[] lastPressedKeys = new boolean[SUPPORTED_KEYS];
+
+    private char typed = 0;
+
+    public Inputs(Window window)
+    {
+        this.window = window;
+        this.window.getFrame().addKeyListener(this);
+    }
+
+    public void update()
+    {
+        System.arraycopy(keys, 0, lastPressedKeys, 0, SUPPORTED_KEYS);
+        typed = (char) 0;
+    }
+
+    public boolean isKeyDown(int keyCode)
+    {
+        return keys[keyCode] && !lastPressedKeys[keyCode];
+    }
+
+    public boolean isKeyUp(int keyCode)
+    {
+        return !keys[keyCode] && lastPressedKeys[keyCode];
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e)
+    {
+        if (e != null)
+        {
+            typed = e.getKeyChar();
+        }
+    }
+
+    public char getTyped()
+    {
+        return typed;
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+        if (e.getKeyCode() < SUPPORTED_KEYS)
+        {
+            keys[e.getKeyCode()] = true;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e)
+    {
+        if (e.getKeyCode() < SUPPORTED_KEYS)
+        {
+            keys[e.getKeyCode()] = false;
+        }
+    }
+
+    public final boolean[] getCurrentKeys()
+    {
+        return keys;
+    }
+
+    public final boolean[] getLastKeys()
+    {
+        return lastPressedKeys;
+    }
 }

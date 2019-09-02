@@ -8,6 +8,7 @@ public class SpritesManager
 	private Image spritesSheet = null;
 	private int[][] spritesCoords = null;
 	private final int sheetWidth = 16;
+	int pacman [][] = null;
 	
 	public SpritesManager(String spritesSheetFilePath, int blockSize)
 	{
@@ -25,8 +26,18 @@ public class SpritesManager
 		return spritesCoords[tileNumber - 1];
 	}
 	
-	public int[] getPacmanCoords() {
-		return spritesCoords[12];
+	public int[][] getPacmanCoords(String direction) {
+		if (direction == "left") {
+			pacman  = new int [][] {spritesCoords[96],spritesCoords[97],spritesCoords[112],spritesCoords[113]};
+		} else if (direction == "up") {
+			pacman  = new int [][] {spritesCoords[98],spritesCoords[99],spritesCoords[114],spritesCoords[115]};
+		} else if (direction == "down") {
+			pacman  = new int [][] {spritesCoords[106],spritesCoords[107],spritesCoords[122],spritesCoords[123]};
+		} else {
+			pacman  = new int [][] {spritesCoords[104],spritesCoords[105],spritesCoords[120],spritesCoords[121]};
+		}
+		
+		return pacman;
 	}
 
 	public int[] getGumCoords()

@@ -19,6 +19,10 @@ public abstract class DynamicObject extends GameObject {
 		this.direction = direction;
 	}
 	
+	public String getDirection() {
+		return this.direction;
+	}
+	
 	
 	
 	public static void updatePosition(Rectangle object, String direction) {

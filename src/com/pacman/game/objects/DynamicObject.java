@@ -24,6 +24,9 @@ public abstract class DynamicObject extends GameObject {
 	}
 	
 	
+	public void setDirection(String dir) {
+		this.direction = dir;
+	}
 	
 	public static void updatePosition(Rectangle2D.Double object, String direction) {
 		if (direction.contentEquals("up")) {
@@ -45,16 +48,16 @@ public abstract class DynamicObject extends GameObject {
 		switch(direction)
 		{
 		case "right":
-			object.setRect(0,object.getY(),object.getWidth(),object.getHeight());
+			object.setRect(0.5,object.getY(),object.getWidth(),object.getHeight());
 			break;
 		case "left":
-			object.setRect(mazeWidth - object.getWidth() - 0.1,object.getY(),object.getWidth(),object.getHeight());
+			object.setRect(mazeWidth - object.getWidth() - 0.5,object.getY(),object.getWidth(),object.getHeight());
 			break;
 		case "up":
-			object.setRect(object.getX(),mazeHeight - object.getHeight() - 0.1 ,object.getWidth(),object.getHeight());
+			object.setRect(object.getX(),mazeHeight - object.getHeight() - 0.5 ,object.getWidth(),object.getHeight());
 			break;
 		case "down":
-			object.setRect(object.getX(),0,object.getWidth(),object.getHeight());
+			object.setRect(object.getX(),0.5,object.getWidth(),object.getHeight());
 			break;
 		default:
 			break;

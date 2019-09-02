@@ -55,6 +55,11 @@ public class GameManager implements IGame
 			inGame.addGameObject(pacGum);
 		}
 		
+<<<<<<< HEAD
+=======
+
+		
+>>>>>>> branch 'master' of https://gitlab.com/pacman-equipe-05/pacman
 		inGame.init();
 		
 		CollisionManager.setSettings(settings);
@@ -123,12 +128,14 @@ public class GameManager implements IGame
 
 			} else if (checkCollision == 0) {
 				DynamicObject.updatePosition(pacman.getRectangle(), direction);
+				pacman.setDirection(direction);
 				oldDirection = direction;
 			} else {
 				
 				checkCollision = CollisionManager.collisionWall(maybeFuturPacman);
 				if (checkCollision == 0) {
 					DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
+					pacman.setDirection(oldDirection);
 				}
 
 			}

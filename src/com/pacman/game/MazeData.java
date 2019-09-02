@@ -11,6 +11,7 @@ public class MazeData
 	private int[][] tiles = null;
 	private int width = 0, 
 			    height = 0;
+	private int[] startPosition = null;
 	
 	public MazeData(String mapFilePath)
 	{
@@ -50,6 +51,10 @@ public class MazeData
 	    				if (line.size() == width)
 	    				{    			
 	    					tiles[col][row] = Integer.parseInt(line.get(col));
+	    					if ( tiles[col][row] == 60 ) 
+	    					{
+	    						startPosition = new int[] {col,row};
+	    					}
 	    				}
 	    				else
 	    				{
@@ -91,4 +96,7 @@ public class MazeData
 		return height;
 	}
 	
+	public int[] getStartPosition() {
+		return startPosition;
+	}
 }

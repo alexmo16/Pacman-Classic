@@ -25,12 +25,13 @@ public class GameManager implements IGame
 	PacmanObject maybeFuturPacman;
 	ArrayList<Gum> gumList;
 	ArrayList<PacGum> pacGumList;
-	String oldDirection = "right", direction = "right";
+	String oldDirection = "left", direction = "left";
 	private int checkCollision = 1;
 	Settings settings = new Settings();
 	InGame inGame = new InGame(settings);
 	int startingPosition[];
 	double pacmanBox;
+	
 	
 	private boolean isPlaying = true;
 	private boolean isStartingNewGame = true;
@@ -81,12 +82,10 @@ public class GameManager implements IGame
 			isStartingNewGame = false;
 			isPlaying = true;
 			gameSiren.playLoopBack();
-		}
-		
+		}		
 		
 		if ( isPlaying )
 		{
-			
 			if( inputs.isKeyDown( settings.getMutedButton() ) )
 			{
 				toggleUserMuteSounds();
@@ -152,7 +151,7 @@ public class GameManager implements IGame
 	
 	private void createGameObjects()
 	{
-		startingPosition = new int []{2,2};
+		startingPosition = settings.getMazeData().getStartPosition();;
 		pacmanBox = 0.9;
 		pacman = new PacmanObject(startingPosition[0],startingPosition[1],pacmanBox,pacmanBox,direction, settings);
 		maybeFuturPacman = new PacmanObject(startingPosition[0],startingPosition[1],pacmanBox,pacmanBox,direction, settings);

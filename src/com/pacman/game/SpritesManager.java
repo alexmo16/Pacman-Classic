@@ -30,7 +30,23 @@ public class SpritesManager
 	
 	public int[] getPacmanCoords(String direction) {
 
-			pacman  = new int [] {spritesCoords[104][0],spritesCoords[104][1],spritesCoords[121][0] + blockSize,spritesCoords[121][1] + blockSize};		
+		if ( direction == "right") 
+		{
+			pacman  = new int [] {spritesCoords[104][0],spritesCoords[104][1],spritesCoords[121][0] + blockSize,spritesCoords[121][1] + blockSize};
+			
+		} else if (direction == "left")
+		{
+			pacman  = new int [] {spritesCoords[96][0],spritesCoords[96][1],spritesCoords[113][0] + blockSize,spritesCoords[113][1] + blockSize};
+		} else if (direction == "up")
+		{
+			pacman  = new int [] {spritesCoords[98][0],spritesCoords[98][1],spritesCoords[115][0] + blockSize,spritesCoords[115][1] + blockSize};
+			
+		} else if (direction == "down")
+		{
+			pacman  = new int [] {spritesCoords[106][0],spritesCoords[106][1],spritesCoords[123][0] + blockSize,spritesCoords[123][1] + blockSize};
+			
+		}
+					
 		return pacman;
 	}
 

@@ -22,9 +22,13 @@ public class ScoreBar extends JPanel{
 		setBackground(Color.WHITE);
 }
 	
-	public void setScoreBar(int score)
+	public void setScore(int score)
 	{
 		this.score = score;
+	}
+	
+	public void addPointsScore(int points) {
+		this.score += points;
 	}
 	
 	public void paint(Graphics g) {

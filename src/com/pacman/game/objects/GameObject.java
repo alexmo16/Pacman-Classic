@@ -15,18 +15,18 @@ public abstract class GameObject extends JPanel{
 	protected final SpritesManager spritesManager;
 	protected static MazeData mazeData;
 	
-	protected Rectangle2D.Float object = null;
+	protected Rectangle2D.Double object = null;
 	
 	protected int x;
 	protected int y;
 	
-	public GameObject(int x, int y, int width, int height, Settings s) {
+	public GameObject(int x, int y, double width, double height, Settings s) {
 		super();
 		mazeHeight = s.getMazeData().getHeight();
 		mazeWidth = s.getMazeData().getWidth();
 		mazeData = s.getMazeData();
 		this.spritesManager = s.getSpritesManager();
-		this.object = new Rectangle2D.Float(x, y, width, height);
+		this.object = new Rectangle2D.Double(x, y, width, height);
 		setOpaque(false);
 	}
 		
@@ -36,11 +36,11 @@ public abstract class GameObject extends JPanel{
 		mazeWidth = 0;
 		mazeData = null;
 		this.spritesManager = null;
-		this.object = new Rectangle2D.Float();
+		this.object = new Rectangle2D.Double();
 		setOpaque(false);
 	}
 	
-	public Rectangle2D.Float getRectangle() {
+	public Rectangle2D.Double getRectangle() {
 		return this.object;
 	}
 }

@@ -14,7 +14,7 @@ public abstract class DynamicObject extends GameObject {
 		this.direction = null;
 	}
 	
-	public DynamicObject(int x, int y, int width, int height, String direction, Settings s) {
+	public DynamicObject(int x, int y, double width, double height, String direction, Settings s) {
 		super(x,y,width,height, s);
 		this.direction = direction;
 	}
@@ -25,22 +25,22 @@ public abstract class DynamicObject extends GameObject {
 	
 	
 	
-	public static void updatePosition(Rectangle2D.Float object, String direction) {
+	public static void updatePosition(Rectangle2D.Double object, String direction) {
 		if (direction.contentEquals("up")) {
-			object.setRect(object.getX(),object.getY()-1,object.getWidth(),object.getHeight());
+			object.setRect(object.getX(),object.getY()-0.1,object.getWidth(),object.getHeight());
 		}
 		if (direction.contentEquals("down")) {
-			object.setRect(object.getX(),object.getY()+1,object.getWidth(),object.getHeight());
+			object.setRect(object.getX(),object.getY()+0.1,object.getWidth(),object.getHeight());
 		}
 		if (direction.contentEquals("right")) {
-			object.setRect(object.getX()+1,object.getY(),object.getWidth(),object.getHeight());
+			object.setRect(object.getX()+0.1,object.getY(),object.getWidth(),object.getHeight());
 		}
 		if (direction.contentEquals("left")) {
-			object.setRect(object.getX()-1,object.getY(),object.getWidth(),object.getHeight());
+			object.setRect(object.getX()-0.1,object.getY(),object.getWidth(),object.getHeight());
 		}
 	}
 
-	public static void tunnel(Rectangle2D.Float object, String direction)
+	public static void tunnel(Rectangle2D.Double object, String direction)
 	{
 		switch(direction)
 		{

@@ -19,7 +19,7 @@ public class CollisionManager {
 		return instance;
 	}
 	
-	public int collisionWall(DynamicObject obj, int[][] map, int nbColumn, int nbLine) 
+	public int collisionWall(DynamicObject obj, int[][] map) 
 	
 	{
 		
@@ -30,21 +30,16 @@ public class CollisionManager {
 		int xMax = (int) obj.getRectangle().getMaxX(); //coordonnes de l'angle bas-droit du pacman
 		int yMax = (int) obj.getRectangle().getMaxY();
 				
-		int caseXMin = xMin/nbColumn;
-		int caseYMin = yMin/nbLine;
-		
-		int caseXMax = xMax/nbColumn;
-		int caseYMax = yMax/nbLine;
 		
 
 
 		
-		if ((caseXMin == 0 & caseXMax == 0 )||(caseXMin == 29 & caseXMax == 30 ) || (caseYMin == 0 & caseYMax == 0 ) || (caseYMin == 32 & caseYMax == 32 ))	
+		if ((xMin == 0 & xMax == 0 )||(xMin == 29 & xMax == 30 ) || (yMin == 0 & yMax == 0 ) || (yMin == 32 & yMax == 32 ))	
 		{
 			return 2;
 		}
 		
-		else if (map[caseXMin][caseYMin] == 0 & map[caseXMin][caseYMax] == 0 & map[caseXMax][caseYMin] == 0 & map[caseXMax][caseYMax] == 0 ) 
+		else if (map[xMin][yMin] == 0 & map[xMin][yMax] == 0 & map[xMax][yMin] == 0 & map[xMax][yMax] == 0 ) 
 		{
 			return 0;
 		}

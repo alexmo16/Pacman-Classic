@@ -20,7 +20,7 @@ public class PacmanObject extends DynamicObject {
 		spritesManager = settings.getSpritesManager();
 	}
 	
-	public PacmanObject(int x, int y, int width, int height, String direction, Settings s) {
+	public PacmanObject(int x, int y, double width, double height, String direction, Settings s) {
 		super(x,y,width,height,direction, s);
 		spritesManager = settings.getSpritesManager();
 	}
@@ -46,9 +46,8 @@ public class PacmanObject extends DynamicObject {
 		return direction;
 	}
 	
-	public void updatePosition(String direction)
+	public void updatePosition()
 	{
-		this.direction = direction;
 		x = (int) this.object.getX() + 123;
     	y = (int) this.object.getY() - 12;
 	}
@@ -80,4 +79,6 @@ public class PacmanObject extends DynamicObject {
         g.drawImage(spritesManager.getSpritesSheet(), x, y+size, x+size, y+size+size, k[2][0], k[2][1], k[2][2], k[2][3], null);
         g.drawImage(spritesManager.getSpritesSheet(), x+size, y+size, x+size+size, y+size+size, k[3][0], k[3][1], k[3][2], k[3][3], null);
     }
+
+
 }

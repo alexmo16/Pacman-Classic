@@ -3,7 +3,6 @@ package com.pacman.game;
 import java.awt.Image;
 import java.io.IOException;
 
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.pacman.engine.CollisionManager;
@@ -33,6 +32,7 @@ public class GameManager implements IGame
 	
 	Sound startMusic;
 	Sound gameSiren;
+	boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
 	
 	@Override
 	public void init(Window window)
@@ -53,16 +53,9 @@ public class GameManager implements IGame
 	public void update(Engine engine)
 	{	
 		Inputs inputs = engine.getInputs();
-		if ( inputs.isKeyDown( settings.getMutedButton() ) )
-		{
-			Engine.toggleMute();
-		}
-		
 		if ( inputs.isKeyDown( settings.getPauseButton() ) )
 		{
-			inGame.togglePausePane();
-			isPlaying = !isPlaying;
-			Engine.setIsMuted( !isPlaying );
+			togglePauseGame();
 		}
 		
 		if ( isStartingNewGame )
@@ -70,10 +63,15 @@ public class GameManager implements IGame
 			startMusic.playSynchronously();
 			isStartingNewGame = false;
 			isPlaying = true;
+			gameSiren.playLoopBack();
 		}
 		
 		if ( isPlaying )
 		{
+			if( inputs.isKeyDown( settings.getMutedButton() ) )
+			{
+				toggleUserMuteSounds();
+			}
 			direction = PacmanObject.getNewDirection(engine.getInputs(), direction);
             maybeFuturPacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),(int)pacman.getRectangle().getY());
             futurPacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),(int)pacman.getRectangle().getY());
@@ -117,7 +115,7 @@ public class GameManager implements IGame
 		{
 			startMusic = new Sound( "./assets/pacman_beginning.wav" );
 			gameSiren = new Sound( "./assets/siren.wav" );
-		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) 
+		} catch (UnsupportedAudioFileException | IOException e) 
 		{
 			System.out.println( "Unable to load sounds!!" );
 			return false;
@@ -132,5 +130,39 @@ public class GameManager implements IGame
 		maybeFuturPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
 		futurPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
 		map = settings.getMazeData().getTiles();
+	}
+	
+	private void toggleUserMuteSounds()
+	{
+		Engine.toggleMute();
+		isUserMuted = Engine.getIsMuted();
+		if ( Engine.getIsMuted() )
+		{
+			gameSiren.stop();	
+		}
+		else
+		{
+			gameSiren.playLoopBack();
+		}
+	}
+	
+	private void togglePauseGame()
+	{
+		inGame.togglePausePane();
+		isPlaying = !isPlaying;
+		
+		if( isPlaying )
+		{
+			if ( !isUserMuted )
+			{
+				Engine.setIsMuted( false );
+				gameSiren.playLoopBack();
+			}
+		}
+		else
+		{
+			Engine.setIsMuted( true );
+			gameSiren.stop();
+		}
 	}
 }

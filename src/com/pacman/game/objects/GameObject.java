@@ -4,13 +4,14 @@ import java.awt.Rectangle;
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
 
-import javax.swing.JComponent;
+import javax.swing.JPanel;
 
-public abstract class GameObject extends JComponent{
-
-	private static final long serialVersionUID = 1L;
+public abstract class GameObject extends JPanel{
+	private static final long serialVersionUID = 5089602216528128118L;
+	
 	protected final int mazeHeight, mazeWidth;
 	protected final SpritesManager spritesManager; 
+	
 	protected Rectangle object = null;
 	
 	public GameObject(int x, int y, int width, int height, Settings s) {
@@ -19,7 +20,7 @@ public abstract class GameObject extends JComponent{
 		this.mazeWidth = s.getMazeData().getWidth();
 		this.spritesManager = s.getSpritesManager();
 		this.object = new Rectangle(x, y, width, height);
-
+		setOpaque(false);
 	}
 		
 	public GameObject() {
@@ -28,6 +29,7 @@ public abstract class GameObject extends JComponent{
 		this.mazeWidth = 0;
 		this.spritesManager = null;
 		this.object = new Rectangle();
+		setOpaque(false);
 	}
 	
 	public Rectangle getRectangle() {

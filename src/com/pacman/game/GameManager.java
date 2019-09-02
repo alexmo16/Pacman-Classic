@@ -1,7 +1,5 @@
 package com.pacman.game;
 
-
-
 import java.awt.Image;
 
 import com.pacman.engine.CollisionManager;
@@ -10,12 +8,11 @@ import com.pacman.engine.IGame;
 import com.pacman.engine.Inputs;
 import com.pacman.engine.Window;
 import com.pacman.game.objects.DynamicObject;
-import com.pacman.game.objects.Maze;
-import com.pacman.game.objects.PacmanObject;;
+import com.pacman.game.objects.PacmanObject;
+import com.pacman.game.scenes.InGame;
 
 public class GameManager implements IGame
 {
-
 	PacmanObject pacman;
 	PacmanObject futurPacman;
 	PacmanObject maybeFuturPacman;
@@ -24,20 +21,23 @@ public class GameManager implements IGame
 	private int[][] map = null;
 	Image pacmanSprite;
 	Settings settings = new Settings();
-	Maze maze = new Maze(settings);
+	InGame inGame = new InGame(settings);
 	
 	private boolean isPlaying = true;
 	
 	@Override
 	public void init(Window window)
 	{
-		window.getFrame().add(maze);
-		window.getFrame().pack();
-		
 		pacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
 		maybeFuturPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
 		futurPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
-		map = maze.getmazeData().getTiles();
+		map = settings.getMazeData().getTiles();
+		
+		inGame.addGameObject(pacman);
+		inGame.init();
+		
+		window.getFrame().add(inGame);
+		window.getFrame().pack();
 		
 		isPlaying = true;
 	}
@@ -88,13 +88,6 @@ public class GameManager implements IGame
 			}
 		}
 		
-	}
-
-	@Override
-	public void render(Window window) 
-	{
-		
-		window.getFrame().repaint();
 	}
 	
 	@Override

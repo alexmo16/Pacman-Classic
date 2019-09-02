@@ -1,9 +1,6 @@
 package com.pacman.game.objects;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
@@ -13,8 +10,6 @@ import com.pacman.game.SpritesManager;
 
 public class Maze extends JPanel
 {
-	private static final long serialVersionUID = -1068513811376492599L;
-	
 	private final int mazeHeight,
 					  mazeWidth;
 	private final MazeData mazeData;
@@ -26,20 +21,13 @@ public class Maze extends JPanel
 		mazeWidth = s.getMazeData().getWidth();
 		mazeData = s.getMazeData();
 		spritesManager = s.getSpritesManager();
-		setBackground(Color.BLACK);
+		setOpaque(false);
 	}
-
-    @Override
-    public Dimension getPreferredSize() 
-    {
-        return new Dimension(mazeWidth, mazeHeight);
-    }
     
     @Override
-	public void paint(Graphics g) 
+	public void paintComponent(Graphics g) 
     {
-        super.paint(g);
-        Graphics2D g2d = (Graphics2D) g.create();
+        super.paintComponent(g);
         int size = Math.min(getWidth(), getHeight()) / mazeHeight;
         
         int y = (getHeight() - (size * mazeHeight)) / 2;
@@ -61,7 +49,6 @@ public class Maze extends JPanel
             }
             y += size;
         }
-        g2d.dispose();
     }
     
 	public int getMazeHeight() 

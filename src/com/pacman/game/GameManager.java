@@ -114,7 +114,6 @@ public class GameManager implements IGame
 
 			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman);
 			
-			
 			if(checkCollision == 2)
 			{
 				DynamicObject.tunnel(pacman.getRectangle(), direction);

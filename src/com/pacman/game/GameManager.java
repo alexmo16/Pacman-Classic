@@ -27,7 +27,6 @@ public class GameManager implements IGame
 	ArrayList<PacGum> pacGumList;
 	String oldDirection = "right", direction = "right";
 	private int checkCollision = 1;
-	private int[][] map = null;
 	Image pacmanSprite;
 	Settings settings = new Settings();
 	InGame inGame = new InGame(settings);
@@ -54,15 +53,6 @@ public class GameManager implements IGame
 		for (PacGum pacGum : pacGumList)
 		{
 			inGame.addGameObject(pacGum);
-		}
-		
-		for (PacGum pacGum : pacGumList)
-		{
-			System.out.println("PacGum " + pacGumList.indexOf(pacGum) + " : " + pacGum.toString());
-		}
-		
-		for (Gum gum : gumList) {
-			System.out.println("Gum " + gumList.indexOf(gum) + " : " + gum.toString());
 		}
 		
 		inGame.init();
@@ -116,6 +106,17 @@ public class GameManager implements IGame
 
 			checkCollision = CollisionManager.collisionWall(futurPacman);
 			
+			for (Gum gum : gumList) {
+				if (CollisionManager.collisionObj(pacman, gum)) {
+					pacman.eatGum(gum);
+					gumList.remove(gum);
+					gum.setVisible(false);
+					gum = null;
+					System.out.println(pacman.getScore());
+					break;
+				}
+			}
+			
 			if(checkCollision == 2)
 			{
 				DynamicObject.tunnel(pacman.getRectangle(), direction);
@@ -164,7 +165,7 @@ public class GameManager implements IGame
 		pacman = new PacmanObject(startingPosition[0],startingPosition[1],pacmanBox,pacmanBox,direction, settings);
 		maybeFuturPacman = new PacmanObject(startingPosition[0],startingPosition[1],pacmanBox,pacmanBox,direction, settings);
 		futurPacman = new PacmanObject(startingPosition[0],startingPosition[1],pacmanBox,pacmanBox,direction, settings);
-		map = settings.getMazeData().getTiles();
+		settings.getMazeData().getTiles();
 		gumList = Gum.generateGumList(settings);
 		pacGumList = PacGum.generatePacGumList(settings);
 	}

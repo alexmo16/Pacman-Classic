@@ -1,7 +1,6 @@
 package com.pacman.engine;
 
 
-import com.pacman.game.MazeData;
 import com.pacman.game.objects.DynamicObject;
 import com.pacman.game.objects.GameObject;
 

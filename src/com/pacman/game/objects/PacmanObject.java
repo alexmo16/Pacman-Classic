@@ -13,7 +13,7 @@ public class PacmanObject extends DynamicObject {
 	private static final long serialVersionUID = 1L;
 	private final SpritesManager spritesManager;
 	Settings settings = new Settings();
-	private int score = 0;
+	protected int score = 0;
 
 	public PacmanObject() {
 		super();
@@ -46,20 +46,14 @@ public class PacmanObject extends DynamicObject {
 	}
 	
 	
-	public int getScore()
-	{
-		return this.score;
-	}
-	
-	public void setScore (int score)
-	{
-		this.score = score;
-	}
-	
 	public void eatGum(Gum obj)
 	{
 		this.score += obj.getPoint();
 		obj.setEaten(true);
+	}
+	
+	public int getScore() {
+		return score;
 	}
 	
     @Override

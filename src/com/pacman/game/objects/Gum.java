@@ -9,6 +9,7 @@ public class Gum extends StaticObject{
 
 	private static final long serialVersionUID = 2208175145272051306L;
 	protected final int SCORE = 10;
+	protected boolean eaten;
 	
 	
 	public Gum() {
@@ -18,6 +19,7 @@ public class Gum extends StaticObject{
 	
 	public Gum(double x, double y, double width, double height, Settings s) {
 		super(x, y, width, height, s);
+		this.eaten = false;
 	}
 	
 	
@@ -33,13 +35,14 @@ public class Gum extends StaticObject{
 		int size = Math.min(getWidth(), getHeight()) / mazeHeight;
 		int x = (int) this.object.getX();
 		int y = (int) this.object.getY();
-		
+
 		x = x * size + (getWidth() - (size * mazeWidth)) / 2;
 		y = y * size + (getHeight() - (size * mazeHeight)) / 2;
 
 		int[] k = spritesManager.getGumCoords();
 
 		g.drawImage(spritesManager.getSpritesSheet(), x, y, x + size, y + size, k[0], k[1], k[2], k[3], null);
+
 	}
 	
 	

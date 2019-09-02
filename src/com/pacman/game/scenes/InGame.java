@@ -55,10 +55,14 @@ public class InGame extends JPanel
 	
 	
 	
-	public static ScoreBar getScoreBar() {
+	public ScoreBar getScoreBar() {
 		return scoreBar;
 	}
 
+	public static ScoreBar getStaticScoreBar() {
+		return scoreBar;
+	}
+	
 
 	public void togglePausePane()
 	{

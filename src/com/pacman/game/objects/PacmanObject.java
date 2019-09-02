@@ -48,7 +48,7 @@ public class PacmanObject extends DynamicObject {
 	
 	public void eatGum(StaticObject obj)
 	{
-		InGame.getScoreBar().addPointsScore(obj.getPoints());
+		InGame.getStaticScoreBar().addPointsScore(obj.getPoints());
 		obj.setEaten(true);
 	}
 	

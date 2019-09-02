@@ -113,6 +113,7 @@ public class GameManager implements IGame
 			if(checkCollision == 2)
 			{
 				DynamicObject.tunnel(pacman.getRectangle(), direction);
+				inGame.getScoreBar().setCollision(false, oldDirection);
 
 			} else if (checkCollision == 0) {
 				DynamicObject.updatePosition(pacman.getRectangle(), direction);
@@ -124,10 +125,16 @@ public class GameManager implements IGame
 				if (checkCollision == 2) {
 					DynamicObject.tunnel(pacman.getRectangle(), oldDirection);
 					pacman.setDirection(oldDirection);
+					inGame.getScoreBar().setCollision(false, oldDirection);
 				}
 				if (checkCollision == 0) {
 					DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
 					pacman.setDirection(oldDirection);
+					inGame.getScoreBar().setCollision(false, oldDirection);
+				}
+				else 
+				{
+					inGame.getScoreBar().setCollision(true, oldDirection);
 				}
 
 			}

@@ -4,6 +4,8 @@ package com.pacman.game;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.pacman.engine.CollisionManager;
@@ -33,12 +35,29 @@ public class GameManager implements IGame
 	double pacmanBox;
 	
 	
-	private boolean isPlaying = true;
+	private boolean isPlaying = false;
 	private boolean isStartingNewGame = true;
 	
 	Sound startMusic;
 	Sound gameSiren;
 	boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
+	
+	LineListener startingMusicListener = new LineListener() 
+	{
+		@Override
+		public void update( LineEvent event ) 
+		{
+			if ( event.getType() == LineEvent.Type.STOP ) 
+			{
+				if ( startMusic != null )
+				{
+					startMusic.stop();
+				}
+				isPlaying = true;
+				gameSiren.playLoopBack();
+            }
+		}
+	};
 	
 	@Override
 	public void init(Window window)
@@ -78,10 +97,8 @@ public class GameManager implements IGame
 		
 		if ( isStartingNewGame )
 		{
-			startMusic.playSynchronously();
+			startMusic.play( startingMusicListener );
 			isStartingNewGame = false;
-			isPlaying = true;
-			gameSiren.playLoopBack();
 		}		
 		
 		if ( isPlaying )

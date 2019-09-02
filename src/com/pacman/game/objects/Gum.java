@@ -16,7 +16,7 @@ public class Gum extends StaticObject{
 	}
 	
 	
-	public Gum(int x, int y, double width, double height, Settings s) {
+	public Gum(double x, double y, double width, double height, Settings s) {
 		super(x, y, width, height, s);
 	}
 	
@@ -52,7 +52,7 @@ public class Gum extends StaticObject{
 				
 				if (mazeData.getTile(x, y) == 0) {
 					
-					gumList.add(new Gum(x, y, 0.5, 0.5, s));
+					gumList.add(new Gum(x + 0.25, y + 0.25, 0.5, 0.5, s));
 				}
 			}
 		}

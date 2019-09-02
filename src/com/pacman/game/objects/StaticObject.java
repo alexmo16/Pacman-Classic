@@ -12,7 +12,7 @@ public class StaticObject extends GameObject {
 		this.eaten = false;
 	}
 	
-	public StaticObject(int x, int y, double width, double height, Settings s) {
+	public StaticObject(double x, double y, double width, double height, Settings s) {
 		super(x, y, width, height, s);
 		this.eaten = false;
 	}

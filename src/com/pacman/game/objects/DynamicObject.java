@@ -1,6 +1,5 @@
 package com.pacman.game.objects;
 
-
 import java.awt.geom.Rectangle2D;
 
 import com.pacman.game.Settings;

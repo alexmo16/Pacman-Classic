@@ -10,6 +10,7 @@ import com.pacman.game.SpritesManager;
 
 public class Maze extends JPanel
 {
+	private static final long serialVersionUID = -8520066424473091119L;
 	private final int mazeHeight,
 					  mazeWidth;
 	private final MazeData mazeData;

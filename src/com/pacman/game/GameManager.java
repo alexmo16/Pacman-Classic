@@ -56,14 +56,7 @@ public class GameManager implements IGame
 			inGame.addGameObject(pacGum);
 		}
 		
-		for (PacGum pacGum : pacGumList)
-		{
-			System.out.println("PacGum " + pacGumList.indexOf(pacGum) + " : " + pacGum.toString());
-		}
-		
-		for (Gum gum : gumList) {
-			System.out.println("Gum " + gumList.indexOf(gum) + " : " + gum.toString());
-		}
+
 		
 		inGame.init();
 		
@@ -122,12 +115,14 @@ public class GameManager implements IGame
 
 			} else if (checkCollision == 0) {
 				DynamicObject.updatePosition(pacman.getRectangle(), direction);
+				pacman.setDirection(direction);
 				oldDirection = direction;
 			} else {
 				
 				checkCollision = CollisionManager.collisionWall(maybeFuturPacman);
 				if (checkCollision == 0) {
 					DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
+					pacman.setDirection(oldDirection);
 				}
 
 			}

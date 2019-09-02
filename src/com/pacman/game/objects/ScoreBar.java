@@ -6,22 +6,18 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 import com.pacman.game.Settings;
-import com.pacman.game.SpritesManager;
 
 public class ScoreBar extends JPanel{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
-	private final SpritesManager spritesManager; 
 	private int score = 0;
+	
 	
 	public ScoreBar (Settings s)
 	{
 
-		spritesManager = s.getSpritesManager();
+		s.getSpritesManager();
 	    this.setMaximumSize( new Dimension(Integer.MAX_VALUE,30) );
 		setBackground(Color.WHITE);
 }

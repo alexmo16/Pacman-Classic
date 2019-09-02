@@ -9,24 +9,16 @@ public class PacGum extends StaticObject{
 
 	private static final long serialVersionUID = 1L;
 
-	protected final int SCORE = 10;
-
-
 	public PacGum() {
 		super();
+		this.points = 0;
 	}
 
 
 	public PacGum(double x, double y, double width, double height, Settings s) {
 		super(x, y, width, height, s);
+		this.points = 50;
 	}
-
-
-	public int getPoint()
-	{
-		return this.SCORE;
-	}
-
 
 	@Override
 	public void paintComponent(Graphics g) {

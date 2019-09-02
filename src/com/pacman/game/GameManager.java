@@ -81,13 +81,14 @@ public class GameManager implements IGame
 			togglePauseGame();
 		}
 		
-		if ( isStartingNewGame )
+		/*if ( isStartingNewGame )
 		{
 			startMusic.playSynchronously();
 			isStartingNewGame = false;
 			isPlaying = true;
 			gameSiren.playLoopBack();
-		}
+		}*/
+		isPlaying = true;
 		
 		
 		if ( isPlaying )

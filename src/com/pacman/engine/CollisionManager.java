@@ -37,6 +37,7 @@ public abstract class CollisionManager{
 		
 		else if (isAuth(xMin,yMin) & isAuth(xMin,yMax) & isAuth(xMax,yMin) & isAuth(xMax,yMax)) 
 		{
+			
 			return 0;
 		}
 

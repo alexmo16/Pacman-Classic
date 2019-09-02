@@ -8,10 +8,12 @@ public class SpritesManager
 	private Image spritesSheet = null;
 	private int[][] spritesCoords = null;
 	private final int sheetWidth = 16;
-	int pacman [][] = null;
+	int pacman [] = null;
+	int blockSize = 0;
 	
-	public SpritesManager(String spritesSheetFilePath, int blockSize)
+	public SpritesManager(String spritesSheetFilePath, int size)
 	{
+		blockSize = size;
 		spritesSheet = SpriteUtils.getSpritesSheetImage(spritesSheetFilePath);
 		spritesCoords = SpriteUtils.getSpritesCoordsFromSheet(spritesSheet, blockSize);
 	}
@@ -26,11 +28,9 @@ public class SpritesManager
 		return spritesCoords[tileNumber - 1];
 	}
 	
-	public int[][] getPacmanCoords(String direction) {
+	public int[] getPacmanCoords(String direction) {
 
-			pacman  = new int [][] {spritesCoords[104],spritesCoords[105],spritesCoords[120],spritesCoords[121]};
-		
-		
+			pacman  = new int [] {spritesCoords[104][0],spritesCoords[104][1],spritesCoords[121][0] + blockSize,spritesCoords[121][1] + blockSize};		
 		return pacman;
 	}
 

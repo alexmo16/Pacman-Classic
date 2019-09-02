@@ -6,59 +6,60 @@ import java.io.IOException;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Sound
 {
-	private static String filePath;
-	private static Clip audioClip;
+	private File file;
 	private AudioInputStream inputStream;
+	private Clip audioClip;
+	private LineListener listener;
 	
-	public Sound( String path ) throws UnsupportedAudioFileException, IOException, LineUnavailableException
+	public Sound( String path ) throws UnsupportedAudioFileException, IOException
 	{
-		filePath = path;
-		init();
-	}
-	
-	public Sound( String path, boolean loopBack ) throws UnsupportedAudioFileException, IOException, LineUnavailableException
-	{
-		filePath = path;
-		init();
-		if ( loopBack )
+		file = new File( path ).getAbsoluteFile();
+		inputStream = AudioSystem.getAudioInputStream( file );
+		Sound that = this;
+		listener = new LineListener() 
 		{
-			audioClip.loop( Clip.LOOP_CONTINUOUSLY );
-		}
-	}
-	
-	private void init() throws UnsupportedAudioFileException, IOException, LineUnavailableException
-	{
-		inputStream = AudioSystem.getAudioInputStream( new File( filePath ).getAbsoluteFile() );
-		// Cree une reference vers un clip
-		audioClip = AudioSystem.getClip();
+			@Override
+			public void update( LineEvent event ) 
+			{
+				if ( event.getType() == LineEvent.Type.STOP ) 
+				{
+	                that.stop();
+	            }
+			}
+		};
 	}
 	
 	public boolean play()
 	{
-		if ( !Engine.getIsMuted() )
+		if ( Engine.getIsMuted() )
 		{
-			try 
-			{
-				if ( audioClip.isOpen() )
-				{
-					audioClip.close();
-				}
-				
-				audioClip.open( inputStream );
-			} catch (LineUnavailableException | IOException e) 
-			{
-				return false;
-			}
-			audioClip.setFramePosition( 0 );
-			audioClip.start();
-			return true;
+			return false;
 		}
-		return false;
+		try 
+		{
+			inputStream = AudioSystem.getAudioInputStream( file );
+			audioClip = AudioSystem.getClip();
+			if ( audioClip.isOpen() )
+			{
+				audioClip.close();
+			}
+				
+			audioClip.open( inputStream );
+		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) 
+		{
+			return false;
+		}
+		audioClip.setFramePosition( 0 );
+		audioClip.addLineListener( listener );
+		audioClip.start();
+		return true;
 	}
 	
 	public boolean playSynchronously()
@@ -69,7 +70,7 @@ public class Sound
 		}
 		
 		play();
-		while( audioClip.getFramePosition() < audioClip.getFrameLength() )
+		while( audioClip != null && audioClip.getFramePosition() < audioClip.getFrameLength() )
 		{
 			try 
 			{
@@ -79,17 +80,48 @@ public class Sound
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 	
 	public void stop()
 	{
-		audioClip.stop();
+		if ( audioClip != null )
+		{
+			audioClip.stop();
+			audioClip.close();	
+		}
+		audioClip = null;
+		inputStream = null;
 	}
 	
-	public void activateLoopBack()
+	public boolean playLoopBack()
 	{
+		if ( Engine.getIsMuted() )
+		{
+			return false;
+		}
+		try 
+		{
+			inputStream = AudioSystem.getAudioInputStream( file );
+			audioClip = AudioSystem.getClip();
+			if ( audioClip == null )
+			{
+				return false;
+			}
+			
+			if ( audioClip.isOpen() )
+			{
+				audioClip.close();
+			}
+				
+			audioClip.open( inputStream );
+		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) 
+		{
+			return false;
+		}
+		audioClip.setFramePosition( 0 );
 		audioClip.loop( Clip.LOOP_CONTINUOUSLY );
+		return true;
 	}
 }

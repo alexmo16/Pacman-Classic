@@ -47,8 +47,12 @@ public class PacmanObject extends DynamicObject {
 	
     @Override
 	public void paint(Graphics g) {
+    	int x = (int) this.object.getX();
+    	int y = (int) this.object.getY();
+    	int size = (int) this.object.getWidth();
+    	
         super.paint(g);
         int[] k = spritesManager.getPacmanCoords();
-        g.drawImage(spritesManager.getSpritesSheet(), (int)this.object.getX(), (int)this.object.getY(), 19, 19, k[0], k[1], k[2], k[3], null);
+        g.drawImage(spritesManager.getSpritesSheet(), x, y, x+size, y+size, k[0], k[1], k[2], k[3], null);
     }
 }

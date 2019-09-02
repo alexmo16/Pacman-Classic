@@ -2,6 +2,7 @@ package com.pacman.game;
 
 import java.awt.Image;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
@@ -12,6 +13,7 @@ import com.pacman.engine.Inputs;
 import com.pacman.engine.Sound;
 import com.pacman.engine.Window;
 import com.pacman.game.objects.DynamicObject;
+import com.pacman.game.objects.Gum;
 import com.pacman.game.objects.PacmanObject;
 import com.pacman.game.scenes.InGame;
 
@@ -20,6 +22,7 @@ public class GameManager implements IGame
 	PacmanObject pacman;
 	PacmanObject futurPacman;
 	PacmanObject maybeFuturPacman;
+	ArrayList<Gum> gumList;
 	String oldDirection = "right", direction = "right";
 	private int checkCollision = 1;
 	private int[][] map = null;
@@ -37,13 +40,22 @@ public class GameManager implements IGame
 	@Override
 	public void init(Window window)
 	{	
+		pacman = new PacmanObject(2,2,2,2,direction,settings);
 		createGameObjects();
 		loadMusics();
 		inGame.addGameObject(pacman);
+		for (Gum gum : gumList) {
+			inGame.addGameObject(gum);
+		}
+		
 		inGame.init();
 		
 		window.getFrame().add(inGame);
 		window.getFrame().pack();
+		
+		for (Gum gum : gumList) {
+			System.out.println(gumList.indexOf(gum) + " : " + gum.toString());
+		}
 
 		// TODO mettre ca a true seulement quand on clic sur le start button
 		isStartingNewGame = true;
@@ -73,11 +85,11 @@ public class GameManager implements IGame
 				toggleUserMuteSounds();
 			}
 			direction = PacmanObject.getNewDirection(engine.getInputs(), direction);
-            maybeFuturPacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),(int)pacman.getRectangle().getY());
-            futurPacman.getRectangle().setLocation((int)pacman.getRectangle().getX(),(int)pacman.getRectangle().getY());
+            maybeFuturPacman.getRectangle().setRect(pacman.getRectangle().getX(),pacman.getRectangle().getY(),pacman.getRectangle().getWidth(),pacman.getRectangle().getHeight());
+            futurPacman.getRectangle().setRect(pacman.getRectangle().getX(),pacman.getRectangle().getY(),pacman.getRectangle().getWidth(),pacman.getRectangle().getHeight());
 			DynamicObject.updatePosition(futurPacman.getRectangle(), direction);
 			DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
-			pacman.updatePosition();
+			pacman.updatePosition(oldDirection);
 
 			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map,20,20);
 			
@@ -130,6 +142,7 @@ public class GameManager implements IGame
 		maybeFuturPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
 		futurPacman = new PacmanObject(3*600/30-20,3*660/33-20,19,19,direction, settings);
 		map = settings.getMazeData().getTiles();
+		gumList = Gum.generateGumList(settings);
 	}
 	
 	private void toggleUserMuteSounds()

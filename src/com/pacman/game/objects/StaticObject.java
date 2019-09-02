@@ -17,4 +17,14 @@ public class StaticObject extends GameObject {
 		this.eaten = false;
 	}
 	
+	public boolean getEaten()
+	{
+		return this.eaten;
+	}
+	
+	public void setEaten(boolean bool)
+	{
+		this.eaten=bool;
+	}
+	
 }

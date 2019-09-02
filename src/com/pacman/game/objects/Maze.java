@@ -39,7 +39,7 @@ public class Maze extends JPanel
             	
             	int type = mazeData.getTile(vert, horz);
             	
-            	if (type != 0)
+            	if (type > 0 && type <= 24)
             	{
             		int[] k = spritesManager.getMazeTileCoords(type);
 

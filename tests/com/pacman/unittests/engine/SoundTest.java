@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.pacman.engine.Engine;
@@ -28,7 +27,7 @@ class SoundTest
 		try 
 		{
 			new Sound( "" );
-		} catch ( UnsupportedAudioFileException | IOException | LineUnavailableException e ) 
+		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
 		}
@@ -43,7 +42,7 @@ class SoundTest
 		try 
 		{
 			new Sound( "./tests/ladaojkndnoasd/test.wav" );
-		} catch ( UnsupportedAudioFileException | IOException | LineUnavailableException e ) 
+		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
 		}
@@ -58,7 +57,7 @@ class SoundTest
 		try 
 		{
 			new Sound( "./tests/testAssets/cipCorrupted.wav" );
-		} catch ( UnsupportedAudioFileException | IOException | LineUnavailableException e ) 
+		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
 		}
@@ -75,7 +74,7 @@ class SoundTest
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.play();
-		} catch ( UnsupportedAudioFileException | IOException | LineUnavailableException e ) 
+		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
 		}
@@ -91,15 +90,15 @@ class SoundTest
 		boolean isPlayed = false;
 		try 
 		{
-			Sound sound = new Sound( "./tests/testAssets/clip.wav", true );
-			isPlayed = sound.play();
+			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			isPlayed = sound.playLoopBack();
 			assertTrue( isPlayed );
 			
-			sound = new Sound( "./tests/testAssets/clip.wav", false );
+			sound = new Sound( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.play();
 			assertTrue( isPlayed );
  
-		} catch ( UnsupportedAudioFileException | IOException | LineUnavailableException e ) 
+		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
 		}
@@ -115,10 +114,10 @@ class SoundTest
 		boolean isPlayed = false;
 		try 
 		{
-			Sound sound = new Sound( "./tests/testAssets/clip.wav", true );
-			isPlayed = sound.play();
+			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			isPlayed = sound.playLoopBack();
 			sound.stop();
-		} catch ( UnsupportedAudioFileException | IOException | LineUnavailableException e ) 
+		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
 		}
@@ -134,15 +133,53 @@ class SoundTest
 		boolean isPlayed = false;
 		try 
 		{
-			Sound sound = new Sound( "./tests/testAssets/clip.wav", true );
+			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			Engine.setIsMuted( true );
-			isPlayed = sound.play();
-		} catch ( UnsupportedAudioFileException | IOException | LineUnavailableException e ) 
+			isPlayed = sound.playLoopBack();
+		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
 		}
 		
 		assertFalse( isException );
 		assertFalse( isPlayed );
+	}
+	
+	@Test
+	void testSynchronousMute() 
+	{
+		boolean isException = false;
+		boolean isPlayed = false;
+		try 
+		{
+			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			Engine.setIsMuted( true );
+			isPlayed = sound.playSynchronously();
+		} catch ( UnsupportedAudioFileException | IOException e ) 
+		{
+			isException = true;
+		}
+		
+		assertFalse( isException );
+		assertFalse( isPlayed );
+		Engine.setIsMuted( false );
+	}
+	
+	@Test
+	void testSynchronous() 
+	{
+		boolean isException = false;
+		boolean isPlayed = false;
+		try
+		{
+			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			isPlayed = sound.playSynchronously();
+		} catch ( UnsupportedAudioFileException | IOException e ) 
+		{
+			isException = true;
+		}
+		
+		assertFalse( isException );
+		assertTrue( isPlayed );
 	}
 }

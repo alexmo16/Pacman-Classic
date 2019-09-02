@@ -146,7 +146,7 @@ public class Engine implements Runnable
 			unprocessedTime += deltaTime;
 			frameTime += deltaTime;
 			
-			// Pour mettre a jour l'affichage seulement si l'Update a ete fait.
+			// Pour etre sur que le render et l'update sont synchronisé avec le 60 fps.
 			while( unprocessedTime >= 1.0 )
 			{
 				unprocessedTime -= settings.getUpdateRate();

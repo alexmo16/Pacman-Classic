@@ -69,16 +69,12 @@ public class PacmanObject extends DynamicObject {
 		double x = (int) this.object.getX();
 		double y = (int) this.object.getY();
 		
-		x = x * size + (getWidth() - (size * mazeWidth)) / 2;
-		y = y * size + (getHeight() - (size * mazeHeight)) / 2;
-
+		x = (x * size) + ((getWidth() - (size * mazeWidth) - (size / 2)) / 2);
+		y = (y * size) + ((getHeight() - (size * mazeHeight) - (size / 2)) / 2);
     	
         super.paintComponent(g);
-        int[][] k = spritesManager.getPacmanCoords(this.getDirection());
-        g.drawImage(spritesManager.getSpritesSheet(), (int)x, (int)y, (int)x+size, (int)y+size, k[0][0], k[0][1], k[0][2], k[0][3], null);
-        g.drawImage(spritesManager.getSpritesSheet(), (int)x+size, (int)y, (int) x+(2*size), (int)y+size, k[1][0], k[1][1], k[1][2], k[1][3], null);
-        g.drawImage(spritesManager.getSpritesSheet(), (int)x, (int)y+size, (int)x+size,(int) y+(2*size), k[2][0], k[2][1], k[2][2], k[2][3], null);
-        g.drawImage(spritesManager.getSpritesSheet(), (int)x+size, (int)y+size, (int)x+(2*size), (int)y+(2*size), k[3][0], k[3][1], k[3][2], k[3][3], null);
+        int[] k = spritesManager.getPacmanCoords(this.getDirection());
+        g.drawImage(spritesManager.getSpritesSheet(), (int)x, (int)y, (int)x+(2*size), (int)y+(2*size), k[0], k[1], k[2], k[3], null);
     }
 
 

@@ -17,10 +17,10 @@ public abstract class GameObject extends JPanel{
 	
 	protected Rectangle2D.Double object = null;
 	
-	protected int x;
-	protected int y;
+	protected double x;
+	protected double y;
 	
-	public GameObject(int x, int y, double width, double height, Settings s) {
+	public GameObject(double x, double y, double width, double height, Settings s) {
 		super();
 		mazeHeight = s.getMazeData().getHeight();
 		mazeWidth = s.getMazeData().getWidth();

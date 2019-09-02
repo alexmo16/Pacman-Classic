@@ -14,7 +14,7 @@ public abstract class DynamicObject extends GameObject {
 		this.direction = null;
 	}
 	
-	public DynamicObject(int x, int y, double width, double height, String direction, Settings s) {
+	public DynamicObject(double x, double y, double width, double height, String direction, Settings s) {
 		super(x,y,width,height, s);
 		this.direction = direction;
 	}

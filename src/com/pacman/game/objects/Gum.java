@@ -7,21 +7,25 @@ import com.pacman.game.Settings;
 
 public class Gum extends StaticObject{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2208175145272051306L;
 	protected final int SCORE = 10;
+	
 	
 	public Gum() {
 		super();
 	}
 	
-	public Gum(int x, int y, int width, int height, Settings s) {
+	
+	public Gum(double x, double y, double width, double height, Settings s) {
 		super(x, y, width, height, s);
-		
 	}
+	
+	
 	public int getPoint()
 	{
 		return this.SCORE;
 	}
+	
 	
 	@Override
 	public void paintComponent(Graphics g) {
@@ -36,30 +40,29 @@ public class Gum extends StaticObject{
 		int[] k = spritesManager.getGumCoords();
 
 		g.drawImage(spritesManager.getSpritesSheet(), x, y, x + size, y + size, k[0], k[1], k[2], k[3], null);
-
 	}
 	
-	public static ArrayList<Gum> generateGumList(Settings s) 
-	{
+	
+	public static ArrayList<Gum> generateGumList(Settings s) {
 		ArrayList<Gum> gumList = new ArrayList<>();
 		
-		for (int y = 0; y < mazeHeight; y++) 
-		{
-			for (int x = 0; x < mazeWidth; x++) 
-			{
-				if (mazeData.getTile(x, y) == 30) 
-				{
-					gumList.add(new Gum(x, y, 10, 10, s));
+		for (int y = 0; y < mazeHeight; y++) {
+			
+			for (int x = 0; x < mazeWidth; x++) {	
+				
+				if (mazeData.getTile(x, y) == 30) {
+					
+					gumList.add(new Gum(x + 0.25, y + 0.25, 0.5, 0.5, s));
 				}
 			}
 		}
-		
 		return gumList;
 	}
 	
+	
 	@Override
 	public String toString() {
-		return "x : " + this.object.getX() + "\n Y : " + this.object.getY();
+		return "x : " + this.object.getX() + "\t Y : " + this.object.getY();
 	}
 }
 

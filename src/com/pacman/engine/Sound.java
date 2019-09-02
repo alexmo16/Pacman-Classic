@@ -13,6 +13,7 @@ public class Sound
 {
 	private static String filePath;
 	private static Clip audioClip;
+	private AudioInputStream inputStream;
 	
 	public Sound( String path ) throws UnsupportedAudioFileException, IOException, LineUnavailableException
 	{
@@ -32,17 +33,22 @@ public class Sound
 	
 	private void init() throws UnsupportedAudioFileException, IOException, LineUnavailableException
 	{
-		AudioInputStream inputStream = AudioSystem.getAudioInputStream( new File( filePath ).getAbsoluteFile() );
+		inputStream = AudioSystem.getAudioInputStream( new File( filePath ).getAbsoluteFile() );
 		// Cree une reference vers un clip
-		audioClip = AudioSystem.getClip();		
-		audioClip.open( inputStream );
-		
+		audioClip = AudioSystem.getClip();
 	}
 	
 	public boolean play()
 	{
 		if ( !Engine.getIsMuted() )
 		{
+			try 
+			{
+				audioClip.open( inputStream );
+			} catch (LineUnavailableException | IOException e) 
+			{
+				return false;
+			}
 			audioClip.setFramePosition( 0 );
 			audioClip.start();
 			return true;
@@ -54,5 +60,10 @@ public class Sound
 	public void stop()
 	{
 		audioClip.stop();
+	}
+	
+	public void activateLoopBack()
+	{
+		audioClip.loop( Clip.LOOP_CONTINUOUSLY );
 	}
 }

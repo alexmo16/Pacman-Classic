@@ -14,6 +14,9 @@ public abstract class GameObject extends JPanel{
 	
 	protected Rectangle object = null;
 	
+	protected int x;
+	protected int y;
+	
 	public GameObject(int x, int y, int width, int height, Settings s) {
 		super();
 		this.mazeHeight = s.getMazeData().getHeight();

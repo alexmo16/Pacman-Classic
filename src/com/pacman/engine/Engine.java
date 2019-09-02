@@ -146,7 +146,7 @@ public class Engine implements Runnable
 			// Si on a rien a afficher, on sleep.
 			if( render )
 			{
-				game.render(window);
+				window.getFrame().repaint();
 			}
 			else
 			{

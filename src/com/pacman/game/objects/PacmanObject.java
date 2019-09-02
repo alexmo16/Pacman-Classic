@@ -2,7 +2,6 @@ package com.pacman.game.objects;
 
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
 import com.pacman.engine.Inputs;
@@ -49,11 +48,7 @@ public class PacmanObject extends DynamicObject {
     @Override
 	public void paint(Graphics g) {
         super.paint(g);
-        Graphics2D g2d = (Graphics2D) g.create();
-
         int[] k = spritesManager.getPacmanCoords();
         g.drawImage(spritesManager.getSpritesSheet(), (int)this.object.getX(), (int)this.object.getY(), 19, 19, k[0], k[1], k[2], k[3], null);
-
-        g2d.dispose();
     }
 }

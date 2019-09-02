@@ -49,6 +49,10 @@ public class GameManager implements IGame
 			inGame.addGameObject(gum);
 		}
 		
+		for (Gum gum : gumList) {
+			System.out.println("Gum " + gumList.indexOf(gum) + " : " + gum.toString());
+		}
+		
 		inGame.init();
 		
 		window.getFrame().add(inGame);
@@ -90,24 +94,20 @@ public class GameManager implements IGame
 				toggleUserMuteSounds();
 			}
 			
-			System.out.println("pacman x : "+pacman.getRectangle().getX()+" et pacman y : "+pacman.getRectangle().getY()+" et w : "+pacman.getRectangle().getWidth()+" et h : "+pacman.getRectangle().getWidth());;			
 			direction = PacmanObject.getNewDirection(engine.getInputs(), direction);
             maybeFuturPacman.getRectangle().setRect(pacman.getRectangle().getX(),pacman.getRectangle().getY(),pacman.getRectangle().getWidth(),pacman.getRectangle().getHeight());
             futurPacman.getRectangle().setRect(pacman.getRectangle().getX(),pacman.getRectangle().getY(),pacman.getRectangle().getWidth(),pacman.getRectangle().getHeight());
 			DynamicObject.updatePosition(futurPacman.getRectangle(), direction);
 			DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
-			pacman.updatePosition();
 
 			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman);
-			System.out.println(checkCollision);
+			
 			
 			if(checkCollision == 2)
 			{
 				DynamicObject.tunnel(pacman.getRectangle(), direction);
 
-			}
-			
-			if (checkCollision == 0) {
+			} else if (checkCollision == 0) {
 				DynamicObject.updatePosition(pacman.getRectangle(), direction);
 				oldDirection = direction;
 			} else {

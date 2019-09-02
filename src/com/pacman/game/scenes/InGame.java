@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import com.pacman.game.Settings;
 import com.pacman.game.objects.GameObject;
 import com.pacman.game.objects.Maze;
+import com.pacman.game.objects.ScoreBar;
 
 
 
@@ -20,22 +21,34 @@ public class InGame extends JPanel
 	private static final long serialVersionUID = -4409914743783241379L;
 	
 	Background background;
-	GridBagConstraints gbc;
+	GridBagConstraints gbcMainPane;
+	GridBagConstraints gbcBottomPane;
 	Maze maze;
 	PausePane pausePane;
+	ScoreBar scoreBar;
     
 	public InGame(Settings s)
 	{	
         pausePane = new PausePane();
         maze = new Maze(s);
+        scoreBar = new ScoreBar(s);
         background = new Background();
 		
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1;
-        gbc.weighty = 1;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbcMainPane = new GridBagConstraints();
+        gbcMainPane.anchor = GridBagConstraints.CENTER;
+        gbcMainPane.fill = GridBagConstraints.BOTH;
+        gbcMainPane.gridx = 0;
+        gbcMainPane.gridy = 0;
+        gbcMainPane.weightx = 1.0;
+        gbcMainPane.weighty = 0.955;
+        
+        gbcBottomPane = new GridBagConstraints();
+        gbcBottomPane.anchor = GridBagConstraints.CENTER;
+        gbcBottomPane.fill = GridBagConstraints.BOTH;
+        gbcBottomPane.gridx = 0;
+        gbcBottomPane.gridy = 1;
+        gbcBottomPane.weightx = 1.0;
+        gbcBottomPane.weighty = 0.005;
         
         setLayout(new GridBagLayout());
 	}
@@ -47,14 +60,15 @@ public class InGame extends JPanel
 	
 	public void init()
 	{
-        add(pausePane, gbc);
-        add(maze, gbc);
-        add(background, gbc);
+        add(pausePane, gbcMainPane);
+        add(maze, gbcMainPane);
+        add(scoreBar, gbcBottomPane);
+        add(background, gbcMainPane);
 	}
 	
 	public void addGameObject(GameObject obj)
 	{
-		add(obj, gbc);
+		add(obj, gbcMainPane);
 	}
 	
 	private class Background extends JPanel 

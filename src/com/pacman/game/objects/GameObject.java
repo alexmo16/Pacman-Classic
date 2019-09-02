@@ -5,7 +5,6 @@ import java.awt.geom.Rectangle2D;
 import com.pacman.game.MazeData;
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
-
 import javax.swing.JPanel;
 
 public abstract class GameObject extends JPanel{

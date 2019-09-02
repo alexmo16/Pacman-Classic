@@ -7,13 +7,13 @@ import java.awt.event.KeyEvent;
 import com.pacman.engine.Inputs;
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
+import com.pacman.game.scenes.InGame;
 
 public class PacmanObject extends DynamicObject {
 	
 	private static final long serialVersionUID = 1L;
 	private final SpritesManager spritesManager;
 	Settings settings = new Settings();
-	protected int score = 0;
 
 	public PacmanObject() {
 		super();
@@ -48,12 +48,8 @@ public class PacmanObject extends DynamicObject {
 	
 	public void eatGum(StaticObject obj)
 	{
-		this.score += obj.getPoints();
+		InGame.getScoreBar().addPointsScore(obj.getPoints());
 		obj.setEaten(true);
-	}
-	
-	public int getScore() {
-		return score;
 	}
 	
     @Override

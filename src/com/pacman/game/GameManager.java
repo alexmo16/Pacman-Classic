@@ -95,14 +95,19 @@ public class GameManager implements IGame
 
 			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map,20,20);
 			
+			for (Gum gum : gumList) {
+				if (CollisionManager.getInstance().collisionObj(pacman, gum)){
+					pacman.eatGum(gum);
+					gumList.remove(gum);
+				}
+			}
+			System.out.println(pacman.getScore());
 			
 			if(checkCollision == 2)
 			{
 				DynamicObject.tunnel(pacman.getRectangle(), direction);
 
-			}
-			
-			if (checkCollision == 0) {
+			} else if (checkCollision == 0) {
 				DynamicObject.updatePosition(pacman.getRectangle(), direction);
 				oldDirection = direction;
 			} else {

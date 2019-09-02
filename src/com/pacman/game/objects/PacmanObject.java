@@ -65,7 +65,7 @@ public class PacmanObject extends DynamicObject {
 	
 	public void eatGum(Gum obj)
 	{
-		this.score=this.getScore()+obj.getPoint();
+		this.score += obj.getPoint();
 		obj.setEaten(true);
 	}
 	

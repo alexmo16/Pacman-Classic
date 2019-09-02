@@ -38,14 +38,11 @@ public class InGame extends JPanel
         gbc.fill = GridBagConstraints.BOTH;
         
         setLayout(new GridBagLayout());
-
-        // TODO : Make this work with key
-        //MouseAdapter handler = new MouseAdapter() {
-        //    @Override
-        //    public void mouseClicked(MouseEvent e) {
-        //        pausePane.setVisible(!pausePane.isVisible());
-        //    }
-        //};
+	}
+	
+	public void togglePausePane()
+	{
+		pausePane.setVisible(!pausePane.isVisible());
 	}
 	
 	public void init()

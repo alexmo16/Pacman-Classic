@@ -53,6 +53,7 @@ public class GameManager implements IGame
 		
 		if ( inputs.isKeyDown( settings.getPauseButton() ) )
 		{
+			inGame.togglePausePane();
 			isPlaying = !isPlaying;
 			Engine.setIsMuted( !isPlaying );
 		}

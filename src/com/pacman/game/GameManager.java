@@ -67,7 +67,7 @@ public class GameManager implements IGame
 			DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
 
 			checkCollision = CollisionManager.getInstance().collisionWall(futurPacman,map,20,20);
-			System.out.println("x "+pacman.getRectangle().getX()+" y "+pacman.getRectangle().getY());
+			
 			
 			if(checkCollision == 2)
 			{

@@ -1,6 +1,8 @@
 package com.pacman.game.objects;
 
 import java.awt.Rectangle;
+
+import com.pacman.game.MazeData;
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
 
@@ -9,8 +11,9 @@ import javax.swing.JPanel;
 public abstract class GameObject extends JPanel{
 	private static final long serialVersionUID = 5089602216528128118L;
 	
-	protected final int mazeHeight, mazeWidth;
-	protected final SpritesManager spritesManager; 
+	protected static int mazeHeight, mazeWidth;
+	protected final SpritesManager spritesManager;
+	protected static MazeData mazeData;
 	
 	protected Rectangle object = null;
 	
@@ -19,8 +22,9 @@ public abstract class GameObject extends JPanel{
 	
 	public GameObject(int x, int y, int width, int height, Settings s) {
 		super();
-		this.mazeHeight = s.getMazeData().getHeight();
-		this.mazeWidth = s.getMazeData().getWidth();
+		mazeHeight = s.getMazeData().getHeight();
+		mazeWidth = s.getMazeData().getWidth();
+		mazeData = s.getMazeData();
 		this.spritesManager = s.getSpritesManager();
 		this.object = new Rectangle(x, y, width, height);
 		setOpaque(false);
@@ -28,8 +32,9 @@ public abstract class GameObject extends JPanel{
 		
 	public GameObject() {
 		super();
-		this.mazeHeight = 0;
-		this.mazeWidth = 0;
+		mazeHeight = 0;
+		mazeWidth = 0;
+		mazeData = null;
 		this.spritesManager = null;
 		this.object = new Rectangle();
 		setOpaque(false);

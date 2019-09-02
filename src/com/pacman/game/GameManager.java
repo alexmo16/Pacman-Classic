@@ -14,6 +14,7 @@ import com.pacman.engine.Sound;
 import com.pacman.engine.Window;
 import com.pacman.game.objects.DynamicObject;
 import com.pacman.game.objects.Gum;
+import com.pacman.game.objects.PacGum;
 import com.pacman.game.objects.PacmanObject;
 import com.pacman.game.scenes.InGame;
 
@@ -23,6 +24,7 @@ public class GameManager implements IGame
 	PacmanObject futurPacman;
 	PacmanObject maybeFuturPacman;
 	ArrayList<Gum> gumList;
+	ArrayList<PacGum> pacGumList;
 	String oldDirection = "right", direction = "right";
 	private int checkCollision = 1;
 	private int[][] map = null;
@@ -47,6 +49,16 @@ public class GameManager implements IGame
 		inGame.addGameObject(pacman);
 		for (Gum gum : gumList) {
 			inGame.addGameObject(gum);
+		}
+		
+		for (PacGum pacGum : pacGumList)
+		{
+			inGame.addGameObject(pacGum);
+		}
+		
+		for (PacGum pacGum : pacGumList)
+		{
+			System.out.println("PacGum " + pacGumList.indexOf(pacGum) + " : " + pacGum.toString());
 		}
 		
 		for (Gum gum : gumList) {
@@ -153,6 +165,7 @@ public class GameManager implements IGame
 		futurPacman = new PacmanObject(startingPosition[0],startingPosition[1],pacmanBox,pacmanBox,direction, settings);
 		map = settings.getMazeData().getTiles();
 		gumList = Gum.generateGumList(settings);
+		pacGumList = PacGum.generatePacGumList(settings);
 	}
 	
 	private void toggleUserMuteSounds()

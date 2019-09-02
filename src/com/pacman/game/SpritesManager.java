@@ -39,6 +39,11 @@ public class SpritesManager
 		return spritesCoords[12];
 	}
 	
+	public int[] getPacGumCoords()
+	{
+		return spritesCoords[13];
+	}
+	
 	public Image getSpritesSheet() 
 	{
 		return spritesSheet;

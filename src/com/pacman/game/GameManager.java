@@ -55,11 +55,6 @@ public class GameManager implements IGame
 			inGame.addGameObject(pacGum);
 		}
 		
-<<<<<<< HEAD
-=======
-
-		
->>>>>>> branch 'master' of https://gitlab.com/pacman-equipe-05/pacman
 		inGame.init();
 		
 		CollisionManager.setSettings(settings);
@@ -111,16 +106,8 @@ public class GameManager implements IGame
 
 			checkCollision = CollisionManager.collisionWall(futurPacman);
 			
-			for (Gum gum : gumList) {
-				if (CollisionManager.collisionObj(pacman, gum)) {
-					pacman.eatGum(gum);
-					gumList.remove(gum);
-					gum.setVisible(false);
-					gum = null;
-					System.out.println(pacman.getScore());
-					break;
-				}
-			}
+			checkGumCollision();
+			checkPacGumCollision();
 			
 			if(checkCollision == 2)
 			{
@@ -208,6 +195,30 @@ public class GameManager implements IGame
 		{
 			Engine.setIsMuted( true );
 			gameSiren.stop();
+		}
+	}
+	
+	private void checkGumCollision() {
+		for (Gum gum : gumList) {
+			if (CollisionManager.collisionObj(pacman, gum)) {
+				pacman.eatGum(gum);
+				gumList.remove(gum);
+				gum.setVisible(false);
+				gum = null;
+				break;
+			}
+		}
+	}
+	
+	private void checkPacGumCollision() {
+		for (PacGum pacGum : pacGumList) {
+			if (CollisionManager.collisionObj(pacman, pacGum)) {
+				pacman.eatGum(pacGum);
+				pacGumList.remove(pacGum);
+				pacGum.setVisible(false);
+				pacGum = null;
+				break;
+			}
 		}
 	}
 }

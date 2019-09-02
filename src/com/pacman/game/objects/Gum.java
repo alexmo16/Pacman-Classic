@@ -8,24 +8,16 @@ import com.pacman.game.Settings;
 public class Gum extends StaticObject{
 
 	private static final long serialVersionUID = 2208175145272051306L;
-	protected final int SCORE = 10;
-	protected boolean eaten;
-	
 	
 	public Gum() {
 		super();
+		this.points = 0;
 	}
 	
 	
 	public Gum(double x, double y, double width, double height, Settings s) {
 		super(x, y, width, height, s);
-		this.eaten = false;
-	}
-	
-	
-	public int getPoint()
-	{
-		return this.SCORE;
+		this.points = 10;
 	}
 	
 	

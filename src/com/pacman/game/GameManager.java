@@ -148,7 +148,7 @@ public class GameManager implements IGame
                 DynamicObject.updatePosition(pacman.getRectangle(), direction);
                 pacman.setDirection(direction);
                 oldDirection = direction;
-                inGame.getScoreBar().setCollision(false, oldDirection);
+                scoreBar.setCollision(false, oldDirection);
             } else
             {
 

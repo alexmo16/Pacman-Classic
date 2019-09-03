@@ -13,7 +13,6 @@ public class PacGum extends StaticObject
 
     public PacGum()
     {
-        super();
         this.points = 0;
     }
 

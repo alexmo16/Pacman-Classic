@@ -16,7 +16,6 @@ public abstract class DynamicObject extends GameObject
 
     public DynamicObject()
     {
-        super();
         this.direction = null;
     }
 

@@ -23,19 +23,16 @@ public class PacGum extends StaticObject
     }
 
     @Override
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        int size = Math.min(getWidth(), getHeight()) / mazeHeight;
-        int x = (int) this.object.getX();
-        int y = (int) this.object.getY();
-
-        x = x * size + (getWidth() - (size * mazeWidth)) / 2;
-        y = y * size + (getHeight() - (size * mazeHeight)) / 2;
-
+    protected void paintComponent(Graphics g)
+    {   
+        int tileSize = Math.min(getHeight() / mazeHeight, getWidth() / mazeWidth);
+        if ( (tileSize & 1) != 0 ) { tileSize--; }
+        
+        int x = ((int)object.getX() * tileSize) + (getWidth() - (tileSize * mazeWidth)) / 2;
+        int y = ((int)object.getY() * tileSize) + (getHeight() - (tileSize * mazeHeight)) / 2;
         int[] k = spritesManager.getPacGumCoords();
 
-        g.drawImage(spritesManager.getSpritesSheet(), x, y, x + size, y + size, k[0], k[1], k[2], k[3], null);
+        g.drawImage(spritesManager.getSpritesSheet(), x, y, x + tileSize, y + tileSize, k[0], k[1], k[2], k[3], null);
     }
 
     public static ArrayList<PacGum> generatePacGumList(Settings s)

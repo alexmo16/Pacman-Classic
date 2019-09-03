@@ -159,6 +159,19 @@ public class CSVUtilsTest
     }
 
     @Test
+    public void test_custom_quote_in_the_line()
+    {
+        String line = "'10','AU','\'Australia'";
+        List<String> result = CSVUtils.parseLine(line, ' ', '\'');
+
+        assertNotEquals(result, null);
+        assertEquals(result.size(), 3);
+        assertEquals(result.get(0), "10");
+        assertEquals(result.get(1), "AU");
+        assertEquals(result.get(2), "Australia\"");
+    }
+    
+    @Test
     public void test_custom_separator_and_quote()
     {
         String line = "'10'|'AU'|'Australia'";

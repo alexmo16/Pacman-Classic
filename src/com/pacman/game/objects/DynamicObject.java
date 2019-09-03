@@ -2,7 +2,9 @@ package com.pacman.game.objects;
 
 import java.awt.geom.Rectangle2D;
 
+import com.pacman.engine.objects.GameObject;
 import com.pacman.game.Settings;
+import com.pacman.game.SpritesManager;
 
 public abstract class DynamicObject extends GameObject
 {
@@ -10,6 +12,7 @@ public abstract class DynamicObject extends GameObject
     private static final long serialVersionUID = 1L;
     protected String direction;
     static double speed = 0.1;
+    protected SpritesManager spritesManager;
 
     public DynamicObject()
     {
@@ -21,6 +24,7 @@ public abstract class DynamicObject extends GameObject
     {
         super(x, y, width, height, s);
         this.direction = direction;
+        spritesManager = s.getSpritesManager();
     }
 
     public String getDirection()

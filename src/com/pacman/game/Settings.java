@@ -74,6 +74,7 @@ public class Settings implements ISettings
         return mazeData;
     }
 
+    @Override
     public SpritesManager getSpritesManager()
     {
         return spritesManager;

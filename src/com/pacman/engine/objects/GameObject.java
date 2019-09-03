@@ -1,18 +1,21 @@
-package com.pacman.game.objects;
+package com.pacman.engine.objects;
 
 import java.awt.geom.Rectangle2D;
 
-import com.pacman.engine.objects.SceneObject;
+import com.pacman.engine.ISettings;
+import com.pacman.engine.ISpritesManager;
 import com.pacman.engine.world.WorldData;
-import com.pacman.game.Settings;
-import com.pacman.game.SpritesManager;
 
+/**
+ * Definie un objet qui possede une boite de collision.
+ *
+ */
 public abstract class GameObject extends SceneObject
 {
     private static final long serialVersionUID = 5089602216528128118L;
 
     protected static int mazeHeight, mazeWidth;
-    protected final SpritesManager spritesManager;
+    protected final ISpritesManager spritesManager;
     protected static WorldData mazeData;
 
     protected Rectangle2D.Double object = null;
@@ -20,7 +23,7 @@ public abstract class GameObject extends SceneObject
     protected double x;
     protected double y;
 
-    public GameObject(double x, double y, double width, double height, Settings s)
+    public GameObject(double x, double y, double width, double height, ISettings s)
     {
         super();
         mazeHeight = s.getWorldData().getHeight();

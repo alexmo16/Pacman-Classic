@@ -1,6 +1,8 @@
 package com.pacman.game.objects;
 
+import com.pacman.engine.objects.GameObject;
 import com.pacman.game.Settings;
+import com.pacman.game.SpritesManager;
 
 abstract public class StaticObject extends GameObject
 {
@@ -8,6 +10,7 @@ abstract public class StaticObject extends GameObject
     private static final long serialVersionUID = 1L;
     protected boolean eaten;
     protected int points;
+    protected SpritesManager spritesManager;
 
     public StaticObject()
     {
@@ -21,6 +24,7 @@ abstract public class StaticObject extends GameObject
         super(x, y, width, height, s);
         this.eaten = false;
         this.points = 0;
+        spritesManager = s.getSpritesManager();
     }
 
     public int getPoints()

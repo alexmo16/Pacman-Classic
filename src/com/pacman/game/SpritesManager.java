@@ -1,9 +1,11 @@
 package com.pacman.game;
 
 import java.awt.Image;
+
+import com.pacman.engine.ISpritesManager;
 import com.pacman.utils.SpriteUtils;
 
-public class SpritesManager
+public class SpritesManager implements ISpritesManager
 {
     private Image spritesSheet = null;
     private int[][] spritesCoords = null;
@@ -69,21 +71,25 @@ public class SpritesManager
         return spritesCoords[14];
     }
 
+    @Override
     public Image getSpritesSheet()
     {
         return spritesSheet;
     }
-
+    
+    @Override
     public void setSpritesSheet(Image spritesSheet)
     {
         this.spritesSheet = spritesSheet;
     }
 
+    @Override
     public int[][] getSpritesCoords()
     {
         return spritesCoords;
     }
 
+    @Override
     public void setSpritesCoords(int[][] spritesCoords)
     {
         this.spritesCoords = spritesCoords;

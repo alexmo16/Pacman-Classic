@@ -21,4 +21,6 @@ public interface ISettings
     public WorldData getWorldData();
 
     public int[] getAuthTiles();
+    
+    public ISpritesManager getSpritesManager();
 }

@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import com.pacman.engine.Engine;
 import com.pacman.engine.IGame;
 import com.pacman.engine.ISettings;
+import com.pacman.engine.ISpritesManager;
 import com.pacman.engine.Window;
 import com.pacman.engine.world.WorldData;
 
@@ -67,6 +68,12 @@ class Settings implements ISettings
 
 	@Override
 	public int[] getAuthTiles() {
+		return null;
+	}
+
+	@Override
+	public ISpritesManager getSpritesManager() 
+	{
 		return null;
 	}
 }

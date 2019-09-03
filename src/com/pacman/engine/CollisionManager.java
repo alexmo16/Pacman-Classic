@@ -1,7 +1,6 @@
 package com.pacman.engine;
 
-import com.pacman.game.objects.DynamicObject;
-import com.pacman.game.objects.GameObject;
+import com.pacman.engine.objects.GameObject;
 
 /**
  * 
@@ -16,10 +15,8 @@ public abstract class CollisionManager
     static int[] authTiles;
     static ISettings settings;
 
-    public static int collisionWall(DynamicObject obj)
-
+    public static int collisionWall(GameObject obj)
     {
-
         int xMin = (int) obj.getRectangle().getMinX(); // coordonnes de l'angle haut-gauche du pacman
         int yMin = (int) obj.getRectangle().getMinY();
 
@@ -39,7 +36,6 @@ public abstract class CollisionManager
         }
 
         return 1;
-
     }
 
     public static boolean collisionObj(GameObject obj1, GameObject obj2)
@@ -64,5 +60,4 @@ public abstract class CollisionManager
         CollisionManager.settings = settings;
         authTiles = settings.getAuthTiles();
     }
-
 }

@@ -28,7 +28,6 @@ import com.pacman.game.scenes.InGame;
 public class GameManager implements IGame
 {
     String oldDirection = "left", direction = "left";
-    int checkCollision = 1;
     int startingPosition[];
    
     double pacmanBox;
@@ -135,44 +134,11 @@ public class GameManager implements IGame
             DynamicObject.updatePosition(futurPacman.getRectangle(), direction);
             DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
 
-            checkCollision = CollisionManager.collisionWall(futurPacman);
-
             checkGumCollision();
             checkPacGumCollision();
-
-            if (checkCollision == 2)
-            {
-                DynamicObject.tunnel(pacman.getRectangle(), direction);
-                scoreBar.setCollision(false, oldDirection);
-
-            } else if (checkCollision == 0)
-            {
-                DynamicObject.updatePosition(pacman.getRectangle(), direction);
-                pacman.setDirection(direction);
-                oldDirection = direction;
-                scoreBar.setCollision(false, oldDirection);
-            } else
-            {
-
-                checkCollision = CollisionManager.collisionWall(maybeFuturPacman);
-                if (checkCollision == 2)
-                {
-                    DynamicObject.tunnel(pacman.getRectangle(), oldDirection);
-                    pacman.setDirection(oldDirection);
-                    scoreBar.setCollision(false, oldDirection);
-                }
-                if (checkCollision == 0)
-                {
-                    DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
-                    pacman.setDirection(oldDirection);
-                    scoreBar.setCollision(false, oldDirection);
-                } else
-                {
-                	scoreBar.setCollision(true, oldDirection);
-                }
-
-            }
-
+            // Strategy pattern for wall collisions.
+            int checkWallCollision = CollisionManager.collisionWall(futurPacman);
+            executeWallStrategy( checkWallCollision );
         }
 
     }
@@ -276,5 +242,55 @@ public class GameManager implements IGame
                 break;
             }
         }
+    }
+    
+    private void executeWallStrategy( int collisionID )
+    {
+    	if ( collisionID == 2 )
+    	{
+    		tunnelStrategy();
+    	}
+    	else if ( collisionID == 1 )
+    	{
+    		oneWallStrategy();
+    	}
+    	else
+    	{
+    		noWallStrategy();
+    	}
+    }
+    
+    private void oneWallStrategy()
+    {
+    	int collisionID = CollisionManager.collisionWall(maybeFuturPacman);
+        if (collisionID == 2)
+        {
+            DynamicObject.tunnel(pacman.getRectangle(), oldDirection);
+            pacman.setDirection(oldDirection);
+            scoreBar.setCollision(false, oldDirection);
+        }
+        if (collisionID == 0)
+        {
+            DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
+            pacman.setDirection(oldDirection);
+            scoreBar.setCollision(false, oldDirection);
+        } else
+        {
+        	scoreBar.setCollision(true, oldDirection);
+        }
+    }
+    
+    private void tunnelStrategy()
+    {
+    	DynamicObject.tunnel(pacman.getRectangle(), direction);
+        scoreBar.setCollision(false, oldDirection);
+    }
+    
+    private void noWallStrategy()
+    {
+    	DynamicObject.updatePosition(pacman.getRectangle(), direction);
+        pacman.setDirection(direction);
+        oldDirection = direction;
+        scoreBar.setCollision(false, oldDirection);
     }
 }

@@ -14,26 +14,24 @@ import com.pacman.game.objects.GameObject;
 import com.pacman.game.objects.Maze;
 import com.pacman.game.objects.ScoreBar;
 
-
-
 public class InGame extends JPanel
 {
-	private static final long serialVersionUID = -4409914743783241379L;
-	
-	Background background;
-	GridBagConstraints gbcMainPane;
-	GridBagConstraints gbcBottomPane;
-	Maze maze;
-	PausePane pausePane;
-	static ScoreBar scoreBar;
-    
-	public InGame(Settings s)
-	{	
+    private static final long serialVersionUID = -4409914743783241379L;
+
+    Background background;
+    GridBagConstraints gbcMainPane;
+    GridBagConstraints gbcBottomPane;
+    Maze maze;
+    PausePane pausePane;
+    ScoreBar scoreBar;
+
+    public InGame(Settings s)
+    {
         pausePane = new PausePane();
         maze = new Maze(s);
         scoreBar = new ScoreBar(s);
         background = new Background();
-		
+
         gbcMainPane = new GridBagConstraints();
         gbcMainPane.anchor = GridBagConstraints.CENTER;
         gbcMainPane.fill = GridBagConstraints.BOTH;
@@ -41,7 +39,7 @@ public class InGame extends JPanel
         gbcMainPane.gridy = 0;
         gbcMainPane.weightx = 1.0;
         gbcMainPane.weighty = 0.955;
-        
+
         gbcBottomPane = new GridBagConstraints();
         gbcBottomPane.anchor = GridBagConstraints.CENTER;
         gbcBottomPane.fill = GridBagConstraints.BOTH;
@@ -49,46 +47,44 @@ public class InGame extends JPanel
         gbcBottomPane.gridy = 1;
         gbcBottomPane.weightx = 1.0;
         gbcBottomPane.weighty = 0.005;
-        
+
         setLayout(new GridBagLayout());
-	}
-	
-	
-	
-	public static ScoreBar getScoreBar() {
-		return scoreBar;
-	}
+    }
 
+    public ScoreBar getScoreBar()
+    {
+        return scoreBar;
+    }
 
-	public void togglePausePane()
-	{
-		pausePane.setVisible(!pausePane.isVisible());
-	}
-	
-	public void init()
-	{
+    public void togglePausePane()
+    {
+        pausePane.setVisible(!pausePane.isVisible());
+    }
+
+    public void init()
+    {
         add(pausePane, gbcMainPane);
         add(maze, gbcMainPane);
         add(scoreBar, gbcBottomPane);
         add(background, gbcMainPane);
-	}
-	
-	public void addGameObject(GameObject obj)
-	{
-		add(obj, gbcMainPane);
-	}
-	
-	private class Background extends JPanel 
-    {
-		private static final long serialVersionUID = 8397625306659836208L;
+    }
 
-		public Background()
+    public void addGameObject(GameObject obj)
+    {
+        add(obj, gbcMainPane);
+    }
+
+    private class Background extends JPanel
+    {
+        private static final long serialVersionUID = 8397625306659836208L;
+
+        public Background()
         {
             setOpaque(false);
         }
 
         @Override
-        protected void paintComponent(Graphics g) 
+        protected void paintComponent(Graphics g)
         {
             super.paintComponent(g);
             g.setColor(Color.black);
@@ -96,15 +92,15 @@ public class InGame extends JPanel
         }
 
     }
-    
-    public class PausePane extends JPanel 
+
+    public class PausePane extends JPanel
     {
-		private static final long serialVersionUID = -8273676847821032527L;
-		
-		private JLabel label;
+        private static final long serialVersionUID = -8273676847821032527L;
+
+        private JLabel label;
 
         public PausePane()
-    	{
+        {
             setVisible(false);
             setOpaque(false);
             setBackground(new Color(0, 0, 0, 200));
@@ -121,7 +117,7 @@ public class InGame extends JPanel
         }
 
         @Override
-        protected void paintComponent(Graphics g) 
+        protected void paintComponent(Graphics g)
         {
             super.paintComponent(g);
             g.setColor(getBackground());

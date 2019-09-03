@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import com.pacman.engine.objects.SceneObject;
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
+import com.pacman.game.WorldTile;
 
 public class Maze extends SceneObject
 {
@@ -42,7 +43,7 @@ public class Maze extends SceneObject
             x = xStart;
             for (int vert = 0; vert < mazeWidth; vert++) 
             {
-            	if (tiles[vert][horz] > 0 && tiles[vert][horz] <= 24)
+            	if (tiles[vert][horz] >= WorldTile.WALL_START.getValue() && tiles[vert][horz] <= WorldTile.WALL_END.getValue())
             	{
             		coords = spritesManager.getMazeTileCoords(tiles[vert][horz]);
             		g.drawImage(spritesManager.getSpritesSheet(), x, y, x + tileSize, y + tileSize, coords[0], coords[1], coords[2], coords[3], null);

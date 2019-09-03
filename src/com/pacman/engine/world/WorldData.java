@@ -10,15 +10,13 @@ public class WorldData
 {
     private int[][] tiles = null;
     private int width = 0, height = 0;
-    private int[] startPosition = null;
 
-    public WorldData(String mapFilePath)
+    public WorldData(String worldFilePath)
     {
-        try (Scanner scanner = new Scanner(new File(mapFilePath)))
+        try (Scanner scanner = new Scanner(new File(worldFilePath)))
         {
             List<String> line = null;
-
-            // Get the size of the maze
+            // Get the size of the world
             if (scanner.hasNext())
             {
                 line = CSVUtils.parseLine(scanner.nextLine());
@@ -26,18 +24,19 @@ public class WorldData
                 {
                     width = Integer.parseInt(line.get(0));
                     height = Integer.parseInt(line.get(1));
-                } else
+                } 
+                else
                 {
-                    throw new Exception("The first line of the map file has incorrect format");
+                    throw new Exception("The first line of the world file has incorrect format");
                 }
-            } else
+            } 
+            else
             {
-                throw new Exception("The map file is empty");
+                throw new Exception("The world file is empty");
             }
 
-            // Get the data of the maze
+            // Get the data of the world
             tiles = new int[width][height];
-
             for (int row = 0; row < height; row++)
             {
                 if (scanner.hasNext())
@@ -48,32 +47,52 @@ public class WorldData
                         if (line.size() == width)
                         {
                             tiles[col][row] = Integer.parseInt(line.get(col));
-                            if (tiles[col][row] == 60)
-                            {
-                                startPosition = new int[]
-                                { col, row };
-                            }
-                        } else
+                        } 
+                        else
                         {
-                            throw new Exception("The maze file does not have consistent column count");
+                            throw new Exception("The world file does not have consistent column count");
                         }
                     }
-                } else
+                } 
+                else
                 {
-                    throw new Exception("The maze file does not have consistent row count");
+                    throw new Exception("The world file does not have consistent row count");
                 }
             }
 
             scanner.close();
-        } catch (Exception e)
+        } 
+        catch (Exception e)
         {
-            System.out.println("Exception during maze init : " + e.toString());
+            System.out.println("Exception during WorldData construction : " + e.toString());
         }
     }
 
+    public int[] findFirstInstanceOF(int value)
+    {
+    	for (int y = 0; y < height; y++)
+    	{
+    		for (int x = 0; x < width; x++)
+    		{
+    			if (tiles[x][y] == value)
+    			{
+    				return new int[]{x, y};
+    			}
+    		}
+    	}
+    	return null;
+    }
+    
     public int getTile(int x, int y)
     {
-        return tiles[x][y];
+    	if (x < 0 || x > width || y < 0 || y > height)
+    	{
+    		return -1;
+    	}
+		else
+    	{
+    		return tiles[x][y];
+    	}
     }
 
     public int[][] getTiles()
@@ -89,10 +108,5 @@ public class WorldData
     public int getHeight()
     {
         return height;
-    }
-
-    public int[] getStartPosition()
-    {
-        return startPosition;
     }
 }

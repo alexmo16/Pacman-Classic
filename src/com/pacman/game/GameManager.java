@@ -78,7 +78,7 @@ public class GameManager implements IGame
     public GameManager()
     {
     	settings = new Settings();
-        startingPosition = settings.getWorldData().getStartPosition();
+        startingPosition = settings.getWorldData().findFirstInstanceOF(WorldTile.PAC_MAN_START.getValue());
         pacmanBox = 0.9;
         pacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction, settings);
         maybeFuturPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction,

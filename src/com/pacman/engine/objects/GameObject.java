@@ -14,9 +14,8 @@ public abstract class GameObject extends SceneObject
 {
     private static final long serialVersionUID = 5089602216528128118L;
 
-    protected static int mazeHeight, mazeWidth;
     protected final ISpritesManager spritesManager;
-    protected static WorldData mazeData;
+    protected static WorldData worldData;
 
     protected Rectangle2D.Double object = null;
 
@@ -26,9 +25,7 @@ public abstract class GameObject extends SceneObject
     public GameObject(double x, double y, double width, double height, ISettings s)
     {
         super();
-        mazeHeight = s.getWorldData().getHeight();
-        mazeWidth = s.getWorldData().getWidth();
-        mazeData = s.getWorldData();
+        worldData = s.getWorldData();
         this.spritesManager = s.getSpritesManager();
         this.object = new Rectangle2D.Double(x, y, width, height);
         setOpaque(false);
@@ -37,9 +34,7 @@ public abstract class GameObject extends SceneObject
     public GameObject()
     {
         super();
-        mazeHeight = 0;
-        mazeWidth = 0;
-        mazeData = null;
+        worldData = null;
         this.spritesManager = null;
         this.object = new Rectangle2D.Double();
         setOpaque(false);

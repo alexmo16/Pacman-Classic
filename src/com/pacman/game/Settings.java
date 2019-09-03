@@ -24,7 +24,7 @@ public class Settings implements ISettings
             System.getProperty("user.dir") + File.separator + "assets" + File.separator + "pacmanTiles.png", 48);
 
     private final int[] authTiles =
-    { 0, 30, 40, 50, 60 };
+    { WorldTile.FLOOR.getValue(), WorldTile.GUM.getValue(), WorldTile.ENERGIZER.getValue(), WorldTile.FRUIT.getValue(), WorldTile.PAC_MAN_START.getValue() };
 
     @Override
     public String getTitle()

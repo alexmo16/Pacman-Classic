@@ -58,11 +58,11 @@ public class PacmanObject extends DynamicObject
     @Override
     protected void paintComponent(Graphics g)
     {
-        int tileSize = Math.min(getHeight() / mazeHeight, getWidth() / mazeWidth);
+        int tileSize = Math.min(getHeight() / worldData.getHeight(), getWidth() / worldData.getWidth());
         if ( (tileSize & 1) != 0 ) { tileSize--; }
 
-        double x = (object.getX() * tileSize - (tileSize / 2)) + (getWidth() - (tileSize * mazeWidth)) / 2;
-        double y = (object.getY() * tileSize - (tileSize / 2)) + (getHeight() - (tileSize * mazeHeight)) / 2;
+        double x = (object.getX() * tileSize - (tileSize / 2)) + (getWidth() - (tileSize * worldData.getWidth())) / 2;
+        double y = (object.getY() * tileSize - (tileSize / 2)) + (getHeight() - (tileSize * worldData.getHeight())) / 2;
         int[] k = spritesManager.getPacmanCoords(this.getDirection());
         
         g.drawImage(spritesManager.getSpritesSheet(), (int) (x), (int) (y), (int) x + (2 * tileSize), (int) y + (2 * tileSize),

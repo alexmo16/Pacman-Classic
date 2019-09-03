@@ -65,10 +65,10 @@ public abstract class DynamicObject extends GameObject
             object.setRect(0.5, object.getY(), object.getWidth(), object.getHeight());
             break;
         case "left":
-            object.setRect(mazeWidth - object.getWidth() - 0.5, object.getY(), object.getWidth(), object.getHeight());
+            object.setRect(worldData.getWidth()- object.getWidth() - 0.5, object.getY(), object.getWidth(), object.getHeight());
             break;
         case "up":
-            object.setRect(object.getX(), mazeHeight - object.getHeight() - 0.5, object.getWidth(), object.getHeight());
+            object.setRect(object.getX(), worldData.getHeight() - object.getHeight() - 0.5, object.getWidth(), object.getHeight());
             break;
         case "down":
             object.setRect(object.getX(), 0.5, object.getWidth(), object.getHeight());

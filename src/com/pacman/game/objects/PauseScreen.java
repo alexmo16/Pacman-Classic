@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;
 
+import com.pacman.engine.objects.SceneObject;
+
 public class PauseScreen extends SceneObject
 {
 	private static final long serialVersionUID = -6141122120219706748L;

@@ -2,6 +2,7 @@ package com.pacman.game.objects;
 
 import java.awt.Graphics;
 
+import com.pacman.engine.objects.SceneObject;
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
 
@@ -16,9 +17,9 @@ public class Maze extends SceneObject
 
 	public Maze(Settings s)
 	{
-		mazeHeight = s.getMazeData().getHeight();
-		mazeWidth = s.getMazeData().getWidth();
-		tiles = s.getMazeData().getTiles();
+		mazeHeight = s.getWorldData().getHeight();
+		mazeWidth = s.getWorldData().getWidth();
+		tiles = s.getWorldData().getTiles();
 		spritesManager = s.getSpritesManager();
 	}
 

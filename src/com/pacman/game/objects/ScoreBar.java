@@ -2,6 +2,7 @@ package com.pacman.game.objects;
 
 import java.awt.Graphics;
 
+import com.pacman.engine.objects.SceneObject;
 import com.pacman.game.Settings;
 
 public class ScoreBar extends SceneObject

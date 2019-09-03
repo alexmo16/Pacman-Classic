@@ -1,4 +1,4 @@
-package com.pacman.game.objects;
+package com.pacman.engine.objects;
 
 import java.awt.Graphics;
 

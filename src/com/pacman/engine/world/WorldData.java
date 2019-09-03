@@ -1,4 +1,4 @@
-package com.pacman.game;
+package com.pacman.engine.world;
 
 import java.io.File;
 import java.util.List;
@@ -6,13 +6,13 @@ import java.util.Scanner;
 
 import com.pacman.utils.CSVUtils;
 
-public class MazeData
+public class WorldData
 {
     private int[][] tiles = null;
     private int width = 0, height = 0;
     private int[] startPosition = null;
 
-    public MazeData(String mapFilePath)
+    public WorldData(String mapFilePath)
     {
         try (Scanner scanner = new Scanner(new File(mapFilePath)))
         {

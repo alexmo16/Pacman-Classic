@@ -3,6 +3,11 @@ package com.pacman.engine;
 import com.pacman.game.objects.DynamicObject;
 import com.pacman.game.objects.GameObject;
 
+/**
+ * 
+ * Gere les collisions entre les differentes entites.
+ *
+ */
 public abstract class CollisionManager
 {
     static int[][] map = Engine.getMap();

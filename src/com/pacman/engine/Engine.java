@@ -29,9 +29,12 @@ public class Engine implements Runnable
 
     private static Engine instance;
 
+    /**
+     * Constructeur prive puisque c'est un singleton. Il faut passer par getInstance
+     */
     private Engine()
     {
-    } // parce que c'est un singleton
+    }
 
     public static Engine getInstance(Window window, IGame game)
     {
@@ -44,14 +47,14 @@ public class Engine implements Runnable
 
             Engine.game = game;
             settings = game.getSettings();
-            if (settings == null || settings.getMazeData() == null)
+            if (settings == null || settings.getWorldData() == null)
             {
                 return null;
             }
 
-            map = settings.getMazeData().getTiles();
-            mapH = settings.getMazeData().getHeight();
-            mapW = settings.getMazeData().getWidth();
+            map = settings.getWorldData().getTiles();
+            mapH = settings.getWorldData().getHeight();
+            mapW = settings.getWorldData().getWidth();
 
             Engine.window = window;
             inputs = new Inputs(Engine.window);
@@ -225,8 +228,8 @@ public class Engine implements Runnable
     }
 
     /**
-     * sert a geler le thread tant et aussi longtemps que le jeu roule et que l'�tat
-     * de pause est demand�.
+     * sert a geler le thread tant et aussi longtemps que le jeu roule et que l'etat
+     * de pause est demande.
      */
     private void freeze()
     {

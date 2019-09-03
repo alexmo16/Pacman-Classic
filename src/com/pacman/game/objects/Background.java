@@ -3,6 +3,8 @@ package com.pacman.game.objects;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.pacman.engine.objects.SceneObject;
+
 public class Background extends SceneObject
 {
 	private static final long serialVersionUID = -1595780761418114619L;

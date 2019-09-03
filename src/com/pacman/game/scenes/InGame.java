@@ -3,7 +3,8 @@ package com.pacman.game.scenes;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
-import com.pacman.game.objects.SceneObject;
+import com.pacman.engine.objects.SceneObject;
+import com.pacman.engine.world.Scene;
 
 public class InGame extends Scene
 {

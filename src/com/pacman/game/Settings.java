@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import com.pacman.engine.ISettings;
+import com.pacman.engine.world.WorldData;
 
 public class Settings implements ISettings
 {
@@ -16,7 +17,7 @@ public class Settings implements ISettings
 
     private final double updateRate = 1.0 / 60.0; // pour avoir 60 fps dans notre jeu.
 
-    private final MazeData mazeData = new MazeData(
+    private final WorldData mazeData = new WorldData(
             new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"));
 
     private final SpritesManager spritesManager = new SpritesManager(
@@ -68,7 +69,7 @@ public class Settings implements ISettings
     }
 
     @Override
-    public MazeData getMazeData()
+    public WorldData getWorldData()
     {
         return mazeData;
     }

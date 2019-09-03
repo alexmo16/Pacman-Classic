@@ -1,6 +1,6 @@
 package com.pacman.engine;
 
-import com.pacman.game.MazeData;
+import com.pacman.engine.world.WorldData;
 
 public interface ISettings
 {
@@ -18,7 +18,7 @@ public interface ISettings
 
     public double getUpdateRate();
 
-    public MazeData getMazeData();
+    public WorldData getWorldData();
 
     public int[] getAuthTiles();
 }

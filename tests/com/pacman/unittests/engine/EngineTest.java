@@ -12,7 +12,7 @@ import com.pacman.engine.Engine;
 import com.pacman.engine.IGame;
 import com.pacman.engine.ISettings;
 import com.pacman.engine.Window;
-import com.pacman.game.MazeData;
+import com.pacman.engine.world.WorldData;
 
 class Settings implements ISettings 
 {
@@ -60,9 +60,9 @@ class Settings implements ISettings
 	}
 
 	@Override
-	public MazeData getMazeData() 
+	public WorldData getWorldData() 
 	{
-		return new MazeData( null );
+		return new WorldData( null );
 	}
 
 	@Override

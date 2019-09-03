@@ -1,4 +1,4 @@
-package com.pacman.game.scenes;
+package com.pacman.engine.world;
 
 import javax.swing.JPanel;
 

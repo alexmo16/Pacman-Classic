@@ -15,9 +15,10 @@ public class SpriteUtils
         {
             if (Files.exists(Paths.get(spritesSheetFilePath)))
             {
-                if ((spritesSheet = new ImageIcon(spritesSheetFilePath).getImage()) == null)
+            	spritesSheet = new ImageIcon(spritesSheetFilePath).getImage();
+                if (spritesSheet.getHeight(null) == -1)
                 {
-                    throw new Exception("Failed to load the sprits sheet in Image object");
+                    throw new Exception("Empty image");
                 }
             } else
             {

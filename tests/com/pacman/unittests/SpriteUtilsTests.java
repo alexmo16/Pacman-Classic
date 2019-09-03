@@ -13,6 +13,8 @@ class SpriteUtilsTests {
 
 	// Picture is 100 by 100 px
 	private String path = System.getProperty("user.dir") + File.separator + "tests" + File.separator + "testAssets" + File.separator + "testSpritesSheet.png";
+	private String path2 = System.getProperty("user.dir") + File.separator + "tests" + File.separator + "testAssets" + File.separator + "testSprites450by470.jpg";
+	private String path3 = System.getProperty("user.dir") + File.separator + "tests" + File.separator + "testAssets" + File.separator + "testSprites.txt";
 
 	@Test
 	void test_wrong_file()
@@ -46,10 +48,41 @@ class SpriteUtilsTests {
 	}
 	
 	@Test
-	void test_incompatible_block_size()
+	void test_not_an_image()
 	{
-		Image image = SpriteUtils.getSpritesSheetImage(path);
-    	int[][] result = SpriteUtils.getSpritesCoordsFromSheet(image, 9);
+		Image result = SpriteUtils.getSpritesSheetImage(path3);
+		assertEquals(result, null);
+	}
+	
+	@Test
+	void test_incompatible_block_size_height()
+	{
+		Image image = SpriteUtils.getSpritesSheetImage(path2);
+    	int[][] result = SpriteUtils.getSpritesCoordsFromSheet(image, 45);
     	assertEquals(result, null);
+	}
+	
+	@Test
+	void test_incompatible_block_size_width()
+	{
+		Image image = SpriteUtils.getSpritesSheetImage(path2);
+    	int[][] result = SpriteUtils.getSpritesCoordsFromSheet(image, 47);
+    	assertEquals(result, null);
+	}
+	
+	@Test
+	void test_create_object()
+	{
+		SpriteUtils result = new SpriteUtils();
+		assertNotEquals(result, null);
+	}
+	
+	@Test
+	void test_null_image()
+	{
+		Image image = null;
+		int[][] result = SpriteUtils.getSpritesCoordsFromSheet(image, 10);
+		
+		assertEquals(result, null);
 	}
 }

@@ -151,7 +151,7 @@ public class Engine implements Runnable
             frameTime += deltaTime;
 
             // Pour etre sur que le render et l'update sont synchronisé avec le 60 fps.
-            while (unprocessedTime >= 1.0)
+            while (unprocessedTime >= settings.getUpdateRate() )
             {
                 unprocessedTime -= settings.getUpdateRate();
                 render = true;

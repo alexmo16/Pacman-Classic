@@ -28,7 +28,6 @@ public abstract class GameObject extends SceneObject
         worldData = s.getWorldData();
         this.spritesManager = s.getSpritesManager();
         this.object = new Rectangle2D.Double(x, y, width, height);
-        setOpaque(false);
     }
 
     public GameObject()
@@ -37,7 +36,6 @@ public abstract class GameObject extends SceneObject
         worldData = null;
         this.spritesManager = null;
         this.object = new Rectangle2D.Double();
-        setOpaque(false);
     }
 
     public Rectangle2D.Double getRectangle()

@@ -156,6 +156,7 @@ public class GameManager implements IGame
             startMusic = new Sound("./assets/pacman_beginning.wav");
             gameSiren = new Sound("./assets/siren.wav");
             chomp = new Sound("." + File.separator + "assets" + File.separator + "pacman_chomp.wav");
+            pacman.setChompSound(chomp);
         } catch (UnsupportedAudioFileException | IOException e)
         {
             System.out.println("Unable to load sounds!!");

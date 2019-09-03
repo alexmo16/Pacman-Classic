@@ -48,7 +48,7 @@ public class Sound
      */
     public boolean play(LineListener listener)
     {
-        if (Engine.getIsMuted())
+        if (Engine.getIsMuted() || isRunning)
         {
             return false;
         }
@@ -88,7 +88,7 @@ public class Sound
 
     public boolean playLoopBack()
     {
-        if (Engine.getIsMuted())
+        if (Engine.getIsMuted() || isRunning)
         {
             return false;
         }

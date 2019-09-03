@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 import com.pacman.engine.Inputs;
+import com.pacman.engine.Sound;
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
 
@@ -13,6 +14,7 @@ public class PacmanObject extends DynamicObject
     private static final long serialVersionUID = 1L;
     private final SpritesManager spritesManager;
     Settings settings = new Settings();
+    Sound chomp;
 
     public PacmanObject()
     {
@@ -51,6 +53,10 @@ public class PacmanObject extends DynamicObject
 
     public void eatGum(StaticObject obj, ScoreBar scoreBar)
     {
+    	if ( chomp != null )
+    	{
+    		chomp.play( null );
+    	}
         scoreBar.addPointsScore(obj.getPoints());
         obj.setEaten(true);
     }
@@ -69,4 +75,8 @@ public class PacmanObject extends DynamicObject
                     k[0], k[1], k[2], k[3], null);
     }
 
+    public void setChompSound( Sound sound )
+    {
+    	chomp = sound;
+    }
 }

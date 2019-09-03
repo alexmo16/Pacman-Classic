@@ -1,5 +1,6 @@
 package com.pacman.game;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,33 +15,46 @@ import com.pacman.engine.IGame;
 import com.pacman.engine.Inputs;
 import com.pacman.engine.Sound;
 import com.pacman.engine.Window;
+import com.pacman.game.objects.Background;
 import com.pacman.game.objects.DynamicObject;
 import com.pacman.game.objects.Gum;
+import com.pacman.game.objects.Maze;
 import com.pacman.game.objects.PacGum;
 import com.pacman.game.objects.PacmanObject;
+import com.pacman.game.objects.PauseScreen;
+import com.pacman.game.objects.ScoreBar;
 import com.pacman.game.scenes.InGame;
 
 public class GameManager implements IGame
 {
+    String oldDirection = "left", direction = "left";
+    int checkCollision = 1;
+    int startingPosition[];
+   
+    double pacmanBox;
+
+    private boolean isPlaying = false;
+    private boolean isStartingNewGame = true;
+    private boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
+
+    Settings settings;
+    
     PacmanObject pacman;
     PacmanObject futurPacman;
     PacmanObject maybeFuturPacman;
     ArrayList<Gum> gumList;
     ArrayList<PacGum> pacGumList;
-    String oldDirection = "left", direction = "left";
-    private int checkCollision = 1;
-    Settings settings = new Settings();
-    InGame inGame = new InGame(settings);
-    int startingPosition[];
-    double pacmanBox;
-
-    private boolean isPlaying = false;
-    private boolean isStartingNewGame = true;
-
+    PauseScreen pauseScreen;
+    Background background;
+    Maze maze;
+    PauseScreen pausePane;
+    ScoreBar scoreBar;
+    
+    InGame inGameScene;
+    
     Sound startMusic;
     Sound gameSiren;
     Sound chomp;
-    boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
 
     LineListener startingMusicListener = new LineListener()
     {
@@ -59,28 +73,31 @@ public class GameManager implements IGame
         }
     };
 
+    public GameManager()
+    {
+    	settings = new Settings();
+        startingPosition = settings.getMazeData().getStartPosition();
+        pacmanBox = 0.9;
+        pacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction, settings);
+        maybeFuturPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction,
+                settings);
+        futurPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction,
+                settings);
+        gumList = Gum.generateGumList(settings);
+        pacGumList = PacGum.generatePacGumList(settings);
+        pauseScreen = new PauseScreen("Pause");
+        maze = new Maze(settings);
+        background = new Background(Color.black);        
+        scoreBar = new ScoreBar(settings);  
+    }
+    
     @Override
     public void init(Window window)
     {
-        createGameObjects();
+        loadInGameScene(window);
         loadMusics();
-        inGame.addGameObject(pacman);
-        for (Gum gum : gumList)
-        {
-            inGame.addGameObject(gum);
-        }
-
-        for (PacGum pacGum : pacGumList)
-        {
-            inGame.addGameObject(pacGum);
-        }
-
-        inGame.init();
 
         CollisionManager.setSettings(settings);
-
-        window.getFrame().add(inGame);
-        window.getFrame().pack();
 
         // TODO mettre ca a true seulement quand on clic sur le start button
         isStartingNewGame = true;
@@ -124,7 +141,7 @@ public class GameManager implements IGame
             if (checkCollision == 2)
             {
                 DynamicObject.tunnel(pacman.getRectangle(), direction);
-                inGame.getScoreBar().setCollision(false, oldDirection);
+                scoreBar.setCollision(false, oldDirection);
 
             } else if (checkCollision == 0)
             {
@@ -139,16 +156,16 @@ public class GameManager implements IGame
                 {
                     DynamicObject.tunnel(pacman.getRectangle(), oldDirection);
                     pacman.setDirection(oldDirection);
-                    inGame.getScoreBar().setCollision(false, oldDirection);
+                    scoreBar.setCollision(false, oldDirection);
                 }
                 if (checkCollision == 0)
                 {
                     DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
                     pacman.setDirection(oldDirection);
-                    inGame.getScoreBar().setCollision(false, oldDirection);
+                    scoreBar.setCollision(false, oldDirection);
                 } else
                 {
-                    inGame.getScoreBar().setCollision(true, oldDirection);
+                	scoreBar.setCollision(true, oldDirection);
                 }
 
             }
@@ -179,21 +196,23 @@ public class GameManager implements IGame
         return true;
     }
 
-    private void createGameObjects()
+    public void loadInGameScene(Window w)
     {
-        startingPosition = settings.getMazeData().getStartPosition();
-        ;
-        pacmanBox = 0.9;
-        pacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction, settings);
-        maybeFuturPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction,
-                settings);
-        futurPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction,
-                settings);
-        settings.getMazeData().getTiles();
-        gumList = Gum.generateGumList(settings);
-        pacGumList = PacGum.generatePacGumList(settings);
+    	inGameScene = new InGame();
+    	
+    	inGameScene.addToGame(pauseScreen);
+    	inGameScene.addToGame(pacman);
+    	for (Gum gum : gumList) {inGameScene.addToGame(gum);}
+    	for (PacGum pacGum : pacGumList) {inGameScene.addToGame(pacGum);}
+    	inGameScene.addToGame(maze);
+    	inGameScene.addToGame(background);
+    	
+    	inGameScene.addToStatusBar(scoreBar);
+    	
+        w.getFrame().add(inGameScene);
+        w.getFrame().pack();
     }
-
+    	
     private void toggleUserMuteSounds()
     {
         Engine.toggleMute();
@@ -209,7 +228,7 @@ public class GameManager implements IGame
 
     private void togglePauseGame()
     {
-        inGame.togglePausePane();
+    	pauseScreen.togglePausePane();
         isPlaying = !isPlaying;
 
         if (isPlaying)
@@ -232,7 +251,7 @@ public class GameManager implements IGame
         {
             if (CollisionManager.collisionObj(pacman, gum))
             {
-                pacman.eatGum(gum, inGame.getScoreBar());
+                pacman.eatGum(gum, scoreBar);
                 gumList.remove(gum);
                 gum.setVisible(false);
                 gum = null;
@@ -247,7 +266,7 @@ public class GameManager implements IGame
         {
             if (CollisionManager.collisionObj(pacman, pacGum))
             {
-                pacman.eatGum(pacGum, inGame.getScoreBar());
+                pacman.eatGum(pacGum, scoreBar);
                 pacGumList.remove(pacGum);
                 pacGum.setVisible(false);
                 pacGum = null;

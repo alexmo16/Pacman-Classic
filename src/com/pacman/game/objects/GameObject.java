@@ -5,9 +5,8 @@ import java.awt.geom.Rectangle2D;
 import com.pacman.game.MazeData;
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
-import javax.swing.JPanel;
 
-public abstract class GameObject extends JPanel
+public abstract class GameObject extends SceneObject
 {
     private static final long serialVersionUID = 5089602216528128118L;
 

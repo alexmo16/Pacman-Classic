@@ -23,10 +23,8 @@ public class PacGum extends StaticObject
     }
 
     @Override
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        
+    protected void paintComponent(Graphics g)
+    {   
         int tileSize = Math.min(getHeight() / mazeHeight, getWidth() / mazeWidth);
         if ( (tileSize & 1) != 0 ) { tileSize--; }
         

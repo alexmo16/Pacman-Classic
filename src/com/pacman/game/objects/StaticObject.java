@@ -2,7 +2,7 @@ package com.pacman.game.objects;
 
 import com.pacman.game.Settings;
 
-public class StaticObject extends GameObject
+abstract public class StaticObject extends GameObject
 {
 
     private static final long serialVersionUID = 1L;

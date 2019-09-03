@@ -2,12 +2,10 @@ package com.pacman.game.objects;
 
 import java.awt.Graphics;
 
-import javax.swing.JPanel;
-
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
 
-public class Maze extends JPanel
+public class Maze extends SceneObject
 {
 	private static final long serialVersionUID = -8520066424473091119L;
 
@@ -22,14 +20,11 @@ public class Maze extends JPanel
 		mazeWidth = s.getMazeData().getWidth();
 		tiles = s.getMazeData().getTiles();
 		spritesManager = s.getSpritesManager();
-		setOpaque(false);
 	}
 
     @Override
-    public void paintComponent(Graphics g)
+    protected void paintComponent(Graphics g)
     {
-        super.paintComponent(g);
-        
         // We want all the tiles of the maze to take the maximum space possible.
         int tileSize = Math.min(getHeight() / mazeHeight, getWidth() / mazeWidth);
         if ( (tileSize & 1) != 0 ) { tileSize--; } // Odd tile size will break tile scaling.

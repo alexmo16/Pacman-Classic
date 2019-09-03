@@ -1,13 +1,10 @@
 package com.pacman.game.objects;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import javax.swing.JPanel;
 
 import com.pacman.game.Settings;
 
-public class ScoreBar extends JPanel
+public class ScoreBar extends SceneObject
 {
 
     private static final long serialVersionUID = 1L;
@@ -19,9 +16,7 @@ public class ScoreBar extends JPanel
     public ScoreBar(Settings s)
     {
 
-        s.getSpritesManager();
-        this.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-        setBackground(Color.WHITE);
+        s.getSpritesManager();;
     }
 
     public void setScore(int score)
@@ -40,23 +35,15 @@ public class ScoreBar extends JPanel
         this.direction = direction;
     }
 
-    public void paint(Graphics g)
-    {
-        super.paint(g);
-        // Graphics2D g2d = (Graphics2D) g.create();
+	@Override
+	protected void paintComponent(Graphics g) 
+	{
         g.drawString("score :" + score, 0, 10);
         if (this.collision)
         {
             g.drawString("collision :" + direction, 100, 10);
         }
-
-        /*
-         * int[] k = spritesManager.getPacmanCoords();
-         * g.drawImage(spritesManager.getSpritesSheet(), (int)this.object.getX(),
-         * (int)this.object.getY(), 19, 19, k[0], k[1], k[2], k[3], null);
-         * 
-         * g2d.dispose();
-         */
-    }
+		
+	}
 
 }

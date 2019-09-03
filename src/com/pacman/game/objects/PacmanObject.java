@@ -56,10 +56,8 @@ public class PacmanObject extends DynamicObject
     }
 
     @Override
-    public void paintComponent(Graphics g)
+    protected void paintComponent(Graphics g)
     {
-    	super.paintComponent(g);
-    	
         int tileSize = Math.min(getHeight() / mazeHeight, getWidth() / mazeWidth);
         if ( (tileSize & 1) != 0 ) { tileSize--; }
 

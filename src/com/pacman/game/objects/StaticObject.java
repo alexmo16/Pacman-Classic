@@ -14,7 +14,6 @@ abstract public class StaticObject extends GameObject
 
     public StaticObject()
     {
-        super();
         this.eaten = false;
         this.points = 0;
     }

@@ -16,7 +16,6 @@ public class PacmanObject extends DynamicObject
 
     public PacmanObject()
     {
-        super();
         spritesManager = settings.getSpritesManager();
     }
 

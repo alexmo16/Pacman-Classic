@@ -35,6 +35,7 @@ public class GameManager implements IGame
 
     private boolean isPlaying = false;
     private boolean isStartingNewGame = true;
+    private boolean canPaused = false;
     private boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
 
     Settings settings;
@@ -68,6 +69,7 @@ public class GameManager implements IGame
                     startMusic.stop();
                 }
                 isPlaying = true;
+                canPaused = true;
                 gameSiren.playLoopBack();
             }
         }
@@ -107,7 +109,7 @@ public class GameManager implements IGame
     public void update(Engine engine)
     {
         Inputs inputs = engine.getInputs();
-        if (inputs.isKeyDown(settings.getPauseButton()))
+        if ( canPaused && inputs.isKeyDown(settings.getPauseButton()))
         {
             togglePauseGame();
         }

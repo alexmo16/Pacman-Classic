@@ -64,6 +64,9 @@ public class WorldData
         } 
         catch (Exception e)
         {
+        	width = 0;
+        	height = 0;
+        	tiles = null;
             System.out.println("Exception during WorldData construction : " + e.toString());
         }
     }

@@ -171,9 +171,9 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
     {
         try
         {
-            startMusic = new Sound("./assets/pacman_beginning.wav");
-            gameSiren = new Sound("./assets/siren.wav");
-            chomp = new Sound("." + File.separator + "assets" + File.separator + "pacman_chomp.wav");
+            startMusic = new Sound(settings.getStartMusicPath());
+            gameSiren = new Sound(settings.getGameSirenPath());
+            chomp = new Sound(settings.getChompPath());
             pacman.setChompSound(chomp);
         } catch (UnsupportedAudioFileException | IOException e)
         {

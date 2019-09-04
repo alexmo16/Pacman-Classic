@@ -5,6 +5,9 @@ import java.awt.Graphics;
 import com.pacman.engine.objects.SceneObject;
 import com.pacman.game.Settings;
 
+/**
+ * The scorebar displays the score and the direction of the collision
+ */
 public class ScoreBar extends SceneObject
 {
 
@@ -16,7 +19,6 @@ public class ScoreBar extends SceneObject
 
     public ScoreBar(Settings s)
     {
-
         s.getSpritesManager();;
     }
 

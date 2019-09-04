@@ -15,12 +15,12 @@ public abstract class CollisionManager
     static int[] authTiles;
     static ISettings settings;
 
-    /*
+    /**
      * method used to check if obj hits a wall or goes in the tunnel
      * 
-     * return "path" if there is no collision
-     * return "wall" when obj hits a wall
-     * return "void" when obj enters the tunnel
+     * @return "path" if there is no collision
+     * @return "wall" when obj hits a wall
+     * @return "void" when obj enters the tunnel
      */
     public static String collisionWall(GameObject obj)
     {
@@ -45,7 +45,7 @@ public abstract class CollisionManager
         return "wall";
     }
 
-    /*
+    /**
      * This method is used to check if the hitbox of obj1 intersect the hit box of obj2
      * Used to check the collisions between pacman and the other objects of the game, the gums, the pacgums and the ghosts
      * 
@@ -57,7 +57,7 @@ public abstract class CollisionManager
         return obj1.getRectangle().intersects(obj2.getRectangle());
     }
 
-    /*
+    /**
      * This method check if the maze's tiles at the coordinates given in parameters is a walkable tiles
      * 
      * return "true" if the the tile is walkable

@@ -14,8 +14,10 @@ abstract public class StaticObject extends GameObject
 
     public StaticObject()
     {
+        super();
         this.eaten = false;
         this.points = 0;
+        this.spritesManager = null;
     }
 
     public StaticObject(double x, double y, double width, double height, Settings s)
@@ -23,7 +25,7 @@ abstract public class StaticObject extends GameObject
         super(x, y, width, height, s);
         this.eaten = false;
         this.points = 0;
-        spritesManager = s.getSpritesManager();
+        this.spritesManager = s.getSpritesManager();
     }
 
     public int getPoints()

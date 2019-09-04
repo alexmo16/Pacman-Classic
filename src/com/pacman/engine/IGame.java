@@ -3,7 +3,7 @@ package com.pacman.engine;
 import com.pacman.engine.Engine;
 
 /**
- * Sert interface de jeu que l'engin utilise afin d'int�ragir avec le jeu.
+ * Interface which the engine will interact with to talk with the game.
  */
 public interface IGame
 {

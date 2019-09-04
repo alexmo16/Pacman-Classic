@@ -21,6 +21,9 @@ public class Inputs implements KeyListener
         this.window.getFrame().addKeyListener(this);
     }
 
+    /**
+     * Copy the currently pressed keys int the lastPressedKeys buffer.
+     */
     public void update()
     {
         System.arraycopy(keys, 0, lastPressedKeys, 0, SUPPORTED_KEYS);
@@ -51,6 +54,9 @@ public class Inputs implements KeyListener
         return typed;
     }
 
+    /**
+     * Callback call by the framework when a key is pressed.
+     */
     @Override
     public void keyPressed(KeyEvent e)
     {
@@ -60,6 +66,9 @@ public class Inputs implements KeyListener
         }
     }
 
+    /**
+     * Callback call by the framework when a key is released.
+     */
     @Override
     public void keyReleased(KeyEvent e)
     {

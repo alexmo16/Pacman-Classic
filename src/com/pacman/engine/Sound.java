@@ -39,10 +39,16 @@ public class Sound
     }
 
     /**
-     * Si vous voulez utilisez le listener par default, il faut mettre null comme
-     * valeur. Attention si vous implemente votre propre listener, il faut appeler
-     * la methode stop.
-     * 
+     * Play sound asynchronously.
+     * @return
+     */
+    public boolean play()
+    {
+    	return play( defaultListener );
+    }
+    
+    /**
+     * Play sound asynchronously with a custom listener on the audio line.
      * @param listener
      * @return boolean
      */
@@ -67,7 +73,6 @@ public class Sound
             return false;
         }
         audioClip.setFramePosition(0);
-        listener = listener == null ? defaultListener : listener;
         audioClip.addLineListener(listener);
         isRunning = true;
         audioClip.start();
@@ -86,6 +91,10 @@ public class Sound
         inputStream = null;
     }
 
+    /**
+     * This will make the sound loopback until the stop function is called.
+     * @return
+     */
     public boolean playLoopBack()
     {
         if (Engine.getIsMuted() || isRunning)

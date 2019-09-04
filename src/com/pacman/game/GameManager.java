@@ -92,6 +92,9 @@ public class GameManager implements IGame
         scoreBar = new ScoreBar(settings);  
     }
     
+    /**
+     * Initialization function called by the engine when it lunch the game.
+     */
     @Override
     public void init(Window window)
     {
@@ -100,10 +103,13 @@ public class GameManager implements IGame
 
         CollisionManager.setSettings(settings);
 
-        // TODO mettre ca a true seulement quand on clic sur le start button
+        // TODO put this at true when the start button is pressed in the main menu.
         isStartingNewGame = true;
     }
 
+    /**
+     * Update function called by the engine every tick.
+     */
     @Override
     public void update(Engine engine)
     {
@@ -149,6 +155,10 @@ public class GameManager implements IGame
         return settings;
     }
 
+    /**
+     * Load all audio files and distribute them where they're needed.
+     * @return
+     */
     private boolean loadMusics()
     {
         try
@@ -166,6 +176,10 @@ public class GameManager implements IGame
         return true;
     }
 
+    /**
+     * Load all scene objects needed in the game scene.
+     * @param w
+     */
     public void loadInGameScene(Window w)
     {
     	inGameScene = new InGame();
@@ -182,7 +196,10 @@ public class GameManager implements IGame
         w.getFrame().add(inGameScene);
         w.getFrame().pack();
     }
-    	
+    
+    /**
+     * Function called when the user click on the mute button.
+     */
     private void toggleUserMuteSounds()
     {
         Engine.toggleMute();
@@ -196,6 +213,9 @@ public class GameManager implements IGame
         }
     }
 
+    /**
+     * Function called when the user click on the pause button.
+     */
     private void togglePauseGame()
     {
     	pauseScreen.togglePausePane();

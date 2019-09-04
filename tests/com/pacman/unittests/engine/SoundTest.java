@@ -64,7 +64,7 @@ class SoundTest
 		boolean isPlayed = false;
 		try {
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			isPlayed = sound.play( null );
+			isPlayed = sound.play();
 		} catch ( UnsupportedAudioFileException | IOException e ) {
 			isException = true;
 		}
@@ -83,7 +83,7 @@ class SoundTest
 			assertTrue( isPlayed );
 			
 			sound = new Sound( "./tests/testAssets/clip.wav" );
-			isPlayed = sound.play( null );
+			isPlayed = sound.play();
 			assertTrue( isPlayed );
  
 		} catch ( UnsupportedAudioFileException | IOException e ) {
@@ -133,7 +133,7 @@ class SoundTest
 		try {
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			Engine.setIsMuted( true );
-			isPlayed = sound.play( null );
+			isPlayed = sound.play();
 		} catch ( UnsupportedAudioFileException | IOException e ) {
 			isException = true;
 		}

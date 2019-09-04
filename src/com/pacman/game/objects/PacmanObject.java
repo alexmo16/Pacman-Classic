@@ -80,7 +80,7 @@ public class PacmanObject extends DynamicObject
     {
     	if ( chomp != null )
     	{
-    		chomp.play( null );
+    		chomp.play();
     	}
         scoreBar.addPointsScore(obj.getPoints());
         obj.setEaten(true);

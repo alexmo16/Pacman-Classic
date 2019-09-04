@@ -1,14 +1,13 @@
 package com.pacman.engine;
 
 /**
- * Class de fonctions utiles pour l'engin du jeu.
+ * Utils functions for the engine.
  */
 public final class EngineUtils
 {
 
     /**
-     * La fonction de base n'est pas utilis�, car la pr�cision est meilleure que la
-     * fonction de base currentTimeMillis.
+     * The System's function to get the current time in millis is has less precision than System.nanoTime.
      */
     public static double getCurrentTimeInMillis()
     {

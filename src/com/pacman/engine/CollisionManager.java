@@ -63,7 +63,7 @@ public abstract class CollisionManager
      * @return "true" if the the tile is walkable,
      * "false" if the tile is not a walkable tiles
      */
-    private static boolean isAuth(int x, int y)
+    public static boolean isAuth(int x, int y)
     {
         for (int i : authTiles)
         {
@@ -79,5 +79,13 @@ public abstract class CollisionManager
     {
         CollisionManager.settings = settings;
         authTiles = settings.getAuthTiles();
+    }
+    
+    public static void setMap(int[][] map, int[] auth, int x,int y) 
+    {
+    	tiles = map;
+    	authTiles = auth;
+    	mapH = x;
+    	mapW = y;
     }
 }

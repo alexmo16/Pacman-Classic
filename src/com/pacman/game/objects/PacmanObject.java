@@ -165,4 +165,8 @@ public class PacmanObject extends DynamicObject implements IPublisher
 			}
 		}
 	}
+	
+	public Direction getPacDirection() {
+		return direction;
+	}
 }

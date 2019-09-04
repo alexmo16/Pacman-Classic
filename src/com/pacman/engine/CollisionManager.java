@@ -18,9 +18,9 @@ public abstract class CollisionManager
     /**
      * method used to check if obj hits a wall or goes in the tunnel
      * 
-     * @return "path" if there is no collision
-     * @return "wall" when obj hits a wall
-     * @return "void" when obj enters the tunnel
+     * @return "path" if there is no collision,
+     * "wall" when obj hits a wall,
+     * "void" when obj enters the tunnel
      */
     public static String collisionWall(GameObject obj)
     {
@@ -49,8 +49,8 @@ public abstract class CollisionManager
      * This method is used to check if the hitbox of obj1 intersect the hit box of obj2
      * Used to check the collisions between pacman and the other objects of the game, the gums, the pacgums and the ghosts
      * 
-     * return "true" if there is a collision between the 2 objects
-     * return "false" if there is no collision.
+     * @return "true" if there is a collision between the 2 objects,
+     * "false" if there is no collision.
      */
     public static boolean collisionObj(GameObject obj1, GameObject obj2)
     {
@@ -60,8 +60,8 @@ public abstract class CollisionManager
     /**
      * This method check if the maze's tiles at the coordinates given in parameters is a walkable tiles
      * 
-     * return "true" if the the tile is walkable
-     * return "false" if the tile is not a walkable tiles
+     * @return "true" if the the tile is walkable,
+     * "false" if the tile is not a walkable tiles
      */
     private static boolean isAuth(int x, int y)
     {

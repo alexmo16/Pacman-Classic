@@ -15,6 +15,8 @@ public class PacmanObject extends DynamicObject
     private final SpritesManager spritesManager;
     Settings settings = new Settings();
     Sound chomp;
+    private int animation = 0;
+    private int animationBuffer = 10;
 
     public PacmanObject()
     {
@@ -68,7 +70,14 @@ public class PacmanObject extends DynamicObject
 
         double x = (object.getX() * tileSize - (tileSize / 2)) + (getWidth() - (tileSize * worldData.getWidth())) / 2;
         double y = (object.getY() * tileSize - (tileSize / 2)) + (getHeight() - (tileSize * worldData.getHeight())) / 2;
-        int[] k = spritesManager.getPacmanCoords(this.getDirection());
+        
+        animationBuffer -= 1;
+        if (animationBuffer == 0) 
+        {
+        	animation = (animation+1) % 4;
+        	animationBuffer = 10;
+        }
+        int[] k = spritesManager.getPacmanCoords(this.getDirection(),animation);
         
         g.drawImage(spritesManager.getSpritesSheet(), (int) (x), (int) (y), (int) x + (2 * tileSize), (int) y + (2 * tileSize),
                     k[0], k[1], k[2], k[3], null);

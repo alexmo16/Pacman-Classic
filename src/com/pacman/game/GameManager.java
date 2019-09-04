@@ -30,9 +30,9 @@ import com.pacman.utils.IObserver;
  * Contains an observer design pattern
  *
  */
-public class GameManager implements IGame, IObserver<String>
+public class GameManager implements IGame, IObserver<DynamicObject.Direction>
 {
-    String oldDirection = "left", direction = "left";
+	DynamicObject.Direction oldDirection = DynamicObject.Direction.LEFT, direction = DynamicObject.Direction.LEFT;
     int startingPosition[];
    
     double pacmanBox;
@@ -171,9 +171,9 @@ public class GameManager implements IGame, IObserver<String>
     {
         try
         {
-            startMusic = new Sound("./assets/pacman_beginning.wav");
-            gameSiren = new Sound("./assets/siren.wav");
-            chomp = new Sound("." + File.separator + "assets" + File.separator + "pacman_chomp.wav");
+            startMusic = new Sound(settings.getStartMusicPath());
+            gameSiren = new Sound(settings.getGameSirenPath());
+            chomp = new Sound(settings.getChompPath());
             pacman.setChompSound(chomp);
         } catch (UnsupportedAudioFileException | IOException e)
         {
@@ -303,7 +303,8 @@ public class GameManager implements IGame, IObserver<String>
             DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
             pacman.setDirection(oldDirection);
             scoreBar.setCollision(false, oldDirection);
-        } else
+        } 
+        else
         {
         	scoreBar.setCollision(true, oldDirection);
         }
@@ -327,7 +328,7 @@ public class GameManager implements IGame, IObserver<String>
      * update of the observer
      */
 	@Override
-	public void update( String direction ) 
+	public void update( DynamicObject.Direction direction ) 
 	{
 		oldDirection = this.direction;
 		this.direction = direction;

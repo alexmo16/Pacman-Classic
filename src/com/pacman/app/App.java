@@ -5,7 +5,7 @@ import com.pacman.engine.IGame;
 import com.pacman.engine.Window;
 import com.pacman.game.GameManager;
 
-public class Pacman
+public class App
 {
     /*
      * It all starts here!

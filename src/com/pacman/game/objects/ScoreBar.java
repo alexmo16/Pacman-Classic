@@ -15,7 +15,7 @@ public class ScoreBar extends SceneObject
 
     private int score = 0;
     private boolean collision = false;
-    private String direction;
+    private DynamicObject.Direction direction;
 
     public ScoreBar(Settings s)
     {
@@ -32,7 +32,7 @@ public class ScoreBar extends SceneObject
         this.score += points;
     }
 
-    public void setCollision(boolean bool, String direction)
+    public void setCollision(boolean bool, DynamicObject.Direction direction)
     {
         this.collision = bool;
         this.direction = direction;

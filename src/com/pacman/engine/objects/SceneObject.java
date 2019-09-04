@@ -14,6 +14,7 @@ public abstract class SceneObject extends JPanel
 	
 	public SceneObject()
 	{
+	    super();
 		setOpaque(false);
 	}
 

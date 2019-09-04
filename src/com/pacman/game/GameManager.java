@@ -24,10 +24,15 @@ import com.pacman.game.objects.PacmanObject;
 import com.pacman.game.objects.PauseScreen;
 import com.pacman.game.objects.ScoreBar;
 import com.pacman.game.scenes.InGame;
+import com.pacman.utils.IObserver;
 
-public class GameManager implements IGame
+/**
+ * Contains an observer design pattern
+ *
+ */
+public class GameManager implements IGame, IObserver<DynamicObject.Direction>
 {
-    String oldDirection = "left", direction = "left";
+	DynamicObject.Direction oldDirection = DynamicObject.Direction.LEFT, direction = DynamicObject.Direction.LEFT;
     int startingPosition[];
    
     double pacmanBox;
@@ -80,6 +85,8 @@ public class GameManager implements IGame
         startingPosition = settings.getWorldData().findFirstInstanceOF(WorldTile.PAC_MAN_START.getValue());
         pacmanBox = 0.9;
         pacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction, settings);
+        pacman.registerObserver( this );
+        
         maybeFuturPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction,
                 settings);
         futurPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction,
@@ -132,7 +139,8 @@ public class GameManager implements IGame
                 toggleUserMuteSounds();
             }
 
-            direction = PacmanObject.getNewDirection(engine.getInputs(), direction);
+            pacman.checkNewDirection(engine.getInputs());
+            
             maybeFuturPacman.getRectangle().setRect(pacman.getRectangle().getX(), pacman.getRectangle().getY(),
                     pacman.getRectangle().getWidth(), pacman.getRectangle().getHeight());
             futurPacman.getRectangle().setRect(pacman.getRectangle().getX(), pacman.getRectangle().getY(),
@@ -163,9 +171,9 @@ public class GameManager implements IGame
     {
         try
         {
-            startMusic = new Sound("./assets/pacman_beginning.wav");
-            gameSiren = new Sound("./assets/siren.wav");
-            chomp = new Sound("." + File.separator + "assets" + File.separator + "pacman_chomp.wav");
+            startMusic = new Sound(settings.getStartMusicPath());
+            gameSiren = new Sound(settings.getGameSirenPath());
+            chomp = new Sound(settings.getChompPath());
             pacman.setChompSound(chomp);
         } catch (UnsupportedAudioFileException | IOException e)
         {
@@ -295,7 +303,8 @@ public class GameManager implements IGame
             DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
             pacman.setDirection(oldDirection);
             scoreBar.setCollision(false, oldDirection);
-        } else
+        } 
+        else
         {
         	scoreBar.setCollision(true, oldDirection);
         }
@@ -314,4 +323,14 @@ public class GameManager implements IGame
         oldDirection = direction;
         scoreBar.setCollision(false, oldDirection);
     }
+
+    /**
+     * update of the observer
+     */
+	@Override
+	public void update( DynamicObject.Direction direction ) 
+	{
+		oldDirection = this.direction;
+		this.direction = direction;
+	}
 }

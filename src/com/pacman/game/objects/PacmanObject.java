@@ -2,24 +2,30 @@ package com.pacman.game.objects;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import com.pacman.engine.Inputs;
 import com.pacman.engine.Sound;
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
+import com.pacman.utils.IObserver;
+import com.pacman.utils.IPublisher;
 
 /**
  * 
  * Class which implement every method for a Pacman object, such as direction or render
+ * Observer design pattern
  *
  */
-public class PacmanObject extends DynamicObject
+public class PacmanObject extends DynamicObject implements IPublisher
 {
 
     private static final long serialVersionUID = 1L;
-    private final SpritesManager spritesManager;
-    Settings settings = new Settings();
-    Sound chomp;
+    private SpritesManager spritesManager;
+    private Settings settings;
+    private Sound chomp;
+    private static Direction direction = Direction.DOWN.LEFT;
+    private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
 
     /**
      * Method used to create a new Pacman.
@@ -28,15 +34,23 @@ public class PacmanObject extends DynamicObject
      * @return pacmanObject
      * 
      */
-    public PacmanObject()
+    public PacmanObject( Settings settings )
     {
-        spritesManager = settings.getSpritesManager();
+    	this.settings = settings;
+    	if ( settings != null )
+    	{
+    		spritesManager = settings.getSpritesManager();
+    	}
     }
 
-    public PacmanObject(double x, double y, double width, double height, String direction, Settings s)
+    public PacmanObject(double x, double y, double width, double height, Direction direction, Settings s)
     {
         super(x, y, width, height, direction, s);
-        spritesManager = settings.getSpritesManager();
+        settings = s;
+        if ( settings != null )
+        {
+        	spritesManager = settings.getSpritesManager();
+        }
     }
 
     /**
@@ -46,27 +60,33 @@ public class PacmanObject extends DynamicObject
      * @return String direction = "left","right","up" or "down"
      * 
      */
-    public static String getNewDirection(Inputs inputs, String direction)
+    public void checkNewDirection(Inputs inputs)
     {
         if (inputs == null)
         {
-            return direction;
+            return;
         }
 
+        Direction oldDirection = direction;
+        
         if (inputs.isKeyDown(KeyEvent.VK_UP))
         {
-            direction = "up";
+            direction = Direction.UP;
         } else if (inputs.isKeyDown(KeyEvent.VK_DOWN))
         {
-            direction = "down";
+            direction = Direction.DOWN;
         } else if (inputs.isKeyDown(KeyEvent.VK_RIGHT))
         {
-            direction = "right";
+            direction = Direction.RIGHT;
         } else if (inputs.isKeyDown(KeyEvent.VK_LEFT))
         {
-            direction = "left";
+            direction = Direction.LEFT;
         }
-        return direction;
+        
+        if ( oldDirection != direction )
+        {
+        	notifyObservers();
+        }
     }
 
     /**
@@ -112,4 +132,41 @@ public class PacmanObject extends DynamicObject
     {
     	chomp = sound;
     }
+
+	@Override
+	public void registerObserver(IObserver<?> observer) 
+	{
+		@SuppressWarnings("unchecked")
+		IObserver<Direction> tempObserver = (IObserver<Direction>)observer;
+		if ( tempObserver != null )
+		{
+			observers.add(tempObserver);
+		}
+	}
+
+	@Override
+	public void removeObserver(IObserver<?> observer) 
+	{
+		int index = observers.indexOf(observer);
+		if (index >= 0)
+		{
+			observers.remove(index);
+		}
+	}
+
+	@Override
+	public void notifyObservers() 
+	{
+		for ( IObserver<Direction> observer : observers )
+		{
+			if (observer != null)
+			{
+				observer.update( direction );
+			}
+		}
+	}
+	
+	public Direction getPacDirection() {
+		return direction;
+	}
 }

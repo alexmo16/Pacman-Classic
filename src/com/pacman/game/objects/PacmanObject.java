@@ -8,6 +8,11 @@ import com.pacman.engine.Sound;
 import com.pacman.game.Settings;
 import com.pacman.game.SpritesManager;
 
+/**
+ * 
+ * Class which implement every method for a Pacman object, such as direction or render
+ *
+ */
 public class PacmanObject extends DynamicObject
 {
 
@@ -18,6 +23,13 @@ public class PacmanObject extends DynamicObject
     private int animation = 0;
     private int animationBuffer = 10;
 
+    /**
+     * Method used to create a new Pacman.
+     *
+     *
+     * @return pacmanObject
+     * 
+     */
     public PacmanObject()
     {
         spritesManager = settings.getSpritesManager();
@@ -29,6 +41,13 @@ public class PacmanObject extends DynamicObject
         spritesManager = settings.getSpritesManager();
     }
 
+    /**
+     * Method used to get the new direction of a pacmanObject(), by checking inputs of the User.
+     *
+     *
+     * @return String direction = "left","right","up" or "down"
+     * 
+     */
     public static String getNewDirection(Inputs inputs, String direction)
     {
         if (inputs == null)
@@ -52,6 +71,13 @@ public class PacmanObject extends DynamicObject
         return direction;
     }
 
+    /**
+     * method used to make every move we need when Pacman eat a gum.
+     *chomp sound will be played, score will be updated and the gum state will be put to "eaten"
+     *
+     * @return void
+     * 
+     */
     public void eatGum(StaticObject obj, ScoreBar scoreBar)
     {
     	if ( chomp != null )
@@ -62,6 +88,13 @@ public class PacmanObject extends DynamicObject
         obj.setEaten(true);
     }
 
+    
+    /**
+     * method which override the paint method, used to paint Pacman assets and animation, depending on Pacman direction
+     *
+     * @return void
+     * 
+     */
     @Override
     protected void paintComponent(Graphics g)
     {
@@ -83,6 +116,7 @@ public class PacmanObject extends DynamicObject
                     k[0], k[1], k[2], k[3], null);
     }
 
+    
     public void setChompSound( Sound sound )
     {
     	chomp = sound;

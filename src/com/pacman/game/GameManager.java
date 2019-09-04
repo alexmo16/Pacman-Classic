@@ -24,8 +24,13 @@ import com.pacman.game.objects.PacmanObject;
 import com.pacman.game.objects.PauseScreen;
 import com.pacman.game.objects.ScoreBar;
 import com.pacman.game.scenes.InGame;
+import com.pacman.utils.IObserver;
 
-public class GameManager implements IGame
+/**
+ * Contains an observer design pattern
+ *
+ */
+public class GameManager implements IGame, IObserver<String>
 {
     String oldDirection = "left", direction = "left";
     int startingPosition[];
@@ -80,6 +85,8 @@ public class GameManager implements IGame
         startingPosition = settings.getWorldData().findFirstInstanceOF(WorldTile.PAC_MAN_START.getValue());
         pacmanBox = 0.9;
         pacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction, settings);
+        pacman.registerObserver( this );
+        
         maybeFuturPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction,
                 settings);
         futurPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction,
@@ -132,7 +139,8 @@ public class GameManager implements IGame
                 toggleUserMuteSounds();
             }
 
-            direction = PacmanObject.getNewDirection(engine.getInputs(), direction);
+            pacman.checkNewDirection(engine.getInputs());
+            
             maybeFuturPacman.getRectangle().setRect(pacman.getRectangle().getX(), pacman.getRectangle().getY(),
                     pacman.getRectangle().getWidth(), pacman.getRectangle().getHeight());
             futurPacman.getRectangle().setRect(pacman.getRectangle().getX(), pacman.getRectangle().getY(),
@@ -314,4 +322,14 @@ public class GameManager implements IGame
         oldDirection = direction;
         scoreBar.setCollision(false, oldDirection);
     }
+
+    /**
+     * update of the observer
+     */
+	@Override
+	public void update( String direction ) 
+	{
+		oldDirection = this.direction;
+		this.direction = direction;
+	}
 }

@@ -86,7 +86,7 @@ public abstract class DynamicObject extends GameObject
 
         private final int value;
 
-        DynamicObjectDirection(final int newValue)
+        Direction(final int newValue)
         {
             value = newValue;
         }

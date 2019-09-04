@@ -23,9 +23,9 @@ public class Engine implements Runnable
     private static AtomicBoolean isRunning = new AtomicBoolean(false);
     private static boolean isPause = false;
     private static boolean isMuted = false;
-    private static int[][] map;
-    private static int mapH;
-    private static int mapW;
+    private static int[][] tiles;
+    private static int tilesH;
+    private static int tilesW;
 
     private static Engine instance;
 
@@ -35,7 +35,13 @@ public class Engine implements Runnable
     private Engine()
     {
     }
-
+    
+    /**
+     * Getter for the singleton.
+     * @param window the window object where the game will be render.
+     * @param game the object that implements the IGame interface. 
+     * @return Engine
+     */
     public static Engine getInstance(Window window, IGame game)
     {
         if (instance == null)
@@ -52,9 +58,9 @@ public class Engine implements Runnable
                 return null;
             }
 
-            map = settings.getWorldData().getTiles();
-            mapH = settings.getWorldData().getHeight();
-            mapW = settings.getWorldData().getWidth();
+            tiles = settings.getWorldData().getTiles();
+            tilesH = settings.getWorldData().getHeight();
+            tilesW = settings.getWorldData().getWidth();
 
             Engine.window = window;
             inputs = new Inputs(Engine.window);
@@ -89,6 +95,9 @@ public class Engine implements Runnable
         isMuted = !isMuted;
     }
 
+    /*
+     * start the game engine thread and by the same way the game.
+     */
     public void startGame()
     {
         if (game != null && !isRunning.get())
@@ -98,6 +107,9 @@ public class Engine implements Runnable
         }
     }
 
+    /**
+     * Stop the game and the engine thread.
+     */
     public static void stopGame()
     {
         isRunning.set(false);
@@ -120,8 +132,9 @@ public class Engine implements Runnable
     }
 
     /**
-     * On ne doit pas appeler cette methode directement. Passer plutot par
-     * startGame.
+     * Do not call this method directly. You need to call the startGame method.
+     * This method needs to be public because Engine class implements Runnable.
+     * 
      */
     public void run()
     {
@@ -188,19 +201,19 @@ public class Engine implements Runnable
         window.clear();
     }
 
-    public static int[][] getMap()
+    public static int[][] getTiles()
     {
-        return map;
+        return tiles;
     }
 
     public static int getHeight()
     {
-        return mapH;
+        return tilesH;
     }
 
     public static int getWidth()
     {
-        return mapW;
+        return tilesW;
     }
 
     private void init()
@@ -210,12 +223,19 @@ public class Engine implements Runnable
         isPause = false;
     }
 
+    /**
+     * What the engine needs to update at each tick.
+     */
     private void update()
     {
         game.update(this);
         inputs.update();
     }
 
+    /**
+     * Sleep method for the engine.
+     * @param sleepTime
+     */
     private void rest(double sleepTime)
     {
         try
@@ -228,8 +248,7 @@ public class Engine implements Runnable
     }
 
     /**
-     * sert a geler le thread tant et aussi longtemps que le jeu roule et que l'etat
-     * de pause est demande.
+	 * Freeze the thread until isPause is true and isRunning is true.
      */
     private void freeze()
     {

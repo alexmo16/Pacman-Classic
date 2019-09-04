@@ -9,7 +9,7 @@ import com.pacman.engine.objects.GameObject;
  */
 public abstract class CollisionManager
 {
-    static int[][] map = Engine.getMap();
+    static int[][] tiles = Engine.getTiles();
     static int mapH = Engine.getHeight();
     static int mapW = Engine.getWidth();
     static int[] authTiles;
@@ -67,7 +67,7 @@ public abstract class CollisionManager
     {
         for (int i : authTiles)
         {
-            if (map[x][y] == i)
+            if (tiles[x][y] == i)
             {
                 return true;
             }

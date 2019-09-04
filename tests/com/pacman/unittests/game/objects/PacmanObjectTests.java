@@ -35,7 +35,7 @@ public class PacmanObjectTests {
 	}
 	
 	@Test
-	void test_no_settings_pacman_object_creation() {
+	void test_no_settings_void_pacman_object_creation() {
 		boolean isException = false;
 		try {
 		      new PacmanObject(null);
@@ -58,6 +58,18 @@ public class PacmanObjectTests {
 
 	}
 	
+/*	@Test
+	void test_no_settings_pacman_object_creation() {
+		boolean isException = false;
+		try {
+		      new PacmanObject(10,10,10,10,Direction.LEFT,null);
+		    } catch (Exception e) {
+		      isException = true;
+		    }
+		assertFalse( isException );
+
+	}
+	*/
 	
 	@Test
 	void test_negative_position_pacman_object_creation() {
@@ -111,4 +123,6 @@ public class PacmanObjectTests {
 		assertEquals(Direction.RIGHT,pacmanOk.getPacDirection());
 
 	}
+	
+
 }

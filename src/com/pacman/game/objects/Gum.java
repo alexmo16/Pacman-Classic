@@ -55,10 +55,4 @@ public class Gum extends StaticObject
         }
         return gumList;
     }
-
-    @Override
-    public String toString()
-    {
-        return "x : " + this.object.getX() + "\t Y : " + this.object.getY();
-    }
 }

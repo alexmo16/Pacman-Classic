@@ -303,7 +303,8 @@ public class GameManager implements IGame, IObserver<String>
             DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
             pacman.setDirection(oldDirection);
             scoreBar.setCollision(false, oldDirection);
-        } else
+        } 
+        else
         {
         	scoreBar.setCollision(true, oldDirection);
         }

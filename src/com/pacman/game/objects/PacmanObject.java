@@ -24,8 +24,8 @@ public class PacmanObject extends DynamicObject implements IPublisher
     private SpritesManager spritesManager;
     private Settings settings;
     private Sound chomp;
-    private static String direction = "left";
-    private ArrayList<IObserver<String>> observers = new ArrayList<IObserver<String>>();
+    private static Direction direction = Direction.DOWN.LEFT;
+    private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
 
     /**
      * Method used to create a new Pacman.
@@ -43,7 +43,7 @@ public class PacmanObject extends DynamicObject implements IPublisher
     	}
     }
 
-    public PacmanObject(double x, double y, double width, double height, String direction, Settings s)
+    public PacmanObject(double x, double y, double width, double height, Direction direction, Settings s)
     {
         super(x, y, width, height, direction, s);
         settings = s;
@@ -67,20 +67,20 @@ public class PacmanObject extends DynamicObject implements IPublisher
             return;
         }
 
-        String oldDirection = direction;
+        Direction oldDirection = direction;
         
         if (inputs.isKeyDown(KeyEvent.VK_UP))
         {
-            direction = "up";
+            direction = Direction.UP;
         } else if (inputs.isKeyDown(KeyEvent.VK_DOWN))
         {
-            direction = "down";
+            direction = Direction.DOWN;
         } else if (inputs.isKeyDown(KeyEvent.VK_RIGHT))
         {
-            direction = "right";
+            direction = Direction.RIGHT;
         } else if (inputs.isKeyDown(KeyEvent.VK_LEFT))
         {
-            direction = "left";
+            direction = Direction.LEFT;
         }
         
         if ( oldDirection != direction )
@@ -137,7 +137,7 @@ public class PacmanObject extends DynamicObject implements IPublisher
 	public void registerObserver(IObserver<?> observer) 
 	{
 		@SuppressWarnings("unchecked")
-		IObserver<String> tempObserver = (IObserver<String>)observer;
+		IObserver<Direction> tempObserver = (IObserver<Direction>)observer;
 		if ( tempObserver != null )
 		{
 			observers.add(tempObserver);
@@ -157,7 +157,7 @@ public class PacmanObject extends DynamicObject implements IPublisher
 	@Override
 	public void notifyObservers() 
 	{
-		for ( IObserver<String> observer : observers )
+		for ( IObserver<Direction> observer : observers )
 		{
 			if (observer != null)
 			{

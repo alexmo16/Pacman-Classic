@@ -137,7 +137,7 @@ public class GameManager implements IGame
             checkGumCollision();
             checkPacGumCollision();
             // Strategy pattern for wall collisions.
-            int checkWallCollision = CollisionManager.collisionWall(futurPacman);
+            String checkWallCollision = CollisionManager.collisionWall(futurPacman);
             executeWallStrategy( checkWallCollision );
         }
 
@@ -245,13 +245,13 @@ public class GameManager implements IGame
         }
     }
     
-    private void executeWallStrategy( int collisionID )
+    private void executeWallStrategy( String collisionString )
     {
-    	if ( collisionID == 2 )
+    	if ( collisionString == "void" )
     	{
     		tunnelStrategy();
     	}
-    	else if ( collisionID == 1 )
+    	else if ( collisionString == "wall" )
     	{
     		oneWallStrategy();
     	}
@@ -263,14 +263,14 @@ public class GameManager implements IGame
     
     private void oneWallStrategy()
     {
-    	int collisionID = CollisionManager.collisionWall(maybeFuturPacman);
-        if (collisionID == 2)
+    	String collisionString = CollisionManager.collisionWall(maybeFuturPacman);
+        if (collisionString == "void")
         {
             DynamicObject.tunnel(pacman.getRectangle(), oldDirection);
             pacman.setDirection(oldDirection);
             scoreBar.setCollision(false, oldDirection);
         }
-        if (collisionID == 0)
+        if (collisionString == "path")
         {
             DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
             pacman.setDirection(oldDirection);

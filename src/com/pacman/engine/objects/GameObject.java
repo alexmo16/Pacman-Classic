@@ -19,11 +19,9 @@ public abstract class GameObject extends SceneObject
 
     protected Rectangle2D.Double object = null;
 
-    protected double x;
-    protected double y;
-
     public GameObject(double x, double y, double width, double height, ISettings s)
     {
+        super();
         worldData = s.getWorldData();
         this.spritesManager = s.getSpritesManager();
         this.object = new Rectangle2D.Double(x, y, width, height);
@@ -31,8 +29,9 @@ public abstract class GameObject extends SceneObject
 
     public GameObject()
     {
-        worldData = null;
+        super();
         this.spritesManager = null;
+        worldData = null;
         this.object = new Rectangle2D.Double();
     }
 

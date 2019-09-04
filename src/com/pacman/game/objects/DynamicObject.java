@@ -10,7 +10,7 @@ public abstract class DynamicObject extends GameObject
 {
 
     private static final long serialVersionUID = 1L;
-    protected String direction;
+    protected Direction direction;
     static double speed = 0.1;
     protected SpritesManager spritesManager;
 
@@ -19,61 +19,78 @@ public abstract class DynamicObject extends GameObject
         this.direction = null;
     }
 
-    public DynamicObject(double x, double y, double width, double height, String direction, Settings s)
+    public DynamicObject(double x, double y, double width, double height, Direction direction, Settings s)
     {
         super(x, y, width, height, s);
         this.direction = direction;
         spritesManager = s.getSpritesManager();
     }
 
-    public String getDirection()
+    public Direction getDirection()
     {
-        return this.direction;
+        return direction;
     }
 
-    public void setDirection(String dir)
+    public void setDirection(Direction dir)
     {
-        this.direction = dir;
+        direction = dir;
     }
 
-    public static void updatePosition(Rectangle2D.Double object, String direction)
+    public static void updatePosition(Rectangle2D.Double object, Direction direction)
     {
-        if (direction.contentEquals("up"))
+        if (direction == Direction.UP)
         {
             object.setRect(object.getX(), object.getY() - speed, object.getWidth(), object.getHeight());
         }
-        if (direction.contentEquals("down"))
+        if (direction == Direction.DOWN)
         {
             object.setRect(object.getX(), object.getY() + speed, object.getWidth(), object.getHeight());
         }
-        if (direction.contentEquals("right"))
+        if (direction == Direction.RIGHT)
         {
             object.setRect(object.getX() + speed, object.getY(), object.getWidth(), object.getHeight());
         }
-        if (direction.contentEquals("left"))
+        if (direction == Direction.LEFT)
         {
             object.setRect(object.getX() - speed, object.getY(), object.getWidth(), object.getHeight());
         }
     }
 
-    public static void tunnel(Rectangle2D.Double object, String direction)
+    public static void tunnel(Rectangle2D.Double object, Direction direction)
     {
         switch (direction)
         {
-        case "right":
+        case RIGHT:
             object.setRect(0.5, object.getY(), object.getWidth(), object.getHeight());
             break;
-        case "left":
+        case LEFT:
             object.setRect(worldData.getWidth()- object.getWidth() - 0.5, object.getY(), object.getWidth(), object.getHeight());
             break;
-        case "up":
+        case UP:
             object.setRect(object.getX(), worldData.getHeight() - object.getHeight() - 0.5, object.getWidth(), object.getHeight());
             break;
-        case "down":
+        case DOWN:
             object.setRect(object.getX(), 0.5, object.getWidth(), object.getHeight());
             break;
         default:
             break;
         }
+    }
+    
+    public enum Direction
+    {
+    	RIGHT(0),
+        LEFT(1),
+        UP(2),
+        DOWN(3);
+
+        private final int value;
+
+        Direction(final int newValue)
+        {
+            value = newValue;
+        }
+
+        public int getValue() { return value; }
     }
 }

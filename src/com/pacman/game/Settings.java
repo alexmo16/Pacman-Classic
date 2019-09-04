@@ -10,6 +10,12 @@ public class Settings implements ISettings
 {
     private final String title = "Pac-Man";
 
+    // Sound related
+    private final String startMusicPath = "." + File.separator + "assets" + File.separator + "pacman_beginning.wav";
+    private final String gameSirenPath = "." + File.separator + "assets" + File.separator + "siren.wav";
+    private final String chompPath = "." + File.separator + "assets" + File.separator + "pacman_chomp.wav";
+
+   
     private final int mutedButton = KeyEvent.VK_M, pauseButton = KeyEvent.VK_P, minWindowWidth = 800,
             minWindowHeight = 600;
 
@@ -85,4 +91,16 @@ public class Settings implements ISettings
     {
         return authTiles;
     }
+
+	public String getStartMusicPath() {
+		return startMusicPath;
+	}
+
+	public String getGameSirenPath() {
+		return gameSirenPath;
+	}
+
+	public String getChompPath() {
+		return chompPath;
+	}
 }

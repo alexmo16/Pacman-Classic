@@ -13,6 +13,7 @@ public class Gum extends StaticObject
 
     public Gum()
     {
+        super();
         this.points = 0;
     }
 

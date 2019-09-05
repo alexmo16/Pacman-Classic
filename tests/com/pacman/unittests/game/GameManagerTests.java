@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.pacman.unittests.game;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,3 +55,10 @@ class GameManagerTests
     }
 
 }
+=======
+package com.pacman.unittests.game;
+
+public class GameManagerTests {
+
+}
+>>>>>>> branch 'master' of https://gitlab.com/pacman-equipe-05/pacman/

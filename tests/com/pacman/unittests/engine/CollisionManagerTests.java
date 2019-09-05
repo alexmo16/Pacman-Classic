@@ -76,19 +76,5 @@ public class CollisionManagerTests {
        
 	}
     
-	void test_collisionObj()
-	{
-    	GameObject obj1 = Mockito.mock(GameObject.class);
-    	GameObject obj2 = Mockito.mock(GameObject.class);
-    	
-    	//Mockito.when(obj1.intersects(obj2)).thenReturn(2.9);
-
-
-		
-		
-		//assertTrue(  );
-		//assertFalse(  );
-    	
-	}
 
 }

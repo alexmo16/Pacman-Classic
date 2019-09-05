@@ -37,6 +37,14 @@ public class Sound
             }
         };
     }
+    
+    /**
+     * Getters
+     */
+    public File getFile()
+    {
+        return file;
+    }
 
     /**
      * Play sound asynchronously.
@@ -46,7 +54,7 @@ public class Sound
     {
     	return play( defaultListener );
     }
-    
+
     /**
      * Play sound asynchronously with a custom listener on the audio line.
      * @param listener

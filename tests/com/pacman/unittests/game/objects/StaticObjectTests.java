@@ -6,14 +6,11 @@ import java.awt.Graphics;
 
 import org.junit.jupiter.api.Test;
 
+import com.pacman.game.Settings;
+import com.pacman.game.objects.Gum;
+
 class StaticObjectTests
 {
     
-    private Graphics g;
-
-    @Test
-    void testPaintComponentStaticObject() {
-        
-    }
 
 }

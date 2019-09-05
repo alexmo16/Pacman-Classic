@@ -100,6 +100,25 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
     }
     
     /**
+     * Getters for sound
+     */
+    
+    public Sound getStartMusic()
+    {
+        return startMusic;
+    }
+
+    public Sound getGameSiren()
+    {
+        return gameSiren;
+    }
+
+    public Sound getChomp()
+    {
+        return chomp;
+    }
+    
+    /**
      * Initialization function called by the engine when it lunch the game.
      */
     @Override
@@ -113,6 +132,7 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
         // TODO put this at true when the start button is pressed in the main menu.
         isStartingNewGame = true;
     }
+
 
     /**
      * Update function called by the engine every tick.

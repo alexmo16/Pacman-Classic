@@ -243,6 +243,9 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
         }
     }
 
+    /**
+     * Check if pacman eats a Gum
+     */
     private void checkGumCollision()
     {
         for (Gum gum : gumList)
@@ -257,7 +260,10 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
             }
         }
     }
-
+    
+    /**
+     * Check if pacman eats a PacGum
+     */
     private void checkPacGumCollision()
     {
         for (PacGum pacGum : pacGumList)
@@ -273,6 +279,10 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
         }
     }
     
+    /**
+     * Redirect to the correct strategy
+     * @param collisionString
+     */
     private void executeWallStrategy( String collisionString )
     {
     	if ( collisionString == "void" )
@@ -289,6 +299,9 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
     	}
     }
     
+    /**
+     * Strategy if pacman hits a wall.
+     */
     private void oneWallStrategy()
     {
     	String collisionString = CollisionManager.collisionWall(maybeFuturPacman);
@@ -310,12 +323,18 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
         }
     }
     
+    /**
+     * Strategy if pacman goes through the tunnel
+     */
     private void tunnelStrategy()
     {
     	DynamicObject.tunnel(pacman.getRectangle(), direction);
         scoreBar.setCollision(false, oldDirection);
     }
     
+    /**
+     * Strategy if pacman moves forward
+     */
     private void noWallStrategy()
     {
     	DynamicObject.updatePosition(pacman.getRectangle(), direction);

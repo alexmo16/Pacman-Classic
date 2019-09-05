@@ -1,6 +1,5 @@
 package com.pacman.game.objects;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 
 import com.pacman.game.Settings;
@@ -14,26 +13,13 @@ public class Gum extends StaticObject
     public Gum()
     {
         super();
-        this.points = 0;
     }
 
     public Gum(double x, double y, double width, double height, Settings s)
     {
         super(x, y, width, height, s);
         this.points = 10;
-    }
-
-    @Override
-    protected void paintComponent(Graphics g)
-    { 
-        int tileSize = Math.min(getHeight() / worldData.getHeight(), getWidth() / worldData.getWidth());
-        if ( (tileSize & 1) != 0 ) { tileSize--; }
-        
-        int x = ((int)object.getX() * tileSize) + (getWidth() - (tileSize * worldData.getWidth())) / 2;
-        int y = ((int)object.getY() * tileSize) + (getHeight() - (tileSize * worldData.getHeight())) / 2;
-        int[] k = spritesManager.getGumCoords();
-
-        g.drawImage(spritesManager.getSpritesSheet(), x, y, x + tileSize, y + tileSize, k[0], k[1], k[2], k[3], null);
+        this.sprite = spritesManager.getGumCoords();
     }
 
     public static ArrayList<Gum> generateGumList(Settings s)
@@ -54,11 +40,5 @@ public class Gum extends StaticObject
             }
         }
         return gumList;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "x : " + this.object.getX() + "\t Y : " + this.object.getY();
     }
 }

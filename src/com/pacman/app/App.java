@@ -9,6 +9,7 @@ public class App
 {
     /*
      * It all starts here!
+     * The application is based on a MVC design. The objects are like the model, the gamemanager is the controller and the scenes and window are the views.
      */
     public static void main(String[] args)
     {

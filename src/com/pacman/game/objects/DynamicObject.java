@@ -18,6 +18,10 @@ public abstract class DynamicObject extends GameObject
     {
         this.direction = null;
     }
+    
+    public static double getSpeed() {
+        return speed;
+    }
 
     public DynamicObject(double x, double y, double width, double height, Direction direction, Settings s)
     {
@@ -36,10 +40,6 @@ public abstract class DynamicObject extends GameObject
         direction = dir;
     }
 
-    public double getSpeed() 
-    {
-    	return speed;
-    }
     public static void updatePosition(Rectangle2D.Double object, Direction direction)
     {
     	double x = 0, y = 0;

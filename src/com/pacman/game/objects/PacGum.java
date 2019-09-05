@@ -24,7 +24,7 @@ public class PacGum extends StaticObject
 
     public static ArrayList<PacGum> generatePacGumList(Settings s)
     {
-        ArrayList<PacGum> gumList = new ArrayList<>();
+        ArrayList<PacGum> pacGumList = new ArrayList<PacGum>();
 
         for (int y = 0; y < worldData.getHeight(); y++)
         {
@@ -35,17 +35,11 @@ public class PacGum extends StaticObject
                 if (worldData.getTile(x, y) == WorldTile.ENERGIZER.getValue())
                 {
 
-                    gumList.add(new PacGum(x + 0.25, y + 0.25, 0.5, 0.5, s));
+                    pacGumList.add(new PacGum(x + 0.25, y + 0.25, 0.5, 0.5, s));
                 }
             }
         }
-        return gumList;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "x : " + this.object.getX() + "\t Y : " + this.object.getY();
+        return pacGumList;
     }
 
 }

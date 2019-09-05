@@ -24,7 +24,7 @@ public class Gum extends StaticObject
 
     public static ArrayList<Gum> generateGumList(Settings s)
     {
-        ArrayList<Gum> gumList = new ArrayList<>();
+        ArrayList<Gum> gumList = new ArrayList<Gum>();
 
         for (int y = 0; y < worldData.getHeight(); y++)
         {

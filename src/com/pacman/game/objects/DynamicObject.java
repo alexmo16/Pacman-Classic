@@ -18,6 +18,10 @@ public abstract class DynamicObject extends GameObject
     {
         this.direction = null;
     }
+    
+    public static double getSpeed() {
+        return speed;
+    }
 
     public DynamicObject(double x, double y, double width, double height, Direction direction, Settings s)
     {

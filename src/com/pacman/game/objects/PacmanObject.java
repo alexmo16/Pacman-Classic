@@ -3,6 +3,7 @@ package com.pacman.game.objects;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.pacman.engine.Inputs;
 import com.pacman.engine.Sound;
@@ -24,7 +25,7 @@ public class PacmanObject extends DynamicObject implements IPublisher
     private SpritesManager spritesManager;
     private Settings settings;
     private Sound chomp;
-    private static Direction direction = Direction.DOWN.LEFT;
+    private static Direction direction = Direction.LEFT;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
 
     /**

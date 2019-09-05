@@ -38,43 +38,56 @@ public abstract class DynamicObject extends GameObject
 
     public static void updatePosition(Rectangle2D.Double object, Direction direction)
     {
+    	double x = 0, y = 0;
         if (direction == Direction.UP)
         {
-            object.setRect(object.getX(), object.getY() - speed, object.getWidth(), object.getHeight());
+        	x = object.getX(); 
+        	y = object.getY() - speed;
         }
         if (direction == Direction.DOWN)
         {
-            object.setRect(object.getX(), object.getY() + speed, object.getWidth(), object.getHeight());
+            x = object.getX();
+            y = object.getY() + speed;
         }
         if (direction == Direction.RIGHT)
         {
-            object.setRect(object.getX() + speed, object.getY(), object.getWidth(), object.getHeight());
+            x = object.getX() + speed;
+            y = object.getY();
         }
         if (direction == Direction.LEFT)
         {
-            object.setRect(object.getX() - speed, object.getY(), object.getWidth(), object.getHeight());
+            x = object.getX() - speed;
+            y = object.getY();
         }
+        
+        object.setRect(x, y, object.getWidth(), object.getHeight());
     }
 
     public static void tunnel(Rectangle2D.Double object, Direction direction)
     {
-        switch (direction)
+    	double x = 0, y = 0;
+        if (direction == Direction.UP)
         {
-        case RIGHT:
-            object.setRect(0.5, object.getY(), object.getWidth(), object.getHeight());
-            break;
-        case LEFT:
-            object.setRect(worldData.getWidth()- object.getWidth() - 0.5, object.getY(), object.getWidth(), object.getHeight());
-            break;
-        case UP:
-            object.setRect(object.getX(), worldData.getHeight() - object.getHeight() - 0.5, object.getWidth(), object.getHeight());
-            break;
-        case DOWN:
-            object.setRect(object.getX(), 0.5, object.getWidth(), object.getHeight());
-            break;
-        default:
-            break;
+        	x = object.getX(); 
+        	y = worldData.getHeight() - object.getHeight() - 0.5;
         }
+        if (direction == Direction.DOWN)
+        {
+            x = object.getX();
+            y = 0.5;
+        }
+        if (direction == Direction.RIGHT)
+        {
+            x = 0.5;
+            y = object.getY();
+        }
+        if (direction == Direction.LEFT)
+        {
+            x = worldData.getWidth()- object.getWidth() - 0.5;
+            y = object.getY();
+        }
+        
+        object.setRect(x, y, object.getWidth(), object.getHeight());
     }
     
     public enum Direction

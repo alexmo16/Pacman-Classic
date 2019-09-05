@@ -13,12 +13,16 @@ import com.pacman.engine.Inputs;
 import com.pacman.game.Settings;
 import com.pacman.game.objects.DynamicObject.Direction;
 import com.pacman.game.objects.PacmanObject;
+import com.pacman.game.objects.ScoreBar;
+import com.pacman.game.objects.StaticObject;
 
 public class PacmanObjectTests {
 	
 	Settings settings = new Settings();
 	Settings settingsNull = null;
 	Inputs inputs = Mockito.mock( Inputs.class );
+	StaticObject obj = Mockito.mock( StaticObject.class );
+	ScoreBar scoreBar = Mockito.mock( ScoreBar.class );
 	PacmanObject pacmanOk = new PacmanObject(10,10,10,10,Direction.LEFT,settings);
 	
 	
@@ -58,18 +62,6 @@ public class PacmanObjectTests {
 
 	}
 	
-/*	@Test
-	void test_no_settings_pacman_object_creation() {
-		boolean isException = false;
-		try {
-		      new PacmanObject(10,10,10,10,Direction.LEFT,null);
-		    } catch (Exception e) {
-		      isException = true;
-		    }
-		assertFalse( isException );
-
-	}
-	*/
 	
 	@Test
 	void test_negative_position_pacman_object_creation() {
@@ -89,7 +81,6 @@ public class PacmanObjectTests {
 		Mockito.when( inputs.isKeyDown(KeyEvent.VK_UP) ).thenReturn( true );
 		pacmanOk.checkNewDirection(inputs);
 
-		System.out.println(pacmanOk.getPacDirection());
 		assertEquals(Direction.UP,pacmanOk.getPacDirection());
 
 	}
@@ -99,7 +90,6 @@ public class PacmanObjectTests {
 		Mockito.when( inputs.isKeyDown(KeyEvent.VK_DOWN) ).thenReturn( true );
 		pacmanOk.checkNewDirection(inputs);
 
-		System.out.println(pacmanOk.getPacDirection());
 		assertEquals(Direction.DOWN,pacmanOk.getPacDirection());
 
 	}
@@ -109,7 +99,6 @@ public class PacmanObjectTests {
 		Mockito.when( inputs.isKeyDown(KeyEvent.VK_LEFT) ).thenReturn( true );
 		pacmanOk.checkNewDirection(inputs);
 
-		System.out.println(pacmanOk.getPacDirection());
 		assertEquals(Direction.LEFT,pacmanOk.getPacDirection());
 
 	}
@@ -119,10 +108,19 @@ public class PacmanObjectTests {
 		Mockito.when( inputs.isKeyDown(KeyEvent.VK_RIGHT) ).thenReturn( true );
 		pacmanOk.checkNewDirection(inputs);
 
-		System.out.println(pacmanOk.getPacDirection());
 		assertEquals(Direction.RIGHT,pacmanOk.getPacDirection());
 
 	}
 	
+	@Test
+	void test_null_direction_pacman_object() {
+		Mockito.when( inputs ).thenReturn( null );
+		pacmanOk.checkNewDirection(inputs);
+
+		assertEquals(Direction.LEFT,pacmanOk.getPacDirection());
+
+	}
+	
+
 
 }

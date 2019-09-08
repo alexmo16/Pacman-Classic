@@ -1,18 +1,15 @@
 package com.pacman.game;
 
 import java.awt.Color;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.pacman.engine.CollisionManager;
 import com.pacman.engine.Engine;
 import com.pacman.engine.IGame;
-import com.pacman.engine.Inputs;
 import com.pacman.engine.Sound;
 import com.pacman.engine.Window;
 import com.pacman.game.objects.Background;
@@ -24,31 +21,30 @@ import com.pacman.game.objects.PacmanObject;
 import com.pacman.game.objects.PauseScreen;
 import com.pacman.game.objects.ScoreBar;
 import com.pacman.game.scenes.InGame;
-import com.pacman.utils.IObserver;
+import com.pacman.game.states.IGameState;
+import com.pacman.game.states.InitState;
+import com.pacman.game.states.PauseState;
+import com.pacman.game.states.PlayingState;
+import com.pacman.game.states.ResumeState;
+import com.pacman.game.states.StopState;
 
 /**
- * Contains an observer design pattern
+ * Contains an observer design pattern and a state pattern.
  *
  */
-public class GameManager implements IGame, IObserver<DynamicObject.Direction>
+public class GameManager implements IGame
 {
-	DynamicObject.Direction oldDirection = DynamicObject.Direction.LEFT, direction = DynamicObject.Direction.LEFT;
-    int startingPosition[];
-   
-    double pacmanBox;
+    protected boolean canPaused = false;
+    public boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
 
-    private boolean isPlaying = false;
-    private boolean isStartingNewGame = true;
-    private boolean canPaused = false;
-    private boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
-
-    Settings settings;
+    private DynamicObject.Direction direction = DynamicObject.Direction.LEFT;
+    private PacmanObject pacman;
+    private int startingPosition[];
+    private double pacmanBox;
+	private ArrayList<Gum> gumList;
+    private ArrayList<PacGum> pacGumList;
     
-    PacmanObject pacman;
-    PacmanObject futurPacman;
-    PacmanObject maybeFuturPacman;
-    ArrayList<Gum> gumList;
-    ArrayList<PacGum> pacGumList;
+    Settings settings;
     PauseScreen pauseScreen;
     Background background;
     Maze maze;
@@ -61,42 +57,36 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
     Sound gameSiren;
     Sound chomp;
 
-    LineListener startingMusicListener = new LineListener()
-    {
-        @Override
-        public void update(LineEvent event)
-        {
-            if (event.getType() == LineEvent.Type.STOP)
-            {
-                if (startMusic != null)
-                {
-                    startMusic.stop();
-                }
-                isPlaying = true;
-                canPaused = true;
-                gameSiren.playLoopBack();
-            }
-        }
-    };
+    private IGameState initState;
+    private IGameState stopState;
+    private IGameState playingState;
+    private IGameState pauseState;
+    private IGameState resumeState;
+    private IGameState currentState;
+    
+
 
     public GameManager()
     {
     	settings = new Settings();
-        startingPosition = settings.getWorldData().findFirstInstanceOF(WorldTile.PAC_MAN_START.getValue());
+        
+    	startingPosition = settings.getWorldData().findFirstInstanceOF(WorldTile.PAC_MAN_START.getValue());
         pacmanBox = 0.9;
         pacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction, settings);
-        pacman.registerObserver( this );
-        
-        maybeFuturPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction,
-                settings);
-        futurPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction,
-                settings);
         gumList = Gum.generateGumList(settings);
         pacGumList = PacGum.generatePacGumList(settings);
+        
         pauseScreen = new PauseScreen("Pause");
         maze = new Maze(settings);
         background = new Background(Color.black);        
-        scoreBar = new ScoreBar(settings);  
+        scoreBar = new ScoreBar(settings);
+        
+        initState = new InitState(this);
+        pauseState = new PauseState(this);
+        resumeState = new ResumeState(this);
+        playingState = new PlayingState(this);
+        stopState = new StopState(this);
+        currentState = initState;
     }
     
     /**
@@ -128,9 +118,6 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
         loadMusics();
 
         CollisionManager.setSettings(settings);
-
-        // TODO put this at true when the start button is pressed in the main menu.
-        isStartingNewGame = true;
     }
 
 
@@ -140,41 +127,8 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
     @Override
     public void update(Engine engine)
     {
-        Inputs inputs = engine.getInputs();
-        if ( canPaused && inputs.isKeyDown(settings.getPauseButton()))
-        {
-            togglePauseGame();
-        }
-
-        if (isStartingNewGame)
-        {
-            startMusic.play(startingMusicListener);
-            isStartingNewGame = false;
-        }
-
-        if (isPlaying)
-        {
-            if (inputs.isKeyDown(settings.getMutedButton()))
-            {
-                toggleUserMuteSounds();
-            }
-
-            pacman.checkNewDirection(engine.getInputs());
-            
-            maybeFuturPacman.getRectangle().setRect(pacman.getRectangle().getX(), pacman.getRectangle().getY(),
-                    pacman.getRectangle().getWidth(), pacman.getRectangle().getHeight());
-            futurPacman.getRectangle().setRect(pacman.getRectangle().getX(), pacman.getRectangle().getY(),
-                    pacman.getRectangle().getWidth(), pacman.getRectangle().getHeight());
-            DynamicObject.updatePosition(futurPacman.getRectangle(), direction);
-            DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
-
-            checkGumCollision();
-            checkPacGumCollision();
-            // Strategy pattern for wall collisions.
-            String checkWallCollision = CollisionManager.collisionWall(futurPacman);
-            executeWallStrategy( checkWallCollision );
-        }
-
+    	scoreBar.setState(currentState.getName());
+    	currentState.update(engine);
     }
 
     @Override
@@ -224,11 +178,24 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
         w.getFrame().add(inGameScene);
         w.getFrame().pack();
     }
+
+    public void playStartingMusic( LineListener listener )
+    {
+    	startMusic.play(listener);
+    }
     
+    public void stopStartingMusic()
+    {
+    	if (startMusic.getIsRunning())
+    	{
+    		startMusic.stop();
+    	}
+    }
+
     /**
      * Function called when the user click on the mute button.
      */
-    private void toggleUserMuteSounds()
+    public void toggleUserMuteSounds()
     {
         Engine.toggleMute();
         isUserMuted = Engine.getIsMuted();
@@ -240,136 +207,106 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
             gameSiren.playLoopBack();
         }
     }
-
-    /**
-     * Function called when the user click on the pause button.
-     */
-    private void togglePauseGame()
-    {
-    	pauseScreen.togglePausePane();
-        isPlaying = !isPlaying;
-
-        if (isPlaying)
-        {
-            if (!isUserMuted)
-            {
-                Engine.setIsMuted(false);
-                gameSiren.playLoopBack();
-            }
-        } else
-        {
-            Engine.setIsMuted(true);
-            gameSiren.stop();
-        }
-    }
-
-    /**
-     * Check if pacman eats a Gum
-     */
-    private void checkGumCollision()
-    {
-        for (Gum gum : gumList)
-        {
-            if (CollisionManager.collisionObj(pacman, gum))
-            {
-                pacman.eatGum(gum, scoreBar);
-                gumList.remove(gum);
-                gum.setVisible(false);
-                gum = null;
-                break;
-            }
-        }
-    }
     
-    /**
-     * Check if pacman eats a PacGum
-     */
-    private void checkPacGumCollision()
-    {
-        for (PacGum pacGum : pacGumList)
-        {
-            if (CollisionManager.collisionObj(pacman, pacGum))
-            {
-                pacman.eatGum(pacGum, scoreBar);
-                pacGumList.remove(pacGum);
-                pacGum.setVisible(false);
-                pacGum = null;
-                break;
-            }
-        }
-    }
-    
-    /**
-     * Redirect to the correct strategy
-     * @param collisionString
-     */
-    private void executeWallStrategy( String collisionString )
-    {
-    	if ( collisionString == "void" )
-    	{
-    		tunnelStrategy();
-    	}
-    	else if ( collisionString == "wall" )
-    	{
-    		oneWallStrategy();
-    	}
-    	else
-    	{
-    		noWallStrategy();
-    	}
-    }
-    
-    /**
-     * Strategy if pacman hits a wall.
-     */
-    private void oneWallStrategy()
-    {
-    	String collisionString = CollisionManager.collisionWall(maybeFuturPacman);
-        if (collisionString == "void")
-        {
-            DynamicObject.tunnel(pacman.getRectangle(), oldDirection);
-            pacman.setDirection(oldDirection);
-            scoreBar.setCollision(false, oldDirection);
-        }
-        if (collisionString == "path")
-        {
-            DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
-            pacman.setDirection(oldDirection);
-            scoreBar.setCollision(false, oldDirection);
-        } 
-        else
-        {
-        	scoreBar.setCollision(true, oldDirection);
-        }
-    }
-    
-    /**
-     * Strategy if pacman goes through the tunnel
-     */
-    private void tunnelStrategy()
-    {
-    	DynamicObject.tunnel(pacman.getRectangle(), direction);
-        scoreBar.setCollision(false, oldDirection);
-    }
-    
-    /**
-     * Strategy if pacman moves forward
-     */
-    private void noWallStrategy()
-    {
-    	DynamicObject.updatePosition(pacman.getRectangle(), direction);
-        pacman.setDirection(direction);
-        oldDirection = direction;
-        scoreBar.setCollision(false, oldDirection);
-    }
-
-    /**
-     * update of the observer
-     */
-	@Override
-	public void update( DynamicObject.Direction direction ) 
+	
+	public void setState( IGameState state )
 	{
-		oldDirection = this.direction;
-		this.direction = direction;
+		currentState = state;
+	}
+	
+	public IGameState getInitState()
+	{
+		return initState;
+	}
+
+	public IGameState getStopState()
+	{
+		return stopState;
+	}
+
+	public IGameState getPlayingState()
+	{
+		return playingState;
+	}
+
+	public IGameState getPauseState()
+	{
+		return pauseState;
+	}
+
+	public IGameState getResumeState()
+	{
+		return resumeState;
+	}
+
+	public IGameState getCurrentState()
+	{
+		return currentState;
+	}
+	
+	public boolean getCanPausedGame()
+	{
+		return canPaused;
+	}
+	
+	public void setCanPausedGame(boolean canPaused)
+	{
+		this.canPaused = canPaused;
+	}
+	
+	public void stopInGameMusics()
+	{
+		if ( gameSiren.getIsRunning() )
+		{
+			gameSiren.stop();
+		}
+	}
+	
+	public void resumeInGameMusics()
+	{
+		if ( !gameSiren.getIsRunning() )
+		{
+			gameSiren.playLoopBack();
+		}
+	}
+	
+	public void togglePauseScreen()
+	{
+		pauseScreen.togglePausePane();
+	}
+	
+	public ScoreBar getScoreBar()
+	{
+		return scoreBar;
+	}
+
+	public PacmanObject getPacman()
+	{
+		return pacman;
+	}
+
+	public DynamicObject.Direction getDirection()
+	{
+		return direction;
+	}
+
+	public int[] getStartingPosition()
+	{
+		return startingPosition;
+	}
+
+	public double getPacmanBox()
+	{
+		return pacmanBox;
+	}
+
+	public ArrayList<Gum> getGumList()
+	{
+		return gumList;
+	}
+
+	public ArrayList<PacGum> getPacGumList()
+	{
+		return pacGumList;
 	}
 }

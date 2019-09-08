@@ -3,7 +3,6 @@ package com.pacman.game.objects;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.pacman.engine.Inputs;
 import com.pacman.engine.Sound;

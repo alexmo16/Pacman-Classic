@@ -18,6 +18,7 @@ public class ScoreBar extends SceneObject
     private boolean collision;
     private DynamicObject.Direction direction;
     private SpritesManager spritesManager;
+    private String state;
 
     public ScoreBar(Settings s)
     {
@@ -45,6 +46,11 @@ public class ScoreBar extends SceneObject
         this.collision = bool;
         this.direction = direction;
     }
+    
+    public void setState(String s)
+    {
+    	state = s;
+    }
 
 	@Override
 	protected void paintComponent(Graphics g) 
@@ -54,7 +60,10 @@ public class ScoreBar extends SceneObject
         {
             g.drawString("collision :" + direction, 100, 10);
         }
-		
+        if (state != null)
+        {
+            g.drawString("State :" + state, 200, 10);
+        }
 	}
 
 }

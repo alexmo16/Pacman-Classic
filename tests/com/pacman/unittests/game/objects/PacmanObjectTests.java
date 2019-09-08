@@ -1,28 +1,27 @@
 package com.pacman.unittests.game.objects;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.awt.event.KeyEvent;
 
-
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import org.junit.jupiter.api.Test;
-
-import com.pacman.engine.Inputs;
-import com.pacman.game.Settings;
-import com.pacman.game.objects.DynamicObject.Direction;
-import com.pacman.game.objects.Gum;
-import com.pacman.game.objects.PacmanObject;
-import com.pacman.game.objects.ScoreBar;
-import com.pacman.game.objects.StaticObject;
+import com.pacman.controller.InputController;
+import com.pacman.model.Settings;
+import com.pacman.model.objects.Gum;
+import com.pacman.model.objects.PacmanObject;
+import com.pacman.model.objects.ScoreBar;
+import com.pacman.model.objects.StaticObject;
+import com.pacman.model.world.Direction;
 
 public class PacmanObjectTests
 {
 	
 	Settings settings = new Settings();
 	Settings settingsNull = null;
-	Inputs inputs = Mockito.mock( Inputs.class );
+	InputController inputs = Mockito.mock( InputController.class );
 	StaticObject obj = Mockito.mock( StaticObject.class );
 	ScoreBar scoreBar = new ScoreBar(settings);
 	ScoreBar scoreBar2 = new ScoreBar(settings);

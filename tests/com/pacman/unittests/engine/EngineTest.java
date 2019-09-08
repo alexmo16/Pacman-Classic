@@ -8,12 +8,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.pacman.engine.Engine;
-import com.pacman.engine.IGame;
-import com.pacman.engine.ISettings;
-import com.pacman.engine.ISpritesManager;
-import com.pacman.engine.Window;
-import com.pacman.engine.world.WorldData;
+import com.pacman.controller.Engine;
+import com.pacman.controller.IGame;
+import com.pacman.controller.ISettings;
+import com.pacman.controller.WindowController;
+import com.pacman.model.world.Data;
 
 class Settings implements ISettings 
 {
@@ -61,19 +60,13 @@ class Settings implements ISettings
 	}
 
 	@Override
-	public WorldData getWorldData() 
+	public Data getWorldData() 
 	{
-		return new WorldData( null );
+		return new Data( null );
 	}
 
 	@Override
 	public int[] getAuthTiles() {
-		return null;
-	}
-
-	@Override
-	public ISpritesManager getSpritesManager() 
-	{
 		return null;
 	}
 }
@@ -83,12 +76,12 @@ class EngineTest
 	
 	static IGame game;
 	static ISettings settings;
-	static Window window;
+	static WindowController window;
 	static Engine engine;
 	
 	private static void testCreateEngineWithoutGame() 
 	{
-		Engine e = Engine.getInstance( Mockito.mock( Window.class ), null );
+		Engine e = Engine.getInstance( Mockito.mock( WindowController.class ), null );
 		assertEquals( null, e );
 	}
 	
@@ -96,7 +89,7 @@ class EngineTest
 	{
 		Mockito.when( game.getSettings() ).thenReturn( null );
 		
-		Engine e = Engine.getInstance( Mockito.mock( Window.class ), game );
+		Engine e = Engine.getInstance( Mockito.mock( WindowController.class ), game );
 		assertEquals( null, e );
 		
 		Mockito.when( game.getSettings() ).thenReturn( settings );
@@ -105,7 +98,7 @@ class EngineTest
 	@BeforeAll
 	static void setupTests()
 	{	
-		window = Mockito.mock( Window.class );
+		window = Mockito.mock( WindowController.class );
 		Mockito.when( window.getFrame() ).thenReturn( new JFrame() );
 		
 		game = Mockito.mock( IGame.class );

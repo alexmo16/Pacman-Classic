@@ -8,7 +8,7 @@ import java.io.File;
 
 import org.junit.jupiter.api.Test;
 
-import com.pacman.engine.world.WorldData;
+import com.pacman.model.world.Data;
 
 class WorldDataTest
 {
@@ -23,7 +23,7 @@ class WorldDataTest
 	@Test
 	void test_good_map() 
 	{
-		WorldData worldData = new WorldData(good);
+		Data worldData = new Data(good);
 		
         assertNotEquals(worldData, null);
         assertEquals(worldData.getHeight(), 3);
@@ -52,7 +52,7 @@ class WorldDataTest
 	@Test
 	void test_empty_map() 
 	{
-		WorldData result = new WorldData(empty);
+		Data result = new Data(empty);
 		
         assertNotEquals(result, null);
         assertEquals(result.getHeight(), 0);
@@ -62,7 +62,7 @@ class WorldDataTest
 	@Test
 	void test_bad_overhead() 
 	{
-		WorldData result = new WorldData(badOverhead);
+		Data result = new Data(badOverhead);
 		
         assertNotEquals(result, null);
         assertEquals(result.getHeight(), 0);
@@ -72,7 +72,7 @@ class WorldDataTest
 	@Test
 	void test_bad_row() 
 	{
-		WorldData result = new WorldData(badRow);
+		Data result = new Data(badRow);
 		
         assertNotEquals(result, null);
         assertEquals(result.getHeight(), 0);
@@ -82,7 +82,7 @@ class WorldDataTest
 	@Test
 	void test_bad_col() 
 	{
-		WorldData result = new WorldData(badCol);
+		Data result = new Data(badCol);
 		
         assertNotEquals(result, null);
         assertEquals(result.getHeight(), 0);
@@ -92,7 +92,7 @@ class WorldDataTest
 	@Test
 	void test_find_first_instance() 
 	{
-		WorldData worldData = new WorldData(good);
+		Data worldData = new Data(good);
 		
         assertNotEquals(worldData, null);
         
@@ -105,7 +105,7 @@ class WorldDataTest
 	@Test
 	void test_find_first_instance_not_existing() 
 	{
-		WorldData worldData = new WorldData(good);
+		Data worldData = new Data(good);
 		
         assertNotEquals(worldData, null);
         
@@ -117,7 +117,7 @@ class WorldDataTest
 	@Test
 	void test_get_tile_out_of_range() 
 	{
-		WorldData worldData = new WorldData(good);
+		Data worldData = new Data(good);
 		
         assertNotEquals(worldData, null);
         

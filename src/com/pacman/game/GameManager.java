@@ -95,7 +95,7 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
         pacGumList = PacGum.generatePacGumList(settings);
         pauseScreen = new PauseScreen("Pause");
         maze = new Maze(settings);
-        background = new Background(Color.black);        
+        background = new Background(Color.black);
         scoreBar = new ScoreBar(settings);  
     }
     
@@ -217,9 +217,10 @@ public class GameManager implements IGame, IObserver<DynamicObject.Direction>
     	for (Gum gum : gumList) {inGameScene.addToGame(gum);}
     	for (PacGum pacGum : pacGumList) {inGameScene.addToGame(pacGum);}
     	inGameScene.addToGame(maze);
-    	inGameScene.addToGame(background);
     	
     	inGameScene.addToStatusBar(scoreBar);
+    	
+    	inGameScene.addToBackground(background);
     	
         w.getFrame().add(inGameScene);
         w.getFrame().pack();

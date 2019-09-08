@@ -1,5 +1,6 @@
 package com.pacman.game.objects;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import com.pacman.engine.objects.SceneObject;
@@ -11,16 +12,19 @@ import com.pacman.game.SpritesManager;
  */
 public class ScoreBar extends SceneObject
 {
-
-    private static final long serialVersionUID = 1L;
-
-    private int score;
+	private static final long serialVersionUID = 5855573757545455969L;
+	
+	private final int mazeHeight,
+	  				  mazeWidth;
+	private int score;
     private boolean collision;
     private DynamicObject.Direction direction;
     private SpritesManager spritesManager;
 
     public ScoreBar(Settings s)
     {
+		mazeHeight = s.getWorldData().getHeight();
+		mazeWidth = s.getWorldData().getWidth();
         this.score = 0;
         this.collision = false;
         this.spritesManager = s.getSpritesManager();
@@ -49,12 +53,26 @@ public class ScoreBar extends SceneObject
 	@Override
 	protected void paintComponent(Graphics g) 
 	{
-        g.drawString("score :" + score, 0, 10);
-        if (this.collision)
+        int tileSize = 54 * getHeight() / 100;
+        if ( (tileSize & 1) != 0 ) { tileSize--; }
+        
+        System.out.println(tileSize);
+        
+        int x = (getWidth() - mazeWidth * tileSize) / 2;
+        int y = (getHeight() - tileSize) / 2;
+        
+        String s = new String("score " + score);
+        if (this.collision) { s += " collision " + direction;}
+        int [] k;
+        for (int i = 0; i < s.length(); i++)
         {
-            g.drawString("collision :" + direction, 100, 10);
-        }
-		
+        	if (s.charAt(i) != ' ')
+        	{
+        		k = spritesManager.getCharacterCoords(s.charAt(i));
+        		g.drawImage(spritesManager.getSpritesSheet(), x + i * tileSize, y, x + i * tileSize + tileSize, y + tileSize, k[0], k[1], k[2], k[3], null);
+        	}
+        	
+        }	
 	}
 
 }

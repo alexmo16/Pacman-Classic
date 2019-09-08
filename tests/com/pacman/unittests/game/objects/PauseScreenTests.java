@@ -11,43 +11,47 @@ public class PauseScreenTests {
 	PauseScreen test2 = new PauseScreen("test");
 
 	@Test
-	void test_pause_screen_creation() {
+	void test_pause_screen_creation() 
+	{
 		boolean isException = false;
-		try {
-		      new PauseScreen("pause");
-		    } catch (Exception e) {
-		      isException = true;
-		    }
+		try 
+		{
+		    new PauseScreen("pause");
+		} catch (Exception e)
+		{
+		    isException = true;
+		}
 		assertFalse( isException );
-
 	}
 	
 	@Test
-	void test_null_value_pause_screen_creation() {
+	void test_null_value_pause_screen_creation() 
+	{
 		boolean isException = false;
-		try {
-		      new PauseScreen(null);
-		    } catch (Exception e) {
-		      isException = true;
-		    }
+		try 
+		{
+		    new PauseScreen(null);
+		} catch (Exception e) 
+		{
+		    isException = true;
+		}
 		assertFalse( isException );
-
 	}
 	
 	@Test
-	void test_toggle_pause_pane() {
+	void test_toggle_pause_pane() 
+	{
 		test.togglePausePane();
 
 		assertNotEquals( test, test2 );
-
 	}
 	
 	@Test
-	void test_double_toggle_pause_pane() {
+	void test_double_toggle_pause_pane() 
+	{
 		test.togglePausePane();
 		test.togglePausePane();
 
 		assertNotEquals( test, test2 );
-
 	}
 }

@@ -18,7 +18,8 @@ class DynamicObjectTests
     private double speed;
     
     @BeforeEach
-    void setSpeed() {
+    void setSpeed()
+    {
         speed = getSpeed();
     }
     

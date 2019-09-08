@@ -86,7 +86,7 @@ public class GameManager implements IGame
         resumeState = new ResumeState(this);
         playingState = new PlayingState(this);
         stopState = new StopState(this);
-        currentState = initState;
+        currentState = initState;  
     }
     
     /**
@@ -171,9 +171,10 @@ public class GameManager implements IGame
     	for (Gum gum : gumList) {inGameScene.addToGame(gum);}
     	for (PacGum pacGum : pacGumList) {inGameScene.addToGame(pacGum);}
     	inGameScene.addToGame(maze);
-    	inGameScene.addToGame(background);
     	
     	inGameScene.addToStatusBar(scoreBar);
+    	
+    	inGameScene.addToBackground(background);
     	
         w.getFrame().add(inGameScene);
         w.getFrame().pack();

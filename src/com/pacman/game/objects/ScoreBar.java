@@ -67,6 +67,7 @@ public class ScoreBar extends SceneObject
         
         String s = new String("score " + score);
         if (this.collision) { s += " collision " + direction;}
+        if (state != null) { s += " state " + state; }
         int [] k;
         for (int i = 0; i < s.length(); i++)
         {
@@ -75,10 +76,6 @@ public class ScoreBar extends SceneObject
         		k = spritesManager.getCharacterCoords(s.charAt(i));
         		g.drawImage(spritesManager.getSpritesSheet(), x + i * tileSize, y, x + i * tileSize + tileSize, y + tileSize, k[0], k[1], k[2], k[3], null);
         	}
-        }
-        if (state != null)
-        {
-            g.drawString("State :" + state, 200, 10);
         }
 	}
 

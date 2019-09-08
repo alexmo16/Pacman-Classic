@@ -10,7 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import com.pacman.engine.world.WorldData;
 
-class WorldDataTest {
+class WorldDataTest
+{
 
 	final private String good = System.getProperty("user.dir") + File.separator + "tests" + File.separator + "testAssets" + File.separator + "worldDataTest_good.txt";
 	final private String empty = System.getProperty("user.dir") + File.separator + "tests" + File.separator + "testAssets" + File.separator + "worldDataTest_empty.txt";

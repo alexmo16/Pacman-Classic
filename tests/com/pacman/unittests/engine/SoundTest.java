@@ -18,16 +18,20 @@ import org.junit.jupiter.api.Test;
 class SoundTest 
 {
 	@BeforeEach
-	void testSetMuteToFalse() {
+	void testSetMuteToFalse() 
+	{
 		Engine.setIsMuted( false );
 	}
 	
 	@Test
-	void testEmptyFilePath() {
+	void testEmptyFilePath()
+	{
 		boolean isException = false;
-		try {
+		try 
+		{
 			new Sound( "" );
-		} catch ( UnsupportedAudioFileException | IOException e ) {
+		} catch ( UnsupportedAudioFileException | IOException e ) 
+		{
 			isException = true;
 		}
 		
@@ -35,11 +39,14 @@ class SoundTest
 	}
 	
 	@Test
-	void testInvalidFilePath() {
+	void testInvalidFilePath() 
+	{
 		boolean isException = false;
-		try {
+		try
+		{
 			new Sound( "./tests/ladaojkndnoasd/test.wav" );
-		} catch ( UnsupportedAudioFileException | IOException e ) {
+		} catch ( UnsupportedAudioFileException | IOException e ) 
+		{
 			isException = true;
 		}
 		
@@ -47,11 +54,14 @@ class SoundTest
 	}
 	
 	@Test
-	void testCorruptedFile() {
+	void testCorruptedFile() 
+	{
 		boolean isException = false;
-		try {
+		try 
+		{
 			new Sound( "./tests/testAssets/cipCorrupted.wav" );
-		} catch ( UnsupportedAudioFileException | IOException e ) {
+		} catch ( UnsupportedAudioFileException | IOException e ) 
+		{
 			isException = true;
 		}
 		
@@ -59,13 +69,16 @@ class SoundTest
 	}
 
 	@Test
-	void testFileOKNoLoopback() {
+	void testFileOKNoLoopback() 
+	{
 		boolean isException = false;
 		boolean isPlayed = false;
-		try {
+		try 
+		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.play();
-		} catch ( UnsupportedAudioFileException | IOException e ) {
+		} catch ( UnsupportedAudioFileException | IOException e ) 
+		{
 			isException = true;
 		}
 		
@@ -74,10 +87,12 @@ class SoundTest
 	}
 	
 	@Test
-	void testFileOKWithLoopback() {
+	void testFileOKWithLoopback() 
+	{
 		boolean isException = false;
 		boolean isPlayed = false;
-		try {
+		try
+		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.playLoopBack();
 			assertTrue( isPlayed );
@@ -86,7 +101,8 @@ class SoundTest
 			isPlayed = sound.play();
 			assertTrue( isPlayed );
  
-		} catch ( UnsupportedAudioFileException | IOException e ) {
+		} catch ( UnsupportedAudioFileException | IOException e ) 
+		{
 			isException = true;
 		}
 		
@@ -95,14 +111,17 @@ class SoundTest
 	}
 	
 	@Test
-	void testStartStop() {
+	void testStartStop() 
+	{
 		boolean isException = false;
 		boolean isPlayed = false;
-		try {
+		try
+		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.playLoopBack();
 			sound.stop();
-		} catch ( UnsupportedAudioFileException | IOException e ) {
+		} catch ( UnsupportedAudioFileException | IOException e )
+		{
 			isException = true;
 		}
 		
@@ -111,14 +130,17 @@ class SoundTest
 	}
 	
 	@Test
-	void testMuteLoop() {
+	void testMuteLoop() 
+	{
 		boolean isException = false;
 		boolean isPlayed = false;
-		try {
+		try 
+		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			Engine.setIsMuted( true );
 			isPlayed = sound.playLoopBack();
-		} catch ( UnsupportedAudioFileException | IOException e ) {
+		} catch ( UnsupportedAudioFileException | IOException e ) 
+		{
 			isException = true;
 		}
 		
@@ -127,14 +149,17 @@ class SoundTest
 	}
 	
 	@Test
-	void testMute() {
+	void testMute() 
+	{
 		boolean isException = false;
 		boolean isPlayed = false;
-		try {
+		try
+		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			Engine.setIsMuted( true );
 			isPlayed = sound.play();
-		} catch ( UnsupportedAudioFileException | IOException e ) {
+		} catch ( UnsupportedAudioFileException | IOException e ) 
+		{
 			isException = true;
 		}
 		
@@ -144,16 +169,21 @@ class SoundTest
 	}
 	
 	@Test
-	void testCustomCallback() {
+	void testCustomCallback() 
+	{
 		boolean isException = false;
 		boolean isPlayed = false;
 		AtomicBoolean testBool = new AtomicBoolean( false );
-		try {
+		try 
+		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			LineListener listener = new LineListener() {
+			LineListener listener = new LineListener() 
+			{
 				@Override
-				public void update(LineEvent event) {
-					if ( event.getType() == LineEvent.Type.STOP ) {
+				public void update(LineEvent event) 
+				{
+					if ( event.getType() == LineEvent.Type.STOP ) 
+					{
 						sound.stop();
 						testBool.set( true );
 		            }
@@ -167,7 +197,8 @@ class SoundTest
 				Thread.sleep( 5 );
 			}
 			
-		} catch ( UnsupportedAudioFileException | IOException | InterruptedException e ) {
+		} catch ( UnsupportedAudioFileException | IOException | InterruptedException e ) 
+		{
 			isException = true;
 		}
 		

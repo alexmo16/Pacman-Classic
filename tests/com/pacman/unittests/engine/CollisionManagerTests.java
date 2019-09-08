@@ -12,7 +12,8 @@ import com.pacman.engine.CollisionManager;
 import com.pacman.engine.objects.GameObject;
 
 
-public class CollisionManagerTests {
+public class CollisionManagerTests 
+{
 	
 	int[][] map = {{0,0,40,1},
 			{0,1,1,1},

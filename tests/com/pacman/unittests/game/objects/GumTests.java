@@ -12,7 +12,8 @@ class GumTests
     private Settings settings;
 
     @Test
-    void testGumCreationNoParameters() {
+    void testGumCreationNoParameters() 
+    {
         boolean isException = false;
         this.settings = new Settings();
         try

@@ -56,8 +56,6 @@ public class ScoreBar extends SceneObject
         int tileSize = 54 * getHeight() / 100;
         if ( (tileSize & 1) != 0 ) { tileSize--; }
         
-        System.out.println(tileSize);
-        
         int x = (getWidth() - mazeWidth * tileSize) / 2;
         int y = (getHeight() - tileSize) / 2;
         

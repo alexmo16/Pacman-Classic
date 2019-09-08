@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.pacman.game.Settings;
-import com.pacman.game.objects.PacGum;
+import com.pacman.model.Settings;
+import com.pacman.model.objects.PacGum;
 
 class PacGumTests
 {

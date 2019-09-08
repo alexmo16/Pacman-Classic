@@ -1,9 +1,9 @@
 package com.pacman.app;
 
-import com.pacman.engine.Engine;
-import com.pacman.engine.IGame;
-import com.pacman.engine.Window;
-import com.pacman.game.GameManager;
+import com.pacman.controller.Engine;
+import com.pacman.controller.IGame;
+import com.pacman.controller.WindowController;
+import com.pacman.model.Game;
 
 public class App
 {
@@ -13,8 +13,8 @@ public class App
      */
     public static void main(String[] args)
     {
-        IGame game = new GameManager();
-        Window window = new Window(game.getSettings());
+        IGame game = new Game();
+        WindowController window = new WindowController(game.getSettings());
         Engine engine = Engine.getInstance(window, game);
         engine.startGame();
     }

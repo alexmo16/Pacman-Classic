@@ -6,8 +6,8 @@ import java.awt.Graphics;
 
 import org.junit.jupiter.api.Test;
 
-import com.pacman.game.Settings;
-import com.pacman.game.objects.Gum;
+import com.pacman.model.Settings;
+import com.pacman.model.objects.Gum;
 
 class StaticObjectTests
 {

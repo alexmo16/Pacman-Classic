@@ -9,8 +9,8 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import com.pacman.engine.Engine;
-import com.pacman.engine.Sound;
+import com.pacman.controller.Engine;
+import com.pacman.controller.SoundController;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class SoundTest
 		boolean isException = false;
 		try 
 		{
-			new Sound( "" );
+			new SoundController( "" );
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
@@ -44,7 +44,7 @@ class SoundTest
 		boolean isException = false;
 		try
 		{
-			new Sound( "./tests/ladaojkndnoasd/test.wav" );
+			new SoundController( "./tests/ladaojkndnoasd/test.wav" );
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
@@ -59,7 +59,7 @@ class SoundTest
 		boolean isException = false;
 		try 
 		{
-			new Sound( "./tests/testAssets/cipCorrupted.wav" );
+			new SoundController( "./tests/testAssets/cipCorrupted.wav" );
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
@@ -75,7 +75,7 @@ class SoundTest
 		boolean isPlayed = false;
 		try 
 		{
-			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			SoundController sound = new SoundController( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.play();
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
@@ -93,11 +93,11 @@ class SoundTest
 		boolean isPlayed = false;
 		try
 		{
-			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			SoundController sound = new SoundController( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.playLoopBack();
 			assertTrue( isPlayed );
 			
-			sound = new Sound( "./tests/testAssets/clip.wav" );
+			sound = new SoundController( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.play();
 			assertTrue( isPlayed );
  
@@ -117,7 +117,7 @@ class SoundTest
 		boolean isPlayed = false;
 		try
 		{
-			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			SoundController sound = new SoundController( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.playLoopBack();
 			sound.stop();
 		} catch ( UnsupportedAudioFileException | IOException e )
@@ -136,7 +136,7 @@ class SoundTest
 		boolean isPlayed = false;
 		try 
 		{
-			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			SoundController sound = new SoundController( "./tests/testAssets/clip.wav" );
 			Engine.setIsMuted( true );
 			isPlayed = sound.playLoopBack();
 		} catch ( UnsupportedAudioFileException | IOException e ) 
@@ -155,7 +155,7 @@ class SoundTest
 		boolean isPlayed = false;
 		try
 		{
-			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			SoundController sound = new SoundController( "./tests/testAssets/clip.wav" );
 			Engine.setIsMuted( true );
 			isPlayed = sound.play();
 		} catch ( UnsupportedAudioFileException | IOException e ) 
@@ -176,7 +176,7 @@ class SoundTest
 		AtomicBoolean testBool = new AtomicBoolean( false );
 		try 
 		{
-			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			SoundController sound = new SoundController( "./tests/testAssets/clip.wav" );
 			LineListener listener = new LineListener() 
 			{
 				@Override

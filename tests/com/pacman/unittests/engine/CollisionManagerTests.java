@@ -7,9 +7,8 @@ import java.awt.geom.Rectangle2D;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-
-import com.pacman.engine.CollisionManager;
-import com.pacman.engine.objects.GameObject;
+import com.pacman.controller.CollisionController;
+import com.pacman.model.objects.GameObject;
 
 
 public class CollisionManagerTests 
@@ -25,7 +24,7 @@ public class CollisionManagerTests
     @Test
     void test_collisionWall_void() 
     {
-    	CollisionManager.setMap(map,auth,4,4);
+    	CollisionController.setMap(map,auth,4,4);
     	
     	GameObject obj1 = Mockito.mock(GameObject.class);
     	Rectangle2D.Double rectangle = Mockito.mock(Rectangle2D.Double.class);
@@ -34,7 +33,7 @@ public class CollisionManagerTests
     	Mockito.when(obj1.getRectangle().getMinY()).thenReturn(0.0);
     	Mockito.when(obj1.getRectangle().getMaxX()).thenReturn(0.9);
     	Mockito.when(obj1.getRectangle().getMaxY()).thenReturn(0.9);
-    	assertEquals("void",CollisionManager.collisionWall(obj1));
+    	assertEquals("void",CollisionController.collisionWall(obj1));
     	
        
 	}
@@ -42,7 +41,7 @@ public class CollisionManagerTests
     @Test
     void test_collisionWall_wall() 
     {
-    	CollisionManager.setMap(map,auth,4,4);
+    	CollisionController.setMap(map,auth,4,4);
     	
     	GameObject obj1 = Mockito.mock(GameObject.class);
     	Rectangle2D.Double rectangle = Mockito.mock(Rectangle2D.Double.class);
@@ -53,7 +52,7 @@ public class CollisionManagerTests
     	Mockito.when(obj1.getRectangle().getMaxY()).thenReturn(1.9);
     	
     	
-    	assertEquals("wall",CollisionManager.collisionWall(obj1));
+    	assertEquals("wall",CollisionController.collisionWall(obj1));
     	
        
 	}
@@ -61,7 +60,7 @@ public class CollisionManagerTests
     @Test
     void test_collisionWall_path() 
     {
-    	CollisionManager.setMap(map,auth,4,4);
+    	CollisionController.setMap(map,auth,4,4);
     	
     	GameObject obj1 = Mockito.mock(GameObject.class);
     	Rectangle2D.Double rectangle = Mockito.mock(Rectangle2D.Double.class);
@@ -72,7 +71,7 @@ public class CollisionManagerTests
     	Mockito.when(obj1.getRectangle().getMaxY()).thenReturn(2.4);
     	
     	
-    	assertEquals("path",CollisionManager.collisionWall(obj1));
+    	assertEquals("path",CollisionController.collisionWall(obj1));
     	
        
 	}

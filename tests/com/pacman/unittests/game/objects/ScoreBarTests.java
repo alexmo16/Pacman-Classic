@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 
-import com.pacman.game.Settings;
-import com.pacman.game.objects.ScoreBar;
+import com.pacman.model.Settings;
+import com.pacman.model.objects.ScoreBar;
 
 class ScoreBarTests
 {

@@ -10,22 +10,22 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.pacman.engine.Inputs;
-import com.pacman.engine.Window;
+import com.pacman.controller.InputController;
+import com.pacman.controller.WindowController;
 
 class InputsTest 
 {
-	static Inputs input;
+	static InputController input;
 	
-	static Window window;
+	static WindowController window;
 	static JFrame frame;
 	
 	@BeforeAll
 	static void init()
 	{
-		window = Mockito.mock( Window.class );
+		window = Mockito.mock( WindowController.class );
 		Mockito.when( window.getFrame() ).thenReturn( new JFrame() );
-		input = new Inputs( InputsTest.window );
+		input = new InputController( InputsTest.window );
 		frame = InputsTest.window.getFrame();
 	}
 	

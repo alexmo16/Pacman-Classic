@@ -10,35 +10,35 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 
-import com.pacman.engine.Sound;
-import com.pacman.game.GameManager;
-import com.pacman.engine.Window;
-import com.pacman.game.Settings;
+import com.pacman.controller.SoundController;
+import com.pacman.controller.WindowController;
+import com.pacman.model.Game;
+import com.pacman.model.Settings;
 
 class GameManagerTests
 {
 
-    GameManager gameManager;
-    Window window;
+    Game gameManager;
+    WindowController window;
     Settings s;
 
     @Test
     void testLoadedMusics()
     {
         boolean isException = false;
-        Sound expectedStartMusic = null;
-        Sound expectedGameSirent = null;
-        Sound expectedChomp = null;
+        SoundController expectedStartMusic = null;
+        SoundController expectedGameSirent = null;
+        SoundController expectedChomp = null;
         try
         {
-            gameManager = new GameManager();
+            gameManager = new Game();
             s = new Settings();
-            window = new Window(s);
+            window = new WindowController(s);
             gameManager.init(window);
 
-            expectedStartMusic = new Sound("." + File.separator + "assets" + File.separator + "pacman_beginning.wav");
-            expectedGameSirent = new Sound("." + File.separator + "assets" + File.separator + "siren.wav");
-            expectedChomp = new Sound("." + File.separator + "assets" + File.separator + "pacman_chomp.wav");
+            expectedStartMusic = new SoundController("." + File.separator + "assets" + File.separator + "pacman_beginning.wav");
+            expectedGameSirent = new SoundController("." + File.separator + "assets" + File.separator + "siren.wav");
+            expectedChomp = new SoundController("." + File.separator + "assets" + File.separator + "pacman_chomp.wav");
         } catch (UnsupportedAudioFileException e)
         {
             isException = true;

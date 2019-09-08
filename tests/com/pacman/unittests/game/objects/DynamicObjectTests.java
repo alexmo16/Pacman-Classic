@@ -1,13 +1,16 @@
 package com.pacman.unittests.game.objects;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.pacman.model.objects.DynamicObject.getSpeed;
+import static com.pacman.model.objects.DynamicObject.tunnel;
+import static com.pacman.model.objects.DynamicObject.updatePosition;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.pacman.game.Settings;
-import static com.pacman.game.objects.DynamicObject.*;
-import com.pacman.game.objects.PacmanObject;
+import com.pacman.model.Settings;
+import com.pacman.model.objects.PacmanObject;
+import com.pacman.model.world.Direction;
 
 class DynamicObjectTests
 {

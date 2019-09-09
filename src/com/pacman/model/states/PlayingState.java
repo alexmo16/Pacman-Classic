@@ -3,7 +3,7 @@ package com.pacman.model.states;
 import java.util.ArrayList;
 
 import com.pacman.controller.Engine;
-import com.pacman.controller.InputController;
+import com.pacman.controller.Input;
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
 import com.pacman.model.Settings;
@@ -54,7 +54,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update(Engine engine) 
 	{
-		InputController inputs = engine.getInputs();
+		Input inputs = engine.getInputs();
 		if (inputs.isKeyDown(settings.getMutedButton()))
         {
             gameManager.toggleUserMuteSounds();

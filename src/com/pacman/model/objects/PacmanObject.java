@@ -3,7 +3,7 @@ package com.pacman.model.objects;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import com.pacman.controller.InputController;
+import com.pacman.controller.Input;
 import com.pacman.model.Settings;
 import com.pacman.model.Sound;
 import com.pacman.model.world.Direction;
@@ -46,7 +46,7 @@ public class PacmanObject extends DynamicObject implements IPublisher
      * @return String direction = "left","right","up" or "down"
      * 
      */
-    public void checkNewDirection(InputController inputs)
+    public void checkNewDirection(Input inputs)
     {
         if (inputs == null)
         {

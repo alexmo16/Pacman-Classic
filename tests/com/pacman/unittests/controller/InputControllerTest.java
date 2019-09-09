@@ -10,12 +10,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.pacman.controller.InputController;
+import com.pacman.controller.Input;
 import com.pacman.controller.WindowController;
 
 class InputControllerTest 
 {
-	static InputController input;
+	static Input input;
 	
 	static WindowController window;
 	static JFrame frame;
@@ -25,7 +25,7 @@ class InputControllerTest
 	{
 		window = Mockito.mock( WindowController.class );
 		Mockito.when( window.getFrame() ).thenReturn( new JFrame() );
-		input = new InputController( InputControllerTest.window );
+		input = new Input( InputControllerTest.window );
 		frame = InputControllerTest.window.getFrame();
 	}
 	

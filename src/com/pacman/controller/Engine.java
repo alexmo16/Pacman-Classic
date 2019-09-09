@@ -12,7 +12,7 @@ public class Engine implements Runnable
 {
     private Thread thread;
     private static IGame game;
-    private static InputController inputs;
+    private static Input inputs;
     private static WindowController window;
     private static ISettings settings;
 
@@ -58,7 +58,7 @@ public class Engine implements Runnable
             tilesW = settings.getWorldData().getWidth();
 
             Engine.window = window;
-            inputs = new InputController(Engine.window);
+            inputs = new Input(Engine.window);
             instance = new Engine();
         }
 
@@ -105,7 +105,7 @@ public class Engine implements Runnable
         isRunning.set(false);
     }
 
-    public InputController getInputs()
+    public Input getInputs()
     {
         return inputs;
     }

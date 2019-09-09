@@ -2,6 +2,8 @@ package com.pacman.controller;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.pacman.view.Window;
+
 /**
  * Classe principale de l'engin de jeu, Engine, gere donc la gameloop de
  * Pac-Man.
@@ -13,7 +15,7 @@ public class GameController implements Runnable
     private Thread thread;
     private static IGame game;
     private static Input inputs;
-    private static WindowController window;
+    private static Window window;
     private static ISettings settings;
 
     private static AtomicBoolean isRunning = new AtomicBoolean(false);
@@ -37,7 +39,7 @@ public class GameController implements Runnable
      * @param game the object that implements the IGame interface. 
      * @return Engine
      */
-    public static GameController getInstance(WindowController window, IGame game)
+    public static GameController getInstance(Window window, IGame game)
     {
         if (instance == null)
         {

@@ -11,8 +11,8 @@ import org.mockito.Mockito;
 import com.pacman.controller.GameController;
 import com.pacman.controller.IGame;
 import com.pacman.controller.ISettings;
-import com.pacman.controller.WindowController;
 import com.pacman.model.world.Data;
+import com.pacman.view.Window;
 
 class Settings implements ISettings 
 {
@@ -76,12 +76,12 @@ class EngineTest
 	
 	static IGame game;
 	static ISettings settings;
-	static WindowController window;
+	static Window window;
 	static GameController engine;
 	
 	private static void testCreateEngineWithoutGame() 
 	{
-		GameController e = GameController.getInstance( Mockito.mock( WindowController.class ), null );
+		GameController e = GameController.getInstance( Mockito.mock( Window.class ), null );
 		assertEquals( null, e );
 	}
 	
@@ -89,7 +89,7 @@ class EngineTest
 	{
 		Mockito.when( game.getSettings() ).thenReturn( null );
 		
-		GameController e = GameController.getInstance( Mockito.mock( WindowController.class ), game );
+		GameController e = GameController.getInstance( Mockito.mock( Window.class ), game );
 		assertEquals( null, e );
 		
 		Mockito.when( game.getSettings() ).thenReturn( settings );
@@ -98,7 +98,7 @@ class EngineTest
 	@BeforeAll
 	static void setupTests()
 	{	
-		window = Mockito.mock( WindowController.class );
+		window = Mockito.mock( Window.class );
 		Mockito.when( window.getFrame() ).thenReturn( new JFrame() );
 		
 		game = Mockito.mock( IGame.class );

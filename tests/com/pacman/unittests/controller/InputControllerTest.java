@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.pacman.controller.Input;
-import com.pacman.controller.WindowController;
+import com.pacman.view.Window;
 
 class InputControllerTest 
 {
 	static Input input;
 	
-	static WindowController window;
+	static Window window;
 	static JFrame frame;
 	
 	@BeforeAll
 	static void init()
 	{
-		window = Mockito.mock( WindowController.class );
+		window = Mockito.mock( Window.class );
 		Mockito.when( window.getFrame() ).thenReturn( new JFrame() );
 		input = new Input( InputControllerTest.window );
 		frame = InputControllerTest.window.getFrame();

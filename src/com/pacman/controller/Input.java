@@ -3,10 +3,12 @@ package com.pacman.controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import com.pacman.view.Window;
+
 public class Input implements KeyListener
 {
 
-    private WindowController window;
+    private Window window;
 
     private static final int SUPPORTED_KEYS = 256;
 
@@ -15,7 +17,7 @@ public class Input implements KeyListener
 
     private char typed = 0;
 
-    public Input(WindowController window)
+    public Input(Window window)
     {
         this.window = window;
         this.window.getFrame().addKeyListener(this);

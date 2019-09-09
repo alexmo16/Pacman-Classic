@@ -1,4 +1,4 @@
-package com.pacman.controller;
+package com.pacman.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -8,11 +8,14 @@ import java.awt.event.WindowListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class WindowController implements WindowListener
+import com.pacman.controller.GameController;
+import com.pacman.controller.ISettings;
+
+public class Window implements WindowListener
 {
     private JFrame frame;
 
-    public WindowController(ISettings s)
+    public Window(ISettings s)
     {
         frame = new JFrame(s.getTitle());
         frame.setMinimumSize(new Dimension(s.getMinWindowWidth(), s.getMinWindowHeight()));

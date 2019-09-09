@@ -8,7 +8,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.pacman.controller.GameController;
 import com.pacman.controller.IGame;
-import com.pacman.controller.WindowController;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.Maze;
 import com.pacman.model.objects.PacGum;
@@ -23,6 +22,7 @@ import com.pacman.model.states.StopState;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Tile;
 import com.pacman.view.GameView;
+import com.pacman.view.Window;
 
 /**
  * Contains an observer design pattern and a state pattern.
@@ -99,7 +99,7 @@ public class Game implements IGame
      * Initialization function called by the engine when it lunch the game.
      */
     @Override
-    public void init(WindowController window)
+    public void init(Window window)
     {
         //loadInGameScene(window);
     	window.setContainer(new GameView(this));

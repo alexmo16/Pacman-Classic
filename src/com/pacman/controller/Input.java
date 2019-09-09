@@ -3,7 +3,7 @@ package com.pacman.controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class InputController implements KeyListener
+public class Input implements KeyListener
 {
 
     private WindowController window;
@@ -15,7 +15,7 @@ public class InputController implements KeyListener
 
     private char typed = 0;
 
-    public InputController(WindowController window)
+    public Input(WindowController window)
     {
         this.window = window;
         this.window.getFrame().addKeyListener(this);

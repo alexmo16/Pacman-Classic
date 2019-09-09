@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.pacman.controller.InputController;
+import com.pacman.controller.Input;
 import com.pacman.model.Settings;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.PacmanObject;
@@ -21,7 +21,7 @@ public class PacmanObjectTests
 	
 	Settings settings = new Settings();
 	Settings settingsNull = null;
-	InputController inputs = Mockito.mock( InputController.class );
+	Input inputs = Mockito.mock( Input.class );
 	StaticObject obj = Mockito.mock( StaticObject.class );
 	ScoreBar scoreBar = new ScoreBar(settings);
 	ScoreBar scoreBar2 = new ScoreBar(settings);

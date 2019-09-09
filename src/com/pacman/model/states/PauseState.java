@@ -2,7 +2,7 @@ package com.pacman.model.states;
 
 import com.pacman.controller.Engine;
 import com.pacman.controller.ISettings;
-import com.pacman.controller.InputController;
+import com.pacman.controller.Input;
 import com.pacman.model.Game;
 
 public class PauseState implements IGameState
@@ -20,7 +20,7 @@ public class PauseState implements IGameState
 	@Override
 	public void update(Engine engine) 
 	{
-		InputController inputs = engine.getInputs();
+		Input inputs = engine.getInputs();
 		
         gameManager.stopInGameMusics();
 		Engine.setIsMuted(true);

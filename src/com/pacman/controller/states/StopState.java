@@ -1,4 +1,4 @@
-package com.pacman.model.states;
+package com.pacman.controller.states;
 
 import com.pacman.controller.Engine;
 import com.pacman.model.Game;

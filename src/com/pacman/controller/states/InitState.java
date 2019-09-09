@@ -1,4 +1,4 @@
-package com.pacman.model.states;
+package com.pacman.controller.states;
 
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;

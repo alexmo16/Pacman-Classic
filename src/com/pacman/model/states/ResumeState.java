@@ -1,6 +1,6 @@
 package com.pacman.model.states;
 
-import com.pacman.controller.Engine;
+import com.pacman.controller.GameController;
 import com.pacman.model.Game;
 
 public class ResumeState implements IGameState 
@@ -14,11 +14,11 @@ public class ResumeState implements IGameState
 	}
 	
 	@Override
-	public void update(Engine engine) 
+	public void update(GameController engine) 
 	{
 		if ( !gameManager.isUserMuted )
 		{
-			Engine.setIsMuted(false);
+			GameController.setIsMuted(false);
 			gameManager.resumeInGameMusics();
 		}
 		

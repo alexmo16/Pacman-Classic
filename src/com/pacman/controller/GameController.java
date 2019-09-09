@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * 
  * @Singleton
  */
-public class Engine implements Runnable
+public class GameController implements Runnable
 {
     private Thread thread;
     private static IGame game;
@@ -23,12 +23,12 @@ public class Engine implements Runnable
     private static int tilesH;
     private static int tilesW;
 
-    private static Engine instance;
+    private static GameController instance;
 
     /**
      * Constructeur prive puisque c'est un singleton. Il faut passer par getInstance
      */
-    private Engine()
+    private GameController()
     {
     }
     
@@ -38,7 +38,7 @@ public class Engine implements Runnable
      * @param game the object that implements the IGame interface. 
      * @return Engine
      */
-    public static Engine getInstance(WindowController window, IGame game)
+    public static GameController getInstance(WindowController window, IGame game)
     {
         if (instance == null)
         {
@@ -47,7 +47,7 @@ public class Engine implements Runnable
                 return null;
             }
 
-            Engine.game = game;
+            GameController.game = game;
             settings = game.getSettings();
             if (settings == null || settings.getWorldData() == null)
             {
@@ -58,9 +58,9 @@ public class Engine implements Runnable
             tilesH = settings.getWorldData().getHeight();
             tilesW = settings.getWorldData().getWidth();
 
-            Engine.window = window;
-            inputs = new Input(Engine.window);
-            instance = new Engine();
+            GameController.window = window;
+            inputs = new Input(GameController.window);
+            instance = new GameController();
         }
 
         return instance;

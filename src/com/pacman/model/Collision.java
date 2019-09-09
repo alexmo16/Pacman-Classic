@@ -1,6 +1,6 @@
 package com.pacman.model;
 
-import com.pacman.controller.Engine;
+import com.pacman.controller.GameController;
 import com.pacman.controller.ISettings;
 import com.pacman.model.objects.GameObject;
 
@@ -11,9 +11,9 @@ import com.pacman.model.objects.GameObject;
  */
 public abstract class Collision
 {
-    static int[][] tiles = Engine.getTiles();
-    static int mapH = Engine.getHeight();
-    static int mapW = Engine.getWidth();
+    static int[][] tiles = GameController.getTiles();
+    static int mapH = GameController.getHeight();
+    static int mapW = GameController.getWidth();
     static int[] authTiles;
     static ISettings settings;
 

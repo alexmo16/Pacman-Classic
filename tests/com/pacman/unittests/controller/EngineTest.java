@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.pacman.controller.Engine;
+import com.pacman.controller.GameController;
 import com.pacman.controller.IGame;
 import com.pacman.controller.ISettings;
 import com.pacman.controller.WindowController;
@@ -77,11 +77,11 @@ class EngineTest
 	static IGame game;
 	static ISettings settings;
 	static WindowController window;
-	static Engine engine;
+	static GameController engine;
 	
 	private static void testCreateEngineWithoutGame() 
 	{
-		Engine e = Engine.getInstance( Mockito.mock( WindowController.class ), null );
+		GameController e = GameController.getInstance( Mockito.mock( WindowController.class ), null );
 		assertEquals( null, e );
 	}
 	
@@ -89,7 +89,7 @@ class EngineTest
 	{
 		Mockito.when( game.getSettings() ).thenReturn( null );
 		
-		Engine e = Engine.getInstance( Mockito.mock( WindowController.class ), game );
+		GameController e = GameController.getInstance( Mockito.mock( WindowController.class ), game );
 		assertEquals( null, e );
 		
 		Mockito.when( game.getSettings() ).thenReturn( settings );
@@ -108,7 +108,7 @@ class EngineTest
 		EngineTest.testCreateEngineWithoutGame();
 		EngineTest.testCreateEngineWithoutSettings();
 		
-		engine = Engine.getInstance( window, game );
+		engine = GameController.getInstance( window, game );
 	}
 	
 	@Test
@@ -122,12 +122,12 @@ class EngineTest
 		{
 			fail();
 		}
-		assertTrue( Engine.getIsRunning() );
-		assertFalse( Engine.getIsPause() );
+		assertTrue( GameController.getIsRunning() );
+		assertFalse( GameController.getIsPause() );
 		
 		synchronized( this ) 
         { 
-			Engine.stopGame();
+			GameController.stopGame();
         } 
 	}
 	
@@ -143,17 +143,17 @@ class EngineTest
 			fail();
 		}
 		
-		assertTrue( Engine.getIsRunning() );
-		assertFalse( Engine.getIsPause() );
+		assertTrue( GameController.getIsRunning() );
+		assertFalse( GameController.getIsPause() );
 		
 		engine.startGame();
 		
-		assertTrue( Engine.getIsRunning() );
-		assertFalse( Engine.getIsPause() );
+		assertTrue( GameController.getIsRunning() );
+		assertFalse( GameController.getIsPause() );
 		
 		synchronized( this ) 
         { 
-			Engine.stopGame();
+			GameController.stopGame();
         } 
 	}
 }

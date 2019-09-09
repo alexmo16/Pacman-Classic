@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import com.pacman.controller.Engine;
+import com.pacman.controller.GameController;
 import com.pacman.controller.IGame;
 import com.pacman.controller.WindowController;
 import com.pacman.model.objects.Gum;
@@ -113,7 +113,7 @@ public class Game implements IGame
      * Update function called by the engine every tick.
      */
     @Override
-    public void update(Engine engine)
+    public void update(GameController engine)
     {
     	scoreBar.setState(currentState.getName());
     	currentState.update(engine);
@@ -164,9 +164,9 @@ public class Game implements IGame
      */
     public void toggleUserMuteSounds()
     {
-        Engine.toggleMute();
-        isUserMuted = Engine.getIsMuted();
-        if (Engine.getIsMuted())
+        GameController.toggleMute();
+        isUserMuted = GameController.getIsMuted();
+        if (GameController.getIsMuted())
         {
             gameSiren.stop();
         } else

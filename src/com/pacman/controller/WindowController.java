@@ -49,7 +49,7 @@ public class WindowController implements WindowListener
     @Override
     public void windowClosing(WindowEvent e)
     {
-        Engine.stopGame();
+        GameController.stopGame();
     }
 
     @Override

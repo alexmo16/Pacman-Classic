@@ -7,7 +7,7 @@ public interface IGame
 {
     public void init(WindowController window);
 
-    public void update(Engine engine);
+    public void update(GameController engine);
 
     public ISettings getSettings();
 }

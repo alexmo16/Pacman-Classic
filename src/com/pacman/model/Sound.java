@@ -11,7 +11,7 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import com.pacman.controller.Engine;
+import com.pacman.controller.GameController;
 
 public class Sound
 {
@@ -64,7 +64,7 @@ public class Sound
      */
     public boolean play(LineListener listener)
     {
-        if (Engine.getIsMuted() || isRunning)
+        if (GameController.getIsMuted() || isRunning)
         {
             return false;
         }
@@ -107,7 +107,7 @@ public class Sound
      */
     public boolean playLoopBack()
     {
-        if (Engine.getIsMuted() || isRunning)
+        if (GameController.getIsMuted() || isRunning)
         {
             return false;
         }

@@ -9,7 +9,7 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import com.pacman.controller.Engine;
+import com.pacman.controller.GameController;
 import com.pacman.model.Sound;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +20,7 @@ class SoundControllerTest
 	@BeforeEach
 	void testSetMuteToFalse() 
 	{
-		Engine.setIsMuted( false );
+		GameController.setIsMuted( false );
 	}
 	
 	@Test
@@ -137,7 +137,7 @@ class SoundControllerTest
 		try 
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			Engine.setIsMuted( true );
+			GameController.setIsMuted( true );
 			isPlayed = sound.playLoopBack();
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
@@ -156,7 +156,7 @@ class SoundControllerTest
 		try
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			Engine.setIsMuted( true );
+			GameController.setIsMuted( true );
 			isPlayed = sound.play();
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
@@ -165,7 +165,7 @@ class SoundControllerTest
 		
 		assertFalse( isException );
 		assertFalse( isPlayed );
-		Engine.setIsMuted( false );
+		GameController.setIsMuted( false );
 	}
 	
 	@Test

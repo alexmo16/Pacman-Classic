@@ -1,6 +1,6 @@
 package com.pacman.app;
 
-import com.pacman.controller.Engine;
+import com.pacman.controller.GameController;
 import com.pacman.controller.IGame;
 import com.pacman.controller.WindowController;
 import com.pacman.model.Game;
@@ -15,7 +15,7 @@ public class App
     {
         IGame game = new Game();
         WindowController window = new WindowController(game.getSettings());
-        Engine engine = Engine.getInstance(window, game);
+        GameController engine = GameController.getInstance(window, game);
         engine.startGame();
     }
 

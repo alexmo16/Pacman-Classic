@@ -2,7 +2,7 @@ package com.pacman.model.states;
 
 import java.util.ArrayList;
 
-import com.pacman.controller.Engine;
+import com.pacman.controller.GameController;
 import com.pacman.controller.Input;
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
@@ -52,7 +52,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	}
 
 	@Override
-	public void update(Engine engine) 
+	public void update(GameController engine) 
 	{
 		Input inputs = engine.getInputs();
 		if (inputs.isKeyDown(settings.getMutedButton()))

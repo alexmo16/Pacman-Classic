@@ -3,7 +3,7 @@ package com.pacman.model.states;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 
-import com.pacman.controller.Engine;
+import com.pacman.controller.GameController;
 import com.pacman.model.Game;
 
 public class InitState implements IGameState
@@ -32,7 +32,7 @@ public class InitState implements IGameState
 	}
 	
 	@Override
-	public void update(Engine engine)
+	public void update(GameController engine)
 	{
 		game.playStartingMusic(startingMusicListener);
 	}

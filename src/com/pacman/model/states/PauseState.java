@@ -1,6 +1,6 @@
 package com.pacman.model.states;
 
-import com.pacman.controller.Engine;
+import com.pacman.controller.GameController;
 import com.pacman.controller.ISettings;
 import com.pacman.controller.Input;
 import com.pacman.model.Game;
@@ -18,12 +18,12 @@ public class PauseState implements IGameState
 	}
 	
 	@Override
-	public void update(Engine engine) 
+	public void update(GameController engine) 
 	{
 		Input inputs = engine.getInputs();
 		
         gameManager.stopInGameMusics();
-		Engine.setIsMuted(true);
+		GameController.setIsMuted(true);
 		
 		if (gameManager.getCanPausedGame() && inputs.isKeyDown(settings.getPauseButton()))
 		{

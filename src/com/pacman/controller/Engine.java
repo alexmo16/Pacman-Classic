@@ -17,7 +17,6 @@ public class Engine implements Runnable
     private static ISettings settings;
 
     private static AtomicBoolean isRunning = new AtomicBoolean(false);
-    private static boolean isPause = false;
     private static boolean isMuted = false;
     private static int[][] tiles;
     private static int tilesH;
@@ -71,11 +70,6 @@ public class Engine implements Runnable
         return isRunning.get();
     }
 
-    public static boolean getIsPause()
-    {
-        return isPause;
-    }
-
     public static boolean getIsMuted()
     {
         return isMuted;
@@ -109,17 +103,6 @@ public class Engine implements Runnable
     public static void stopGame()
     {
         isRunning.set(false);
-        isPause = false;
-    }
-
-    public void pauseGame()
-    {
-        isPause = true;
-    }
-
-    public void resumeGame()
-    {
-        isPause = false;
     }
 
     public InputController getInputs()
@@ -149,11 +132,6 @@ public class Engine implements Runnable
 
         while (isRunning.get())
         {
-            if (isPause)
-            {
-                freeze();
-            }
-
             render = false;
 
             firstTime = getCurrentTimeInMillis();
@@ -215,7 +193,6 @@ public class Engine implements Runnable
     {
         game.init(window);
         isRunning.set(true);
-        isPause = false;
     }
 
     /**
@@ -244,26 +221,6 @@ public class Engine implements Runnable
         try
         {
             Thread.sleep((long) sleepTime); // 1ms, a voir s'il faut modifier cette valeur.
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-	 * Freeze the thread until isPause is true and isRunning is true.
-     */
-    private void freeze()
-    {
-        try
-        {
-            synchronized (this)
-            {
-                while (isPause && isRunning.get())
-                {
-                    wait();
-                }
-            }
         } catch (InterruptedException e)
         {
             e.printStackTrace();

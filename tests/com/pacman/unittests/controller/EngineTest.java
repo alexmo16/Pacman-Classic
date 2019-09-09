@@ -123,7 +123,6 @@ class EngineTest
 			fail();
 		}
 		assertTrue( Engine.getIsRunning() );
-		assertFalse( Engine.getIsPause() );
 		
 		synchronized( this ) 
         { 
@@ -144,12 +143,10 @@ class EngineTest
 		}
 		
 		assertTrue( Engine.getIsRunning() );
-		assertFalse( Engine.getIsPause() );
 		
 		engine.startGame();
 		
 		assertTrue( Engine.getIsRunning() );
-		assertFalse( Engine.getIsPause() );
 		
 		synchronized( this ) 
         { 

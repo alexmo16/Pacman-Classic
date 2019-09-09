@@ -1,11 +1,11 @@
-package com.pacman.controller.states;
+package com.pacman.model.states;
 
 import java.util.ArrayList;
 
-import com.pacman.controller.CollisionController;
 import com.pacman.controller.Engine;
-import com.pacman.controller.GameController;
 import com.pacman.controller.InputController;
+import com.pacman.model.Collision;
+import com.pacman.model.Game;
 import com.pacman.model.Settings;
 import com.pacman.model.objects.DynamicObject;
 import com.pacman.model.objects.Gum;
@@ -16,7 +16,7 @@ import com.pacman.utils.IObserver;
 
 public class PlayingState implements IGameState, IObserver<Direction>
 {
-	private GameController gameManager;
+	private Game gameManager;
 	private Settings settings;
 	private String name = "Play";
 	private PacmanObject pacman;
@@ -26,7 +26,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
     private ArrayList<PacGum> pacGumList;
     private Direction oldDirection, direction;
 	
-	public PlayingState( GameController gm )
+	public PlayingState( Game gm )
 	{
 		if ( gm == null )
 		{
@@ -77,7 +77,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
         checkGumCollision();
         checkPacGumCollision();
         // Strategy pattern for wall collisions.
-        String checkWallCollision = CollisionController.collisionWall(futurPacman);
+        String checkWallCollision = Collision.collisionWall(futurPacman);
         executeWallStrategy( checkWallCollision );
 	}
 
@@ -93,7 +93,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
     {
         for (Gum gum : gumList)
         {
-            if (CollisionController.collisionObj(pacman, gum))
+            if (Collision.collisionObj(pacman, gum))
             {
                 pacman.eatGum(gum, gameManager.getScoreBar());
                 gumList.remove(gum);
@@ -110,7 +110,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
     {
         for (PacGum pacGum : pacGumList)
         {
-            if (CollisionController.collisionObj(pacman, pacGum))
+            if (Collision.collisionObj(pacman, pacGum))
             {
                 pacman.eatGum(pacGum, gameManager.getScoreBar());
                 pacGumList.remove(pacGum);
@@ -145,7 +145,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
      */
     private void oneWallStrategy()
     {
-    	String collisionString = CollisionController.collisionWall(maybeFuturPacman);
+    	String collisionString = Collision.collisionWall(maybeFuturPacman);
         if (collisionString == "void")
         {
             DynamicObject.tunnel(pacman.getRectangle(), oldDirection);

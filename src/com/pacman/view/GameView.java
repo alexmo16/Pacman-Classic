@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.pacman.controller.GameController;
+import com.pacman.model.Game;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.PacGum;
 import com.pacman.model.objects.PacmanObject;
@@ -18,14 +18,14 @@ public class GameView extends JPanel
 {
 	private static final long serialVersionUID = 1594565623438214915L;  
 	
-	private GameController game;
+	private Game game;
 	private Sprites sprites;
 	private int mazeHeight,
 			    mazeWidth,
 			    tileSize;
 	
 	
-	public GameView(GameController gm)
+	public GameView(Game gm)
 	{
 		game = gm;
 		sprites = gm.getSettings().getSpritesManager();

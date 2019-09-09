@@ -1,14 +1,14 @@
-package com.pacman.controller.states;
+package com.pacman.model.states;
 
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 
 import com.pacman.controller.Engine;
-import com.pacman.controller.GameController;
+import com.pacman.model.Game;
 
 public class InitState implements IGameState
 {
-	private GameController game;
+	private Game game;
 	private String name = "Init";
 	
     LineListener startingMusicListener = new LineListener()
@@ -26,7 +26,7 @@ public class InitState implements IGameState
         }
     };
 	
-	public InitState( GameController gm )
+	public InitState( Game gm )
 	{
 		game = gm;
 	}

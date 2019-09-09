@@ -7,7 +7,7 @@ import java.awt.geom.Rectangle2D;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.pacman.controller.CollisionController;
+import com.pacman.model.Collision;
 import com.pacman.model.objects.GameObject;
 
 
@@ -24,7 +24,7 @@ public class CollisionControllerTests
     @Test
     void test_collisionWall_void() 
     {
-    	CollisionController.setMap(map,auth,4,4);
+    	Collision.setMap(map,auth,4,4);
     	
     	GameObject obj1 = Mockito.mock(GameObject.class);
     	Rectangle2D.Double rectangle = Mockito.mock(Rectangle2D.Double.class);
@@ -33,7 +33,7 @@ public class CollisionControllerTests
     	Mockito.when(obj1.getRectangle().getMinY()).thenReturn(0.0);
     	Mockito.when(obj1.getRectangle().getMaxX()).thenReturn(0.9);
     	Mockito.when(obj1.getRectangle().getMaxY()).thenReturn(0.9);
-    	assertEquals("void",CollisionController.collisionWall(obj1));
+    	assertEquals("void",Collision.collisionWall(obj1));
     	
        
 	}
@@ -41,7 +41,7 @@ public class CollisionControllerTests
     @Test
     void test_collisionWall_wall() 
     {
-    	CollisionController.setMap(map,auth,4,4);
+    	Collision.setMap(map,auth,4,4);
     	
     	GameObject obj1 = Mockito.mock(GameObject.class);
     	Rectangle2D.Double rectangle = Mockito.mock(Rectangle2D.Double.class);
@@ -52,7 +52,7 @@ public class CollisionControllerTests
     	Mockito.when(obj1.getRectangle().getMaxY()).thenReturn(1.9);
     	
     	
-    	assertEquals("wall",CollisionController.collisionWall(obj1));
+    	assertEquals("wall",Collision.collisionWall(obj1));
     	
        
 	}
@@ -60,7 +60,7 @@ public class CollisionControllerTests
     @Test
     void test_collisionWall_path() 
     {
-    	CollisionController.setMap(map,auth,4,4);
+    	Collision.setMap(map,auth,4,4);
     	
     	GameObject obj1 = Mockito.mock(GameObject.class);
     	Rectangle2D.Double rectangle = Mockito.mock(Rectangle2D.Double.class);
@@ -71,7 +71,7 @@ public class CollisionControllerTests
     	Mockito.when(obj1.getRectangle().getMaxY()).thenReturn(2.4);
     	
     	
-    	assertEquals("path",CollisionController.collisionWall(obj1));
+    	assertEquals("path",Collision.collisionWall(obj1));
     	
        
 	}

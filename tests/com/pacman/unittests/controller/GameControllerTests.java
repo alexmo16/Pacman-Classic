@@ -10,15 +10,15 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.jupiter.api.Test;
 
-import com.pacman.controller.GameController;
-import com.pacman.controller.SoundController;
 import com.pacman.controller.WindowController;
+import com.pacman.model.Game;
 import com.pacman.model.Settings;
+import com.pacman.model.Sound;
 
 class GameControllerTests
 {
 
-    GameController gameManager;
+    Game gameManager;
     WindowController window;
     Settings s;
 
@@ -26,19 +26,19 @@ class GameControllerTests
     void testLoadedMusics()
     {
         boolean isException = false;
-        SoundController expectedStartMusic = null;
-        SoundController expectedGameSirent = null;
-        SoundController expectedChomp = null;
+        Sound expectedStartMusic = null;
+        Sound expectedGameSirent = null;
+        Sound expectedChomp = null;
         try
         {
-            gameManager = new GameController();
+            gameManager = new Game();
             s = new Settings();
             window = new WindowController(s);
             gameManager.init(window);
 
-            expectedStartMusic = new SoundController("." + File.separator + "assets" + File.separator + "pacman_beginning.wav");
-            expectedGameSirent = new SoundController("." + File.separator + "assets" + File.separator + "siren.wav");
-            expectedChomp = new SoundController("." + File.separator + "assets" + File.separator + "pacman_chomp.wav");
+            expectedStartMusic = new Sound("." + File.separator + "assets" + File.separator + "pacman_beginning.wav");
+            expectedGameSirent = new Sound("." + File.separator + "assets" + File.separator + "siren.wav");
+            expectedChomp = new Sound("." + File.separator + "assets" + File.separator + "pacman_chomp.wav");
         } catch (UnsupportedAudioFileException e)
         {
             isException = true;

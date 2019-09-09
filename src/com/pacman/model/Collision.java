@@ -1,5 +1,7 @@
-package com.pacman.controller;
+package com.pacman.model;
 
+import com.pacman.controller.Engine;
+import com.pacman.controller.ISettings;
 import com.pacman.model.objects.GameObject;
 
 /**
@@ -7,7 +9,7 @@ import com.pacman.model.objects.GameObject;
  * Check the collisions between the different object in the game, pacman, the walls and the gums
  *
  */
-public abstract class CollisionController
+public abstract class Collision
 {
     static int[][] tiles = Engine.getTiles();
     static int mapH = Engine.getHeight();
@@ -77,7 +79,7 @@ public abstract class CollisionController
 
     public static void setSettings(ISettings settings)
     {
-        CollisionController.settings = settings;
+        Collision.settings = settings;
         authTiles = settings.getAuthTiles();
     }
     

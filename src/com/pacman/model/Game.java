@@ -1,4 +1,4 @@
-package com.pacman.controller;
+package com.pacman.model;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,18 +6,20 @@ import java.util.ArrayList;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import com.pacman.controller.states.IGameState;
-import com.pacman.controller.states.InitState;
-import com.pacman.controller.states.PauseState;
-import com.pacman.controller.states.PlayingState;
-import com.pacman.controller.states.ResumeState;
-import com.pacman.controller.states.StopState;
-import com.pacman.model.Settings;
+import com.pacman.controller.Engine;
+import com.pacman.controller.IGame;
+import com.pacman.controller.WindowController;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.Maze;
 import com.pacman.model.objects.PacGum;
 import com.pacman.model.objects.PacmanObject;
 import com.pacman.model.objects.ScoreBar;
+import com.pacman.model.states.IGameState;
+import com.pacman.model.states.InitState;
+import com.pacman.model.states.PauseState;
+import com.pacman.model.states.PlayingState;
+import com.pacman.model.states.ResumeState;
+import com.pacman.model.states.StopState;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Tile;
 import com.pacman.view.GameView;
@@ -26,7 +28,7 @@ import com.pacman.view.GameView;
  * Contains an observer design pattern and a state pattern.
  *
  */
-public class GameController implements IGame
+public class Game implements IGame
 {
     protected boolean canPaused = false;
     public boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
@@ -42,9 +44,9 @@ public class GameController implements IGame
     private Maze maze;
     ScoreBar scoreBar;
     
-    SoundController startMusic;
-    SoundController gameSiren;
-    SoundController chomp;
+    Sound startMusic;
+    Sound gameSiren;
+    Sound chomp;
 
     private IGameState initState;
     private IGameState stopState;
@@ -53,7 +55,7 @@ public class GameController implements IGame
     private IGameState resumeState;
     private IGameState currentState;
     
-    public GameController()
+    public Game()
     {
     	settings = new Settings();
         
@@ -78,17 +80,17 @@ public class GameController implements IGame
      * Getters for sound
      */
     
-    public SoundController getStartMusic()
+    public Sound getStartMusic()
     {
         return startMusic;
     }
 
-    public SoundController getGameSiren()
+    public Sound getGameSiren()
     {
         return gameSiren;
     }
 
-    public SoundController getChomp()
+    public Sound getChomp()
     {
         return chomp;
     }
@@ -103,7 +105,7 @@ public class GameController implements IGame
     	window.setContainer(new GameView(this));
         loadMusics();
 
-        CollisionController.setSettings(settings);
+        Collision.setSettings(settings);
     }
 
 
@@ -131,9 +133,9 @@ public class GameController implements IGame
     {
         try
         {
-            startMusic = new SoundController(settings.getStartMusicPath());
-            gameSiren = new SoundController(settings.getGameSirenPath());
-            chomp = new SoundController(settings.getChompPath());
+            startMusic = new Sound(settings.getStartMusicPath());
+            gameSiren = new Sound(settings.getGameSirenPath());
+            chomp = new Sound(settings.getChompPath());
             pacman.setChompSound(chomp);
         } catch (UnsupportedAudioFileException | IOException e)
         {

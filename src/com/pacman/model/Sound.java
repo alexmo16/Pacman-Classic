@@ -1,4 +1,4 @@
-package com.pacman.controller;
+package com.pacman.model;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,9 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class SoundController
+import com.pacman.controller.Engine;
+
+public class Sound
 {
     private File file;
     private AudioInputStream inputStream;
@@ -19,12 +21,12 @@ public class SoundController
     private LineListener defaultListener;
     private boolean isRunning = false;
 
-    public SoundController(String path) throws UnsupportedAudioFileException, IOException
+    public Sound(String path) throws UnsupportedAudioFileException, IOException
     {
         file = new File(path).getAbsoluteFile();
         inputStream = AudioSystem.getAudioInputStream(file);
 
-        SoundController that = this;
+        Sound that = this;
         defaultListener = new LineListener()
         {
             @Override

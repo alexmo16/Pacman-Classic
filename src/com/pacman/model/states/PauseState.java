@@ -1,17 +1,17 @@
-package com.pacman.controller.states;
+package com.pacman.model.states;
 
 import com.pacman.controller.Engine;
-import com.pacman.controller.GameController;
 import com.pacman.controller.ISettings;
 import com.pacman.controller.InputController;
+import com.pacman.model.Game;
 
 public class PauseState implements IGameState
 {
-	private GameController gameManager;
+	private Game gameManager;
 	private ISettings settings;
 	private String name = "Pause";
 	
-	public PauseState( GameController gm )
+	public PauseState( Game gm )
 	{
 		gameManager = gm;
 		settings = gm.getSettings();

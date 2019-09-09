@@ -4,8 +4,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import com.pacman.controller.InputController;
-import com.pacman.controller.SoundController;
 import com.pacman.model.Settings;
+import com.pacman.model.Sound;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
 import com.pacman.utils.IPublisher;
@@ -18,7 +18,7 @@ import com.pacman.utils.IPublisher;
  */
 public class PacmanObject extends DynamicObject implements IPublisher
 {
-    private SoundController chomp;
+    private Sound chomp;
     private static Direction direction = Direction.LEFT;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
 
@@ -92,7 +92,7 @@ public class PacmanObject extends DynamicObject implements IPublisher
         obj.setEaten(true);
     }
     
-    public void setChompSound( SoundController sound )
+    public void setChompSound( Sound sound )
     {
     	chomp = sound;
     }

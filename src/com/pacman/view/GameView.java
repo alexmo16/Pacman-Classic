@@ -29,8 +29,6 @@ public class GameView extends JPanel
 	{
 		game = gm;
 		sprites = gm.getSettings().getSpritesManager();
-    	setLayout(new GridBagLayout());
-    	setBorder(new EmptyBorder(-1, -1, -1, -1));
 	}
 	
 	@Override
@@ -112,24 +110,20 @@ public class GameView extends JPanel
 	
 	private void renderScoreBar(Graphics g)
     {
-        // Score bar
-        //tileSize = 54 * getHeight() / 100;
-        //if ( (tileSize & 1) != 0 ) { tileSize--; }
-        //
-        //x = (getWidth() - mazeWidth * tileSize) / 2;
-        //y = (getHeight() - tileSize) / 2;
-        //
-        //String s = new String("score " + gameManager.getScoreBar().getScore());
-        //if (gameManager.getScoreBar().isCollision()) { s += " collision " + gameManager.getScoreBar().getDirection();}
-        //if (gameManager.getScoreBar().getState() != null) { s += " state " + gameManager.getScoreBar().getState(); }
-        //for (int i = 0; i < s.length(); i++)
-        //{
-        //	if (s.charAt(i) != ' ')
-        //	{
-        //		k = spritesManager.getCharacterCoords(s.charAt(i));
-        //		g.drawImage(spritesManager.getSpritesSheet(), x + i * tileSize, y, x + i * tileSize + tileSize, y + tileSize, k[0], k[1], k[2], k[3], null);
-        //	}
-        //}
+        int x = (getWidth() - mazeWidth * tileSize) / 2;
+        int y = (getHeight() - tileSize);
+        
+        String s = new String("score " + game.getScoreBar().getScore());
+        if (game.getScoreBar().getState() != null) { s += " state " + game.getScoreBar().getState(); }
+        if (game.getScoreBar().isCollision()) { s += " collision " + game.getScoreBar().getDirection(); }
+        for (int i = 0; i < s.length(); i++)
+        {
+        	if (s.charAt(i) != ' ')
+        	{
+        		int[] k = sprites.getCharacterCoords(s.charAt(i));
+        		g.drawImage(sprites.getSpritesSheet(), x + i * tileSize, y, x + i * tileSize + tileSize, y + tileSize, k[0], k[1], k[2], k[3], null);
+        	}
+        }
     }
     
 	private void renderPause(Graphics g)

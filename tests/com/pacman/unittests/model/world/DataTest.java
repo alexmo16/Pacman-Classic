@@ -1,8 +1,7 @@
-package com.pacman.unittests.engine;
+package com.pacman.unittests.model.world;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 
@@ -10,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import com.pacman.model.world.Data;
 
-class WorldDataTest
+class DataTest
 {
 
 	final private String good = System.getProperty("user.dir") + File.separator + "tests" + File.separator + "testAssets" + File.separator + "worldDataTest_good.txt";

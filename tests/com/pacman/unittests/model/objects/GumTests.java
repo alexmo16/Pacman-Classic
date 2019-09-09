@@ -1,39 +1,40 @@
-package com.pacman.unittests.game.objects;
+package com.pacman.unittests.model.objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
 import com.pacman.model.Settings;
-import com.pacman.model.objects.PacGum;
+import com.pacman.model.objects.Gum;
 
-class PacGumTests
+class GumTests
 {
 
     private Settings settings;
+
     @Test
-    void testPacGumCreationNoParameters()
+    void testGumCreationNoParameters() 
     {
         boolean isException = false;
         this.settings = new Settings();
         try
         {
-            new PacGum();
+            new Gum();
         } catch (Exception e)
         {
             isException = true;
         }
         assertFalse(isException);
     }
-    
+
     @Test
-    void testPacGumCreationWithParameters()
+    void testGumCreationWithParameters()
     {
         boolean isException = false;
         this.settings = new Settings();
         try
         {
-            new PacGum(0, 0, 1, 1, settings);
+            new Gum(0, 0, 1, 1, settings);
         } catch (Exception e)
         {
             isException = true;

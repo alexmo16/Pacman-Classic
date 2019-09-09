@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import com.pacman.controller.CollisionController;
 import com.pacman.controller.Engine;
+import com.pacman.controller.GameController;
 import com.pacman.controller.InputController;
-import com.pacman.model.Game;
 import com.pacman.model.Settings;
 import com.pacman.model.objects.DynamicObject;
 import com.pacman.model.objects.Gum;
@@ -16,7 +16,7 @@ import com.pacman.utils.IObserver;
 
 public class PlayingState implements IGameState, IObserver<Direction>
 {
-	private Game gameManager;
+	private GameController gameManager;
 	private Settings settings;
 	private String name = "Play";
 	private PacmanObject pacman;
@@ -26,7 +26,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
     private ArrayList<PacGum> pacGumList;
     private Direction oldDirection, direction;
 	
-	public PlayingState( Game gm )
+	public PlayingState( GameController gm )
 	{
 		if ( gm == null )
 		{

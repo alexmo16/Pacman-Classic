@@ -1,4 +1,4 @@
-package com.pacman.unittests.game.objects;
+package com.pacman.unittests.model.objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 

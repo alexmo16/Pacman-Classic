@@ -1,4 +1,4 @@
-package com.pacman.unittests.engine;
+package com.pacman.unittests.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import com.pacman.controller.InputController;
 import com.pacman.controller.WindowController;
 
-class InputsTest 
+class InputControllerTest 
 {
 	static InputController input;
 	
@@ -25,8 +25,8 @@ class InputsTest
 	{
 		window = Mockito.mock( WindowController.class );
 		Mockito.when( window.getFrame() ).thenReturn( new JFrame() );
-		input = new InputController( InputsTest.window );
-		frame = InputsTest.window.getFrame();
+		input = new InputController( InputControllerTest.window );
+		frame = InputControllerTest.window.getFrame();
 	}
 	
 	@Test

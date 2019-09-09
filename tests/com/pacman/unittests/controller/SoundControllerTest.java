@@ -1,4 +1,4 @@
-package com.pacman.unittests.engine;
+package com.pacman.unittests.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +15,7 @@ import com.pacman.controller.SoundController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class SoundTest 
+class SoundControllerTest 
 {
 	@BeforeEach
 	void testSetMuteToFalse() 

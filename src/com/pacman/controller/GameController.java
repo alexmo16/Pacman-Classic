@@ -1,4 +1,4 @@
-package com.pacman.model;
+package com.pacman.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,17 +6,13 @@ import java.util.ArrayList;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import com.pacman.controller.CollisionController;
-import com.pacman.controller.Engine;
-import com.pacman.controller.IGame;
-import com.pacman.controller.SoundController;
-import com.pacman.controller.WindowController;
 import com.pacman.controller.states.IGameState;
 import com.pacman.controller.states.InitState;
 import com.pacman.controller.states.PauseState;
 import com.pacman.controller.states.PlayingState;
 import com.pacman.controller.states.ResumeState;
 import com.pacman.controller.states.StopState;
+import com.pacman.model.Settings;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.Maze;
 import com.pacman.model.objects.PacGum;
@@ -30,7 +26,7 @@ import com.pacman.view.GameView;
  * Contains an observer design pattern and a state pattern.
  *
  */
-public class Game implements IGame
+public class GameController implements IGame
 {
     protected boolean canPaused = false;
     public boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
@@ -57,7 +53,7 @@ public class Game implements IGame
     private IGameState resumeState;
     private IGameState currentState;
     
-    public Game()
+    public GameController()
     {
     	settings = new Settings();
         

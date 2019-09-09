@@ -1,4 +1,4 @@
-package com.pacman.unittests.engine;
+package com.pacman.unittests.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 

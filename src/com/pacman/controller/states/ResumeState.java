@@ -1,14 +1,14 @@
 package com.pacman.controller.states;
 
 import com.pacman.controller.Engine;
-import com.pacman.model.Game;
+import com.pacman.controller.GameController;
 
 public class ResumeState implements IGameState 
 {
-	private Game gameManager;
+	private GameController gameManager;
 	private String name = "Resume";
 	
-	public ResumeState( Game gm )
+	public ResumeState( GameController gm )
 	{
 		gameManager = gm;
 	}

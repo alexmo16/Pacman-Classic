@@ -1,14 +1,14 @@
 package com.pacman.controller.states;
 
 import com.pacman.controller.Engine;
-import com.pacman.model.Game;
+import com.pacman.controller.GameController;
 
 public class StopState implements IGameState 
 {
-	private Game gameManager;
+	private GameController gameManager;
 	private String name = "Stop";
 	
-	public StopState( Game gm )
+	public StopState( GameController gm )
 	{
 		gameManager = gm;
 	}

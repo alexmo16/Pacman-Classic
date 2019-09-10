@@ -6,7 +6,7 @@ import com.pacman.model.Game;
 public class PauseState implements IGameState
 {
 	private Game gameManager;
-	private String name = "Pause";
+	private StatesName name = StatesName.PAUSE;
 	
 	public PauseState( Game gm )
 	{
@@ -20,7 +20,7 @@ public class PauseState implements IGameState
 		GameController.setIsMuted(true);
 	}
 
-	public String getName()
+	public StatesName getName()
 	{
 		return name;
 	}

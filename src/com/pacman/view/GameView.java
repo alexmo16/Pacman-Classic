@@ -10,6 +10,7 @@ import com.pacman.model.Game;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.PacGum;
 import com.pacman.model.objects.Pacman;
+import com.pacman.model.states.StatesName;
 import com.pacman.model.world.Tile;
 import com.pacman.utils.Settings;
 
@@ -113,7 +114,7 @@ public class GameView extends JPanel
         int y = (getHeight() - tileSize);
         
         String s = new String("score " + game.getPacman().getScore());
-        if (game.getCurrentState() != null) { s += " state " + game.getCurrentState().getName(); }
+        if (game.getCurrentState() != null) { s += " state " + game.getCurrentState().getName().getValue(); }
         if (game.getPacman().isCollision()) { s += " collision " + game.getPacman().getCollisionDirection(); }
         for (int i = 0; i < s.length(); i++)
         {
@@ -127,7 +128,7 @@ public class GameView extends JPanel
     
 	private void renderPause(Graphics g)
     {
-        if (game.getCurrentState().getName() == "Pause")
+        if (game.getCurrentState().getName() == StatesName.PAUSE)
         {
 	        g.setColor(new Color(0, 0, 0, 200));
 	        g.fillRect(0, 0, getWidth(), getHeight());

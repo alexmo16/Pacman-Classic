@@ -5,7 +5,7 @@ import com.pacman.model.Game;
 public class StopState implements IGameState 
 {
 	private Game gameManager;
-	private String name = "Stop";
+	private StatesName name = StatesName.STOP;
 	
 	public StopState( Game gm )
 	{
@@ -20,7 +20,7 @@ public class StopState implements IGameState
 		gameManager.setState(gameManager.getInitState());
 	}
 
-	public String getName()
+	public StatesName getName()
 	{
 		return name;
 	}

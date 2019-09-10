@@ -5,5 +5,5 @@ public interface IGameState
 {
 	public void update();
 	
-	public String getName();
+	public StatesName getName();
 }

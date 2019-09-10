@@ -14,7 +14,7 @@ import com.pacman.utils.IObserver;
 public class PlayingState implements IGameState, IObserver<Direction>
 {
 	private Game gameManager;
-	private String name = "Play";
+	private StatesName name = StatesName.PLAY;
 	private Pacman pacman;
 	private Pacman maybeFuturPacman;
 	private Pacman futurPacman;
@@ -63,7 +63,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
         executeWallStrategy( checkWallCollision );
 	}
 
-	public String getName()
+	public StatesName getName()
 	{
 		return name;
 	}

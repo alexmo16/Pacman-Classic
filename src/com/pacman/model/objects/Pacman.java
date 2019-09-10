@@ -33,6 +33,11 @@ public class Pacman extends DynamicObject implements IPublisher
 
     public void setNextDirection(Direction dir)
     {
+    	if (dir == null)
+    	{
+    		return;
+    	}
+    	
     	Direction oldDirection = nextDirection;
     	nextDirection = dir;
     	

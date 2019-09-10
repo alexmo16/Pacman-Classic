@@ -8,7 +8,7 @@ import com.pacman.model.Game;
 public class InitState implements IGameState
 {
 	private Game game;
-	private String name = "Init";
+	private StatesName name = StatesName.INIT;
 	
     LineListener startingMusicListener = new LineListener()
     {
@@ -37,7 +37,7 @@ public class InitState implements IGameState
 		game.playStartingMusic(startingMusicListener);
 	}
 
-	public String getName()
+	public StatesName getName()
 	{
 		return name;
 	}

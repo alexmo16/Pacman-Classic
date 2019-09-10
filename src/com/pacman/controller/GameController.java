@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.pacman.model.states.IGameState;
+import com.pacman.model.states.StatesName;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.Settings;
 import com.pacman.view.Input;
@@ -52,6 +53,14 @@ public class GameController implements Runnable
             
             window = w;
             inputs = new Input();
+            inputs.addPressedCallback(KeyEvent.getKeyText(Settings.PAUSE_BUTTON), (KeyEvent e) -> pauseButtonPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(Settings.RESUME_BUTTON), (KeyEvent e) -> resumeButtonPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(Settings.MUTED_BUTTON), (KeyEvent e) -> muteButtonPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_UP), (KeyEvent e) -> arrowsKeysPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_DOWN), (KeyEvent e) -> arrowsKeysPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_RIGHT), (KeyEvent e) -> arrowsKeysPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_LEFT), (KeyEvent e) -> arrowsKeysPressed(e) );
+            
             window.addListener(inputs);
             instance = new GameController();
         }
@@ -128,9 +137,9 @@ public class GameController implements Runnable
         {
             render = false;
 
+            lastTime  = firstTime;
             firstTime = getCurrentTimeInMillis();
             deltaTime = firstTime - lastTime;
-            lastTime = firstTime;
             unprocessedTime += deltaTime;
             frameTime += deltaTime;
 
@@ -146,7 +155,7 @@ public class GameController implements Runnable
             {
                 frameTime = 0;
                 fps = frames;
-                // System.out.println(fps);
+                //System.out.println(fps);
                 frames = 0;
             }
 
@@ -154,7 +163,6 @@ public class GameController implements Runnable
             if (render)
             {
             	render();
-                //window.getFrame().repaint();
                 frames++;
             } else
             {
@@ -178,40 +186,7 @@ public class GameController implements Runnable
      * What the engine needs to update at each tick.
      */
     private void update()
-    {
-    	IGameState currentState = game.getCurrentState();
-    	if ( currentState.getName() == "Pause" && inputs.isKeyDown(Settings.RESUME_BUTTON))
-		{
-    		game.setState(game.getResumeState());
-		}
-    	
-    	if ( currentState.getName() == "Play" && inputs.isKeyDown(Settings.PAUSE_BUTTON))
-		{
-    		game.setState(game.getPauseState());
-		}
-    	
-		if (currentState.getName() == "Play" && inputs.isKeyDown(Settings.MUTED_BUTTON))
-        {
-            game.toggleUserMuteSounds();
-        }
-		
-		if (currentState.getName() == "Play")
-		{
-			if (inputs.isKeyDown(KeyEvent.VK_UP))
-	        {
-	            game.setPacmanDirection(Direction.UP);
-	        } else if (inputs.isKeyDown(KeyEvent.VK_DOWN))
-	        {
-	        	game.setPacmanDirection(Direction.DOWN);
-	        } else if (inputs.isKeyDown(KeyEvent.VK_RIGHT))
-	        {
-	        	game.setPacmanDirection(Direction.RIGHT);
-	        } else if (inputs.isKeyDown(KeyEvent.VK_LEFT))
-	        {
-	        	game.setPacmanDirection(Direction.LEFT);
-	        }	
-		} 
-    	
+    {    	
     	game.update();
         inputs.update();
     }
@@ -243,5 +218,60 @@ public class GameController implements Runnable
     {
         return System.nanoTime() / 1000000000.0;
     }
-
+    
+    private static void pauseButtonPressed(KeyEvent e)
+    {
+    	IGameState currentState = game.getCurrentState();
+    	if ( currentState.getName() == StatesName.PLAY)
+		{
+    		game.setState(game.getPauseState());
+		}
+    }
+    
+    private static void resumeButtonPressed(KeyEvent e)
+    {
+    	IGameState currentState = game.getCurrentState();
+    	if ( currentState.getName() == StatesName.PAUSE)
+		{
+    		game.setState(game.getResumeState());
+		}
+    }
+    
+    private static void muteButtonPressed(KeyEvent e)
+    {
+    	IGameState currentState = game.getCurrentState();
+    	if ( currentState.getName() == StatesName.PLAY )
+    	{
+    		game.toggleUserMuteSounds();
+    	}
+    }
+    
+    private static void arrowsKeysPressed(KeyEvent e)
+    {
+    	IGameState currentState = game.getCurrentState();
+		if (currentState.getName() == StatesName.PLAY)
+		{
+			Direction dir = null;
+			switch(e.getKeyCode())
+			{
+			case KeyEvent.VK_UP:
+				dir = Direction.UP;
+				break;
+				
+			case KeyEvent.VK_DOWN:
+				dir = Direction.DOWN;
+				break;
+				
+			case KeyEvent.VK_LEFT:
+				dir = Direction.LEFT;
+				break;
+			
+			case KeyEvent.VK_RIGHT:
+				dir = Direction.RIGHT;
+				break;
+			}
+			
+			game.setPacmanDirection(dir);
+		}
+    }
 }

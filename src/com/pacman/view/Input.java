@@ -2,6 +2,7 @@ package com.pacman.view;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
 
 public class Input implements KeyListener
 {
@@ -9,7 +10,8 @@ public class Input implements KeyListener
 
     private final boolean[] keys = new boolean[SUPPORTED_KEYS];
     private final boolean[] lastPressedKeys = new boolean[SUPPORTED_KEYS];
-
+    private HashMap<String, KeyLambda> pressedCallbacks = new HashMap<String, KeyLambda>();
+    private HashMap<String, KeyLambda> releasedCallbacks = new HashMap<String, KeyLambda>();
     private char typed = 0;
 
     /**
@@ -51,9 +53,15 @@ public class Input implements KeyListener
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (e.getKeyCode() < SUPPORTED_KEYS)
+    	int keyCode = e.getKeyCode();
+        if (keyCode < SUPPORTED_KEYS)
         {
-            keys[e.getKeyCode()] = true;
+            keys[keyCode] = true;
+            KeyLambda lambda = pressedCallbacks.get(KeyEvent.getKeyText(keyCode));
+            if (lambda != null)
+            {
+            	lambda.run(e);
+            }
         }
     }
 
@@ -63,9 +71,15 @@ public class Input implements KeyListener
     @Override
     public void keyReleased(KeyEvent e)
     {
-        if (e.getKeyCode() < SUPPORTED_KEYS)
+    	int keyCode = e.getKeyCode();
+        if (keyCode < SUPPORTED_KEYS)
         {
-            keys[e.getKeyCode()] = false;
+            keys[keyCode] = false;
+            KeyLambda lambda = releasedCallbacks.get(KeyEvent.getKeyText(keyCode));
+            if (lambda != null)
+            {
+            	lambda.run(e);
+            }
         }
     }
 
@@ -77,5 +91,10 @@ public class Input implements KeyListener
     public final boolean[] getLastKeys()
     {
         return lastPressedKeys;
+    }
+    
+    public void addPressedCallback( String key, KeyLambda lambda )
+    {
+    	pressedCallbacks.put(key, lambda);
     }
 }

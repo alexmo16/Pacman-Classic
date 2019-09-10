@@ -6,7 +6,7 @@ import com.pacman.model.Game;
 public class ResumeState implements IGameState 
 {
 	private Game gameManager;
-	private String name = "Resume";
+	private StatesName name = StatesName.RESUME;
 	
 	public ResumeState( Game gm )
 	{
@@ -25,7 +25,7 @@ public class ResumeState implements IGameState
 		gameManager.setState(gameManager.getPlayingState());
 	}
 
-	public String getName()
+	public StatesName getName()
 	{
 		return name;
 	}

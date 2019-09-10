@@ -1,6 +1,6 @@
 package com.pacman.unittests.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.geom.Rectangle2D;
 

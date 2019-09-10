@@ -21,9 +21,6 @@ public class GameController implements Runnable
 
     private static AtomicBoolean isRunning = new AtomicBoolean(false);
     private static boolean isMuted = false;
-    private static int[][] tiles;
-    private static int tilesH;
-    private static int tilesW;
 
     private static GameController instance;
 
@@ -56,11 +53,7 @@ public class GameController implements Runnable
             	System.out.println("Fuck");
                 return null;
             }
-
-            tiles = settings.getWorldData().getTiles();
-            tilesH = settings.getWorldData().getHeight();
-            tilesW = settings.getWorldData().getWidth();
-
+            
             window = w;
             inputs = new Input();
             window.addListener(inputs);
@@ -177,21 +170,6 @@ public class GameController implements Runnable
                 rest(sleepTime);
             }
         }
-    }
-
-    public static int[][] getTiles()
-    {
-        return tiles;
-    }
-
-    public static int getHeight()
-    {
-        return tilesH;
-    }
-
-    public static int getWidth()
-    {
-        return tilesW;
     }
 
     private void init()

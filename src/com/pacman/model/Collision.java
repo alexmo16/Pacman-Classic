@@ -1,6 +1,5 @@
 package com.pacman.model;
 
-import com.pacman.controller.GameController;
 import com.pacman.controller.ISettings;
 import com.pacman.model.objects.GameObject;
 
@@ -11,9 +10,9 @@ import com.pacman.model.objects.GameObject;
  */
 public abstract class Collision
 {
-    static int[][] tiles = GameController.getTiles();
-    static int mapH = GameController.getHeight();
-    static int mapW = GameController.getWidth();
+    static int[][] tiles;
+    static int mapH;
+    static int mapW;
     static int[] authTiles;
     static ISettings settings;
 
@@ -81,6 +80,9 @@ public abstract class Collision
     {
         Collision.settings = settings;
         authTiles = settings.getAuthTiles();
+        tiles = settings.getWorldData().getTiles();
+        mapH = settings.getWorldData().getHeight();
+        mapW = settings.getWorldData().getWidth();
     }
     
     public static void setMap(int[][] map, int[] auth, int x,int y) 

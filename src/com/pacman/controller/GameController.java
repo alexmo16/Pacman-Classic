@@ -188,7 +188,6 @@ public class GameController implements Runnable
     private void update()
     {    	
     	game.update();
-        inputs.update();
     }
 
     /**

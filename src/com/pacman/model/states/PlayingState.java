@@ -2,7 +2,6 @@ package com.pacman.model.states;
 
 import java.util.ArrayList;
 
-import com.pacman.controller.GameController;
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
 import com.pacman.model.objects.DynamicObject;
@@ -11,8 +10,6 @@ import com.pacman.model.objects.PacGum;
 import com.pacman.model.objects.PacmanObject;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
-import com.pacman.utils.Settings;
-import com.pacman.view.Input;
 
 public class PlayingState implements IGameState, IObserver<Direction>
 {
@@ -39,32 +36,19 @@ public class PlayingState implements IGameState, IObserver<Direction>
         int[] startingPosition = gameManager.getStartingPosition();
         double pacmanBox = gameManager.getPacmanBox();
         
+        direction = pacman.getDirection();
+        oldDirection = direction;
+        
         maybeFuturPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
         futurPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
-        
-        direction = gameManager.getDirection();
-        oldDirection = direction;
         
         gumList = gameManager.getGumList();
         pacGumList = gameManager.getPacGumList();
 	}
 
 	@Override
-	public void update(GameController engine) 
+	public void update() 
 	{
-		Input inputs = engine.getInputs();
-		if (inputs.isKeyDown(Settings.MUTED_BUTTON))
-        {
-            gameManager.toggleUserMuteSounds();
-        }
-		
-		if (gameManager.getCanPausedGame() && inputs.isKeyDown(Settings.PAUSE_BUTTON))
-		{
-			gameManager.setState(gameManager.getPauseState());
-		}
-
-		pacman.checkNewDirection(engine.getInputs());
-
         maybeFuturPacman.getRectangle().setRect(pacman.getRectangle().getX(), pacman.getRectangle().getY(),
                 pacman.getRectangle().getWidth(), pacman.getRectangle().getHeight());
         futurPacman.getRectangle().setRect(pacman.getRectangle().getX(), pacman.getRectangle().getY(),
@@ -177,7 +161,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
     private void noWallStrategy()
     {
     	DynamicObject.updatePosition(pacman.getRectangle(), direction);
-        pacman.setDirection(direction);
+    	pacman.setDirection(direction);
         oldDirection = direction;
         gameManager.getScoreBar().setCollision(false, oldDirection);
     }
@@ -186,9 +170,9 @@ public class PlayingState implements IGameState, IObserver<Direction>
      * update of the observer
      */
 	@Override
-	public void update(Direction direction) 
+	public void update(Direction d) 
 	{
-		oldDirection = this.direction;
-		this.direction = direction;
+		oldDirection = direction;
+		direction = d;
 	}
 }

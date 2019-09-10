@@ -16,7 +16,8 @@ public final class Settings
 					           CHOMP_PATH = "." + File.separator + "assets" + File.separator + "pacman_chomp.wav";
    
     public static final int MUTED_BUTTON = KeyEvent.VK_M, 
-    				 		PAUSE_BUTTON = KeyEvent.VK_P, 
+    				 		PAUSE_BUTTON = KeyEvent.VK_P,
+    				 		RESUME_BUTTON = KeyEvent.VK_R,
 				 			MIN_WINDOW_WIDTH = 800,
 				 			MIN_WINDOW_HEIGHT = 600;
 

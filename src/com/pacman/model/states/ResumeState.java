@@ -14,7 +14,7 @@ public class ResumeState implements IGameState
 	}
 	
 	@Override
-	public void update(GameController engine) 
+	public void update() 
 	{
 		if ( !gameManager.isUserMuted )
 		{

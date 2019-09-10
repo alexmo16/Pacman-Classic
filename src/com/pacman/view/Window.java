@@ -70,6 +70,7 @@ public class Window implements WindowListener
     @Override
     public void windowIconified(WindowEvent e)
     {
+    	System.out.println("lol");
     }
 
     @Override

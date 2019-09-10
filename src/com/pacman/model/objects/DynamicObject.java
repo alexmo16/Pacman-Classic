@@ -11,6 +11,7 @@ public abstract class DynamicObject extends GameObject
     protected Direction direction;
     static double speed = 0.1;
     protected Sprites spritesManager;
+    
 
     public DynamicObject()
     {
@@ -35,7 +36,7 @@ public abstract class DynamicObject extends GameObject
 
     public void setDirection(Direction dir)
     {
-        direction = dir;
+    	direction = dir;
     }
 
     public static void updatePosition(Rectangle2D.Double object, Direction direction)

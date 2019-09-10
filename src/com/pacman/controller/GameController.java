@@ -1,7 +1,10 @@
 package com.pacman.controller;
 
+import java.awt.event.KeyEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.pacman.model.states.IGameState;
+import com.pacman.model.world.Direction;
 import com.pacman.utils.Settings;
 import com.pacman.view.Input;
 import com.pacman.view.Window;
@@ -176,7 +179,40 @@ public class GameController implements Runnable
      */
     private void update()
     {
-        game.update(this);
+    	IGameState currentState = game.getCurrentState();
+    	if ( currentState.getName() == "Pause" && inputs.isKeyDown(Settings.RESUME_BUTTON))
+		{
+    		game.setState(game.getResumeState());
+		}
+    	
+    	if ( currentState.getName() == "Play" && inputs.isKeyDown(Settings.PAUSE_BUTTON))
+		{
+    		game.setState(game.getPauseState());
+		}
+    	
+		if (currentState.getName() == "Play" && inputs.isKeyDown(Settings.MUTED_BUTTON))
+        {
+            game.toggleUserMuteSounds();
+        }
+		
+		if (currentState.getName() == "Play")
+		{
+			if (inputs.isKeyDown(KeyEvent.VK_UP))
+	        {
+	            game.setPacmanDirection(Direction.UP);
+	        } else if (inputs.isKeyDown(KeyEvent.VK_DOWN))
+	        {
+	        	game.setPacmanDirection(Direction.DOWN);
+	        } else if (inputs.isKeyDown(KeyEvent.VK_RIGHT))
+	        {
+	        	game.setPacmanDirection(Direction.RIGHT);
+	        } else if (inputs.isKeyDown(KeyEvent.VK_LEFT))
+	        {
+	        	game.setPacmanDirection(Direction.LEFT);
+	        }	
+		} 
+    	
+    	game.update();
         inputs.update();
     }
 

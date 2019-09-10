@@ -3,8 +3,6 @@ package com.pacman.unittests.model.objects;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import java.awt.event.KeyEvent;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -87,57 +85,6 @@ public class PacmanObjectTests
 		    isException = true;
 		}
 		assertFalse( isException );
-
-	}
-	
-	
-	@Test
-	void test_up_direction_pacman_object() 
-	{
-		Mockito.when( inputs.isKeyDown(KeyEvent.VK_UP) ).thenReturn( true );
-		pacmanOk.checkNewDirection(inputs);
-
-		assertEquals(Direction.UP,pacmanOk.getPacDirection());
-
-	}
-	
-	@Test
-	void test_down_direction_pacman_object() 
-	{
-		Mockito.when( inputs.isKeyDown(KeyEvent.VK_DOWN) ).thenReturn( true );
-		pacmanOk.checkNewDirection(inputs);
-
-		assertEquals(Direction.DOWN,pacmanOk.getPacDirection());
-
-	}
-	
-	@Test
-	void test_left_direction_pacman_object() 
-	{
-		Mockito.when( inputs.isKeyDown(KeyEvent.VK_LEFT) ).thenReturn( true );
-		pacmanOk.checkNewDirection(inputs);
-
-		assertEquals(Direction.LEFT,pacmanOk.getPacDirection());
-
-	}
-	
-	@Test
-	void test_right_direction_pacman_object()
-	{
-		Mockito.when( inputs.isKeyDown(KeyEvent.VK_RIGHT) ).thenReturn( true );
-		pacmanOk.checkNewDirection(inputs);
-
-		assertEquals(Direction.RIGHT,pacmanOk.getPacDirection());
-
-	}
-	
-	@Test
-	void test_null_direction_pacman_object() 
-	{
-		Mockito.when( inputs ).thenReturn( null );
-		pacmanOk.checkNewDirection(inputs);
-
-		assertEquals(Direction.LEFT,pacmanOk.getPacDirection());
 
 	}
 	

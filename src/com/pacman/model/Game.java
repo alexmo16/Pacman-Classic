@@ -110,10 +110,10 @@ public class Game implements IGame
      * Update function called by the engine every tick.
      */
     @Override
-    public void update(GameController engine)
+    public void update()
     {
     	scoreBar.setState(currentState.getName());
-    	currentState.update(engine);
+    	currentState.update();
     }
 
     /**
@@ -265,5 +265,11 @@ public class Game implements IGame
 
 	public Maze getMaze() {
 		return maze;
+	}
+
+	@Override
+	public void setPacmanDirection(Direction d)
+	{
+		pacman.setNextDirection(d);
 	}
 }

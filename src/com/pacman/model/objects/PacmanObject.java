@@ -1,13 +1,11 @@
 package com.pacman.model.objects;
 
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import com.pacman.model.Sound;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
 import com.pacman.utils.IPublisher;
-import com.pacman.view.Input;
 
 /**
  * 
@@ -18,7 +16,8 @@ import com.pacman.view.Input;
 public class PacmanObject extends DynamicObject implements IPublisher
 {
     private Sound chomp;
-    private static Direction direction = Direction.LEFT;
+    protected Direction direction = Direction.LEFT;
+    private Direction nextDirection = Direction.LEFT;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
 
     public PacmanObject(double x, double y, double width, double height, Direction direction)
@@ -26,42 +25,17 @@ public class PacmanObject extends DynamicObject implements IPublisher
         super(x, y, width, height, direction);
     }
 
-    /**
-     * Method used to get the new direction of a pacmanObject(), by checking inputs of the User.
-     *
-     *
-     * @return String direction = "left","right","up" or "down"
-     * 
-     */
-    public void checkNewDirection(Input inputs)
+    public void setNextDirection(Direction dir)
     {
-        if (inputs == null)
-        {
-            return;
-        }
-
-        Direction oldDirection = direction;
-        
-        if (inputs.isKeyDown(KeyEvent.VK_UP))
-        {
-            direction = Direction.UP;
-        } else if (inputs.isKeyDown(KeyEvent.VK_DOWN))
-        {
-            direction = Direction.DOWN;
-        } else if (inputs.isKeyDown(KeyEvent.VK_RIGHT))
-        {
-            direction = Direction.RIGHT;
-        } else if (inputs.isKeyDown(KeyEvent.VK_LEFT))
-        {
-            direction = Direction.LEFT;
-        }
-        
-        if ( oldDirection != direction )
-        {
-        	notifyObservers();
-        }
+    	Direction oldDirection = nextDirection;
+    	nextDirection = dir;
+    	
+    	if (oldDirection != nextDirection)
+    	{
+    		notifyObservers();
+    	}
     }
-
+    
     /**
      * method used to make every move we need when Pacman eat a gum.
      *chomp sound will be played, score will be updated and the gum state will be put to "eaten"
@@ -83,7 +57,7 @@ public class PacmanObject extends DynamicObject implements IPublisher
     {
     	chomp = sound;
     }
-
+    
 	@Override
 	public void registerObserver(IObserver<?> observer) 
 	{
@@ -112,12 +86,8 @@ public class PacmanObject extends DynamicObject implements IPublisher
 		{
 			if (observer != null)
 			{
-				observer.update( direction );
+				observer.update( nextDirection );
 			}
 		}
-	}
-	
-	public Direction getPacDirection() {
-		return direction;
 	}
 }

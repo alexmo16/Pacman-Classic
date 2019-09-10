@@ -93,7 +93,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
         {
             if (Collision.collisionObj(pacman, gum))
             {
-                pacman.eatGum(gum, gameManager.getScoreBar());
+                pacman.eatGum(gum);
                 gumList.remove(gum);
                 gum = null;
                 break;
@@ -110,7 +110,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
         {
             if (Collision.collisionObj(pacman, pacGum))
             {
-                pacman.eatGum(pacGum, gameManager.getScoreBar());
+                pacman.eatGum(pacGum);
                 pacGumList.remove(pacGum);
                 pacGum = null;
                 break;
@@ -148,17 +148,17 @@ public class PlayingState implements IGameState, IObserver<Direction>
         {
             DynamicObject.tunnel(pacman.getRectangle(), oldDirection);
             pacman.setDirection(oldDirection);
-            gameManager.getScoreBar().setCollision(false, oldDirection);
+            pacman.setCollision(false, oldDirection);
         }
         if (collisionString == "path")
         {
             DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
             pacman.setDirection(oldDirection);
-            gameManager.getScoreBar().setCollision(false, oldDirection);
+            pacman.setCollision(false, oldDirection);
         } 
         else
         {
-        	gameManager.getScoreBar().setCollision(true, oldDirection);
+        	pacman.setCollision(true, oldDirection);
         }
     }
     
@@ -168,7 +168,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
     private void tunnelStrategy()
     {
     	DynamicObject.tunnel(pacman.getRectangle(), direction);
-    	gameManager.getScoreBar().setCollision(false, oldDirection);
+    	pacman.setCollision(false, oldDirection);
     }
     
     /**
@@ -179,7 +179,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
     	DynamicObject.updatePosition(pacman.getRectangle(), direction);
         pacman.setDirection(direction);
         oldDirection = direction;
-        gameManager.getScoreBar().setCollision(false, oldDirection);
+        pacman.setCollision(false, oldDirection);
     }
 	
     /**

@@ -12,7 +12,6 @@ import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.Maze;
 import com.pacman.model.objects.PacGum;
 import com.pacman.model.objects.Pacman;
-import com.pacman.model.objects.ScoreBar;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.states.InitState;
 import com.pacman.model.states.PauseState;
@@ -42,7 +41,6 @@ public class Game implements IGame
     private ArrayList<PacGum> pacGumList;
     
     private Maze maze;
-    ScoreBar scoreBar;
     
     Sound startMusic;
     Sound gameSiren;
@@ -64,7 +62,6 @@ public class Game implements IGame
         pacGumList = PacGum.generatePacGumList();
         
         maze = new Maze();    
-        scoreBar = new ScoreBar();
         
         initState = new InitState(this);
         pauseState = new PauseState(this);
@@ -112,7 +109,6 @@ public class Game implements IGame
     @Override
     public void update(GameController engine)
     {
-    	scoreBar.setState(currentState.getName());
     	currentState.update(engine);
     }
 
@@ -226,11 +222,6 @@ public class Game implements IGame
 		{
 			gameSiren.playLoopBack();
 		}
-	}
-	
-	public ScoreBar getScoreBar()
-	{
-		return scoreBar;
 	}
 
 	public Pacman getPacman()

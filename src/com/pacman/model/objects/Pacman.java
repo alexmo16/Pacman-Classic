@@ -18,12 +18,18 @@ import com.pacman.view.Input;
 public class Pacman extends DynamicObject implements IPublisher
 {
     private Sound chomp;
+    private int score;
+    private boolean collision;
+    private Direction collisionDirection; 
     private static Direction direction = Direction.LEFT;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
 
     public Pacman(double x, double y, double width, double height, Direction direction)
     {
         super(x, y, width, height, direction);
+    	score = 0;
+    	collision = false;
+    	collisionDirection = null;
     }
 
     /**
@@ -69,13 +75,14 @@ public class Pacman extends DynamicObject implements IPublisher
      * @return void
      * 
      */
-    public void eatGum(StaticObject obj, ScoreBar scoreBar)
+    public void eatGum(StaticObject obj)
     {
     	if ( chomp != null )
     	{
     		chomp.play();
     	}
-        scoreBar.addPointsScore(obj.getPoints());
+    	
+        score = getScore() + obj.getPoints();
         obj.setEaten(true);
     }
     
@@ -119,5 +126,23 @@ public class Pacman extends DynamicObject implements IPublisher
 	
 	public Direction getPacDirection() {
 		return direction;
+	}
+
+	public void setCollision(boolean b, Direction oldDirection) 
+	{
+		collision = b;
+		collisionDirection = oldDirection;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public boolean isCollision() {
+		return collision;
+	}
+
+	public Direction getCollisionDirection() {
+		return collisionDirection;
 	}
 }

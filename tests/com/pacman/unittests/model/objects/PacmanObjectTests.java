@@ -10,7 +10,6 @@ import org.mockito.Mockito;
 
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.Pacman;
-import com.pacman.model.objects.ScoreBar;
 import com.pacman.model.objects.StaticObject;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.Settings;
@@ -22,8 +21,6 @@ public class PacmanObjectTests
 	Settings settingsNull = null;
 	Input inputs = Mockito.mock( Input.class );
 	StaticObject obj = Mockito.mock( StaticObject.class );
-	ScoreBar scoreBar = new ScoreBar();
-	ScoreBar scoreBar2 = new ScoreBar();
 	Pacman pacmanOk = new Pacman(10,10,10,10,Direction.LEFT);
 	Gum obj1 = new Gum(10,10,10,10);
 	Gum obj2 = new Gum(10,10,10,10);
@@ -145,7 +142,7 @@ public class PacmanObjectTests
 	void test__set_eaten_eat_gum() 
 	{
 		obj2.setEaten(true);
-		pacmanOk.eatGum(obj1,scoreBar);
+		pacmanOk.eatGum(obj1);
 
 		assertEquals(obj2.getEaten(),obj1.getEaten());
 
@@ -155,10 +152,8 @@ public class PacmanObjectTests
 	@Test
 	void test__score_eat_gum() 
 	{
-		scoreBar2.addPointsScore(obj2.getPoints());
-		pacmanOk.eatGum(obj1,scoreBar);
-
-		assertEquals(scoreBar2.getScore(),scoreBar.getScore());
+		pacmanOk.eatGum(obj1);
+		assertEquals(pacmanOk.getScore(), obj1.getPoints());
 
 	}
 

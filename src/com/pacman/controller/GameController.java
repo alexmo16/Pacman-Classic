@@ -223,7 +223,7 @@ public class GameController implements Runnable
     	IGameState currentState = game.getCurrentState();
     	if ( currentState.getName() == StatesName.PLAY)
 		{
-    		game.setState(game.getPauseState());
+    		pauseGame();
 		}
     }
     
@@ -232,7 +232,7 @@ public class GameController implements Runnable
     	IGameState currentState = game.getCurrentState();
     	if ( currentState.getName() == StatesName.PAUSE)
 		{
-    		game.setState(game.getResumeState());
+    		resumeGame();
 		}
     }
     
@@ -272,5 +272,31 @@ public class GameController implements Runnable
 			
 			game.setPacmanDirection(dir);
 		}
+    }
+    
+    public static void pauseGame()
+    {
+    	if (game == null)
+    	{
+    		return;
+    	}
+    	IGameState currentState = game.getCurrentState();
+    	if (currentState.getName() == StatesName.PLAY)
+    	{
+    		game.setState(game.getPauseState());
+    	}
+    }
+    
+    public static void resumeGame()
+    {
+    	if (game == null)
+    	{
+    		return;
+    	}
+    	IGameState currentState = game.getCurrentState();
+    	if (currentState.getName() == StatesName.PAUSE)
+    	{
+    		game.setState(game.getResumeState());
+    	}
     }
 }

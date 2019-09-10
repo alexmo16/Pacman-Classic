@@ -116,14 +116,7 @@ public class GameView extends JPanel
         String s = new String("score " + game.getPacman().getScore());
         if (game.getCurrentState() != null) { s += " state " + game.getCurrentState().getName().getValue(); }
         if (game.getPacman().isCollision()) { s += " collision " + game.getPacman().getCollisionDirection(); }
-        for (int i = 0; i < s.length(); i++)
-        {
-        	if (s.charAt(i) != ' ')
-        	{
-        		int[] k = sprites.getCharacterCoords(s.charAt(i));
-        		g.drawImage(sprites.getSpritesSheet(), x + i * tileSize, y, x + i * tileSize + tileSize, y + tileSize, k[0], k[1], k[2], k[3], null);
-        	}
-        }
+        renderString(g, s, x, y);
     }
     
 	private void renderPause(Graphics g)
@@ -135,4 +128,15 @@ public class GameView extends JPanel
         }
     }
 	
+	private void renderString(Graphics g, String message, int x, int y)
+	{
+		for (int i = 0; i < message.length(); i++)
+        {
+        	if (message.charAt(i) != ' ')
+        	{
+        		int[] k = sprites.getCharacterCoords(message.charAt(i));
+        		g.drawImage(sprites.getSpritesSheet(), x + i * tileSize, y, x + i * tileSize + tileSize, y + tileSize, k[0], k[1], k[2], k[3], null);
+        	}
+        }
+	}
 }

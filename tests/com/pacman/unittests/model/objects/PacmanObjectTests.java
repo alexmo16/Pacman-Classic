@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.pacman.model.objects.Gum;
-import com.pacman.model.objects.PacmanObject;
-import com.pacman.model.objects.ScoreBar;
+import com.pacman.model.objects.Pacman;
 import com.pacman.model.objects.StaticObject;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.Settings;
@@ -20,9 +19,7 @@ public class PacmanObjectTests
 	Settings settingsNull = null;
 	Input inputs = Mockito.mock( Input.class );
 	StaticObject obj = Mockito.mock( StaticObject.class );
-	ScoreBar scoreBar = new ScoreBar();
-	ScoreBar scoreBar2 = new ScoreBar();
-	PacmanObject pacmanOk = new PacmanObject(10,10,10,10,Direction.LEFT);
+	Pacman pacmanOk = new Pacman(10,10,10,10,Direction.LEFT);
 	Gum obj1 = new Gum(10,10,10,10);
 	Gum obj2 = new Gum(10,10,10,10);
 	
@@ -33,7 +30,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-			new PacmanObject(0, 0, 0, 0, null);
+			new Pacman(0, 0, 0, 0, null);
 		} catch (Exception e)
 		{
 			isException = true;
@@ -48,7 +45,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-		    new PacmanObject(0, 0, 0, 0, null);
+		    new Pacman(0, 0, 0, 0, null);
 		} catch (Exception e) 
 		{
 		    isException = true;
@@ -63,7 +60,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-		    new PacmanObject(10,10,10,10,Direction.LEFT);
+		    new Pacman(10,10,10,10,Direction.LEFT);
 		} catch (Exception e) 
 		{
 		    isException = true;
@@ -79,7 +76,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-		    new PacmanObject(-10,-10,10,10,Direction.UP);
+		    new Pacman(-10,-10,10,10,Direction.UP);
 		} catch (Exception e) 
 		{
 		    isException = true;
@@ -92,7 +89,7 @@ public class PacmanObjectTests
 	void test__set_eaten_eat_gum() 
 	{
 		obj2.setEaten(true);
-		pacmanOk.eatGum(obj1,scoreBar);
+		pacmanOk.eatGum(obj1);
 
 		assertEquals(obj2.getEaten(),obj1.getEaten());
 
@@ -102,10 +99,8 @@ public class PacmanObjectTests
 	@Test
 	void test__score_eat_gum() 
 	{
-		scoreBar2.addPointsScore(obj2.getPoints());
-		pacmanOk.eatGum(obj1,scoreBar);
-
-		assertEquals(scoreBar2.getScore(),scoreBar.getScore());
+		pacmanOk.eatGum(obj1);
+		assertEquals(pacmanOk.getScore(), obj1.getPoints());
 
 	}
 

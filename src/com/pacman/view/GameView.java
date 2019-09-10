@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import com.pacman.model.Game;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.PacGum;
-import com.pacman.model.objects.PacmanObject;
+import com.pacman.model.objects.Pacman;
 import com.pacman.model.world.Tile;
 import com.pacman.utils.Settings;
 
@@ -100,7 +100,7 @@ public class GameView extends JPanel
 	
 	private void renderPacman(Graphics g)
 	{
-        PacmanObject pacman = game.getPacman();
+        Pacman pacman = game.getPacman();
         double x = (pacman.getObject().getX() * tileSize - (tileSize / 2)) + (getWidth() - (tileSize * mazeWidth)) / 2;
         double y = (pacman.getObject().getY() * tileSize - (tileSize / 2)) + (getHeight() - (tileSize * mazeHeight)) / 2;
         int[] k = sprites.getPacmanCoords(pacman.getDirection());
@@ -112,9 +112,9 @@ public class GameView extends JPanel
         int x = (getWidth() - mazeWidth * tileSize) / 2;
         int y = (getHeight() - tileSize);
         
-        String s = new String("score " + game.getScoreBar().getScore());
-        if (game.getScoreBar().getState() != null) { s += " state " + game.getScoreBar().getState(); }
-        if (game.getScoreBar().isCollision()) { s += " collision " + game.getScoreBar().getDirection(); }
+        String s = new String("score " + game.getPacman().getScore());
+        if (game.getCurrentState() != null) { s += " state " + game.getCurrentState().getName(); }
+        if (game.getPacman().isCollision()) { s += " collision " + game.getPacman().getCollisionDirection(); }
         for (int i = 0; i < s.length(); i++)
         {
         	if (s.charAt(i) != ' ')

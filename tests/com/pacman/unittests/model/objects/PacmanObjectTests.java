@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.pacman.model.objects.Gum;
-import com.pacman.model.objects.PacmanObject;
+import com.pacman.model.objects.Pacman;
 import com.pacman.model.objects.ScoreBar;
 import com.pacman.model.objects.StaticObject;
 import com.pacman.model.world.Direction;
@@ -24,7 +24,7 @@ public class PacmanObjectTests
 	StaticObject obj = Mockito.mock( StaticObject.class );
 	ScoreBar scoreBar = new ScoreBar();
 	ScoreBar scoreBar2 = new ScoreBar();
-	PacmanObject pacmanOk = new PacmanObject(10,10,10,10,Direction.LEFT);
+	Pacman pacmanOk = new Pacman(10,10,10,10,Direction.LEFT);
 	Gum obj1 = new Gum(10,10,10,10);
 	Gum obj2 = new Gum(10,10,10,10);
 	
@@ -35,7 +35,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-			new PacmanObject(0, 0, 0, 0, null);
+			new Pacman(0, 0, 0, 0, null);
 		} catch (Exception e)
 		{
 			isException = true;
@@ -50,7 +50,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-		    new PacmanObject(0, 0, 0, 0, null);
+		    new Pacman(0, 0, 0, 0, null);
 		} catch (Exception e) 
 		{
 		    isException = true;
@@ -65,7 +65,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-		    new PacmanObject(10,10,10,10,Direction.LEFT);
+		    new Pacman(10,10,10,10,Direction.LEFT);
 		} catch (Exception e) 
 		{
 		    isException = true;
@@ -81,7 +81,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-		    new PacmanObject(-10,-10,10,10,Direction.UP);
+		    new Pacman(-10,-10,10,10,Direction.UP);
 		} catch (Exception e) 
 		{
 		    isException = true;

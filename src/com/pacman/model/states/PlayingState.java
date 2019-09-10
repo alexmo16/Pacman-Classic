@@ -8,7 +8,7 @@ import com.pacman.model.Game;
 import com.pacman.model.objects.DynamicObject;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.PacGum;
-import com.pacman.model.objects.PacmanObject;
+import com.pacman.model.objects.Pacman;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
 import com.pacman.utils.Settings;
@@ -18,9 +18,9 @@ public class PlayingState implements IGameState, IObserver<Direction>
 {
 	private Game gameManager;
 	private String name = "Play";
-	private PacmanObject pacman;
-	private PacmanObject maybeFuturPacman;
-	private PacmanObject futurPacman;
+	private Pacman pacman;
+	private Pacman maybeFuturPacman;
+	private Pacman futurPacman;
 	private ArrayList<Gum> gumList;
     private ArrayList<PacGum> pacGumList;
     private Direction oldDirection, direction;
@@ -39,8 +39,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
         int[] startingPosition = gameManager.getStartingPosition();
         double pacmanBox = gameManager.getPacmanBox();
         
-        maybeFuturPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
-        futurPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
+        maybeFuturPacman = new Pacman(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
+        futurPacman = new Pacman(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
         
         direction = gameManager.getDirection();
         oldDirection = direction;

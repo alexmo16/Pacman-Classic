@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import com.pacman.model.Game;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.PacGum;
-import com.pacman.model.objects.PacmanObject;
+import com.pacman.model.objects.Pacman;
 import com.pacman.model.world.Tile;
 import com.pacman.utils.Settings;
 
@@ -100,7 +100,7 @@ public class GameView extends JPanel
 	
 	private void renderPacman(Graphics g)
 	{
-        PacmanObject pacman = game.getPacman();
+        Pacman pacman = game.getPacman();
         double x = (pacman.getObject().getX() * tileSize - (tileSize / 2)) + (getWidth() - (tileSize * mazeWidth)) / 2;
         double y = (pacman.getObject().getY() * tileSize - (tileSize / 2)) + (getHeight() - (tileSize * mazeHeight)) / 2;
         int[] k = sprites.getPacmanCoords(pacman.getDirection());

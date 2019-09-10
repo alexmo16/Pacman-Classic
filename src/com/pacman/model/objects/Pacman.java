@@ -15,13 +15,13 @@ import com.pacman.view.Input;
  * Observer design pattern
  *
  */
-public class PacmanObject extends DynamicObject implements IPublisher
+public class Pacman extends DynamicObject implements IPublisher
 {
     private Sound chomp;
     private static Direction direction = Direction.LEFT;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
 
-    public PacmanObject(double x, double y, double width, double height, Direction direction)
+    public Pacman(double x, double y, double width, double height, Direction direction)
     {
         super(x, y, width, height, direction);
     }

@@ -8,14 +8,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.pacman.model.objects.PacmanObject;
+import com.pacman.model.objects.Pacman;
 import com.pacman.model.world.Direction;
 
 class DynamicObjectTests
 {
 
-    private PacmanObject testPacman;
-    private PacmanObject expectedPacman;
+    private Pacman testPacman;
+    private Pacman expectedPacman;
     private double speed;
     
     @BeforeEach
@@ -27,8 +27,8 @@ class DynamicObjectTests
     @Test
     void testUpdatePositionUp()
     {
-        testPacman = new PacmanObject(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new PacmanObject(10, 10 - speed, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
+        expectedPacman = new Pacman(10, 10 - speed, 10, 10, Direction.UP);
         
         updatePosition(testPacman.getRectangle(), Direction.UP);
         
@@ -40,8 +40,8 @@ class DynamicObjectTests
     @Test
     void testUpdatePositionRight()
     {
-        testPacman = new PacmanObject(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new PacmanObject(10 + speed, 10, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
+        expectedPacman = new Pacman(10 + speed, 10, 10, 10, Direction.UP);
         
         updatePosition(testPacman.getRectangle(), Direction.RIGHT);
         
@@ -53,8 +53,8 @@ class DynamicObjectTests
     @Test
     void testUpdatePositionLeft()
     {
-        testPacman = new PacmanObject(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new PacmanObject(10 - speed, 10, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
+        expectedPacman = new Pacman(10 - speed, 10, 10, 10, Direction.UP);
         
         updatePosition(testPacman.getRectangle(), Direction.LEFT);
         
@@ -66,8 +66,8 @@ class DynamicObjectTests
     @Test
     void testUpdatePositionDown()
     {
-        testPacman = new PacmanObject(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new PacmanObject(10, 10 + speed, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
+        expectedPacman = new Pacman(10, 10 + speed, 10, 10, Direction.UP);
         
         updatePosition(testPacman.getRectangle(), Direction.DOWN);
         
@@ -79,8 +79,8 @@ class DynamicObjectTests
     @Test
     void testTunnelUp()
     {
-        testPacman = new PacmanObject(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new PacmanObject(10,22.5, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
+        expectedPacman = new Pacman(10,22.5, 10, 10, Direction.UP);
         
         tunnel(testPacman.getRectangle(), Direction.UP);
         
@@ -91,8 +91,8 @@ class DynamicObjectTests
     @Test
     void testTunnelDown()
     {
-        testPacman = new PacmanObject(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new PacmanObject(10, 0.5, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
+        expectedPacman = new Pacman(10, 0.5, 10, 10, Direction.UP);
         
         tunnel(testPacman.getRectangle(), Direction.DOWN);
         
@@ -103,8 +103,8 @@ class DynamicObjectTests
     @Test
     void testTunnelRight()
     {
-        testPacman = new PacmanObject(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new PacmanObject(0.5, 10, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
+        expectedPacman = new Pacman(0.5, 10, 10, 10, Direction.UP);
         
         tunnel(testPacman.getRectangle(), Direction.RIGHT);
         
@@ -115,8 +115,8 @@ class DynamicObjectTests
     @Test
     void testTunnelLeft()
     {
-        testPacman = new PacmanObject(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new PacmanObject(19.5, 10, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
+        expectedPacman = new Pacman(19.5, 10, 10, 10, Direction.UP);
         
         tunnel(testPacman.getRectangle(), Direction.LEFT);
         

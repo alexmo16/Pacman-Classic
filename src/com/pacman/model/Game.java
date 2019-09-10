@@ -11,7 +11,7 @@ import com.pacman.controller.IGame;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.Maze;
 import com.pacman.model.objects.PacGum;
-import com.pacman.model.objects.PacmanObject;
+import com.pacman.model.objects.Pacman;
 import com.pacman.model.objects.ScoreBar;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.states.InitState;
@@ -35,7 +35,7 @@ public class Game implements IGame
     public boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
 
     private Direction direction = Direction.LEFT;
-    private PacmanObject pacman;
+    private Pacman pacman;
     private int startingPosition[];
     private double pacmanBox;
 	private ArrayList<Gum> gumList;
@@ -59,7 +59,7 @@ public class Game implements IGame
     {
     	startingPosition = Settings.WORLD_DATA.findFirstInstanceOF(Tile.PAC_MAN_START.getValue());
         pacmanBox = 0.9;
-        pacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
+        pacman = new Pacman(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
         gumList = Gum.generateGumList();
         pacGumList = PacGum.generatePacGumList();
         
@@ -233,7 +233,7 @@ public class Game implements IGame
 		return scoreBar;
 	}
 
-	public PacmanObject getPacman()
+	public Pacman getPacman()
 	{
 		return pacman;
 	}

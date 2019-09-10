@@ -39,8 +39,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
         direction = pacman.getDirection();
         oldDirection = direction;
         
-        maybeFuturPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
-        futurPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
+        maybeFuturPacman = new Pacman(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
+        futurPacman = new Pacman(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
         
         gumList = gameManager.getGumList();
         pacGumList = gameManager.getPacGumList();

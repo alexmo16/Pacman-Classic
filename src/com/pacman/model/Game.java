@@ -109,7 +109,6 @@ public class Game implements IGame
     @Override
     public void update()
     {
-    	scoreBar.setState(currentState.getName());
     	currentState.update();
     }
 

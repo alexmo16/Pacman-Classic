@@ -1,6 +1,6 @@
 package com.pacman.model.objects;
 
-import com.pacman.model.Settings;
+import com.pacman.utils.Settings;
 import com.pacman.view.Sprites;
 
 abstract public class StaticObject extends GameObject
@@ -19,12 +19,12 @@ abstract public class StaticObject extends GameObject
         this.spritesManager = null;
     }
 
-    public StaticObject(double x, double y, double width, double height, Settings s)
+    public StaticObject(double x, double y, double width, double height)
     {
-        super(x, y, width, height, s);
+        super(x, y, width, height);
         this.eaten = false;
         this.points = 0;
-        this.spritesManager = s.getSpritesManager();
+        this.spritesManager = Settings.SPRITES;
     }
 
     public int getPoints()

@@ -2,6 +2,7 @@ package com.pacman.controller;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.pacman.utils.Settings;
 import com.pacman.view.Input;
 import com.pacman.view.Window;
 
@@ -17,8 +18,7 @@ public class GameController implements Runnable
     private static IGame game;
     private static Input inputs;
     private static Window window;
-    private static ISettings settings;
-
+ 
     private static AtomicBoolean isRunning = new AtomicBoolean(false);
     private static boolean isMuted = false;
 
@@ -43,16 +43,9 @@ public class GameController implements Runnable
         {
             if (g == null || w == null)
             {
-            	System.out.println("Fuck fuck");
                 return null;
             }
             game = g;
-            settings = game.getSettings();
-            if (settings == null || settings.getWorldData() == null)
-            {
-            	System.out.println("Fuck");
-                return null;
-            }
             
             window = w;
             inputs = new Input();
@@ -139,9 +132,9 @@ public class GameController implements Runnable
             frameTime += deltaTime;
 
             // Pour etre sur que le render et l'update sont synchronisé avec le 60 fps.
-            while (unprocessedTime >= settings.getUpdateRate() )
+            while (unprocessedTime >= Settings.UPDATE_RATE )
             {
-                unprocessedTime -= settings.getUpdateRate();
+                unprocessedTime -= Settings.UPDATE_RATE;
                 render = true;
                 update();
             }
@@ -162,7 +155,7 @@ public class GameController implements Runnable
                 frames++;
             } else
             {
-                sleepTime = settings.getUpdateRate() - deltaTime;
+                sleepTime = Settings.UPDATE_RATE - deltaTime;
                 if (sleepTime <= 0)
                 {
                     sleepTime = 1;

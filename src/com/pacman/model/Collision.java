@@ -1,7 +1,7 @@
 package com.pacman.model;
 
-import com.pacman.controller.ISettings;
 import com.pacman.model.objects.GameObject;
+import com.pacman.utils.Settings;
 
 /**
  * 
@@ -14,7 +14,6 @@ public abstract class Collision
     static int mapH;
     static int mapW;
     static int[] authTiles;
-    static ISettings settings;
 
     /**
      * method used to check if obj hits a wall or goes in the tunnel
@@ -76,13 +75,12 @@ public abstract class Collision
         return false;
     }
 
-    public static void setSettings(ISettings settings)
+    public static void setSettings()
     {
-        Collision.settings = settings;
-        authTiles = settings.getAuthTiles();
-        tiles = settings.getWorldData().getTiles();
-        mapH = settings.getWorldData().getHeight();
-        mapW = settings.getWorldData().getWidth();
+        authTiles = Settings.AUTH_TILES;
+        tiles = Settings.WORLD_DATA.getTiles();
+        mapH = Settings.WORLD_DATA.getHeight();
+        mapW = Settings.WORLD_DATA.getWidth();
     }
     
     public static void setMap(int[][] map, int[] auth, int x,int y) 

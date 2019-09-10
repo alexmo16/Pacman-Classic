@@ -14,7 +14,7 @@ public class App
     public static void main(String[] args)
     {
         IGame game = new Game();
-        Window window = new Window(game.getSettings());
+        Window window = new Window();
         GameController engine = GameController.getInstance(window, game);
         engine.startGame();
     }

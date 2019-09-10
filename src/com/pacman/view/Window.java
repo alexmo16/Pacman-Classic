@@ -10,16 +10,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.pacman.controller.GameController;
-import com.pacman.controller.ISettings;
+import com.pacman.utils.Settings;
 
 public class Window implements WindowListener
 {
     private JFrame frame;
 
-    public Window(ISettings s)
+    public Window()
     {
-        frame = new JFrame(s.getTitle());
-        frame.setMinimumSize(new Dimension(s.getMinWindowWidth(), s.getMinWindowHeight()));
+        frame = new JFrame(Settings.TITLE);
+        frame.setMinimumSize(new Dimension(Settings.MIN_WINDOW_WIDTH, Settings.MIN_WINDOW_HEIGHT));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.pack();

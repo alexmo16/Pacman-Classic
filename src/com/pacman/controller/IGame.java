@@ -10,6 +10,4 @@ public interface IGame
     public void init(Window window);
 
     public void update(GameController engine);
-
-    public ISettings getSettings();
 }

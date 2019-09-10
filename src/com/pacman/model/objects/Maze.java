@@ -1,21 +1,18 @@
 package com.pacman.model.objects;
 
-import com.pacman.model.Settings;
-import com.pacman.view.Sprites;
+import com.pacman.utils.Settings;
 
 public class Maze 
 {
 	private final int height,
 	 				  width;
 	private final int[][] tiles;
-	private final Sprites sprites; 
 	
-	public Maze(Settings s)
+	public Maze()
 	{
-		height = s.getWorldData().getHeight();
-		width = s.getWorldData().getWidth();
-		tiles = s.getWorldData().getTiles();
-		sprites = s.getSpritesManager();
+		height = Settings.WORLD_DATA.getHeight();
+		width = Settings.WORLD_DATA.getWidth();
+		tiles = Settings.WORLD_DATA.getTiles();
 	}
 
 	public int getHeight()
@@ -31,10 +28,5 @@ public class Maze
 	public int[][] getTiles() 
 	{
 		return tiles;
-	}
-	
-	public Sprites getSrpites() 
-	{
-		return sprites;
 	}
 }

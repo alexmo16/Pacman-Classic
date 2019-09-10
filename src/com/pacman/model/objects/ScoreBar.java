@@ -1,6 +1,5 @@
 package com.pacman.model.objects;
 
-import com.pacman.model.Settings;
 import com.pacman.model.world.Direction;
 
 /**
@@ -13,7 +12,7 @@ public class ScoreBar
     private Direction direction;
     private String state;
 
-    public ScoreBar(Settings s)
+    public ScoreBar()
     {
         this.score = 0;
         this.collision = false;

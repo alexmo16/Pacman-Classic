@@ -5,19 +5,18 @@ import java.util.ArrayList;
 import com.pacman.controller.GameController;
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
-import com.pacman.model.Settings;
 import com.pacman.model.objects.DynamicObject;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.PacGum;
 import com.pacman.model.objects.PacmanObject;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
+import com.pacman.utils.Settings;
 import com.pacman.view.Input;
 
 public class PlayingState implements IGameState, IObserver<Direction>
 {
 	private Game gameManager;
-	private Settings settings;
 	private String name = "Play";
 	private PacmanObject pacman;
 	private PacmanObject maybeFuturPacman;
@@ -33,7 +32,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 			return;
 		}
 		gameManager = gm;
-		settings = (Settings)gameManager.getSettings();
 		
 		pacman = gameManager.getPacman();
         pacman.registerObserver( this );
@@ -41,8 +39,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
         int[] startingPosition = gameManager.getStartingPosition();
         double pacmanBox = gameManager.getPacmanBox();
         
-        maybeFuturPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction, settings);
-        futurPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction, settings);
+        maybeFuturPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
+        futurPacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
         
         direction = gameManager.getDirection();
         oldDirection = direction;
@@ -55,12 +53,12 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	public void update(GameController engine) 
 	{
 		Input inputs = engine.getInputs();
-		if (inputs.isKeyDown(settings.getMutedButton()))
+		if (inputs.isKeyDown(Settings.MUTED_BUTTON))
         {
             gameManager.toggleUserMuteSounds();
         }
 		
-		if (gameManager.getCanPausedGame() && inputs.isKeyDown(settings.getPauseButton()))
+		if (gameManager.getCanPausedGame() && inputs.isKeyDown(Settings.PAUSE_BUTTON))
 		{
 			gameManager.setState(gameManager.getPauseState());
 		}

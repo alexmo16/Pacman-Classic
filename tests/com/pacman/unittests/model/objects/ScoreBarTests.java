@@ -1,23 +1,19 @@
 package com.pacman.unittests.model.objects;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.*;
 
-import com.pacman.model.Settings;
 import com.pacman.model.objects.ScoreBar;
 
 class ScoreBarTests
 {
     private ScoreBar scoreBar;
-    private Settings s;
 
     @Test
     void testAddPointScore()
     {
-        this.s = mock(Settings.class);
-        this.scoreBar = new ScoreBar(s);
+        this.scoreBar = new ScoreBar();
         
         scoreBar.addPointsScore(10);
         
@@ -27,8 +23,7 @@ class ScoreBarTests
     @Test
     void testSetScore()
     {
-        this.s = mock(Settings.class);
-        this.scoreBar = new ScoreBar(s);
+        this.scoreBar = new ScoreBar();
         
         scoreBar.setScore(100);
         

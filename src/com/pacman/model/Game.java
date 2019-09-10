@@ -21,6 +21,7 @@ import com.pacman.model.states.ResumeState;
 import com.pacman.model.states.StopState;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Tile;
+import com.pacman.utils.Settings;
 import com.pacman.view.GameView;
 import com.pacman.view.Window;
 
@@ -40,7 +41,6 @@ public class Game implements IGame
 	private ArrayList<Gum> gumList;
     private ArrayList<PacGum> pacGumList;
     
-    Settings settings;
     private Maze maze;
     ScoreBar scoreBar;
     
@@ -57,16 +57,14 @@ public class Game implements IGame
     
     public Game()
     {
-    	settings = new Settings();
-        
-    	startingPosition = settings.getWorldData().findFirstInstanceOF(Tile.PAC_MAN_START.getValue());
+    	startingPosition = Settings.WORLD_DATA.findFirstInstanceOF(Tile.PAC_MAN_START.getValue());
         pacmanBox = 0.9;
-        pacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction, settings);
-        gumList = Gum.generateGumList(settings);
-        pacGumList = PacGum.generatePacGumList(settings);
+        pacman = new PacmanObject(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
+        gumList = Gum.generateGumList();
+        pacGumList = PacGum.generatePacGumList();
         
-        maze = new Maze(settings);    
-        scoreBar = new ScoreBar(settings);
+        maze = new Maze();    
+        scoreBar = new ScoreBar();
         
         initState = new InitState(this);
         pauseState = new PauseState(this);
@@ -104,8 +102,7 @@ public class Game implements IGame
         //loadInGameScene(window);
     	window.setContainer(new GameView(this));
         loadMusics();
-
-        Collision.setSettings(settings);
+        Collision.setSettings();
     }
 
 
@@ -119,12 +116,6 @@ public class Game implements IGame
     	currentState.update(engine);
     }
 
-    @Override
-    public Settings getSettings()
-    {
-        return settings;
-    }
-
     /**
      * Load all audio files and distribute them where they're needed.
      * @return
@@ -133,9 +124,9 @@ public class Game implements IGame
     {
         try
         {
-            startMusic = new Sound(settings.getStartMusicPath());
-            gameSiren = new Sound(settings.getGameSirenPath());
-            chomp = new Sound(settings.getChompPath());
+            startMusic = new Sound(Settings.START_MUSIC_PATH);
+            gameSiren = new Sound(Settings.GAME_SIREN_PATH);
+            chomp = new Sound(Settings.CHOMP_PATH);
             pacman.setChompSound(chomp);
         } catch (UnsupportedAudioFileException | IOException e)
         {

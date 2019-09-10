@@ -3,7 +3,6 @@ package com.pacman.model.objects;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import com.pacman.model.Settings;
 import com.pacman.model.Sound;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
@@ -22,21 +21,9 @@ public class PacmanObject extends DynamicObject implements IPublisher
     private static Direction direction = Direction.LEFT;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
 
-    /**
-     * Method used to create a new Pacman.
-     *
-     *
-     * @return pacmanObject
-     * 
-     */
-    public PacmanObject(Settings settings)
+    public PacmanObject(double x, double y, double width, double height, Direction direction)
     {
-    	
-    }
-
-    public PacmanObject(double x, double y, double width, double height, Direction direction, Settings s)
-    {
-        super(x, y, width, height, direction, s);
+        super(x, y, width, height, direction);
     }
 
     /**

@@ -2,17 +2,16 @@ package com.pacman.view;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GridBagLayout;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import com.pacman.model.Game;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.PacGum;
 import com.pacman.model.objects.PacmanObject;
 import com.pacman.model.world.Tile;
+import com.pacman.utils.Settings;
 
 public class GameView extends JPanel
 {
@@ -28,7 +27,7 @@ public class GameView extends JPanel
 	public GameView(Game gm)
 	{
 		game = gm;
-		sprites = gm.getSettings().getSpritesManager();
+		sprites = Settings.SPRITES;
 	}
 	
 	@Override

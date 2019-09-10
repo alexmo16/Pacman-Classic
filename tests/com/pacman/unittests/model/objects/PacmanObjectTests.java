@@ -8,26 +8,25 @@ import java.awt.event.KeyEvent;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.pacman.model.Settings;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.PacmanObject;
 import com.pacman.model.objects.ScoreBar;
 import com.pacman.model.objects.StaticObject;
 import com.pacman.model.world.Direction;
+import com.pacman.utils.Settings;
 import com.pacman.view.Input;
 
 public class PacmanObjectTests
 {
 	
-	Settings settings = new Settings();
 	Settings settingsNull = null;
 	Input inputs = Mockito.mock( Input.class );
 	StaticObject obj = Mockito.mock( StaticObject.class );
-	ScoreBar scoreBar = new ScoreBar(settings);
-	ScoreBar scoreBar2 = new ScoreBar(settings);
-	PacmanObject pacmanOk = new PacmanObject(10,10,10,10,Direction.LEFT,settings);
-	Gum obj1 = new Gum(10,10,10,10,settings);
-	Gum obj2 = new Gum(10,10,10,10,settings);
+	ScoreBar scoreBar = new ScoreBar();
+	ScoreBar scoreBar2 = new ScoreBar();
+	PacmanObject pacmanOk = new PacmanObject(10,10,10,10,Direction.LEFT);
+	Gum obj1 = new Gum(10,10,10,10);
+	Gum obj2 = new Gum(10,10,10,10);
 	
 	
 	@Test
@@ -36,7 +35,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-			new PacmanObject(settings);
+			new PacmanObject(0, 0, 0, 0, null);
 		} catch (Exception e)
 		{
 			isException = true;
@@ -51,7 +50,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-		    new PacmanObject(null);
+		    new PacmanObject(0, 0, 0, 0, null);
 		} catch (Exception e) 
 		{
 		    isException = true;
@@ -66,7 +65,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-		    new PacmanObject(10,10,10,10,Direction.LEFT,settings);
+		    new PacmanObject(10,10,10,10,Direction.LEFT);
 		} catch (Exception e) 
 		{
 		    isException = true;
@@ -82,7 +81,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-		    new PacmanObject(-10,-10,10,10,Direction.UP,settings);
+		    new PacmanObject(-10,-10,10,10,Direction.UP);
 		} catch (Exception e) 
 		{
 		    isException = true;

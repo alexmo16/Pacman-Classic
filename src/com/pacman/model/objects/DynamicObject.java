@@ -2,8 +2,8 @@ package com.pacman.model.objects;
 
 import java.awt.geom.Rectangle2D;
 
-import com.pacman.model.Settings;
 import com.pacman.model.world.Direction;
+import com.pacman.utils.Settings;
 import com.pacman.view.Sprites;
 
 public abstract class DynamicObject extends GameObject
@@ -21,11 +21,11 @@ public abstract class DynamicObject extends GameObject
         return speed;
     }
 
-    public DynamicObject(double x, double y, double width, double height, Direction direction, Settings s)
+    public DynamicObject(double x, double y, double width, double height, Direction direction)
     {
-        super(x, y, width, height, s);
+        super(x, y, width, height);
         this.direction = direction;
-        spritesManager = s.getSpritesManager();
+        spritesManager = Settings.SPRITES;
     }
 
     public Direction getDirection()

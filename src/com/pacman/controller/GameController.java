@@ -2,6 +2,7 @@ package com.pacman.controller;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.pacman.view.Input;
 import com.pacman.view.Window;
 
 /**
@@ -39,19 +40,20 @@ public class GameController implements Runnable
      * @param game the object that implements the IGame interface. 
      * @return Engine
      */
-    public static GameController getInstance(Window window, IGame game)
+    public static GameController getInstance(Window w, IGame g)
     {
         if (instance == null)
         {
-            if (game == null || window == null)
+            if (g == null || w == null)
             {
+            	System.out.println("Fuck fuck");
                 return null;
             }
-
-            GameController.game = game;
+            game = g;
             settings = game.getSettings();
             if (settings == null || settings.getWorldData() == null)
             {
+            	System.out.println("Fuck");
                 return null;
             }
 
@@ -59,8 +61,9 @@ public class GameController implements Runnable
             tilesH = settings.getWorldData().getHeight();
             tilesW = settings.getWorldData().getWidth();
 
-            GameController.window = window;
-            inputs = new Input(GameController.window);
+            window = w;
+            inputs = new Input();
+            window.addListener(inputs);
             instance = new GameController();
         }
 

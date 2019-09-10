@@ -8,13 +8,13 @@ import java.awt.event.KeyEvent;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.pacman.controller.Input;
 import com.pacman.model.Settings;
 import com.pacman.model.objects.Gum;
 import com.pacman.model.objects.PacmanObject;
 import com.pacman.model.objects.ScoreBar;
 import com.pacman.model.objects.StaticObject;
 import com.pacman.model.world.Direction;
+import com.pacman.view.Input;
 
 public class PacmanObjectTests
 {

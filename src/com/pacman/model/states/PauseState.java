@@ -2,8 +2,8 @@ package com.pacman.model.states;
 
 import com.pacman.controller.GameController;
 import com.pacman.controller.ISettings;
-import com.pacman.controller.Input;
 import com.pacman.model.Game;
+import com.pacman.view.Input;
 
 public class PauseState implements IGameState
 {

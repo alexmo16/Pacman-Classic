@@ -1,27 +1,16 @@
-package com.pacman.controller;
+package com.pacman.view;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import com.pacman.view.Window;
-
 public class Input implements KeyListener
 {
-
-    private Window window;
-
     private static final int SUPPORTED_KEYS = 256;
 
     private final boolean[] keys = new boolean[SUPPORTED_KEYS];
     private final boolean[] lastPressedKeys = new boolean[SUPPORTED_KEYS];
 
     private char typed = 0;
-
-    public Input(Window window)
-    {
-        this.window = window;
-        this.window.getFrame().addKeyListener(this);
-    }
 
     /**
      * Copy the currently pressed keys int the lastPressedKeys buffer.

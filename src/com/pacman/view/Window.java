@@ -2,6 +2,7 @@ package com.pacman.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -27,11 +28,11 @@ public class Window implements WindowListener
         frame.addWindowListener(this);
     }
 
-    public JFrame getFrame()
+    public void addListener(KeyListener k)
     {
-        return frame;
+    	frame.addKeyListener(k);
     }
-
+    
     public void setContainer(JPanel container)
     {
     	frame.getContentPane().removeAll();
@@ -43,6 +44,12 @@ public class Window implements WindowListener
     {
     	frame.repaint();
     }
+    
+    public JFrame getFrame()
+    {
+        return frame;
+    }
+
     
     @Override
     public void windowOpened(WindowEvent e)

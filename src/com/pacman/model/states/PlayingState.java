@@ -3,7 +3,6 @@ package com.pacman.model.states;
 import java.util.ArrayList;
 
 import com.pacman.controller.GameController;
-import com.pacman.controller.Input;
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
 import com.pacman.model.Settings;
@@ -13,6 +12,7 @@ import com.pacman.model.objects.PacGum;
 import com.pacman.model.objects.PacmanObject;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
+import com.pacman.view.Input;
 
 public class PlayingState implements IGameState, IObserver<Direction>
 {

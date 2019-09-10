@@ -3,12 +3,12 @@ package com.pacman.model.objects;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import com.pacman.controller.Input;
 import com.pacman.model.Settings;
 import com.pacman.model.Sound;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
 import com.pacman.utils.IPublisher;
+import com.pacman.view.Input;
 
 /**
  * 

@@ -232,7 +232,7 @@ public class GameController implements Runnable
     {
         try
         {
-            Thread.sleep((long) sleepTime); // 1ms, a voir s'il faut modifier cette valeur.
+            Thread.sleep((long) sleepTime);
         } catch (InterruptedException e)
         {
             e.printStackTrace();

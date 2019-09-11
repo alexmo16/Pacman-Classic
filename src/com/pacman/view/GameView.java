@@ -93,7 +93,7 @@ public class GameView extends JPanel
 	        int x = (getWidth() - (StatesName.PAUSE.getValue().length() * scaling)) / 2;
 	        int y = getHeight() / 2;
 	        
-	        renderWord(g, x, y, StatesName.PAUSE.getValue());
+	        renderString(g, StatesName.PAUSE.getValue(), x, y);
         }
     }
 	
@@ -103,8 +103,8 @@ public class GameView extends JPanel
         {
         	if (message.charAt(i) != ' ')
         	{
-        		int[] k = sprites.getCharacterCoords(message.charAt(i));
-        		g.drawImage(sprites.getSpritesSheet(), x + i * tileSize, y, x + i * tileSize + tileSize, y + tileSize, k[0], k[1], k[2], k[3], null);
+        		int[] k = Settings.SPRITES.getCharacterCoords(message.charAt(i));
+        		g.drawImage(Settings.SPRITES.getSpritesSheet(), x + i * scaling, y, x + i * scaling + scaling, y + scaling, k[0], k[1], k[2], k[3], null);
         	}
         }
 	}

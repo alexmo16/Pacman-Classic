@@ -16,9 +16,11 @@ import com.pacman.utils.IPublisher;
 public class Pacman extends DynamicObject implements IPublisher
 {
     private Sound chomp;
-    private int score;
-    private boolean collision;
-    private Direction collisionDirection; 
+    private int score = 0;
+    private final int MAX_LIFES = 3;
+    private int lifes;
+    private boolean collision = false;
+    private Direction collisionDirection = null; 
 	protected Direction direction = Direction.LEFT;
     private Direction nextDirection = Direction.LEFT;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
@@ -26,9 +28,7 @@ public class Pacman extends DynamicObject implements IPublisher
     public Pacman(double x, double y, double width, double height, Direction direction)
     {
         super(x, y, width, height, direction);
-    	score = 0;
-    	collision = false;
-    	collisionDirection = null;
+        lifes = MAX_LIFES;
     }
 
     public void setNextDirection(Direction dir)
@@ -123,5 +123,20 @@ public class Pacman extends DynamicObject implements IPublisher
 
 	public Direction getCollisionDirection() {
 		return collisionDirection;
+	}
+
+	public int getLifes()
+	{
+		return lifes;
+	}
+
+	public void looseLife()
+	{
+		lifes--;
+	}
+	
+	public void respawn()
+	{
+		lifes = MAX_LIFES;
 	}
 }

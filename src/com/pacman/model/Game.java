@@ -8,10 +8,12 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.pacman.controller.GameController;
 import com.pacman.controller.IGame;
-import com.pacman.model.objects.Gum;
-import com.pacman.model.objects.Maze;
-import com.pacman.model.objects.PacGum;
-import com.pacman.model.objects.Pacman;
+import com.pacman.model.objects.Wall;
+import com.pacman.model.objects.consumables.Consumable;
+import com.pacman.model.objects.consumables.Energizer;
+import com.pacman.model.objects.consumables.PacDot;
+import com.pacman.model.objects.entities.Entity;
+import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.states.InitState;
 import com.pacman.model.states.PauseState;
@@ -30,22 +32,16 @@ import com.pacman.view.Window;
  */
 public class Game implements IGame
 {
-    protected boolean canPaused = false;
-    public boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
-
-    private Direction direction = Direction.LEFT;
     private Pacman pacman;
-    private int startingPosition[];
-    private double pacmanBox;
-	private ArrayList<Gum> gumList;
-    private ArrayList<PacGum> pacGumList;
     
-    private Maze maze;
+    private ArrayList<Entity> entities;
+    private ArrayList<Wall> maze;
+    private ArrayList<Consumable> consumables; 
     
-    Sound startMusic;
-    Sound gameSiren;
-    Sound chomp;
-
+    private Sound startMusic;
+    private Sound gameSiren;
+    private Sound chomp;
+    
     private IGameState initState;
     private IGameState stopState;
     private IGameState playingState;
@@ -53,56 +49,55 @@ public class Game implements IGame
     private IGameState resumeState;
     private IGameState currentState;
     
-    public Game()
-    {
-    	startingPosition = Settings.WORLD_DATA.findFirstInstanceOF(Tile.PAC_MAN_START.getValue());
-        pacmanBox = 0.9;
-        pacman = new Pacman(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
-        gumList = Gum.generateGumList();
-        pacGumList = PacGum.generatePacGumList();
-        
-        maze = new Maze();    
-        
-        initState = new InitState(this);
-        pauseState = new PauseState(this);
-        resumeState = new ResumeState(this);
-        playingState = new PlayingState(this);
-        stopState = new StopState(this);
-        currentState = initState;  
-    }
-    
-    /**
-     * Getters for sound
-     */
-    
-    public Sound getStartMusic()
-    {
-        return startMusic;
-    }
-
-    public Sound getGameSiren()
-    {
-        return gameSiren;
-    }
-
-    public Sound getChomp()
-    {
-        return chomp;
-    }
+    private boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
     
     /**
      * Initialization function called by the engine when it lunch the game.
      */
     @Override
     public void init(Window window)
-    {
-        //loadInGameScene(window);
-    	window.setContainer(new GameView(this));
+    {    	
+        maze = new ArrayList<Wall>();
+        consumables = new ArrayList<Consumable>();
+        entities = new ArrayList<Entity>();
+        for (int y = 0; y < Settings.WORLD_DATA.getHeight(); y++)
+        {
+            for (int x = 0; x < Settings.WORLD_DATA.getWidth(); x++)
+            {
+
+                if (Settings.WORLD_DATA.getTile(x, y) == Tile.GUM.getValue())
+                {
+                	consumables.add(new PacDot(x, y));
+                }
+                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.ENERGIZER.getValue())
+                {
+
+                	consumables.add(new Energizer(x, y));
+                }
+                else if (Settings.WORLD_DATA.getTile(x, y) >= Tile.WALL_START.getValue() && Settings.WORLD_DATA.getTile(x, y) <= Tile.WALL_END.getValue())
+            	{
+                	maze.add(new Wall(x, y, Settings.WORLD_DATA.getTile(x, y)));
+            	}
+                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.PAC_MAN_START.getValue())
+                {
+                	pacman = new Pacman(x, y);
+                	entities.add(pacman);
+                }
+            }
+        }
+    	
         loadMusics();
-        Collision.setSettings();
+        
+    	window.setContainer(new GameView(this));
+    	
+        initState = new InitState(this);
+        pauseState = new PauseState(this);
+        resumeState = new ResumeState(this);
+        playingState = new PlayingState(this);
+        stopState = new StopState(this);
+        currentState = initState; 
     }
-
-
+    
     /**
      * Update function called by the engine every tick.
      */
@@ -112,6 +107,12 @@ public class Game implements IGame
     	currentState.update();
     }
 
+	@Override
+	public void setPacmanDirection(Direction d)
+	{
+		pacman.setNextDirection(d);
+	}
+    
     /**
      * Load all audio files and distribute them where they're needed.
      * @return
@@ -162,6 +163,21 @@ public class Game implements IGame
         }
     }
     
+	public void stopInGameMusics()
+	{
+		if ( gameSiren.getIsRunning() )
+		{
+			gameSiren.stop();
+		}
+	}
+	
+	public void resumeInGameMusics()
+	{
+		if ( !gameSiren.getIsRunning() )
+		{
+			gameSiren.playLoopBack();
+		}
+	}
 	
 	public void setState( IGameState state )
 	{
@@ -197,70 +213,44 @@ public class Game implements IGame
 	{
 		return currentState;
 	}
-	
-	public boolean getCanPausedGame()
-	{
-		return canPaused;
-	}
-	
-	public void setCanPausedGame(boolean canPaused)
-	{
-		this.canPaused = canPaused;
-	}
-	
-	public void stopInGameMusics()
-	{
-		if ( gameSiren.getIsRunning() )
-		{
-			gameSiren.stop();
-		}
-	}
-	
-	public void resumeInGameMusics()
-	{
-		if ( !gameSiren.getIsRunning() )
-		{
-			gameSiren.playLoopBack();
-		}
-	}
 
+    public Sound getStartMusic()
+    {
+        return startMusic;
+    }
+
+    public Sound getGameSiren()
+    {
+        return gameSiren;
+    }
+
+    public Sound getChomp()
+    {
+        return chomp;
+    }
+	
 	public Pacman getPacman()
 	{
 		return pacman;
 	}
 
-	public Direction getDirection()
+	public ArrayList<Wall> getMaze()
 	{
-		return direction;
-	}
-
-	public int[] getStartingPosition()
-	{
-		return startingPosition;
-	}
-
-	public double getPacmanBox()
-	{
-		return pacmanBox;
-	}
-
-	public ArrayList<Gum> getGumList()
-	{
-		return gumList;
-	}
-
-	public ArrayList<PacGum> getPacGumList()
-	{
-		return pacGumList;
-	}
-
-	public Maze getMaze() {
 		return maze;
 	}
 
-	@Override
-	public void setPacmanDirection(Direction d)
+	public ArrayList<Consumable> getConsumables() 
 	{
-		pacman.setNextDirection(d);
+		return consumables;
+	}
+
+	public ArrayList<Entity> getEntities() 
+	{
+		return entities;
+	}
+
+	public boolean isUserMuted() 
+	{
+		return isUserMuted;
 	}
 }

@@ -10,10 +10,10 @@ import com.pacman.utils.Settings;
  */
 public abstract class Collision
 {
-    static int[][] tiles;
-    static int mapH;
-    static int mapW;
-    static int[] authTiles;
+    static int[][] tiles = Settings.WORLD_DATA.getTiles();
+    static int mapH = Settings.WORLD_DATA.getHeight();
+    static int mapW = Settings.WORLD_DATA.getWidth();
+    static int[] authTiles = Settings.AUTH_TILES;
 
     /**
      * method used to check if obj hits a wall or goes in the tunnel
@@ -24,11 +24,11 @@ public abstract class Collision
      */
     public static String collisionWall(GameObject obj)
     {
-    	int xMin = (int) obj.getRectangle().getMinX(); 
-        int yMin = (int) obj.getRectangle().getMinY();
+    	int xMin = (int) obj.getHitBox().getMinX(); 
+        int yMin = (int) obj.getHitBox().getMinY();
 
-        int xMax = (int) obj.getRectangle().getMaxX(); 
-        int yMax = (int) obj.getRectangle().getMaxY();
+        int xMax = (int) obj.getHitBox().getMaxX(); 
+        int yMax = (int) obj.getHitBox().getMaxY();
 
         if ((xMin <= 0 & xMax <= 0) || (xMin >= mapW - 1 & xMax >= mapW - 1) || (yMin <= 0 & yMax <= 0)
                 || (yMin >= mapH - 1 & yMax >= mapH - 1))
@@ -54,7 +54,7 @@ public abstract class Collision
      */
     public static boolean collisionObj(GameObject obj1, GameObject obj2)
     {
-        return obj1.getRectangle().intersects(obj2.getRectangle());
+        return obj1.getHitBox().intersects(obj2.getHitBox());
     }
 
     /**
@@ -73,14 +73,6 @@ public abstract class Collision
             }
         }
         return false;
-    }
-
-    public static void setSettings()
-    {
-        authTiles = Settings.AUTH_TILES;
-        tiles = Settings.WORLD_DATA.getTiles();
-        mapH = Settings.WORLD_DATA.getHeight();
-        mapW = Settings.WORLD_DATA.getWidth();
     }
     
     public static void setMap(int[][] map, int[] auth, int x,int y) 

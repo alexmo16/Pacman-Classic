@@ -70,21 +70,24 @@ public class Window implements WindowListener
     @Override
     public void windowIconified(WindowEvent e)
     {
-    	System.out.println("lol");
+    	GameController.pauseGame();
     }
 
     @Override
     public void windowDeiconified(WindowEvent e)
     {
+    	GameController.resumeGame();
     }
 
     @Override
     public void windowActivated(WindowEvent e)
     {
+    	GameController.resumeGame();
     }
 
     @Override
     public void windowDeactivated(WindowEvent e)
     {
+    	GameController.pauseGame();
     }
 }

@@ -12,7 +12,7 @@ public class Sprites
     private int[][] spritesCoords = null;
     private final int sheetWidth = 16;
 
-    int blockSize = 0;
+    private int blockSize = 0;
     
     HashMap<Direction, int[]> pacman = new HashMap<Direction, int[]>();
     HashMap<Character, int[]> characters = new HashMap<Character, int[]>();
@@ -59,12 +59,12 @@ public class Sprites
         return pacman.get(sprite);
     }
 
-    public int[] getGumCoords()
+    public int[] getPacDotCoords()
     {
         return spritesCoords[12];
     }
     
-    public int[] getPacGumCoords()
+    public int[] getEnergizerCoords()
     {
         return spritesCoords[14];
     }

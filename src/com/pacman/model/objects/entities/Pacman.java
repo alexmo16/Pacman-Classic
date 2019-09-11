@@ -1,11 +1,13 @@
-package com.pacman.model.objects;
+package com.pacman.model.objects.entities;
 
 import java.util.ArrayList;
 
 import com.pacman.model.Sound;
+import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
 import com.pacman.utils.IPublisher;
+import com.pacman.utils.Settings;
 
 /**
  * 
@@ -13,22 +15,22 @@ import com.pacman.utils.IPublisher;
  * Observer design pattern
  *
  */
-public class Pacman extends DynamicObject implements IPublisher
+public class Pacman extends Entity implements IPublisher
 {
     private Sound chomp;
     private int score = 0;
-    private final int MAX_LIFES = 3;
+	private final int MAX_LIFES = 3;
     private int lifes;
     private boolean collision = false;
     private Direction collisionDirection = null; 
-	protected Direction direction = Direction.LEFT;
     private Direction nextDirection = Direction.LEFT;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
 
-    public Pacman(double x, double y, double width, double height, Direction direction)
+    public Pacman(double x, double y)
     {
-        super(x, y, width, height, direction);
-        lifes = MAX_LIFES;
+        super(x, y, 0.9, 0.9, Direction.LEFT);
+		lifes = MAX_LIFES;
+    	sprite = Settings.SPRITES.getPacmanCoords(direction);
     }
 
     public void setNextDirection(Direction dir)
@@ -54,20 +56,25 @@ public class Pacman extends DynamicObject implements IPublisher
      * @return void
      * 
      */
-    public void eatGum(StaticObject obj)
+    public void eat(Consumable consumable)
     {
     	if ( chomp != null )
     	{
     		chomp.play();
     	}
     	
-        score = getScore() + obj.getPoints();
-        obj.setEaten(true);
+        score += consumable.getPoints();
     }
     
     public void setChompSound( Sound sound )
     {
     	chomp = sound;
+    }
+    
+    @Override
+    public void updateSprite()
+    {
+    	sprite = Settings.SPRITES.getPacmanCoords(direction);
     }
     
 	@Override
@@ -102,10 +109,6 @@ public class Pacman extends DynamicObject implements IPublisher
 			}
 		}
 	}
-	
-	public Direction getPacDirection() {
-		return direction;
-	}
 
 	public void setCollision(boolean b, Direction oldDirection) 
 	{
@@ -113,15 +116,18 @@ public class Pacman extends DynamicObject implements IPublisher
 		collisionDirection = oldDirection;
 	}
 
-	public int getScore() {
+	public int getScore() 
+	{
 		return score;
 	}
 
-	public boolean isCollision() {
+	public boolean isCollision() 
+	{
 		return collision;
 	}
 
-	public Direction getCollisionDirection() {
+	public Direction getCollisionDirection() 
+	{
 		return collisionDirection;
 	}
 

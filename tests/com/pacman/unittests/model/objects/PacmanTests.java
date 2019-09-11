@@ -6,23 +6,17 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.pacman.model.objects.Gum;
-import com.pacman.model.objects.Pacman;
-import com.pacman.model.objects.StaticObject;
-import com.pacman.model.world.Direction;
+import com.pacman.model.objects.consumables.PacDot;
+import com.pacman.model.objects.entities.Pacman;
 import com.pacman.utils.Settings;
 import com.pacman.view.Input;
 
-public class PacmanObjectTests
+public class PacmanTests
 {
 	
 	Settings settingsNull = null;
 	Input inputs = Mockito.mock( Input.class );
-	StaticObject obj = Mockito.mock( StaticObject.class );
-	Pacman pacmanOk = new Pacman(10,10,10,10,Direction.LEFT);
-	Gum obj1 = new Gum(10,10,10,10);
-	Gum obj2 = new Gum(10,10,10,10);
-	
+	Pacman pacmanOk = new Pacman(10,10);
 	
 	@Test
 	void test_void_pacman_object_creation() 
@@ -30,7 +24,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-			new Pacman(0, 0, 0, 0, null);
+			new Pacman(0, 0);
 		} catch (Exception e)
 		{
 			isException = true;
@@ -45,7 +39,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-		    new Pacman(0, 0, 0, 0, null);
+		    new Pacman(0, 0);
 		} catch (Exception e) 
 		{
 		    isException = true;
@@ -60,7 +54,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-		    new Pacman(10,10,10,10,Direction.LEFT);
+		    new Pacman(10,10);
 		} catch (Exception e) 
 		{
 		    isException = true;
@@ -76,7 +70,7 @@ public class PacmanObjectTests
 		boolean isException = false;
 		try 
 		{
-		    new Pacman(-10,-10,10,10,Direction.UP);
+		    new Pacman(-10,-10);
 		} catch (Exception e) 
 		{
 		    isException = true;
@@ -84,23 +78,14 @@ public class PacmanObjectTests
 		assertFalse( isException );
 
 	}
-	
-	@Test
-	void test__set_eaten_eat_gum() 
-	{
-		obj2.setEaten(true);
-		pacmanOk.eatGum(obj1);
 
-		assertEquals(obj2.getEaten(),obj1.getEaten());
-
-	}
-	
 	
 	@Test
 	void test__score_eat_gum() 
 	{
-		pacmanOk.eatGum(obj1);
-		assertEquals(pacmanOk.getScore(), obj1.getPoints());
+		PacDot pacDot = new PacDot(1,1);
+		pacmanOk.eat(pacDot);
+		assertEquals(pacmanOk.getScore(), pacDot.getPoints());
 
 	}
 

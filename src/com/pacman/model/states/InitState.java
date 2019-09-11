@@ -19,7 +19,6 @@ public class InitState implements IGameState
             {
             	game.setState(game.getPlayingState());
             	game.stopStartingMusic();
-            	game.setCanPausedGame(true);
             	game.resumeInGameMusics();
             }
         }
@@ -33,10 +32,10 @@ public class InitState implements IGameState
 	@Override
 	public void update()
 	{
-		game.setCanPausedGame(false);
 		game.playStartingMusic(startingMusicListener);
 	}
 
+	@Override
 	public StatesName getName()
 	{
 		return name;

@@ -5,21 +5,22 @@ import com.pacman.model.Game;
 
 public class PauseState implements IGameState
 {
-	private Game gameManager;
+	private Game game;
 	private StatesName name = StatesName.PAUSE;
 	
 	public PauseState( Game gm )
 	{
-		gameManager = gm;
+		game = gm;
 	}
 	
 	@Override
 	public void update() 
 	{
-        gameManager.stopInGameMusics();
+		game.stopInGameMusics();
 		GameController.setIsMuted(true);
 	}
 
+	@Override
 	public StatesName getName()
 	{
 		return name;

@@ -4,22 +4,23 @@ import com.pacman.model.Game;
 
 public class StopState implements IGameState 
 {
-	private Game gameManager;
+	private Game game;
 	private StatesName name = StatesName.STOP;
 	
 	public StopState( Game gm )
 	{
-		gameManager = gm;
+		game = gm;
 	}
 	
 	@Override
 	public void update() 
 	{
 		// TODO jouer la music de fin quand pacman est mort
-		gameManager.stopInGameMusics();
-		gameManager.setState(gameManager.getInitState());
+		game.stopInGameMusics();
+		game.setState(game.getInitState());
 	}
 
+	@Override
 	public StatesName getName()
 	{
 		return name;

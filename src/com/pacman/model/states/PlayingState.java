@@ -1,25 +1,18 @@
 package com.pacman.model.states;
 
-import java.util.ArrayList;
-
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
-import com.pacman.model.objects.DynamicObject;
-import com.pacman.model.objects.Gum;
-import com.pacman.model.objects.PacGum;
-import com.pacman.model.objects.Pacman;
+import com.pacman.model.objects.consumables.Consumable;
+import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
 
 public class PlayingState implements IGameState, IObserver<Direction>
 {
-	private Game gameManager;
 	private StatesName name = StatesName.PLAY;
-	private Pacman pacman;
-	private Pacman maybeFuturPacman;
-	private Pacman futurPacman;
-	private ArrayList<Gum> gumList;
-    private ArrayList<PacGum> pacGumList;
+	
+	private Game game;
+	private Pacman maybeFuturPacman, futurPacman;
     private Direction oldDirection, direction;
 	
 	public PlayingState( Game gm )
@@ -28,41 +21,34 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		{
 			return;
 		}
-		gameManager = gm;
 		
-		pacman = gameManager.getPacman();
-        pacman.registerObserver( this );
+		game = gm;
+		
+		game.getPacman().registerObserver(this);
         
-        int[] startingPosition = gameManager.getStartingPosition();
-        double pacmanBox = gameManager.getPacmanBox();
+        maybeFuturPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
+        futurPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
         
-        direction = pacman.getDirection();
+        direction = game.getPacman().getDirection();
         oldDirection = direction;
-        
-        maybeFuturPacman = new Pacman(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
-        futurPacman = new Pacman(startingPosition[0], startingPosition[1], pacmanBox, pacmanBox, direction);
-        
-        gumList = gameManager.getGumList();
-        pacGumList = gameManager.getPacGumList();
 	}
 
 	@Override
 	public void update() 
 	{
-        maybeFuturPacman.getRectangle().setRect(pacman.getRectangle().getX(), pacman.getRectangle().getY(),
-                pacman.getRectangle().getWidth(), pacman.getRectangle().getHeight());
-        futurPacman.getRectangle().setRect(pacman.getRectangle().getX(), pacman.getRectangle().getY(),
-                pacman.getRectangle().getWidth(), pacman.getRectangle().getHeight());
-        DynamicObject.updatePosition(futurPacman.getRectangle(), direction);
-        DynamicObject.updatePosition(maybeFuturPacman.getRectangle(), oldDirection);
+        maybeFuturPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
+        futurPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
+        futurPacman.updatePosition(direction);
+        maybeFuturPacman.updatePosition(oldDirection);
 
-        checkGumCollision();
-        checkPacGumCollision();
+        checkConsumablesCollision();
+        
         // Strategy pattern for wall collisions.
         String checkWallCollision = Collision.collisionWall(futurPacman);
         executeWallStrategy( checkWallCollision );
 	}
 
+	@Override
 	public StatesName getName()
 	{
 		return name;
@@ -71,32 +57,14 @@ public class PlayingState implements IGameState, IObserver<Direction>
     /**
      * Check if pacman eats a Gum
      */
-    private void checkGumCollision()
+    private void checkConsumablesCollision()
     {
-        for (Gum gum : gumList)
+        for (Consumable consumable : game.getConsumables())
         {
-            if (Collision.collisionObj(pacman, gum))
+            if (Collision.collisionObj(game.getPacman(), consumable))
             {
-                pacman.eatGum(gum);
-                gumList.remove(gum);
-                gum = null;
-                break;
-            }
-        }
-    }
-    
-    /**
-     * Check if pacman eats a PacGum
-     */
-    private void checkPacGumCollision()
-    {
-        for (PacGum pacGum : pacGumList)
-        {
-            if (Collision.collisionObj(pacman, pacGum))
-            {
-                pacman.eatGum(pacGum);
-                pacGumList.remove(pacGum);
-                pacGum = null;
+            	game.getPacman().eat(consumable);
+            	game.getConsumables().remove(consumable);
                 break;
             }
         }
@@ -130,19 +98,19 @@ public class PlayingState implements IGameState, IObserver<Direction>
     	String collisionString = Collision.collisionWall(maybeFuturPacman);
         if (collisionString == "void")
         {
-            DynamicObject.tunnel(pacman.getRectangle(), oldDirection);
-            pacman.setDirection(oldDirection);
-            pacman.setCollision(false, oldDirection);
+        	game.getPacman().tunnel(oldDirection);
+        	game.getPacman().setDirection(oldDirection);
+        	game.getPacman().setCollision(false, oldDirection);
         }
         if (collisionString == "path")
         {
-            DynamicObject.updatePosition(pacman.getRectangle(), oldDirection);
-            pacman.setDirection(oldDirection);
-            pacman.setCollision(false, oldDirection);
+        	game.getPacman().updatePosition(oldDirection);
+        	game.getPacman().setDirection(oldDirection);
+        	game.getPacman().setCollision(false, oldDirection);
         } 
         else
         {
-        	pacman.setCollision(true, oldDirection);
+        	game.getPacman().setCollision(true, oldDirection);
         }
     }
     
@@ -151,8 +119,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
      */
     private void tunnelStrategy()
     {
-    	DynamicObject.tunnel(pacman.getRectangle(), direction);
-    	pacman.setCollision(false, oldDirection);
+    	game.getPacman().tunnel(direction);
+    	game.getPacman().setCollision(false, oldDirection);
     }
     
     /**
@@ -160,10 +128,10 @@ public class PlayingState implements IGameState, IObserver<Direction>
      */
     private void noWallStrategy()
     {
-    	DynamicObject.updatePosition(pacman.getRectangle(), direction);
-    	pacman.setDirection(direction);
+    	game.getPacman().updatePosition(direction);
+    	game.getPacman().setDirection(direction);
         oldDirection = direction;
-        pacman.setCollision(false, oldDirection);
+        game.getPacman().setCollision(false, oldDirection);
     }
 	
     /**

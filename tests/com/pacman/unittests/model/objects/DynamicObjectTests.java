@@ -1,14 +1,11 @@
 package com.pacman.unittests.model.objects;
 
-import static com.pacman.model.objects.DynamicObject.getSpeed;
-import static com.pacman.model.objects.DynamicObject.tunnel;
-import static com.pacman.model.objects.DynamicObject.updatePosition;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.pacman.model.objects.Pacman;
+import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.world.Direction;
 
 class DynamicObjectTests
@@ -21,107 +18,107 @@ class DynamicObjectTests
     @BeforeEach
     void setSpeed()
     {
-        speed = getSpeed();
+        speed = 0.1;
     }
     
     @Test
     void testUpdatePositionUp()
     {
-        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new Pacman(10, 10 - speed, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10);
+        expectedPacman = new Pacman(10, 10 - speed);
         
-        updatePosition(testPacman.getRectangle(), Direction.UP);
+        testPacman.updatePosition(Direction.UP);
         
-        assertEquals(expectedPacman.getRectangle().getX(), testPacman.getRectangle().getX());
-        assertEquals(expectedPacman.getRectangle().getY(), testPacman.getRectangle().getY());
+        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
+        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
         
     }
     
     @Test
     void testUpdatePositionRight()
     {
-        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new Pacman(10 + speed, 10, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10);
+        expectedPacman = new Pacman(10 + speed, 10);
         
-        updatePosition(testPacman.getRectangle(), Direction.RIGHT);
+        testPacman.updatePosition(Direction.RIGHT);
         
-        assertEquals(expectedPacman.getRectangle().getX(), testPacman.getRectangle().getX());
-        assertEquals(expectedPacman.getRectangle().getY(), testPacman.getRectangle().getY());
+        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
+        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
         
     }
     
     @Test
     void testUpdatePositionLeft()
     {
-        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new Pacman(10 - speed, 10, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10);
+        expectedPacman = new Pacman(10 - speed, 10);
         
-        updatePosition(testPacman.getRectangle(), Direction.LEFT);
+        testPacman.updatePosition(Direction.LEFT);
         
-        assertEquals(expectedPacman.getRectangle().getX(), testPacman.getRectangle().getX());
-        assertEquals(expectedPacman.getRectangle().getY(), testPacman.getRectangle().getY());
+        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
+        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
         
     }
     
     @Test
     void testUpdatePositionDown()
     {
-        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new Pacman(10, 10 + speed, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10);
+        expectedPacman = new Pacman(10, 10 + speed);
         
-        updatePosition(testPacman.getRectangle(), Direction.DOWN);
+        testPacman.updatePosition(Direction.DOWN);
         
-        assertEquals(expectedPacman.getRectangle().getX(), testPacman.getRectangle().getX());
-        assertEquals(expectedPacman.getRectangle().getY(), testPacman.getRectangle().getY());
+        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
+        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
         
     }
     
     @Test
     void testTunnelUp()
     {
-        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new Pacman(10,22.5, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10);
+        expectedPacman = new Pacman(10,31.6);
         
-        tunnel(testPacman.getRectangle(), Direction.UP);
+        testPacman.tunnel(Direction.UP);
         
-        assertEquals(expectedPacman.getRectangle().getX(), testPacman.getRectangle().getX());
-        assertEquals(expectedPacman.getRectangle().getY(), testPacman.getRectangle().getY());
+        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
+        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
     }
     
     @Test
     void testTunnelDown()
     {
-        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new Pacman(10, 0.5, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10);
+        expectedPacman = new Pacman(10, 0.5);
         
-        tunnel(testPacman.getRectangle(), Direction.DOWN);
+        testPacman.tunnel(Direction.DOWN);
         
-        assertEquals(expectedPacman.getRectangle().getX(), testPacman.getRectangle().getX());
-        assertEquals(expectedPacman.getRectangle().getY(), testPacman.getRectangle().getY());
+        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
+        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
     }
     
     @Test
     void testTunnelRight()
     {
-        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new Pacman(0.5, 10, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10);
+        expectedPacman = new Pacman(0.5, 10);
         
-        tunnel(testPacman.getRectangle(), Direction.RIGHT);
+        testPacman.tunnel(Direction.RIGHT);
         
-        assertEquals(expectedPacman.getRectangle().getX(), testPacman.getRectangle().getX());
-        assertEquals(expectedPacman.getRectangle().getY(), testPacman.getRectangle().getY());
+        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
+        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
     }
     
     @Test
     void testTunnelLeft()
     {
-        testPacman = new Pacman(10, 10, 10, 10, Direction.UP);
-        expectedPacman = new Pacman(19.5, 10, 10, 10, Direction.UP);
+        testPacman = new Pacman(10, 10);
+        expectedPacman = new Pacman(28.6, 10);
         
-        tunnel(testPacman.getRectangle(), Direction.LEFT);
+        testPacman.tunnel(Direction.LEFT);
         
-        assertEquals(expectedPacman.getRectangle().getX(), testPacman.getRectangle().getX());
-        assertEquals(expectedPacman.getRectangle().getY(), testPacman.getRectangle().getY());
+        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
+        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
     }
 
 }

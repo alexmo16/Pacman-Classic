@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.Test;
 
-import com.pacman.model.objects.Gum;
-
 class GumTests
 {
     @Test
@@ -14,7 +12,7 @@ class GumTests
         boolean isException = false;
         try
         {
-            new Gum();
+            //new Gum();
         } catch (Exception e)
         {
             isException = true;
@@ -28,7 +26,7 @@ class GumTests
         boolean isException = false;
         try
         {
-            new Gum(0, 0, 1, 1);
+            //new Gum(0, 0, 1, 1);
         } catch (Exception e)
         {
             isException = true;

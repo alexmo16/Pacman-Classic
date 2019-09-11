@@ -140,7 +140,11 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update(Direction d) 
 	{
-		oldDirection = direction;
+		if ( direction == game.getPacman().getDirection() ) 
+		{
+			oldDirection = direction;
+		}
+		
 		direction = d;
 	}
 }

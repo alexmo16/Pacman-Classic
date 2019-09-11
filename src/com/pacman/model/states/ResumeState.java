@@ -5,26 +5,27 @@ import com.pacman.model.Game;
 
 public class ResumeState implements IGameState 
 {
-	private Game gameManager;
+	private Game game;
 	private StatesName name = StatesName.RESUME;
 	
 	public ResumeState( Game gm )
 	{
-		gameManager = gm;
+		game = gm;
 	}
 	
 	@Override
 	public void update() 
 	{
-		if ( !gameManager.isUserMuted )
+		if ( !game.isUserMuted() )
 		{
 			GameController.setIsMuted(false);
-			gameManager.resumeInGameMusics();
+			game.resumeInGameMusics();
 		}
 		
-		gameManager.setState(gameManager.getPlayingState());
+		game.setState(game.getPlayingState());
 	}
 
+	@Override
 	public StatesName getName()
 	{
 		return name;

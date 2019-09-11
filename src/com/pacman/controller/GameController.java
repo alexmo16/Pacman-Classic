@@ -281,7 +281,7 @@ public class GameController implements Runnable
     		return;
     	}
     	IGameState currentState = game.getCurrentState();
-    	if (currentState.getName() == StatesName.PLAY)
+    	if (currentState != null && currentState.getName() == StatesName.PLAY)
     	{
     		game.setState(game.getPauseState());
     	}
@@ -294,7 +294,7 @@ public class GameController implements Runnable
     		return;
     	}
     	IGameState currentState = game.getCurrentState();
-    	if (currentState.getName() == StatesName.PAUSE)
+    	if (currentState != null && currentState.getName() == StatesName.PAUSE)
     	{
     		game.setState(game.getResumeState());
     	}

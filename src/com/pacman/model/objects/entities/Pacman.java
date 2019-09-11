@@ -18,18 +18,18 @@ import com.pacman.utils.Settings;
 public class Pacman extends Entity implements IPublisher
 {
     private Sound chomp;
-    private int score;
-    private boolean collision;
-    private Direction collisionDirection; 
+    private int score = 0;
+	private final int MAX_LIFES = 3;
+    private int lifes;
+    private boolean collision = false;
+    private Direction collisionDirection = null; 
     private Direction nextDirection = Direction.LEFT;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
 
     public Pacman(double x, double y)
     {
         super(x, y, 0.9, 0.9, Direction.LEFT);
-    	score = 0;
-    	collision = false;
-    	collisionDirection = null;
+		lifes = MAX_LIFES;
     	sprite = Settings.SPRITES.getPacmanCoords(direction);
     }
 
@@ -129,5 +129,20 @@ public class Pacman extends Entity implements IPublisher
 	public Direction getCollisionDirection() 
 	{
 		return collisionDirection;
+	}
+
+	public int getLifes()
+	{
+		return lifes;
+	}
+
+	public void looseLife()
+	{
+		lifes--;
+	}
+	
+	public void respawn()
+	{
+		lifes = MAX_LIFES;
 	}
 }

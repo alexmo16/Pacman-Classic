@@ -36,6 +36,11 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update() 
 	{
+        if (game.getPacman().getLifes() <= 0)
+		{
+			game.setState(game.getStopState());
+		}
+
         maybeFuturPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
         futurPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
         futurPacman.updatePosition(direction);

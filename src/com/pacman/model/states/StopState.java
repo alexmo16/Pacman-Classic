@@ -17,8 +17,19 @@ public class StopState implements IGameState
 	{
 		// TODO jouer la music de fin quand pacman est mort
 		game.stopInGameMusics();
+		game.getPacman().resetLifes();
 		game.getPacman().respawn();
-		game.setState(game.getInitState());
+		
+		// Juste pour voir le message gameover
+		// TODO enlever ca quand y va avoir les animations et tout svp.
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		game.setState(game.getMainMenuState());
 	}
 
 	@Override

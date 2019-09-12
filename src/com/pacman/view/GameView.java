@@ -119,7 +119,7 @@ public class GameView extends JPanel
         	String message = "Gameover";
 	        g.setColor(new Color(0, 0, 0, 200));
 	        
-	        int x = (getWidth() - (message.length() * scaling)) / 2;
+	        int x = (getWidth() - (message.length() * tileSize)) / 2;
 	        int y = getHeight() / 2;
 	        
 	        renderString(g, message, x, y);

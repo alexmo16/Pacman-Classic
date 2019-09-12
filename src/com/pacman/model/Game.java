@@ -13,6 +13,7 @@ import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.objects.consumables.Energizer;
 import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Entity;
+import com.pacman.model.objects.entities.Ghost;
 import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.states.InitState;
@@ -22,6 +23,7 @@ import com.pacman.model.states.PlayingState;
 import com.pacman.model.states.ResumeState;
 import com.pacman.model.states.StopState;
 import com.pacman.model.world.Direction;
+import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Tile;
 import com.pacman.utils.Settings;
 import com.pacman.view.GameView;
@@ -34,6 +36,7 @@ import com.pacman.view.Window;
 public class Game implements IGame
 {	
     private Pacman pacman;
+    private Ghost ghost;
     
     private ArrayList<Entity> entities;
     private ArrayList<Wall> maze;
@@ -84,6 +87,22 @@ public class Game implements IGame
                 {
                 	pacman = new Pacman(x, y);
                 	entities.add(pacman);
+                }
+                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.BLINKY_START.getValue())
+                {
+                	entities.add(new Ghost(x, y, GhostType.BLINKY));
+                }
+                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.PINKY_START.getValue())
+                {
+                	entities.add(new Ghost(x, y, GhostType.PINKY));
+                }
+                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.INKY_START.getValue())
+                {
+                	entities.add(new Ghost(x, y, GhostType.INKY));
+                }
+                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.CLYDE_START.getValue())
+                {
+                	entities.add(new Ghost(x, y, GhostType.CLYDE));
                 }
             }
         }

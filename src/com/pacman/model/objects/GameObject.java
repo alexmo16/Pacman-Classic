@@ -9,7 +9,7 @@ import java.awt.geom.Rectangle2D;
 public abstract class GameObject
 {
     protected Rectangle2D.Double hitBox = null;
-    protected int[] sprite = null;
+    protected Sprite sprite = null;
 
     public GameObject(double x, double y, double width, double height)
     {
@@ -21,8 +21,8 @@ public abstract class GameObject
         return hitBox;
     }
 	
-	public int getSprite(int id) 
+	public Sprite getSprite() 
 	{
-		return sprite[id];
+		return sprite;
 	}
 }

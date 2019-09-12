@@ -3,11 +3,11 @@ package com.pacman.model.objects.entities;
 import java.util.ArrayList;
 
 import com.pacman.model.Sound;
+import com.pacman.model.objects.Sprites;
 import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
 import com.pacman.utils.IPublisher;
-import com.pacman.utils.Settings;
 
 /**
  * 
@@ -35,7 +35,7 @@ public class Pacman extends Entity implements IPublisher
         spawnX = x;
         spawnY = y;
 		lifes = MAX_LIFES;
-    	sprite = Settings.SPRITES.getPacmanMovement(direction, 0);
+    	sprite = Sprites.getPacmanMovement(Direction.LEFT, 0);
     }
 
     public void setNextDirection(Direction dir)
@@ -79,7 +79,7 @@ public class Pacman extends Entity implements IPublisher
     @Override
     public void updateSprite()
     {
-    	sprite = Settings.SPRITES.getPacmanMovement(direction, 0);
+    	sprite = Sprites.getPacmanMovement(direction, 0);
     }
     
 	@Override

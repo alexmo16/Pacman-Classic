@@ -32,7 +32,7 @@ import com.pacman.view.Window;
  *
  */
 public class Game implements IGame
-{
+{	
     private Pacman pacman;
     
     private ArrayList<Entity> entities;

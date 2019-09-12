@@ -10,9 +10,10 @@ import javax.swing.JPanel;
 
 import com.pacman.model.Game;
 import com.pacman.model.objects.GameObject;
-import com.pacman.model.objects.Sprite;
+import com.pacman.model.objects.Sprites;
 import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.states.StatesName;
+import com.pacman.model.world.Sprite;
 import com.pacman.utils.Settings;
 
 public class GameView extends JPanel
@@ -58,7 +59,7 @@ public class GameView extends JPanel
         	//  Scaled position of the object      + Offset to fit in the world 
             x = (obj.getHitBox().getX() * tileSize) + ((getWidth() - (tileSize * Settings.WORLD_DATA.getWidth())) / 2);
             y = (obj.getHitBox().getY() * tileSize) + ((getHeight() - (tileSize * Settings.WORLD_DATA.getHeight())) / 2);
-            g.drawImage(Settings.SPRITES.getSpritesSheet(), (int)x, (int)y, (int)(x + tileSize), (int)(y + tileSize), obj.getSprite().getX1(), obj.getSprite().getY1(), obj.getSprite().getX2(), obj.getSprite().getY2(), null);  
+            g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + tileSize), (int)(y + tileSize), obj.getSprite().getX1(), obj.getSprite().getY1(), obj.getSprite().getX2(), obj.getSprite().getY2(), null);  
             
             if (debug)
             {
@@ -77,7 +78,7 @@ public class GameView extends JPanel
             x = (entity.getHitBox().getX() * tileSize) +  ((getWidth() - (tileSize) - (tileSize * Settings.WORLD_DATA.getWidth())) / 2) + (tileSize / 4);
             y = (entity.getHitBox().getY() * tileSize) + ((getHeight() - (tileSize) - (tileSize * Settings.WORLD_DATA.getHeight())) / 2) + (tileSize / 4);
             
-            g.drawImage(Settings.SPRITES.getSpritesSheet(), (int)x, (int)y, (int)(x + (2 * tileSize)), (int)(y + (2 * tileSize)), entity.getSprite().getX1(), entity.getSprite().getY1(), entity.getSprite().getX2(), entity.getSprite().getY2(), null);
+            g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + (2 * tileSize)), (int)(y + (2 * tileSize)), entity.getSprite().getX1(), entity.getSprite().getY1(), entity.getSprite().getX2(), entity.getSprite().getY2(), null);
             
             if (debug)
             {
@@ -132,8 +133,8 @@ public class GameView extends JPanel
         {
         	if (message.charAt(i) != ' ')
         	{
-        		Sprite k = Settings.SPRITES.getCharacter(message.charAt(i));
-        		g.drawImage(Settings.SPRITES.getSpritesSheet(), x + i * tileSize, y, x + i * tileSize + tileSize, y + tileSize, k.getX1(), k.getY1(), k.getX2(), k.getY2(), null);
+        		Sprite k = Sprites.getCharacter(message.charAt(i));
+        		g.drawImage(Sprites.getTilesSheet(), x + i * tileSize, y, x + i * tileSize + tileSize, y + tileSize, k.getX1(), k.getY1(), k.getX2(), k.getY2(), null);
         	}
         }
 	}

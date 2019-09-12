@@ -2,14 +2,16 @@ package com.pacman.model.objects;
 
 import java.awt.geom.Rectangle2D;
 
+import com.pacman.model.world.Sprite;
+
 /**
  * Definie un objet qui possede une boite de collision.
  *
  */
 public abstract class GameObject
 {
-    protected Rectangle2D.Double hitBox = null;
-    protected Sprite sprite = null;
+    protected Rectangle2D.Double hitBox;
+    protected Sprite sprite;
 
     public GameObject(double x, double y, double width, double height)
     {

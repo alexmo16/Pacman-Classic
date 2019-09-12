@@ -16,6 +16,7 @@ import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.states.InitState;
+import com.pacman.model.states.MainMenuState;
 import com.pacman.model.states.PauseState;
 import com.pacman.model.states.PlayingState;
 import com.pacman.model.states.ResumeState;
@@ -48,6 +49,7 @@ public class Game implements IGame
     private IGameState pauseState;
     private IGameState resumeState;
     private IGameState currentState;
+    private IGameState mainMenuState;
     
     private boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
     
@@ -90,12 +92,13 @@ public class Game implements IGame
         
     	window.setContainer(new GameView(this));
     	
+    	mainMenuState = new MainMenuState(this);
         initState = new InitState(this);
         pauseState = new PauseState(this);
         resumeState = new ResumeState(this);
         playingState = new PlayingState(this);
         stopState = new StopState(this);
-        currentState = initState; 
+        currentState = mainMenuState; 
     }
     
     /**
@@ -212,6 +215,11 @@ public class Game implements IGame
 	public IGameState getCurrentState()
 	{
 		return currentState;
+	}
+	
+	public IGameState getMainMenuState()
+	{
+		return mainMenuState;
 	}
 
     public Sound getStartMusic()

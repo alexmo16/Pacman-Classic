@@ -41,11 +41,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update() 
 	{
-        if (game.getPacman().getLifes() <= 0)
-		{
-			game.setState(game.getStopState());
-		}
-
         newDirectionPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
         nextTilesPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
         nextTilesPacman.updatePosition(nextTilesDirection);
@@ -156,5 +151,13 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		}
 		
 		nextTilesDirection = d;
+	}
+	
+	private void killPacman()
+	{
+		game.stopInGameMusics();
+		game.getPacman().looseLife();
+		game.getPacman().respawn();
+		game.setState(game.getPacman().getLifes() == 0 ? game.getStopState() : game.getInitState());
 	}
 }

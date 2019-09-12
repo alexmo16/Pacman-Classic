@@ -24,11 +24,16 @@ public class Pacman extends Entity implements IPublisher
     private boolean collision = false;
     private Direction collisionDirection = null; 
     private Direction nextDirection = Direction.LEFT;
+    private Direction firstDirection = Direction.LEFT;
+    private double spawnX;
+    private double spawnY;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
     
     public Pacman(double x, double y)
     {
         super(x, y, 0.9, 0.9, Direction.LEFT);
+        spawnX = x;
+        spawnY = y;
 		lifes = MAX_LIFES;
     	sprite = Settings.SPRITES.getPacmanMovement(direction, 0);
     }
@@ -143,6 +148,14 @@ public class Pacman extends Entity implements IPublisher
 	
 	public void respawn()
 	{
+		setNextDirection(firstDirection);
+		setDirection(firstDirection);
+		hitBox.x = spawnX;
+		hitBox.y = spawnY;
+	}
+	
+	public void resetLifes()
+	{
 		lifes = MAX_LIFES;
 	}
-}
+	}

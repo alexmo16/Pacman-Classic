@@ -14,6 +14,7 @@ public interface IGame
     public void update();
 
 	public void setState(IGameState state);
+	public IGameState getMainMenuState();
 	public IGameState getInitState();
 	public IGameState getStopState();
 	public IGameState getPlayingState();

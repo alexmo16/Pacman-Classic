@@ -38,6 +38,7 @@ public class GameView extends JPanel
         renderEntities(g);
         renderStatusBar(g);
         renderPause(g);
+        renderGameover(g);
 	}
 	
 	private void renderBackground(Graphics g)
@@ -94,6 +95,20 @@ public class GameView extends JPanel
 	        int y = getHeight() / 2;
 	        
 	        renderString(g, StatesName.PAUSE.getValue(), x, y);
+        }
+    }
+	
+	private void renderGameover(Graphics g)
+    {
+        if (game.getCurrentState().getName() == StatesName.STOP)
+        {
+        	String message = "Gameover";
+	        g.setColor(new Color(0, 0, 0, 200));
+	        
+	        int x = (getWidth() - (message.length() * scaling)) / 2;
+	        int y = getHeight() / 2;
+	        
+	        renderString(g, message, x, y);
         }
     }
 	

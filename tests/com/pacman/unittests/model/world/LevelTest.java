@@ -7,9 +7,9 @@ import java.io.File;
 
 import org.junit.jupiter.api.Test;
 
-import com.pacman.model.world.Data;
+import com.pacman.model.world.Level;
 
-class DataTest
+class LevelTest
 {
 
 	final private String good = System.getProperty("user.dir") + File.separator + "tests" + File.separator + "testAssets" + File.separator + "worldDataTest_good.txt";
@@ -22,7 +22,7 @@ class DataTest
 	@Test
 	void test_good_map() 
 	{
-		Data worldData = new Data(good);
+		Level worldData = new Level(good, "1");
 		
         assertNotEquals(worldData, null);
         assertEquals(worldData.getHeight(), 3);
@@ -51,7 +51,7 @@ class DataTest
 	@Test
 	void test_empty_map() 
 	{
-		Data result = new Data(empty);
+		Level result = new Level(empty, "1");
 		
         assertNotEquals(result, null);
         assertEquals(result.getHeight(), 0);
@@ -61,7 +61,7 @@ class DataTest
 	@Test
 	void test_bad_overhead() 
 	{
-		Data result = new Data(badOverhead);
+		Level result = new Level(badOverhead, "1");
 		
         assertNotEquals(result, null);
         assertEquals(result.getHeight(), 0);
@@ -71,7 +71,7 @@ class DataTest
 	@Test
 	void test_bad_row() 
 	{
-		Data result = new Data(badRow);
+		Level result = new Level(badRow, "1");
 		
         assertNotEquals(result, null);
         assertEquals(result.getHeight(), 0);
@@ -81,7 +81,7 @@ class DataTest
 	@Test
 	void test_bad_col() 
 	{
-		Data result = new Data(badCol);
+		Level result = new Level(badCol, "1");
 		
         assertNotEquals(result, null);
         assertEquals(result.getHeight(), 0);
@@ -91,7 +91,7 @@ class DataTest
 	@Test
 	void test_find_first_instance() 
 	{
-		Data worldData = new Data(good);
+		Level worldData = new Level(good, "1");
 		
         assertNotEquals(worldData, null);
         
@@ -104,7 +104,7 @@ class DataTest
 	@Test
 	void test_find_first_instance_not_existing() 
 	{
-		Data worldData = new Data(good);
+		Level worldData = new Level(good, "1");
 		
         assertNotEquals(worldData, null);
         
@@ -116,7 +116,7 @@ class DataTest
 	@Test
 	void test_get_tile_out_of_range() 
 	{
-		Data worldData = new Data(good);
+		Level worldData = new Level(good, "1");
 		
         assertNotEquals(worldData, null);
         

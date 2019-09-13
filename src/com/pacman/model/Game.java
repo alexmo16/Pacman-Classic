@@ -1,5 +1,6 @@
 package com.pacman.model;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -10,8 +11,6 @@ import com.pacman.controller.GameController;
 import com.pacman.controller.IGame;
 import com.pacman.model.objects.Wall;
 import com.pacman.model.objects.consumables.Consumable;
-import com.pacman.model.objects.consumables.Energizer;
-import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.objects.entities.Ghost;
 import com.pacman.model.objects.entities.Pacman;
@@ -24,6 +23,7 @@ import com.pacman.model.states.ResumeState;
 import com.pacman.model.states.StopState;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
+import com.pacman.model.world.Level;
 import com.pacman.model.world.Tile;
 import com.pacman.utils.Settings;
 import com.pacman.view.GameView;
@@ -36,11 +36,8 @@ import com.pacman.view.Window;
 public class Game implements IGame
 {	
     private Pacman pacman;
-    private Ghost ghost;
-    
-    private ArrayList<Entity> entities;
     private ArrayList<Wall> maze;
-    private ArrayList<Consumable> consumables; 
+    private ArrayList<Entity> entities;
     
     private Sound startMusic;
     private Sound gameSiren;
@@ -54,53 +51,50 @@ public class Game implements IGame
     private IGameState currentState;
     private IGameState mainMenuState;
     
+    private Level currentLevel;
+    
     private boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
+    
+    private final String LEVEL_DATA_FILE = new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"); 
     
     /**
      * Initialization function called by the engine when it lunch the game.
      */
     @Override
     public void init(Window window)
-    {    	
-        maze = new ArrayList<Wall>();
-        consumables = new ArrayList<Consumable>();
+    {    
+    	Collision.setAuthTiles(Level.getAuthTiles());
+    	currentLevel = new Level(LEVEL_DATA_FILE, "1");
+    	maze = new ArrayList<Wall>();
         entities = new ArrayList<Entity>();
-        for (int y = 0; y < Settings.WORLD_DATA.getHeight(); y++)
+        
+        for (int y = 0; y < Level.getHeight(); y++)
         {
-            for (int x = 0; x < Settings.WORLD_DATA.getWidth(); x++)
+            for (int x = 0; x < Level.getWidth(); x++)
             {
 
-                if (Settings.WORLD_DATA.getTile(x, y) == Tile.GUM.getValue())
-                {
-                	consumables.add(new PacDot(x, y));
-                }
-                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.ENERGIZER.getValue())
-                {
-
-                	consumables.add(new Energizer(x, y));
-                }
-                else if (Settings.WORLD_DATA.getTile(x, y) >= Tile.WALL_START.getValue() && Settings.WORLD_DATA.getTile(x, y) <= Tile.WALL_END.getValue())
+                if (currentLevel.getTile(x, y) >= Tile.WALL_START.getValue() && currentLevel.getTile(x, y) <= Tile.WALL_END.getValue())
             	{
-                	maze.add(new Wall(x, y, Settings.WORLD_DATA.getTile(x, y)));
+                	maze.add(new Wall(x, y, currentLevel.getTile(x, y)));
             	}
-                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.PAC_MAN_START.getValue())
+                else if (currentLevel.getTile(x, y) == Tile.PAC_MAN_START.getValue())
                 {
                 	pacman = new Pacman(x, y);
                 	entities.add(pacman);
                 }
-                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.BLINKY_START.getValue())
+                else if (currentLevel.getTile(x, y) == Tile.BLINKY_START.getValue())
                 {
                 	entities.add(new Ghost(x, y, GhostType.BLINKY));
                 }
-                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.PINKY_START.getValue())
+                else if (currentLevel.getTile(x, y) == Tile.PINKY_START.getValue())
                 {
                 	entities.add(new Ghost(x, y, GhostType.PINKY));
                 }
-                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.INKY_START.getValue())
+                else if (currentLevel.getTile(x, y) == Tile.INKY_START.getValue())
                 {
                 	entities.add(new Ghost(x, y, GhostType.INKY));
                 }
-                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.CLYDE_START.getValue())
+                else if (currentLevel.getTile(x, y) == Tile.CLYDE_START.getValue())
                 {
                 	entities.add(new Ghost(x, y, GhostType.CLYDE));
                 }
@@ -268,7 +262,7 @@ public class Game implements IGame
 
 	public ArrayList<Consumable> getConsumables() 
 	{
-		return consumables;
+		return currentLevel.getConsumable();
 	}
 
 	public ArrayList<Entity> getEntities() 
@@ -279,5 +273,10 @@ public class Game implements IGame
 	public boolean isUserMuted() 
 	{
 		return isUserMuted;
+	}
+
+	public Level getCurrentLevel()
+	{
+		return currentLevel;
 	}
 }

@@ -13,8 +13,8 @@ import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Sprites;
 import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.states.StatesName;
+import com.pacman.model.world.Level;
 import com.pacman.model.world.Sprite;
-import com.pacman.utils.Settings;
 
 public class GameView extends JPanel
 {
@@ -32,7 +32,9 @@ public class GameView extends JPanel
 	@Override
 	public void paintComponent(Graphics g) 
 	{
-        tileSize = Math.min(getHeight() / Settings.WORLD_DATA.getHeight(), getWidth() / Settings.WORLD_DATA.getWidth());
+        game.getCurrentLevel();
+		game.getCurrentLevel();
+		tileSize = Math.min(getHeight() / Level.getHeight(), getWidth() / Level.getWidth());
         if ( (tileSize & 1) != 0 ) { tileSize--; } // Odd tile size will break tile tileSize.
 
         renderBackground(g);
@@ -56,9 +58,11 @@ public class GameView extends JPanel
         double x, y;
         for (GameObject obj : gameObjects)
         {
-        	//  Scaled position of the object      + Offset to fit in the world 
-            x = (obj.getHitBox().getX() * tileSize) + ((getWidth() - (tileSize * Settings.WORLD_DATA.getWidth())) / 2);
-            y = (obj.getHitBox().getY() * tileSize) + ((getHeight() - (tileSize * Settings.WORLD_DATA.getHeight())) / 2);
+        	game.getCurrentLevel();
+			//  Scaled position of the object      + Offset to fit in the world 
+            x = (obj.getHitBox().getX() * tileSize) + ((getWidth() - (tileSize * Level.getWidth())) / 2);
+            game.getCurrentLevel();
+			y = (obj.getHitBox().getY() * tileSize) + ((getHeight() - (tileSize * Level.getHeight())) / 2);
             g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + tileSize), (int)(y + tileSize), obj.getSprite().getX1(), obj.getSprite().getY1(), obj.getSprite().getX2(), obj.getSprite().getY2(), null);  
             
             if (debug)
@@ -74,9 +78,11 @@ public class GameView extends JPanel
         double x, y;
         for (Entity entity : game.getEntities())
         {
-        	// TODO : Merge this with the renderGameObjects function when we will fix the collisions/position code.
-            x = (entity.getHitBox().getX() * tileSize) +  ((getWidth() - (tileSize) - (tileSize * Settings.WORLD_DATA.getWidth())) / 2) + (tileSize / 4);
-            y = (entity.getHitBox().getY() * tileSize) + ((getHeight() - (tileSize) - (tileSize * Settings.WORLD_DATA.getHeight())) / 2) + (tileSize / 4);
+        	game.getCurrentLevel();
+			// TODO : Merge this with the renderGameObjects function when we will fix the collisions/position code.
+            x = (entity.getHitBox().getX() * tileSize) +  ((getWidth() - (tileSize) - (tileSize * Level.getWidth())) / 2) + (tileSize / 4);
+            game.getCurrentLevel();
+			y = (entity.getHitBox().getY() * tileSize) + ((getHeight() - (tileSize) - (tileSize * Level.getHeight())) / 2) + (tileSize / 4);
             
             g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + (2 * tileSize)), (int)(y + (2 * tileSize)), entity.getSprite().getX1(), entity.getSprite().getY1(), entity.getSprite().getX2(), entity.getSprite().getY2(), null);
             
@@ -90,7 +96,8 @@ public class GameView extends JPanel
 	
 	private void renderStatusBar(Graphics g)
     {
-        int x = (getWidth() - Settings.WORLD_DATA.getWidth() * tileSize) / 2;
+        game.getCurrentLevel();
+		int x = (getWidth() - Level.getWidth() * tileSize) / 2;
         int y = (getHeight() - tileSize);
         
         String s = new String("score " + game.getPacman().getScore());

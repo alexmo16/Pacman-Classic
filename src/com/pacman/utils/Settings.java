@@ -3,10 +3,7 @@ package com.pacman.utils;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-import com.pacman.model.world.Data;
-import com.pacman.model.world.Tile;
-
-public final class Settings
+public class Settings
 {
 	public static final String TITLE = "Pac-Man";
 
@@ -21,10 +18,6 @@ public final class Settings
 				 			MIN_WINDOW_HEIGHT = 600;
 
     public static final float SCALE = 1.0f;
-
-    public static final double UPDATE_RATE = 1.0 / 60.0; // pour avoir 60 fps dans notre jeu.
-
-    public static final Data WORLD_DATA = new Data(new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"));
     
-    public static final int[] AUTH_TILES = { Tile.FLOOR.getValue(), Tile.GUM.getValue(), Tile.ENERGIZER.getValue(), Tile.FRUIT.getValue(), Tile.PAC_MAN_START.getValue() };
+    public static final double UPDATE_RATE = 1.0 / 60.0; // pour avoir 60 fps dans notre jeu.
 }

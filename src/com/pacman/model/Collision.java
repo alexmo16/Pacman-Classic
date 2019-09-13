@@ -1,7 +1,7 @@
 package com.pacman.model;
 
 import com.pacman.model.objects.GameObject;
-import com.pacman.utils.Settings;
+import com.pacman.model.world.Level;
 
 /**
  * 
@@ -10,10 +10,7 @@ import com.pacman.utils.Settings;
  */
 public abstract class Collision
 {
-    static int[][] tiles = Settings.WORLD_DATA.getTiles();
-    static int mapH = Settings.WORLD_DATA.getHeight();
-    static int mapW = Settings.WORLD_DATA.getWidth();
-    static int[] authTiles = Settings.AUTH_TILES;
+    static int[] authTiles;
 
     /**
      * method used to check if obj hits a wall or goes in the tunnel
@@ -30,6 +27,9 @@ public abstract class Collision
         int xMax = (int) obj.getHitBox().getMaxX(); 
         int yMax = (int) obj.getHitBox().getMaxY();
 
+        int mapW = Level.getWidth();
+        int mapH = Level.getHeight();
+        
         if ((xMin <= 0 & xMax <= 0) || (xMin >= mapW - 1 & xMax >= mapW - 1) || (yMin <= 0 & yMax <= 0)
                 || (yMin >= mapH - 1 & yMax >= mapH - 1))
         {
@@ -65,6 +65,7 @@ public abstract class Collision
      */
     public static boolean isAuth(int x, int y)
     {
+    	int[][] tiles = Level.getTiles();
         for (int i : authTiles)
         {
             if (tiles[x][y] == i)
@@ -75,11 +76,8 @@ public abstract class Collision
         return false;
     }
     
-    public static void setMap(int[][] map, int[] auth, int x,int y) 
+    public static void setAuthTiles(int[] auth)
     {
-    	tiles = map;
     	authTiles = auth;
-    	mapH = x;
-    	mapW = y;
     }
 }

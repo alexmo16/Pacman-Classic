@@ -158,4 +158,9 @@ public class Pacman extends Entity implements IPublisher
 	{
 		lifes = MAX_LIFES;
 	}
+	
+	public void resetScore()
+	{
+		score = 0;
 	}
+}

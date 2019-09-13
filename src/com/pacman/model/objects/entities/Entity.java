@@ -2,7 +2,7 @@ package com.pacman.model.objects.entities;
 
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.world.Direction;
-import com.pacman.utils.Settings;
+import com.pacman.model.world.Level;
 
 public abstract class Entity extends GameObject
 {
@@ -48,7 +48,7 @@ public abstract class Entity extends GameObject
         if (dir == Direction.UP)
         {
         	x = hitBox.getX(); 
-        	y = Settings.WORLD_DATA.getHeight() - hitBox.getHeight() - 0.5;
+        	y = Level.getHeight() - hitBox.getHeight() - 0.5;
         }
         if (dir == Direction.DOWN)
         {
@@ -62,7 +62,7 @@ public abstract class Entity extends GameObject
         }
         if (dir == Direction.LEFT)
         {
-            x = Settings.WORLD_DATA.getWidth()- hitBox.getWidth() - 0.5;
+            x = Level.getWidth() - hitBox.getWidth() - 0.5;
             y = hitBox.getY();
         }
         

@@ -2,6 +2,7 @@ package com.pacman.model.states;
 
 public enum StatesName
 {
+	MAIN_MENU("Main Menu"),
 	INIT("Init"),
     PLAY("Play"),
     STOP("Stop"),

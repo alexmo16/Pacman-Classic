@@ -3,11 +3,11 @@ package com.pacman.model.objects.entities;
 import java.util.ArrayList;
 
 import com.pacman.model.Sound;
+import com.pacman.model.objects.Sprites;
 import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
 import com.pacman.utils.IPublisher;
-import com.pacman.utils.Settings;
 
 /**
  * 
@@ -18,19 +18,24 @@ import com.pacman.utils.Settings;
 public class Pacman extends Entity implements IPublisher
 {
     private Sound chomp;
-    private int score;
-    private boolean collision;
-    private Direction collisionDirection; 
+    private int score = 0;
+	private final int MAX_LIFES = 3;
+    private int lifes;
+    private boolean collision = false;
+    private Direction collisionDirection = null; 
     private Direction nextDirection = Direction.LEFT;
+    private Direction firstDirection = Direction.LEFT;
+    private double spawnX;
+    private double spawnY;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
-
+    
     public Pacman(double x, double y)
     {
         super(x, y, 0.9, 0.9, Direction.LEFT);
-    	score = 0;
-    	collision = false;
-    	collisionDirection = null;
-    	sprite = Settings.SPRITES.getPacmanCoords(direction);
+        spawnX = x;
+        spawnY = y;
+		lifes = MAX_LIFES;
+    	sprite = Sprites.getPacmanMovement(Direction.LEFT, 0);
     }
 
     public void setNextDirection(Direction dir)
@@ -74,7 +79,7 @@ public class Pacman extends Entity implements IPublisher
     @Override
     public void updateSprite()
     {
-    	sprite = Settings.SPRITES.getPacmanCoords(direction);
+    	sprite = Sprites.getPacmanMovement(direction, 0);
     }
     
 	@Override
@@ -130,4 +135,27 @@ public class Pacman extends Entity implements IPublisher
 	{
 		return collisionDirection;
 	}
-}
+
+	public int getLifes()
+	{
+		return lifes;
+	}
+
+	public void looseLife()
+	{
+		lifes--;
+	}
+	
+	public void respawn()
+	{
+		setNextDirection(firstDirection);
+		setDirection(firstDirection);
+		hitBox.x = spawnX;
+		hitBox.y = spawnY;
+	}
+	
+	public void resetLifes()
+	{
+		lifes = MAX_LIFES;
+	}
+	}

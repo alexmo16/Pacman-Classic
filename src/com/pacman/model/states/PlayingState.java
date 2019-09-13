@@ -12,8 +12,13 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	private StatesName name = StatesName.PLAY;
 	
 	private Game game;
-	private Pacman maybeFuturPacman, futurPacman;
-    private Direction oldDirection, direction;
+	/*
+	 * nextTilesPacman is pacman if he move on the same direction as before
+	 * newDirectionPacman is pacman if he is at an intersection and change is direction
+	 *  
+	 */
+	private Pacman newDirectionPacman, nextTilesPacman;
+    private Direction newDirection, nextTilesDirection;
 	
 	public PlayingState( Game gm )
 	{
@@ -26,20 +31,20 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		
 		game.getPacman().registerObserver(this);
         
-        maybeFuturPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
-        futurPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
+        newDirectionPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
+        nextTilesPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
         
-        direction = game.getPacman().getDirection();
-        oldDirection = direction;
+        nextTilesDirection = game.getPacman().getDirection();
+        newDirection = nextTilesDirection;
 	}
 
 	@Override
 	public void update() 
 	{
-        maybeFuturPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
-        futurPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
-        futurPacman.updatePosition(direction);
-        maybeFuturPacman.updatePosition(oldDirection);
+        newDirectionPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
+        nextTilesPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
+        nextTilesPacman.updatePosition(nextTilesDirection);
+        newDirectionPacman.updatePosition(newDirection);
 
         checkConsumablesCollision();
         
@@ -78,7 +83,19 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update(Direction d) 
 	{
-		oldDirection = direction;
-		direction = d;
+		if ( nextTilesDirection == game.getPacman().getDirection() ) 
+		{
+			newDirection = nextTilesDirection;
+		}
+		
+		nextTilesDirection = d;
+	}
+	
+	private void killPacman()
+	{
+		game.stopInGameMusics();
+		game.getPacman().looseLife();
+		game.getPacman().respawn();
+		game.setState(game.getPacman().getLifes() == 0 ? game.getStopState() : game.getInitState());
 	}
 }

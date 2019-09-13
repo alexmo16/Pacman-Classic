@@ -5,7 +5,6 @@ import java.io.File;
 
 import com.pacman.model.world.Data;
 import com.pacman.model.world.Tile;
-import com.pacman.view.Sprites;
 
 public final class Settings
 {
@@ -26,8 +25,6 @@ public final class Settings
     public static final double UPDATE_RATE = 1.0 / 60.0; // pour avoir 60 fps dans notre jeu.
 
     public static final Data WORLD_DATA = new Data(new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"));
-
-    public static final Sprites SPRITES = new Sprites(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "pacmanTiles.png", 48);
-
+    
     public static final int[] AUTH_TILES = { Tile.FLOOR.getValue(), Tile.GUM.getValue(), Tile.ENERGIZER.getValue(), Tile.FRUIT.getValue(), Tile.PAC_MAN_START.getValue() };
 }

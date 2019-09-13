@@ -50,6 +50,7 @@ public class Game implements IGame
     private IGameState pauseState;
     private IGameState resumeState;
     private IGameState currentState;
+    private IGameState mainMenuState;
     
     private boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
     
@@ -85,6 +86,22 @@ public class Game implements IGame
                 	pacman = new Pacman(x, y);
                 	entities.add(pacman);
                 }
+                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.BLINKY_START.getValue())
+                {
+                	entities.add(new Ghost(x, y, GhostType.BLINKY));
+                }
+                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.PINKY_START.getValue())
+                {
+                	entities.add(new Ghost(x, y, GhostType.PINKY));
+                }
+                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.INKY_START.getValue())
+                {
+                	entities.add(new Ghost(x, y, GhostType.INKY));
+                }
+                else if (Settings.WORLD_DATA.getTile(x, y) == Tile.CLYDE_START.getValue())
+                {
+                	entities.add(new Ghost(x, y, GhostType.CLYDE));
+                }
             }
         }
     	
@@ -92,12 +109,13 @@ public class Game implements IGame
         
     	window.setContainer(new GameView(this));
     	
+    	mainMenuState = new MainMenuState(this);
         initState = new InitState(this);
         pauseState = new PauseState(this);
         resumeState = new ResumeState(this);
         playingState = new PlayingState(this);
         stopState = new StopState(this);
-        currentState = initState; 
+        currentState = mainMenuState; 
     }
     
     /**
@@ -216,6 +234,11 @@ public class Game implements IGame
 	{
 		return currentState;
 	}
+	
+	public IGameState getMainMenuState()
+	{
+		return mainMenuState;
+	}
 
     public Sound getStartMusic()
     {
@@ -235,16 +258,6 @@ public class Game implements IGame
 	public Pacman getPacman()
 	{
 		return pacman;
-	}
-	
-	public Pacman getMaybeFuturPacman()
-	{
-		return maybeFuturPacman;
-	}
-	
-	public Pacman getFuturPacman()
-	{
-		return futurPacman;
 	}
 
 	public ArrayList<Wall> getMaze()

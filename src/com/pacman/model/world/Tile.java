@@ -8,7 +8,11 @@ public enum Tile
     GUM(30),
     ENERGIZER(40),
     FRUIT(50),
-    PAC_MAN_START(60);
+    PAC_MAN_START(60),
+	BLINKY_START(61),
+	PINKY_START(62),
+	INKY_START(63),
+	CLYDE_START(64);
 
     private final int value;
 

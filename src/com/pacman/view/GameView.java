@@ -8,11 +8,12 @@ import java.util.stream.Stream;
 
 import javax.swing.JPanel;
 
-import com.pacman.model.Game;
+import com.pacman.controller.IGame;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Sprites;
 import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.states.StatesName;
+import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
 import com.pacman.model.world.Sprite;
 
@@ -20,11 +21,11 @@ public class GameView extends JPanel
 {
 	private static final long serialVersionUID = 1594565623438214915L;  
 	
-	private Game game;
-	private int tileSize;
+	private IGame game;
+	private int tileSize, horizontalBorder, verticalBorder;
 	private boolean debug = false;
 	
-	public GameView(Game gm)
+	public GameView(IGame gm)
 	{
 		game = gm;
 	}
@@ -32,15 +33,17 @@ public class GameView extends JPanel
 	@Override
 	public void paintComponent(Graphics g) 
 	{
-        game.getCurrentLevel();
-		game.getCurrentLevel();
-		tileSize = Math.min(getHeight() / Level.getHeight(), getWidth() / Level.getWidth());
+		tileSize = Math.min(getHeight() / (Level.getHeight() + 4), getWidth() / Level.getWidth());
         if ( (tileSize & 1) != 0 ) { tileSize--; } // Odd tile size will break tile tileSize.
 
+        // Offset to fit in the world 
+        horizontalBorder = (getWidth() - (tileSize * Level.getWidth())) / 2;
+        verticalBorder = (getHeight() - (tileSize * Level.getHeight())) / 2;
+        
         renderBackground(g);
         renderGameObjects(g);
         renderEntities(g);
-        renderStatusBar(g);
+        renderGameStatus(g);
         renderPause(g);
         renderGameover(g);
 	}
@@ -58,11 +61,9 @@ public class GameView extends JPanel
         double x, y;
         for (GameObject obj : gameObjects)
         {
-        	game.getCurrentLevel();
-			//  Scaled position of the object      + Offset to fit in the world 
-            x = (obj.getHitBox().getX() * tileSize) + ((getWidth() - (tileSize * Level.getWidth())) / 2);
-            game.getCurrentLevel();
-			y = (obj.getHitBox().getY() * tileSize) + ((getHeight() - (tileSize * Level.getHeight())) / 2);
+        	//  Scaled position of the object      + Offset to fit in the world 
+            x = (obj.getHitBox().getX() * tileSize) + horizontalBorder;
+            y = (obj.getHitBox().getY() * tileSize) + verticalBorder;
             g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + tileSize), (int)(y + tileSize), obj.getSprite().getX1(), obj.getSprite().getY1(), obj.getSprite().getX2(), obj.getSprite().getY2(), null);  
             
             if (debug)
@@ -78,10 +79,8 @@ public class GameView extends JPanel
         double x, y;
         for (Entity entity : game.getEntities())
         {
-        	game.getCurrentLevel();
 			// TODO : Merge this with the renderGameObjects function when we will fix the collisions/position code.
             x = (entity.getHitBox().getX() * tileSize) +  ((getWidth() - (tileSize) - (tileSize * Level.getWidth())) / 2) + (tileSize / 4);
-            game.getCurrentLevel();
 			y = (entity.getHitBox().getY() * tileSize) + ((getHeight() - (tileSize) - (tileSize * Level.getHeight())) / 2) + (tileSize / 4);
             
             g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + (2 * tileSize)), (int)(y + (2 * tileSize)), entity.getSprite().getX1(), entity.getSprite().getY1(), entity.getSprite().getX2(), entity.getSprite().getY2(), null);
@@ -93,19 +92,48 @@ public class GameView extends JPanel
             }
         }
 	}
-	
-	private void renderStatusBar(Graphics g)
+    
+	private void renderGameStatus(Graphics g)
     {
-        game.getCurrentLevel();
-		int x = (getWidth() - Level.getWidth() * tileSize) / 2;
-        int y = (getHeight() - tileSize);
+		// Top left - Game state
+        int x = tileSize + horizontalBorder;
+        int y = verticalBorder / 2;
+        String s = "State " + game.getCurrentState().getName().getValue();
+        renderString(g, s, x, y);
+		
+		// Top center - Colission
+        x = getWidth() / 2;
+        y = verticalBorder / 2;
+        s = "Collision ";
+        if (game.getPacman().isCollision()) { s += game.getPacman().getCollisionDirection(); };
+        renderString(g, s, x, y);
         
-        String s = new String("score " + game.getPacman().getScore());
-        if (game.getCurrentState() != null) { s += " state " + game.getCurrentState().getName().getValue(); }
-        if (game.getPacman().isCollision()) { s += " collision " + game.getPacman().getCollisionDirection(); }
+        // Bot left - Score
+        x = tileSize + horizontalBorder;
+        y = getHeight() - tileSize / 2 - (verticalBorder / 2);
+        s = new String("score " + game.getPacman().getScore());
+        renderString(g, s, x, y);
+        
+        // Bot center - Lives
+        s = "Lives ";
+		x = (getWidth() / 2) - (s.length() * tileSize) / 2;
+        renderString(g, s, x, y);
+		x = (getWidth() / 2) + (s.length() * tileSize) / 2;
+        y = getHeight() - tileSize - (verticalBorder / 2);
+        for (int lives = 1; lives < game.getPacman().getLives(); lives++)
+        {
+        	Sprite pacman = Sprites.getPacmanMovement(Direction.RIGHT, 0);
+            g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + (2 * tileSize)), (int)(y + (2 * tileSize)), pacman.getX1(), pacman.getY1(), pacman.getX2(), pacman.getY2(), null);
+            x += 2 * tileSize;
+        }
+        
+        // Bot right - Level
+        s = "Level " + game.getCurrentLevel().getName();
+		x = getWidth() - horizontalBorder - (s.length() * tileSize);
+        y = getHeight() - tileSize / 2 - (verticalBorder / 2);
         renderString(g, s, x, y);
     }
-    
+	
 	private void renderPause(Graphics g)
     {
         if (game.getCurrentState().getName() == StatesName.PAUSE)

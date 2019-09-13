@@ -1,7 +1,14 @@
 package com.pacman.controller;
 
+import java.util.ArrayList;
+
+import com.pacman.model.objects.Wall;
+import com.pacman.model.objects.consumables.Consumable;
+import com.pacman.model.objects.entities.Entity;
+import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.world.Direction;
+import com.pacman.model.world.Level;
 import com.pacman.view.Window;
 
 /**
@@ -25,4 +32,10 @@ public interface IGame
 	public void toggleUserMuteSounds();
 	
 	public void setPacmanDirection(Direction d);
+	
+	public ArrayList<Entity> getEntities();
+	public ArrayList<Wall> getMaze();
+	public ArrayList<Consumable> getConsumables(); 
+	public Pacman getPacman();
+	public Level getCurrentLevel();
 }

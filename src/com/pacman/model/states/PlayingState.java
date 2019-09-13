@@ -44,8 +44,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
         checkConsumablesCollision();
         
         // Strategy pattern for wall collisions.
-        String checkWallCollision = Collision.collisionWall(futurPacman);
-        executeWallStrategy( checkWallCollision );
+        
+        Collision.executeWallStrategy(game);
 	}
 
 	@Override
@@ -70,69 +70,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
         }
     }
     
-    /**
-     * Redirect to the correct strategy
-     * @param collisionString
-     */
-    private void executeWallStrategy( String collisionString )
-    {
-    	if ( collisionString == "void" )
-    	{
-    		tunnelStrategy();
-    	}
-    	else if ( collisionString == "wall" )
-    	{
-    		oneWallStrategy();
-    	}
-    	else
-    	{
-    		noWallStrategy();
-    	}
-    }
-    
-    /**
-     * Strategy if pacman hits a wall.
-     */
-    private void oneWallStrategy()
-    {
-    	String collisionString = Collision.collisionWall(maybeFuturPacman);
-        if (collisionString == "void")
-        {
-        	game.getPacman().tunnel(oldDirection);
-        	game.getPacman().setDirection(oldDirection);
-        	game.getPacman().setCollision(false, oldDirection);
-        }
-        if (collisionString == "path")
-        {
-        	game.getPacman().updatePosition(oldDirection);
-        	game.getPacman().setDirection(oldDirection);
-        	game.getPacman().setCollision(false, oldDirection);
-        } 
-        else
-        {
-        	game.getPacman().setCollision(true, oldDirection);
-        }
-    }
-    
-    /**
-     * Strategy if pacman goes through the tunnel
-     */
-    private void tunnelStrategy()
-    {
-    	game.getPacman().tunnel(direction);
-    	game.getPacman().setCollision(false, oldDirection);
-    }
-    
-    /**
-     * Strategy if pacman moves forward
-     */
-    private void noWallStrategy()
-    {
-    	game.getPacman().updatePosition(direction);
-    	game.getPacman().setDirection(direction);
-        oldDirection = direction;
-        game.getPacman().setCollision(false, oldDirection);
-    }
+  
 	
     /**
      * update of the observer

@@ -33,6 +33,8 @@ import com.pacman.view.Window;
 public class Game implements IGame
 {
     private Pacman pacman;
+    private Pacman maybeFuturPacman;
+    private Pacman futurPacman;
     
     private ArrayList<Entity> entities;
     private ArrayList<Wall> maze;
@@ -112,6 +114,7 @@ public class Game implements IGame
 	{
 		pacman.setNextDirection(d);
 	}
+	
     
     /**
      * Load all audio files and distribute them where they're needed.
@@ -232,6 +235,16 @@ public class Game implements IGame
 	public Pacman getPacman()
 	{
 		return pacman;
+	}
+	
+	public Pacman getMaybeFuturPacman()
+	{
+		return maybeFuturPacman;
+	}
+	
+	public Pacman getFuturPacman()
+	{
+		return futurPacman;
 	}
 
 	public ArrayList<Wall> getMaze()

@@ -96,22 +96,22 @@ public final class Sprites
     	pacmanMovement.put(Direction.LEFT, new HashMap<Integer, Sprite>());
     	pacmanMovement.get(Direction.LEFT).put(0, new Sprite(tiles[96][0], tiles[96][1], 2 * tileSize));
     	pacmanMovement.get(Direction.LEFT).put(1, new Sprite(tiles[100][0], tiles[100][1], 2 * tileSize));
-    	pacmanMovement.get(Direction.LEFT).put(2, new Sprite(tiles[144][0], tiles[144][1], 2 * tileSize));
+    	pacmanMovement.get(Direction.LEFT).put(2, new Sprite(tiles[128][0], tiles[128][1], 2 * tileSize));
     	
     	pacmanMovement.put(Direction.UP, new HashMap<Integer, Sprite>());
     	pacmanMovement.get(Direction.UP).put(0, new Sprite(tiles[98][0], tiles[98][1], 2 * tileSize));
-    	pacmanMovement.get(Direction.UP).put(1, new Sprite(tiles[99][0], tiles[99][1], 2 * tileSize));
-    	pacmanMovement.get(Direction.UP).put(2, new Sprite(tiles[144][0], tiles[144][1], 2 * tileSize));
+    	pacmanMovement.get(Direction.UP).put(1, new Sprite(tiles[102][0], tiles[102][1], 2 * tileSize));
+    	pacmanMovement.get(Direction.UP).put(2, new Sprite(tiles[128][0], tiles[128][1], 2 * tileSize));
     	
     	pacmanMovement.put(Direction.RIGHT, new HashMap<Integer, Sprite>());
     	pacmanMovement.get(Direction.RIGHT).put(0, new Sprite(tiles[104][0], tiles[104][1], 2 * tileSize));
     	pacmanMovement.get(Direction.RIGHT).put(1, new Sprite(tiles[108][0], tiles[108][1], 2 * tileSize));
-    	pacmanMovement.get(Direction.RIGHT).put(2, new Sprite(tiles[144][0], tiles[144][1], 2 * tileSize));
+    	pacmanMovement.get(Direction.RIGHT).put(2, new Sprite(tiles[128][0], tiles[128][1], 2 * tileSize));
     	
     	pacmanMovement.put(Direction.DOWN, new HashMap<Integer, Sprite>());
     	pacmanMovement.get(Direction.DOWN).put(0, new Sprite(tiles[106][0], tiles[106][1], 2 * tileSize));
     	pacmanMovement.get(Direction.DOWN).put(1, new Sprite(tiles[110][0], tiles[110][1], 2 * tileSize));
-    	pacmanMovement.get(Direction.DOWN).put(2, new Sprite(tiles[144][0], tiles[144][1], 2 * tileSize));
+    	pacmanMovement.get(Direction.DOWN).put(2, new Sprite(tiles[128][0], tiles[128][1], 2 * tileSize));
     }
     
     private static void loadPacmanDeath()

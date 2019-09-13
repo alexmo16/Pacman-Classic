@@ -129,8 +129,8 @@ public class Collision
      */
     private void noWallStrategy(Game game)
     {
-    	game.getPacman().updatePosition(game.getNewDirection());
-    	game.getPacman().setDirection(game.getNewDirection());
+    	game.getPacman().updatePosition(game.getNextTilesDirection());
+    	game.getPacman().setDirection(game.getNextTilesDirection());
         game.getNewDirectionPacman().setDirection(game.getNextTilesDirection());
         game.getPacman().setCollision(false, game.getNewDirection());
     }

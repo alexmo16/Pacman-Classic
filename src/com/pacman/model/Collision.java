@@ -1,6 +1,7 @@
 package com.pacman.model;
 
 import com.pacman.model.objects.GameObject;
+import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.utils.Settings;
 
 /**
@@ -8,12 +9,21 @@ import com.pacman.utils.Settings;
  * Check the collisions between the different object in the game, pacman, the walls and the gums
  *
  */
-public abstract class Collision
+public class Collision
 {
-    int[][] tiles = Settings.WORLD_DATA.getTiles();
-    int mapH = Settings.WORLD_DATA.getHeight();
-    int mapW = Settings.WORLD_DATA.getWidth();
-    int[] authTiles = Settings.AUTH_TILES;
+    int[][] tiles;
+    int mapH;
+    int mapW;
+    int[] authTiles;
+    
+    public Collision()
+    {
+    	this.tiles = Settings.WORLD_DATA.getTiles();
+        this.mapH = Settings.WORLD_DATA.getHeight();
+        this.mapW = Settings.WORLD_DATA.getWidth();
+        this.authTiles = Settings.AUTH_TILES;
+    	
+    }
     
     /**
      * method used to check if obj hits a wall or goes in the tunnel
@@ -64,7 +74,7 @@ public abstract class Collision
      */
     public void executeWallStrategy( Game game)
     {
-    	String checkWallCollision = Collision.collisionWall(game.getNextTilesPacman());
+    	String checkWallCollision = collisionWall(game.getNextTilesPacman());
     	if ( checkWallCollision == "void" )
     	{
     		tunnelStrategy(game);
@@ -123,6 +133,23 @@ public abstract class Collision
     	game.getPacman().setDirection(game.getNewDirectionPacman().getDirection());
         game.getNewDirectionPacman().setDirection(game.getNextTilesPacman().getDirection());
         game.getPacman().setCollision(false, game.getNewDirectionPacman().getDirection());
+    }
+    
+    
+    /**
+     * Check if pacman eats a Gum
+     */
+    public void checkConsumablesCollision(Game game)
+    {
+        for (Consumable consumable : game.getConsumables())
+        {
+            if (collisionObj(game.getPacman(), consumable))
+            {
+            	game.getPacman().eat(consumable);
+            	game.getConsumables().remove(consumable);
+                break;
+            }
+        }
     }
 
     /**

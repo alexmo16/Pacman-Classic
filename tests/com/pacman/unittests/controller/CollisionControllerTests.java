@@ -19,7 +19,7 @@ public class CollisionControllerTests
 			{0,1,30,0},
 			{0,1,30,0}};
 	int[] auth = {0,30,40};
-
+/*
 	
     @Test
     void test_collisionWall_void() 
@@ -76,5 +76,5 @@ public class CollisionControllerTests
        
 	}
     
-
+*/
 }

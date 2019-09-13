@@ -2,8 +2,6 @@ package com.pacman.model.states;
 
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
-import com.pacman.model.objects.consumables.Consumable;
-import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
 
@@ -12,12 +10,13 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	private StatesName name = StatesName.PLAY;
 	
 	private Game game;
+	private Collision collision;
 	/*
 	 * nextTilesPacman is pacman if he move on the same direction as before
 	 * newDirectionPacman is pacman if he is at an intersection and change is direction
 	 *  
 	 */
-	private Pacman newDirectionPacman, nextTilesPacman;
+	//private Pacman newDirectionPacman, nextTilesPacman;
     private Direction newDirection, nextTilesDirection;
 	
 	public PlayingState( Game gm )
@@ -50,11 +49,12 @@ public class PlayingState implements IGameState, IObserver<Direction>
         game.getNextTilesPacman().updatePosition(nextTilesDirection);
         game.getNewDirectionPacman().updatePosition(newDirection);
 
-        checkConsumablesCollision();
+        
         
         // Strategy pattern for wall collisions.
-        
-        Collision.executeWallStrategy(game);
+        collision = new Collision();
+        collision.checkConsumablesCollision(game);
+        collision.executeWallStrategy(game);
 	}
 
 	@Override
@@ -62,22 +62,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	{
 		return name;
 	}
-    
-    /**
-     * Check if pacman eats a Gum
-     */
-    private void checkConsumablesCollision()
-    {
-        for (Consumable consumable : game.getConsumables())
-        {
-            if (Collision.collisionObj(game.getPacman(), consumable))
-            {
-            	game.getPacman().eat(consumable);
-            	game.getConsumables().remove(consumable);
-                break;
-            }
-        }
-    }
     
   
 	

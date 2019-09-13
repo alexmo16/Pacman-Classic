@@ -17,7 +17,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	 *  
 	 */
 	//private Pacman newDirectionPacman, nextTilesPacman;
-    private Direction newDirection, nextTilesDirection;
+    //private Direction newDirection, nextTilesDirection;
 	
 	public PlayingState( Game gm )
 	{
@@ -35,8 +35,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
         //newDirectionPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
         //nextTilesPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
         
-        nextTilesDirection = game.getPacman().getDirection();
-        newDirection = nextTilesDirection;
+        game.setNextTilesDirection(game.getPacman().getDirection());
+        game.setNewDirection(game.getNextTilesDirection());
 	}
 
 	@Override
@@ -46,8 +46,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
         //newDirectionPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
         //nextTilesPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
-        game.getNextTilesPacman().updatePosition(nextTilesDirection);
-        game.getNewDirectionPacman().updatePosition(newDirection);
+        game.getNextTilesPacman().updatePosition(game.getNextTilesDirection());
+        game.getNewDirectionPacman().updatePosition(game.getNewDirection());
 
         
         
@@ -71,12 +71,12 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update(Direction d) 
 	{
-		if ( nextTilesDirection == game.getPacman().getDirection() ) 
+		if ( game.getNextTilesDirection() == game.getPacman().getDirection() ) 
 		{
-			newDirection = nextTilesDirection;
+			game.setNewDirection(game.getNextTilesDirection());
 		}
 		
-		nextTilesDirection = d;
+		game.setNextTilesDirection(d);
 	}
 	
 	private void killPacman()

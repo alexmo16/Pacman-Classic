@@ -99,19 +99,19 @@ public class Collision
     	String collisionString = collisionWall(game.getNewDirectionPacman());
         if (collisionString == "void")
         {
-        	game.getPacman().tunnel(game.getNewDirectionPacman().getDirection());
-        	game.getPacman().setDirection(game.getNewDirectionPacman().getDirection());
-        	game.getPacman().setCollision(false, game.getNewDirectionPacman().getDirection());
+        	game.getPacman().tunnel(game.getNewDirection());
+        	game.getPacman().setDirection(game.getNewDirection());
+        	game.getPacman().setCollision(false, game.getNewDirection());
         }
         if (collisionString == "path")
         {
-        	game.getPacman().updatePosition(game.getNewDirectionPacman().getDirection());
-        	game.getPacman().setDirection(game.getNewDirectionPacman().getDirection());
-        	game.getPacman().setCollision(false, game.getNewDirectionPacman().getDirection());
+        	game.getPacman().updatePosition(game.getNewDirection());
+        	game.getPacman().setDirection(game.getNewDirection());
+        	game.getPacman().setCollision(false, game.getNewDirection());
         } 
         else
         {
-        	game.getPacman().setCollision(true, game.getNewDirectionPacman().getDirection());
+        	game.getPacman().setCollision(true, game.getNewDirection());
         }
     }
     
@@ -120,8 +120,8 @@ public class Collision
      */
     private void tunnelStrategy(Game game)
     {
-    	game.getPacman().tunnel(game.getNextTilesPacman().getDirection());
-    	game.getPacman().setCollision(false, game.getNewDirectionPacman().getDirection());
+    	game.getPacman().tunnel(game.getNextTilesDirection());
+    	game.getPacman().setCollision(false, game.getNewDirection());
     }
     
     /**
@@ -129,10 +129,10 @@ public class Collision
      */
     private void noWallStrategy(Game game)
     {
-    	game.getPacman().updatePosition(game.getNewDirectionPacman().getDirection());
-    	game.getPacman().setDirection(game.getNewDirectionPacman().getDirection());
-        game.getNewDirectionPacman().setDirection(game.getNextTilesPacman().getDirection());
-        game.getPacman().setCollision(false, game.getNewDirectionPacman().getDirection());
+    	game.getPacman().updatePosition(game.getNewDirection());
+    	game.getPacman().setDirection(game.getNewDirection());
+        game.getNewDirectionPacman().setDirection(game.getNextTilesDirection());
+        game.getPacman().setCollision(false, game.getNewDirection());
     }
     
     

@@ -39,6 +39,9 @@ public class Game implements IGame
     private Pacman newDirectionPacman;
     private Pacman nextTilesPacman;
     
+    private Direction nextTilesDirection;
+    private Direction newDirection;
+    
     private ArrayList<Entity> entities;
     private ArrayList<Wall> maze;
     private ArrayList<Consumable> consumables; 
@@ -273,6 +276,26 @@ public class Game implements IGame
 	public Pacman getNextTilesPacman()
 	{
 		return nextTilesPacman;
+	}
+	
+	public Direction getNewDirection()
+	{
+		return newDirection;
+	}
+	
+	public Direction getNextTilesDirection()
+	{
+		return nextTilesDirection;
+	}
+	
+	public void setNewDirection(Direction direction)
+	{
+		this.newDirection = direction;
+	}
+	
+	public void setNextTilesDirection(Direction direction)
+	{
+		this.nextTilesDirection = direction;
 	}
 
 	public ArrayList<Wall> getMaze()

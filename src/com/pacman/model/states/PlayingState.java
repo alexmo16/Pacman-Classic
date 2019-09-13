@@ -28,6 +28,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		
 		game = gm;
 		
+        collision = new Collision();
+		
 		game.getPacman().registerObserver(this);
         
 		game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
@@ -52,7 +54,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
         
         
         // Strategy pattern for wall collisions.
-        collision = new Collision();
         collision.checkConsumablesCollision(game);
         collision.executeWallStrategy(game);
 	}
@@ -71,12 +72,11 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update(Direction d) 
 	{
-		if ( game.getNextTilesDirection() == game.getPacman().getDirection() ) 
-		{
-			game.setNewDirection(game.getNextTilesDirection());
+		if ( game.getNewDirection() == game.getPacman().getDirection() ) {
+			
+			game.setNextTilesDirection(game.getNewDirection());
 		}
-		
-		game.setNextTilesDirection(d);
+		game.setNewDirection(d);
 	}
 	
 	private void killPacman()

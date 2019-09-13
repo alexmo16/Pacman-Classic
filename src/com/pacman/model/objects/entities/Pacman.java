@@ -141,7 +141,7 @@ public class Pacman extends Entity implements IPublisher
 		return lifes;
 	}
 
-	public void looseLife()
+	public void looseLive()
 	{
 		lifes--;
 	}

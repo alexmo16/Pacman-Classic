@@ -3,6 +3,7 @@ package com.pacman.controller;
 import java.awt.event.KeyEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.pacman.model.IGame;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.states.StatesName;
 import com.pacman.model.world.Direction;

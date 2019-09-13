@@ -16,4 +16,9 @@ public class Consumable extends GameObject
     {
         return points;
     }
+    
+    public void accept(ConsumableVisitor visitor)
+    {
+    	visitor.visitDefault(this);
+    }
 }

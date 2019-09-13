@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.pacman.controller.GameController;
-import com.pacman.controller.IGame;
+import com.pacman.model.IGame;
 import com.pacman.view.Window;
 
 

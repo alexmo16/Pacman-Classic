@@ -9,8 +9,9 @@ public class Settings
 
     public static final String START_MUSIC_PATH = "." + File.separator + "assets" + File.separator + "pacman_beginning.wav",
 					    	   GAME_SIREN_PATH = "." + File.separator + "assets" + File.separator + "siren.wav",
-					           CHOMP_PATH = "." + File.separator + "assets" + File.separator + "pacman_chomp.wav";
-   
+					           CHOMP_PATH = "." + File.separator + "assets" + File.separator + "pacman_chomp.wav",
+					           DEATH_PATH = "." + File.separator + "assets" + File.separator + "pacman_death.wav";
+ 
     public static final int MUTED_BUTTON = KeyEvent.VK_M, 
     				 		PAUSE_BUTTON = KeyEvent.VK_P,
     				 		RESUME_BUTTON = KeyEvent.VK_R,

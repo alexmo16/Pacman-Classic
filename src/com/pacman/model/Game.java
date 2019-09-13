@@ -8,7 +8,6 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.pacman.controller.GameController;
-import com.pacman.controller.IGame;
 import com.pacman.model.objects.Wall;
 import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.objects.entities.Entity;
@@ -42,6 +41,7 @@ public class Game implements IGame
     private Sound startMusic;
     private Sound gameSiren;
     private Sound chomp;
+    private Sound death;
     
     private IGameState initState;
     private IGameState stopState;
@@ -53,6 +53,7 @@ public class Game implements IGame
     
     private Level currentLevel;
     
+    private boolean pacmanWon = false;
     private boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
     
     private final String LEVEL_DATA_FILE = new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"); 
@@ -141,6 +142,7 @@ public class Game implements IGame
             gameSiren = new Sound(Settings.GAME_SIREN_PATH);
             chomp = new Sound(Settings.CHOMP_PATH);
             pacman.setChompSound(chomp);
+            death = new Sound(Settings.DEATH_PATH);
         } catch (UnsupportedAudioFileException | IOException e)
         {
             System.out.println("Unable to load sounds!!");
@@ -163,6 +165,11 @@ public class Game implements IGame
     	}
     }
 
+    public void playDeathMusic(LineListener listener)
+    {
+    	death.play(listener);
+    }
+    
     /**
      * Function called when the user click on the mute button.
      */
@@ -262,7 +269,7 @@ public class Game implements IGame
 
 	public ArrayList<Consumable> getConsumables() 
 	{
-		return currentLevel.getConsumable();
+		return currentLevel.getConsumables();
 	}
 
 	public ArrayList<Entity> getEntities() 
@@ -278,5 +285,27 @@ public class Game implements IGame
 	public Level getCurrentLevel()
 	{
 		return currentLevel;
+	}
+	
+	public void setCurrentLevel(Level level)
+	{
+		currentLevel = level;
+	}
+
+	public boolean isPacmanWon()
+	{
+		return pacmanWon;
+	}
+
+	public void setPacmanWon(boolean pacmanWon)
+	{
+		this.pacmanWon = pacmanWon;
+	}
+
+	public void loadLevel(String levelName)
+	{
+		Level level = new Level(LEVEL_DATA_FILE, levelName);
+		currentLevel = level;
+		currentLevel.generateConsumables();
 	}
 }

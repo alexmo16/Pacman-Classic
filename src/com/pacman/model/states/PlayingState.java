@@ -1,14 +1,45 @@
 package com.pacman.model.states;
 
+import java.util.ArrayList;
+
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
 import com.pacman.model.objects.consumables.Consumable;
+import com.pacman.model.objects.consumables.ConsumableVisitor;
+import com.pacman.model.objects.consumables.Energizer;
+import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.world.Direction;
+import com.pacman.model.world.Level;
 import com.pacman.utils.IObserver;
 
 public class PlayingState implements IGameState, IObserver<Direction>
 {
+	private class ConsumableCollisionVisitor implements ConsumableVisitor
+	{
+
+		@Override
+		public void visitEnergizer(Energizer energizer)
+		{
+			Level level = game.getCurrentLevel();
+			level.getEnergizers().remove(energizer);
+		}
+
+		@Override
+		public void visitPacDot(PacDot pacdot)
+		{
+			Level level = game.getCurrentLevel();
+			level.getPacDots().remove(pacdot);
+		}
+
+		@Override
+		public void visitDefault(Consumable consumable)
+		{
+			game.getPacman().eat(consumable);
+	    	game.getConsumables().remove(consumable);
+		}
+	}
+	
 	private StatesName name = StatesName.PLAY;
 	
 	private Game game;
@@ -41,6 +72,14 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update() 
 	{
+		Level level = game.getCurrentLevel();
+		ArrayList<PacDot> pacdots = level.getPacDots();
+		if (pacdots.size() == 0)
+		{
+			game.setPacmanWon(true);
+			game.setState(game.getStopState());
+		}
+		
         newDirectionPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
         nextTilesPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
         nextTilesPacman.updatePosition(nextTilesDirection);
@@ -64,12 +103,12 @@ public class PlayingState implements IGameState, IObserver<Direction>
      */
     private void checkConsumablesCollision()
     {
+    	ConsumableCollisionVisitor visitor = new ConsumableCollisionVisitor();
         for (Consumable consumable : game.getConsumables())
         {
             if (Collision.collisionObj(game.getPacman(), consumable))
             {
-            	game.getPacman().eat(consumable);
-            	game.getConsumables().remove(consumable);
+            	consumable.accept(visitor);
                 break;
             }
         }
@@ -156,7 +195,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	private void killPacman()
 	{
 		game.stopInGameMusics();
-		game.getPacman().looseLife();
+		game.getPacman().looseLive();
 		game.getPacman().respawn();
 		game.setState(game.getPacman().getLives() == 0 ? game.getStopState() : game.getInitState());
 	}

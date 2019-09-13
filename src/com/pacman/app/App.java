@@ -1,8 +1,8 @@
 package com.pacman.app;
 
 import com.pacman.controller.GameController;
-import com.pacman.controller.IGame;
 import com.pacman.model.Game;
+import com.pacman.model.IGame;
 import com.pacman.view.Window;
 
 public class App

@@ -1,4 +1,4 @@
-package com.pacman.controller;
+package com.pacman.model;
 
 import java.util.ArrayList;
 
@@ -38,4 +38,6 @@ public interface IGame
 	public ArrayList<Consumable> getConsumables(); 
 	public Pacman getPacman();
 	public Level getCurrentLevel();
+	
+	public boolean isPacmanWon();
 }

@@ -158,6 +158,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		game.stopInGameMusics();
 		game.getPacman().looseLife();
 		game.getPacman().respawn();
-		game.setState(game.getPacman().getLifes() == 0 ? game.getStopState() : game.getInitState());
+		game.setState(game.getPacman().getLives() == 0 ? game.getStopState() : game.getInitState());
 	}
 }

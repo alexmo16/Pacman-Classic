@@ -136,7 +136,7 @@ public class Pacman extends Entity implements IPublisher
 		return collisionDirection;
 	}
 
-	public int getLifes()
+	public int getLives()
 	{
 		return lifes;
 	}
@@ -154,7 +154,7 @@ public class Pacman extends Entity implements IPublisher
 		hitBox.y = spawnY;
 	}
 	
-	public void resetLifes()
+	public void resetLives()
 	{
 		lifes = MAX_LIFES;
 	}

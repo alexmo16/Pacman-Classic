@@ -17,7 +17,7 @@ public class StopState implements IGameState
 	{
 		// TODO jouer la music de fin quand pacman est mort
 		game.stopInGameMusics();
-		game.getPacman().resetLifes();
+		game.getPacman().resetLives();
 		game.getPacman().resetScore();
 		game.getPacman().respawn();
 		

@@ -18,6 +18,8 @@ public class Level
     private static final int[] AUTH_TILES = { Tile.FLOOR.getValue(), Tile.GUM.getValue(), Tile.ENERGIZER.getValue(), Tile.FRUIT.getValue(), Tile.PAC_MAN_START.getValue() };
     
     private ArrayList<Consumable> consumables;
+    private ArrayList<PacDot> pacdots;
+    private ArrayList<Energizer> energizers;
 
     public Level(String worldFilePath, String levelName)
     {
@@ -78,9 +80,19 @@ public class Level
     	return name;
     }
     
-    public ArrayList<Consumable> getConsumable()
+    public ArrayList<Consumable> getConsumables()
     {
     	return consumables;
+    }
+    
+    public ArrayList<PacDot> getPacDots()
+    {
+    	return pacdots;
+    }
+    
+    public ArrayList<Energizer> getEnergizers()
+    {
+    	return energizers;
     }
     
     private void loadLevelInformations(String filePath)
@@ -153,9 +165,11 @@ public class Level
         }
     }
     
-    private void generateConsumables()
+    public void generateConsumables()
     {
         consumables = new ArrayList<Consumable>();
+        pacdots = new ArrayList<PacDot>();
+        energizers = new ArrayList<Energizer>();
         
         for (int y = 0; y < getHeight(); y++)
         {
@@ -164,12 +178,15 @@ public class Level
 
                 if (getTile(x, y) == Tile.GUM.getValue())
                 {
-                	consumables.add(new PacDot(x, y));
+                	PacDot pacdot = new PacDot(x, y);
+                	pacdots.add(pacdot);
+                	consumables.add(pacdot);
                 }
                 else if (getTile(x, y) == Tile.ENERGIZER.getValue())
                 {
-
-                	consumables.add(new Energizer(x, y));
+                	Energizer energizer = new Energizer(x, y); 
+                	energizers.add(energizer);
+                	consumables.add(energizer);
                 }
             }
         }

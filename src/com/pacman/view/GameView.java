@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 import javax.swing.JPanel;
 
-import com.pacman.controller.IGame;
+import com.pacman.model.IGame;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Sprites;
 import com.pacman.model.objects.entities.Entity;
@@ -150,7 +150,7 @@ public class GameView extends JPanel
 	
 	private void renderGameover(Graphics g)
     {
-        if (game.getCurrentState().getName() == StatesName.STOP)
+        if (game.getCurrentState().getName() == StatesName.STOP && !game.isPacmanWon())
         {
         	String message = "Gameover";
 	        g.setColor(new Color(0, 0, 0, 200));

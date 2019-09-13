@@ -31,8 +31,10 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		
 		game.getPacman().registerObserver(this);
         
-        newDirectionPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
-        nextTilesPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
+		game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
+		game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
+        //newDirectionPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
+        //nextTilesPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
         
         nextTilesDirection = game.getPacman().getDirection();
         newDirection = nextTilesDirection;
@@ -41,10 +43,12 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update() 
 	{
-        newDirectionPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
-        nextTilesPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
-        nextTilesPacman.updatePosition(nextTilesDirection);
-        newDirectionPacman.updatePosition(newDirection);
+		game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
+		game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
+        //newDirectionPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
+        //nextTilesPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
+        game.getNextTilesPacman().updatePosition(nextTilesDirection);
+        game.getNewDirectionPacman().updatePosition(newDirection);
 
         checkConsumablesCollision();
         

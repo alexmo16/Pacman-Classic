@@ -13,14 +13,17 @@ import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.objects.consumables.Energizer;
 import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Entity;
+import com.pacman.model.objects.entities.Ghost;
 import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.states.InitState;
+import com.pacman.model.states.MainMenuState;
 import com.pacman.model.states.PauseState;
 import com.pacman.model.states.PlayingState;
 import com.pacman.model.states.ResumeState;
 import com.pacman.model.states.StopState;
 import com.pacman.model.world.Direction;
+import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Tile;
 import com.pacman.utils.Settings;
 import com.pacman.view.GameView;
@@ -33,8 +36,8 @@ import com.pacman.view.Window;
 public class Game implements IGame
 {
     private Pacman pacman;
-    private Pacman maybeFuturPacman;
-    private Pacman futurPacman;
+    private Pacman newDirectionPacman;
+    private Pacman nextTilesPacman;
     
     private ArrayList<Entity> entities;
     private ArrayList<Wall> maze;
@@ -84,6 +87,8 @@ public class Game implements IGame
                 else if (Settings.WORLD_DATA.getTile(x, y) == Tile.PAC_MAN_START.getValue())
                 {
                 	pacman = new Pacman(x, y);
+                    newDirectionPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
+                    nextTilesPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
                 	entities.add(pacman);
                 }
                 else if (Settings.WORLD_DATA.getTile(x, y) == Tile.BLINKY_START.getValue())
@@ -258,6 +263,16 @@ public class Game implements IGame
 	public Pacman getPacman()
 	{
 		return pacman;
+	}
+	
+	public Pacman getNewDirectionPacman()
+	{
+		return newDirectionPacman;
+	}
+	
+	public Pacman getNextTilesPacman()
+	{
+		return nextTilesPacman;
 	}
 
 	public ArrayList<Wall> getMaze()

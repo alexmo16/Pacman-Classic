@@ -64,7 +64,7 @@ public abstract class Collision
      */
     public void executeWallStrategy( Game game)
     {
-    	String checkWallCollision = Collision.collisionWall(game.getFuturPacman());
+    	String checkWallCollision = Collision.collisionWall(game.getNextTilesPacman());
     	if ( checkWallCollision == "void" )
     	{
     		tunnelStrategy(game);
@@ -86,22 +86,22 @@ public abstract class Collision
      */
     private void oneWallStrategy(Game game)
     {
-    	String collisionString = collisionWall(game.getMaybeFuturPacman());
+    	String collisionString = collisionWall(game.getNewDirectionPacman());
         if (collisionString == "void")
         {
-        	game.getPacman().tunnel(game.getMaybeFuturPacman().getDirection());
-        	game.getPacman().setDirection(game.getMaybeFuturPacman().getDirection());
-        	game.getPacman().setCollision(false, game.getMaybeFuturPacman().getDirection());
+        	game.getPacman().tunnel(game.getNewDirectionPacman().getDirection());
+        	game.getPacman().setDirection(game.getNewDirectionPacman().getDirection());
+        	game.getPacman().setCollision(false, game.getNewDirectionPacman().getDirection());
         }
         if (collisionString == "path")
         {
-        	game.getPacman().updatePosition(game.getMaybeFuturPacman().getDirection());
-        	game.getPacman().setDirection(game.getMaybeFuturPacman().getDirection());
-        	game.getPacman().setCollision(false, game.getMaybeFuturPacman().getDirection());
+        	game.getPacman().updatePosition(game.getNewDirectionPacman().getDirection());
+        	game.getPacman().setDirection(game.getNewDirectionPacman().getDirection());
+        	game.getPacman().setCollision(false, game.getNewDirectionPacman().getDirection());
         } 
         else
         {
-        	game.getPacman().setCollision(true, game.getMaybeFuturPacman().getDirection());
+        	game.getPacman().setCollision(true, game.getNewDirectionPacman().getDirection());
         }
     }
     
@@ -110,8 +110,8 @@ public abstract class Collision
      */
     private void tunnelStrategy(Game game)
     {
-    	game.getPacman().tunnel(game.getFuturPacman().getDirection());
-    	game.getPacman().setCollision(false, game.getMaybeFuturPacman().getDirection());
+    	game.getPacman().tunnel(game.getNextTilesPacman().getDirection());
+    	game.getPacman().setCollision(false, game.getNewDirectionPacman().getDirection());
     }
     
     /**
@@ -119,10 +119,10 @@ public abstract class Collision
      */
     private void noWallStrategy(Game game)
     {
-    	game.getPacman().updatePosition(game.getMaybeFuturPacman().getDirection());
-    	game.getPacman().setDirection(game.getMaybeFuturPacman().getDirection());
-        game.getMaybeFuturPacman().setDirection(game.getFuturPacman().getDirection());
-        game.getPacman().setCollision(false, game.getMaybeFuturPacman().getDirection());
+    	game.getPacman().updatePosition(game.getNewDirectionPacman().getDirection());
+    	game.getPacman().setDirection(game.getNewDirectionPacman().getDirection());
+        game.getNewDirectionPacman().setDirection(game.getNextTilesPacman().getDirection());
+        game.getPacman().setCollision(false, game.getNewDirectionPacman().getDirection());
     }
 
     /**

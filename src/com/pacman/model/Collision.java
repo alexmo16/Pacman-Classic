@@ -1,11 +1,15 @@
 package com.pacman.model;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.objects.consumables.ConsumableVisitor;
 import com.pacman.model.objects.consumables.Energizer;
 import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.world.Level;
+import com.pacman.utils.Settings;
 
 
 /**
@@ -18,10 +22,12 @@ public class Collision
 
     private int[] authTiles;
     private Game game;
+    MathContext mc;
     
     public Collision(Game game)
     {
     	this.game = game;
+    	mc = new MathContext(3);
     }
     
 	private class ConsumableCollisionVisitor implements ConsumableVisitor
@@ -58,6 +64,7 @@ public class Collision
      */
     public String collisionWall(GameObject obj)
     {
+    	
     	int xMin = (int) obj.getHitBox().getMinX(); 
         int yMin = (int) obj.getHitBox().getMinY();
 
@@ -83,11 +90,15 @@ public class Collision
     }
     
     public boolean middleOfATiles() {
-    	double x = game.getPacman().getHitBox().x;
-    	double y = game.getPacman().getHitBox().y;
-	
+    	
+    	BigDecimal x = new BigDecimal(game.getPacman().getHitBox().x - (int) game.getPacman().getHitBox().x,mc);
+    	BigDecimal y = new BigDecimal(game.getPacman().getHitBox().y - (int) game.getPacman().getHitBox().y,mc);
 
-    	if ( ( x - (int)x >= 0 && x - (int)x <= 0.01 ) && ( y - (int)y >= 0 && y - (int)y <= 0.01 ) ) {
+    	
+    	BigDecimal value = new BigDecimal(0.05,mc);
+
+    	
+    	if (  x.compareTo(value) == 0 && y.compareTo(value) == 0 ) {
     		 return true;
     	}
     	return false;

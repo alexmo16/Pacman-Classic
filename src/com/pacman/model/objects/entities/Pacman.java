@@ -34,7 +34,7 @@ public class Pacman extends Entity implements IPublisher, Animation
     
     public Pacman(double x, double y)
     {
-        super(x, y, 0.9, 0.9, Direction.LEFT);
+        super(x+0.05, y+0.05, 0.9, 0.9, Direction.LEFT);
         spawnX = x;
         spawnY = y;
 		lifes = MAX_LIFES;

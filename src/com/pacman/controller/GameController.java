@@ -61,7 +61,6 @@ public class GameController implements Runnable
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_DOWN), (KeyEvent e) -> arrowsKeysPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_RIGHT), (KeyEvent e) -> arrowsKeysPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_LEFT), (KeyEvent e) -> arrowsKeysPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_K), (KeyEvent e) -> killButtonPressed(e) );
             
             window.addListener(inputs);
             instance = new GameController();
@@ -274,11 +273,6 @@ public class GameController implements Runnable
 			
 			game.setPacmanDirection(dir);
 		}
-    }
-    
-    private static void killButtonPressed(KeyEvent e)
-    {
-    	game.killPacman();
     }
     
     public static void pauseGame()

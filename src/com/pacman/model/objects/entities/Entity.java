@@ -54,24 +54,24 @@ public abstract class Entity extends GameObject
         if (dir == Direction.UP)
         {
         	x = hitBox.getX(); 
-        	y = Level.getHeight() - hitBox.getHeight() - 0.55;
+        	y = Level.getHeight() - hitBox.getHeight() - 0.5;
         }
         if (dir == Direction.DOWN)
         {
             x = hitBox.getX();
-            y = 0.55;
+            y = 0.5;
         }
         if (dir == Direction.RIGHT)
         {
-            x = 0.55;
+            x = 0.5;
             y = hitBox.getY();
         }
         if (dir == Direction.LEFT)
         {
-            x = Level.getWidth() - hitBox.getWidth() - 0.55;
+            x = Level.getWidth() - hitBox.getWidth() - 0.5;
             y = hitBox.getY();
         }
-
+        
         hitBox.setRect(x, y, hitBox.getWidth(), hitBox.getHeight());
     }
     

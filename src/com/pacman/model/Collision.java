@@ -2,6 +2,9 @@ package com.pacman.model;
 
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.consumables.Consumable;
+import com.pacman.model.objects.consumables.ConsumableVisitor;
+import com.pacman.model.objects.consumables.Energizer;
+import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.world.Level;
 
 
@@ -13,13 +16,38 @@ import com.pacman.model.world.Level;
 public class Collision
 {
 
-    int[] authTiles;
-    String test;
+    private int[] authTiles;
+    private Game game;
     
-    public Collision()
+    public Collision(Game game)
     {
-    	
+    	this.game = game;
     }
+    
+	private class ConsumableCollisionVisitor implements ConsumableVisitor
+	{
+
+		@Override
+		public void visitEnergizer(Energizer energizer)
+		{
+			Level level = game.getCurrentLevel();
+			level.getEnergizers().remove(energizer);
+		}
+
+		@Override
+		public void visitPacDot(PacDot pacdot)
+		{
+			Level level = game.getCurrentLevel();
+			level.getPacDots().remove(pacdot);
+		}
+
+		@Override
+		public void visitDefault(Consumable consumable)
+		{
+			game.getPacman().eat(consumable);
+	    	game.getConsumables().remove(consumable);
+		}
+	}
     
     /**
      * method used to check if obj hits a wall or goes in the tunnel
@@ -71,30 +99,30 @@ public class Collision
      * Redirect to the correct strategy
      * @param collisionString
      */
-    public void executeWallStrategy( Game game)
+    public void executeWallStrategy()
     {
 
     	String checkWallCollision = collisionWall(game.getNewDirectionPacman());
     	if ( checkWallCollision == "void" )
     	{
-    		tunnelStrategy(game);
+    		tunnelStrategy();
     	}
     	else if ( checkWallCollision == "wall" )
     	{
-    		oneWallStrategy(game);
+    		oneWallStrategy();
     	}
     	else
     		
     		
     	{
-    		noWallStrategy(game);
+    		noWallStrategy();
     	}
     }
     
     /**
      * Strategy if pacman hits a wall.
      */
-    private void oneWallStrategy(Game game)
+    private void oneWallStrategy()
     {
 
     	String collisionString = collisionWall(game.getNextTilesPacman());
@@ -119,7 +147,7 @@ public class Collision
     /**
      * Strategy if pacman goes through the tunnel
      */
-    private void tunnelStrategy(Game game)
+    private void tunnelStrategy()
     {
     	game.getPacman().tunnel(game.getPacman().getDirection());
     	game.getPacman().setCollision(false, game.getNewDirection());
@@ -128,7 +156,7 @@ public class Collision
     /**
      * Strategy if pacman moves forward
      */
-    private void noWallStrategy(Game game)
+    private void noWallStrategy()
     {
 
     	game.getPacman().updatePosition(game.getNewDirection());
@@ -141,14 +169,14 @@ public class Collision
     /**
      * Check if pacman eats a Gum
      */
-    public void checkConsumablesCollision(Game game)
+    public void checkConsumablesCollision()
     {
+    	ConsumableCollisionVisitor visitor = new ConsumableCollisionVisitor();
         for (Consumable consumable : game.getConsumables())
         {
             if (collisionObj(game.getPacman(), consumable))
             {
-            	game.getPacman().eat(consumable);
-            	game.getConsumables().remove(consumable);
+            	consumable.accept(visitor);
                 break;
             }
         }

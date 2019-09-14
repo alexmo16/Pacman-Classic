@@ -32,6 +32,7 @@ public class InitState implements IGameState
 	@Override
 	public void update()
 	{
+		// Logic when pacman finish a level, to generate the next one.
 		if (game.isPacmanWon())
 		{
 			game.setPacmanWon(false);
@@ -40,6 +41,7 @@ public class InitState implements IGameState
 			levelNumber++;
 			game.loadLevel(Integer.toString(levelNumber));
 		}
+		
 		game.playStartingMusic(startingMusicListener);
 	}
 

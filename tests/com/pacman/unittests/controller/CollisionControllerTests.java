@@ -24,6 +24,7 @@ public class CollisionControllerTests
 	private static Level level;
 	private final static String LEVEL_DATA_FILE = new String(System.getProperty("user.dir") + File.separator + "tests" + File.separator + "testAssets" + File.separator + "map.txt"); 
 	
+	/*
 	@BeforeAll
 	static void generateLevel()
 	{
@@ -73,4 +74,5 @@ public class CollisionControllerTests
     	
     	assertEquals("path",collision.collisionWall(obj1));
 	}
+	*/
 }

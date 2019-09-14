@@ -2,6 +2,9 @@ package com.pacman.model;
 
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.consumables.Consumable;
+import com.pacman.model.objects.consumables.ConsumableVisitor;
+import com.pacman.model.objects.consumables.Energizer;
+import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.world.Level;
 
 
@@ -13,13 +16,38 @@ import com.pacman.model.world.Level;
 public class Collision
 {
 
-    int[] authTiles;
-    String test;
+    private int[] authTiles;
+    private Game game;
     
-    public Collision()
+    public Collision(Game game)
     {
-    	
+    	this.game = game;
     }
+    
+	private class ConsumableCollisionVisitor implements ConsumableVisitor
+	{
+
+		@Override
+		public void visitEnergizer(Energizer energizer)
+		{
+			Level level = game.getCurrentLevel();
+			level.getEnergizers().remove(energizer);
+		}
+
+		@Override
+		public void visitPacDot(PacDot pacdot)
+		{
+			Level level = game.getCurrentLevel();
+			level.getPacDots().remove(pacdot);
+		}
+
+		@Override
+		public void visitDefault(Consumable consumable)
+		{
+			game.getPacman().eat(consumable);
+	    	game.getConsumables().remove(consumable);
+		}
+	}
     
     /**
      * method used to check if obj hits a wall or goes in the tunnel
@@ -143,12 +171,12 @@ public class Collision
      */
     public void checkConsumablesCollision(Game game)
     {
+    	ConsumableCollisionVisitor visitor = new ConsumableCollisionVisitor();
         for (Consumable consumable : game.getConsumables())
         {
             if (collisionObj(game.getPacman(), consumable))
             {
-            	game.getPacman().eat(consumable);
-            	game.getConsumables().remove(consumable);
+            	consumable.accept(visitor);
                 break;
             }
         }

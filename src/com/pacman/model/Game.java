@@ -72,7 +72,7 @@ public class Game implements IGame
     @Override
     public void init(Window window)
     {    
-    	collision = new Collision();
+    	collision = new Collision(this);
     	collision.setAuthTiles(Level.getAuthTiles());
     	currentLevel = new Level(LEVEL_DATA_FILE, "1");
     	maze = new ArrayList<Wall>();

@@ -1,8 +1,12 @@
 package com.pacman.model.states;
 
+import java.util.ArrayList;
+
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
+import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.world.Direction;
+import com.pacman.model.world.Level;
 import com.pacman.utils.IObserver;
 
 public class PlayingState implements IGameState, IObserver<Direction>
@@ -44,10 +48,16 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update() 
 	{
+		Level level = game.getCurrentLevel();
+		ArrayList<PacDot> pacdots = level.getPacDots();
+		if (pacdots.size() == 0)
+		{
+			game.setPacmanWon(true);
+			game.setState(game.getStopState());
+		}
+		
 		game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
 		game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
-        //newDirectionPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
-        //nextTilesPacman.getHitBox().setRect(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY(), game.getPacman().getHitBox().getWidth(), game.getPacman().getHitBox().getHeight());
         game.getNextTilesPacman().updatePosition(game.getNextTilesDirection());
         game.getNewDirectionPacman().updatePosition(game.getNewDirection());
 

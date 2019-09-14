@@ -99,7 +99,7 @@ public class Game implements IGame
             	}
                 else if (currentLevel.getTile(x, y) == Tile.PAC_MAN_START.getValue())
                 {
-                	pacman = new Pacman(x, y);
+                	pacman = new Pacman(x+0.05, y+0.05);
                     newDirectionPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
                     nextTilesPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
                 	entities.add(pacman);

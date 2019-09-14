@@ -125,7 +125,7 @@ public class Collision
      */
     public void executeWallStrategy()
     {
-
+    	
         if (middleOfATiles())
         {
             String checkWallCollision = collisionWall(game.getNewDirectionPacman());

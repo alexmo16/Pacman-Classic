@@ -43,6 +43,18 @@ public class Level
     	return null;
     }
     
+    public Consumable getConsumableAtCoords(double x, double y)
+    {
+        for (Consumable consumable : consumables)
+        {
+            if (consumable.getHitBox().getX() - 0.20 == x && consumable.getHitBox().getY() - 0.20 == y)
+            {
+                return consumable;
+            }
+        }
+        return null;
+    }
+    
     public int getTile(int x, int y)
     {
     	if (x < 0 || x > width || y < 0 || y > height)

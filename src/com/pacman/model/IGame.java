@@ -43,4 +43,5 @@ public interface IGame
 	
 	public boolean isPacmanWon();
 	public int getResumeTime();
+	public void killPacman();
 } 

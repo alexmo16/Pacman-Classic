@@ -3,11 +3,11 @@ package com.pacman.model.objects.entities;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
+import com.pacman.utils.Settings;
 
 public abstract class Entity extends GameObject
 {
     protected Direction direction;
-    protected double speed = 0.1;
 
     public Entity(double x, double y, double width, double height, Direction dir)
     {
@@ -21,21 +21,21 @@ public abstract class Entity extends GameObject
         if (dir == Direction.UP)
         {
         	x = hitBox.getX(); 
-        	y = hitBox.getY() - speed;
+        	y = hitBox.getY() - Settings.MOVEMENT;
         }
         else if (dir == Direction.DOWN)
         {
             x = hitBox.getX();
-            y = hitBox.getY() + speed;
+            y = hitBox.getY() + Settings.MOVEMENT;
         }
         else if (dir == Direction.RIGHT)
         {
-            x = hitBox.getX() + speed;
+            x = hitBox.getX() + Settings.MOVEMENT;
             y = hitBox.getY();
         }
         else if (dir == Direction.LEFT)
         {
-            x = hitBox.getX() - speed;
+            x = hitBox.getX() - Settings.MOVEMENT;
             y = hitBox.getY();
         }
         

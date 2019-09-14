@@ -3,13 +3,14 @@ package com.pacman.model.threads;
 public class TimerThread implements Runnable
 {
     private final int SLEEP_TIMER = 10;
-    private int timeInMs;   /*time the timer should be running */
-    private volatile boolean isRunning = false;
+    private int timeInMs;                           /* Time the timer should be running */
+    private volatile boolean isRunning;     /* State of  */
     private long timerCount;
 
     public TimerThread(int timer)
     {
         this.timeInMs = timer * 1000;
+        this.isRunning = false;
     }
 
     private boolean verifStop()
@@ -17,7 +18,14 @@ public class TimerThread implements Runnable
         return isRunning && timerCount <= timeInMs;
     }
 
-    public void showTime(int timerCount)
+    
+    /**
+     * Private method <br/>
+     * Show the time enlapsed since the timer has started<br/>
+     * Format mm : ss
+     * @param timerCount Time enlapsed in milliseconds
+     * */
+    private void showTime(int timerCount)
     {
         int minutes = timerCount / 60;
         int seconds = timerCount % 60;
@@ -32,6 +40,8 @@ public class TimerThread implements Runnable
 
         System.out.println(sMinutes + " : " + sSeconds);
     }
+    
+    
 
     @Override
     public void run()
@@ -41,7 +51,7 @@ public class TimerThread implements Runnable
         int currentTime = 0;
         int previousTime = 0;
 
-        System.out.println("Start timer thread : ");
+        System.out.println("Start timer thread");
 
         while (verifStop())
         {
@@ -58,12 +68,12 @@ public class TimerThread implements Runnable
                     previousTime = currentTime;
                     showTime(currentTime);
                 }
-
             } catch (Exception e)
             {
-                // TODO: handle exception
+                e.printStackTrace();
             }
         }
+        System.out.println("Stop timer thread");
 
     }
 

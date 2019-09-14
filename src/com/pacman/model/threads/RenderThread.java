@@ -1,12 +1,14 @@
 package com.pacman.model.threads;
 
 import com.pacman.model.IGame;
+import com.pacman.model.objects.Animation;
+import com.pacman.model.objects.GameObject;
 
 public class RenderThread implements Runnable
 {
 	private IGame game;
 	private Thread thread;
-	private int delay = 250;
+	private int delay = 100;
 	
 	public RenderThread(IGame g)
 	{
@@ -16,7 +18,14 @@ public class RenderThread implements Runnable
 	
     private void update() 
     {
-    	// TODO : update every object sprite
+    	for (GameObject obj : game.getGameObjects())
+    	{
+    		if (obj instanceof Animation)
+    		{
+    			Animation animation = (Animation)obj;
+    			animation.nextSprite();
+    		}
+    	}
     }
     
     public void start()

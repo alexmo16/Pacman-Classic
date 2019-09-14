@@ -3,6 +3,7 @@ package com.pacman.model.objects.entities;
 import java.util.ArrayList;
 
 import com.pacman.model.Sound;
+import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;
 import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.world.Direction;
@@ -15,8 +16,10 @@ import com.pacman.utils.IPublisher;
  * Observer design pattern
  *
  */
-public class Pacman extends Entity implements IPublisher
+public class Pacman extends Entity implements IPublisher, Animation
 {
+	private int animationState = 0, animationCycles = 3;
+	private boolean endOfAnimation = false;
     private Sound chomp;
     private int score = 0;
 	private final int MAX_LIFES = 3;
@@ -35,7 +38,7 @@ public class Pacman extends Entity implements IPublisher
         spawnX = x;
         spawnY = y;
 		lifes = MAX_LIFES;
-    	sprite = Sprites.getPacmanMovement(Direction.LEFT, 0);
+    	updateSprite();
     }
 
     public void setNextDirection(Direction dir)
@@ -79,8 +82,24 @@ public class Pacman extends Entity implements IPublisher
     @Override
     public void updateSprite()
     {
-    	sprite = Sprites.getPacmanMovement(direction, 0);
+    	sprite = Sprites.getPacmanMovement(direction, animationState);
     }
+    
+	@Override
+	public void nextSprite() 
+	{
+		if (collision == true)
+		{
+			animationState = 0;
+		}
+		else 
+		{
+			endOfAnimation = (animationState + 1 == animationCycles) ? true : endOfAnimation;
+			endOfAnimation = (animationState == 0) ? false : endOfAnimation;
+			animationState += (endOfAnimation ? -1 : 1);
+		}
+		updateSprite();
+	}
     
 	@Override
 	public void registerObserver(IObserver<?> observer) 

@@ -49,6 +49,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update() 
 	{
+		
 		for (i = 0; i < Settings.SPEED; i++ )
 		{
 			Level level = game.getCurrentLevel();

@@ -22,7 +22,7 @@ public class Settings
     
     public static final double MOVEMENT = 0.1;
     
-    public static int SPEED = 4;
+    public static int SPEED = 2;
     
     public static final double UPDATE_RATE = 1.0 / 60.0; // pour avoir 60 fps dans notre jeu.
 }

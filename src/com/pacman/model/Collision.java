@@ -81,6 +81,17 @@ public class Collision
 
         return "wall";
     }
+    
+    public boolean middleOfATiles() {
+    	double x = game.getPacman().getHitBox().x;
+    	double y = game.getPacman().getHitBox().y;
+	
+
+    	if ( ( x - (int)x >= 0 && x - (int)x <= 0.01 ) && ( y - (int)y >= 0 && y - (int)y <= 0.01 ) ) {
+    		 return true;
+    	}
+    	return false;
+    }
 
     /**
      * This method is used to check if the hitbox of obj1 intersect the hit box of obj2
@@ -101,22 +112,25 @@ public class Collision
      */
     public void executeWallStrategy( Game game)
     {
-
-    	String checkWallCollision = collisionWall(game.getNewDirectionPacman());
-    	if ( checkWallCollision == "void" )
-    	{
-    		tunnelStrategy(game);
-    	}
-    	else if ( checkWallCollision == "wall" )
-    	{
+    	if (middleOfATiles()) {
+    		String checkWallCollision = collisionWall(game.getNewDirectionPacman());
+        	if ( checkWallCollision == "void" )
+        	{
+        		tunnelStrategy(game);
+        	}
+        	else if ( checkWallCollision == "wall" )
+        	{
+        		oneWallStrategy(game);
+        	}
+        	else
+        	{
+        		noWallStrategy(game);
+        	}
+    	} else {
     		oneWallStrategy(game);
     	}
-    	else
-    		
-    		
-    	{
-    		noWallStrategy(game);
-    	}
+
+    	
     }
     
     /**
@@ -171,15 +185,19 @@ public class Collision
      */
     public void checkConsumablesCollision(Game game)
     {
-    	ConsumableCollisionVisitor visitor = new ConsumableCollisionVisitor();
-        for (Consumable consumable : game.getConsumables())
-        {
-            if (collisionObj(game.getPacman(), consumable))
+    	if (middleOfATiles()) {
+    		ConsumableCollisionVisitor visitor = new ConsumableCollisionVisitor();
+    		
+            for (Consumable consumable : game.getConsumables())
             {
-            	consumable.accept(visitor);
-                break;
+                if (collisionObj(game.getPacman(), consumable))
+                {
+                	consumable.accept(visitor);
+                    break;
+                }
             }
-        }
+    	}
+    	
     }
 
     /**

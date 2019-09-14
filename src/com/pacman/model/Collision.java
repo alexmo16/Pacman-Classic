@@ -110,7 +110,7 @@ public class Collision
      * Redirect to the correct strategy
      * @param collisionString
      */
-    public void executeWallStrategy( Game game)
+    public void executeWallStrategy()
     {
     	if (middleOfATiles()) {
     		String checkWallCollision = collisionWall(game.getNewDirectionPacman());
@@ -183,7 +183,7 @@ public class Collision
     /**
      * Check if pacman eats a Gum
      */
-    public void checkConsumablesCollision(Game game)
+    public void checkConsumablesCollision()
     {
     	if (middleOfATiles()) {
     		ConsumableCollisionVisitor visitor = new ConsumableCollisionVisitor();

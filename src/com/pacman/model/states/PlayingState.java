@@ -8,6 +8,7 @@ import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
 import com.pacman.utils.IObserver;
+import com.pacman.utils.Settings;
 
 public class PlayingState implements IGameState, IObserver<Direction>
 {
@@ -15,6 +16,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	
 	private Game game;
 	private Collision collision;
+	private int i;
 
 	
 	public PlayingState( Game gm )
@@ -40,21 +42,29 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update() 
 	{
-		Level level = game.getCurrentLevel();
-		ArrayList<PacDot> pacdots = level.getPacDots();
-		if (pacdots.size() == 0)
+		
+		for (i = 0; i < Settings.SPEED; i++ )
 		{
-			game.setPacmanWon(true);
-			game.setState(game.getStopState());
+			Level level = game.getCurrentLevel();
+			ArrayList<PacDot> pacdots = level.getPacDots();
+			if (pacdots.size() == 0)
+			{
+				game.setPacmanWon(true);
+				game.setState(game.getStopState());
+			}
+			
+			game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
+			game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
+	        game.getNextTilesPacman().updatePosition(game.getNextTilesDirection());
+	        game.getNewDirectionPacman().updatePosition(game.getNewDirection());
+
+	        
+	        // Strategy pattern for wall collisions.
+
+	        collision.checkConsumablesCollision(game);
+	        collision.executeWallStrategy(game);
 		}
 		
-		game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
-		game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
-        game.getNextTilesPacman().updatePosition(game.getNextTilesDirection());
-        game.getNewDirectionPacman().updatePosition(game.getNewDirection());
-
-        collision.checkConsumablesCollision();
-        collision.executeWallStrategy();
 	}
 
 	@Override

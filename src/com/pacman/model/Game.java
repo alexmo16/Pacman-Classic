@@ -63,7 +63,6 @@ public class Game implements IGame
     
     private boolean pacmanWon = false;
     private boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
-    
     private final String LEVEL_DATA_FILE = new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"); 
     
     /**
@@ -189,9 +188,9 @@ public class Game implements IGame
     {
         GameController.toggleMute();
         isUserMuted = GameController.getIsMuted();
-        if (GameController.getIsMuted())
+        if (isUserMuted)
         {
-            gameSiren.stop();
+        	gameSiren.stop();
         } else
         {
             gameSiren.playLoopBack();

@@ -20,11 +20,11 @@ public class Level
     private ArrayList<Consumable> consumables;
     private ArrayList<PacDot> pacdots;
     private ArrayList<Energizer> energizers;
-
+    
     public Level(String worldFilePath, String levelName)
     {
     	name = levelName;
-        loadLevelInformations(worldFilePath);
+    	loadLevelInformations(worldFilePath);
         generateConsumables();
     }
 
@@ -167,7 +167,7 @@ public class Level
     
     public void generateConsumables()
     {
-        consumables = new ArrayList<Consumable>();
+    	consumables = new ArrayList<Consumable>();
         pacdots = new ArrayList<PacDot>();
         energizers = new ArrayList<Energizer>();
         

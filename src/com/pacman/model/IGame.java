@@ -17,7 +17,6 @@ import com.pacman.view.Window;
 public interface IGame
 {
     public void init(Window window);
-
     public void update();
 
 	public void setState(IGameState state);

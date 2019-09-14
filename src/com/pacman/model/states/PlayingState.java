@@ -75,8 +75,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		return name;
 	}
     
-  
-	
     /**
      * update of the observer
      */

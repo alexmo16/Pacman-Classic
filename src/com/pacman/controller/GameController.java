@@ -25,7 +25,7 @@ public class GameController implements Runnable
     private static Window window;
  
     private static AtomicBoolean isRunning = new AtomicBoolean(false);
-    private static boolean isMuted = false;
+    private volatile static boolean isMuted = false;
 
     private static GameController instance;
 
@@ -74,17 +74,17 @@ public class GameController implements Runnable
         return isRunning.get();
     }
 
-    public static boolean getIsMuted()
+    public synchronized static boolean getIsMuted()
     {
         return isMuted;
     }
 
-    public static void setIsMuted(boolean isSoundMuted)
+    public synchronized static void setIsMuted(boolean isSoundMuted)
     {
         isMuted = isSoundMuted;
     }
 
-    public static void toggleMute()
+    public synchronized static void toggleMute()
     {
         isMuted = !isMuted;
     }

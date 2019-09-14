@@ -86,7 +86,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		game.setNewDirection(d);
 	}
 	
-	private void killPacman()
+	public void killPacman()
 	{
 		game.stopInGameMusics();
 		game.getPacman().looseLive();

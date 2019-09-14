@@ -20,6 +20,7 @@ public class StopState implements IGameState
 	            	game.setState(game.getMainMenuState());
 	            	game.getPacman().resetLives();
 	    			game.getPacman().resetScore();
+	    			game.stopDeathMusic();
 	            }
 	        }
 	    };

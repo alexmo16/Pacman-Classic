@@ -23,6 +23,7 @@ import com.pacman.model.states.MainMenuState;
 import com.pacman.model.states.PauseState;
 import com.pacman.model.states.PlayingState;
 import com.pacman.model.states.ResumeState;
+import com.pacman.model.states.StatesName;
 import com.pacman.model.states.StopState;
 import com.pacman.model.threads.RenderThread;
 import com.pacman.model.world.Direction;
@@ -220,6 +221,14 @@ public class Game implements IGame
 		}
 	}
 	
+	public void stopDeathMusic()
+	{
+		if ( death.getIsRunning() )
+		{
+			death.stop();
+		}
+	}
+	
 	public void resumeInGameMusics()
 	{
 		if ( !gameSiren.getIsRunning() )
@@ -383,5 +392,18 @@ public class Game implements IGame
 	public int getResumeTime()
 	{
 		return resumeTime;
+	}
+
+	/**
+	 * FOR TESTING ONLY
+	 */
+	@Override
+	public void killPacman()
+	{
+		if (currentState.getName() == StatesName.PLAY)
+		{
+			PlayingState state = (PlayingState) currentState;
+			state.killPacman();
+		}
 	}
 }

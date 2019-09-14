@@ -60,8 +60,9 @@ public final class Sprites
     
     private static void loadEnergizer()
     {
-    	energizer.put(0, new Sprite(tiles[13][0], tiles[13][1], tileSize));
-    	energizer.put(1, new Sprite(tiles[14][0], tiles[14][1], tileSize));
+    	energizer.put(0, new Sprite(tiles[12][0], tiles[12][1], tileSize));
+    	energizer.put(1, new Sprite(tiles[13][0], tiles[13][1], tileSize));
+    	energizer.put(2, new Sprite(tiles[14][0], tiles[14][1], tileSize));
     }
     
     private static void loadCharacters()

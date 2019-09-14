@@ -3,11 +3,15 @@ package com.pacman.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.pacman.controller.GameController;
+import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Wall;
 import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.objects.entities.Entity;
@@ -20,6 +24,7 @@ import com.pacman.model.states.PauseState;
 import com.pacman.model.states.PlayingState;
 import com.pacman.model.states.ResumeState;
 import com.pacman.model.states.StopState;
+import com.pacman.model.threads.RenderThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Level;
@@ -43,6 +48,7 @@ public class Game implements IGame
     private Direction newDirection;
         
     private ArrayList<Entity> entities;
+    private List<GameObject> gameObjects;
     
     private Sound startMusic;
     private Sound gameSiren;
@@ -58,6 +64,8 @@ public class Game implements IGame
     private IGameState resumeState;
     private IGameState currentState;
     private IGameState mainMenuState;
+    
+    private RenderThread renderThread;
     
     private Level currentLevel;
     
@@ -112,6 +120,8 @@ public class Game implements IGame
             }
         }
     	
+        gameObjects = Stream.of(maze, getConsumables(), entities).flatMap(x -> x.stream()).collect(Collectors.toList());
+        
         loadMusics();
         
     	window.setContainer(new GameView(this));
@@ -122,7 +132,10 @@ public class Game implements IGame
         resumeState = new ResumeState(this);
         playingState = new PlayingState(this);
         stopState = new StopState(this);
-        currentState = mainMenuState; 
+        currentState = mainMenuState;
+        
+        renderThread = new RenderThread(this);
+        renderThread.start();
     }
     
     /**
@@ -353,5 +366,10 @@ public class Game implements IGame
 		Level level = new Level(LEVEL_DATA_FILE, levelName);
 		currentLevel = level;
 		currentLevel.generateConsumables();
+	}
+
+	public List<GameObject> getGameObjects() 
+	{
+		return gameObjects;
 	}
 }

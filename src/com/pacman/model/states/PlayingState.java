@@ -15,13 +15,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	
 	private Game game;
 	private Collision collision;
-	/*
-	 * nextTilesPacman is pacman if he move on the same direction as before
-	 * newDirectionPacman is pacman if he is at an intersection and change is direction
-	 *  
-	 */
-	//private Pacman newDirectionPacman, nextTilesPacman;
-    //private Direction newDirection, nextTilesDirection;
+
 	
 	public PlayingState( Game gm )
 	{
@@ -38,8 +32,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
         
 		game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
 		game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
-        //newDirectionPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
-        //nextTilesPacman = new Pacman(game.getPacman().getHitBox().getX(), game.getPacman().getHitBox().getY());
         
         game.setNextTilesDirection(game.getPacman().getDirection());
         game.setNewDirection(game.getNextTilesDirection());
@@ -61,12 +53,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
         game.getNextTilesPacman().updatePosition(game.getNextTilesDirection());
         game.getNewDirectionPacman().updatePosition(game.getNewDirection());
 
-        
-        
-        // Strategy pattern for wall collisions.
-
-        collision.checkConsumablesCollision(game);
-        collision.executeWallStrategy(game);
+        collision.checkConsumablesCollision();
+        collision.executeWallStrategy();
 	}
 
 	@Override

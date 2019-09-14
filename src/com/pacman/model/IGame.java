@@ -1,7 +1,9 @@
 package com.pacman.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Wall;
 import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.objects.entities.Entity;
@@ -35,6 +37,7 @@ public interface IGame
 	public ArrayList<Entity> getEntities();
 	public ArrayList<Wall> getMaze();
 	public ArrayList<Consumable> getConsumables(); 
+	public List<GameObject> getGameObjects();
 	public Pacman getPacman();
 	public Level getCurrentLevel();
 	

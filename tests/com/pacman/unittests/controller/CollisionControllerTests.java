@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.pacman.model.Collision;
+import com.pacman.model.Game;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.world.Level;
 
@@ -24,13 +25,14 @@ public class CollisionControllerTests
 	private static Level level;
 	private final static String LEVEL_DATA_FILE = new String(System.getProperty("user.dir") + File.separator + "tests" + File.separator + "testAssets" + File.separator + "map.txt"); 
 	
-	/*
+	
 	@BeforeAll
 	static void generateLevel()
 	{
 		@SuppressWarnings("unused")
 		Level level = new Level(LEVEL_DATA_FILE, "1");
-		collision = new Collision();
+		Game game = Mockito.mock(Game.class);
+		collision = new Collision(game);
 		collision.setAuthTiles(auth);
 	}
 	
@@ -74,5 +76,5 @@ public class CollisionControllerTests
     	
     	assertEquals("path",collision.collisionWall(obj1));
 	}
-	*/
+
 }

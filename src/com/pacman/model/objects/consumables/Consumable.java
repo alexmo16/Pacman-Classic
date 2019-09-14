@@ -2,7 +2,7 @@ package com.pacman.model.objects.consumables;
 
 import com.pacman.model.objects.GameObject;
 
-public class Consumable extends GameObject
+public abstract class Consumable extends GameObject
 {
     protected int points;
     

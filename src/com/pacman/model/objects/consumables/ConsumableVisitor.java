@@ -1,4 +1,4 @@
- package com.pacman.model.objects.consumables;
+package com.pacman.model.objects.consumables;
 
 public interface ConsumableVisitor
 {

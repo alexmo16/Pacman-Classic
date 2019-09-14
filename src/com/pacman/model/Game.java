@@ -33,23 +33,15 @@ import com.pacman.view.Window;
  *
  */
 public class Game implements IGame
-{
+{	
     private Pacman pacman;
     private ArrayList<Wall> maze;
-    private Pacman newDirectionPacman;
-    private Pacman nextTilesPacman;
-    
-    private Direction nextTilesDirection;
-    private Direction newDirection;
-        
     private ArrayList<Entity> entities;
     
     private Sound startMusic;
     private Sound gameSiren;
     private Sound chomp;
     private Sound death;
-    
-    private Collision collision;
     
     private IGameState initState;
     private IGameState stopState;
@@ -72,8 +64,7 @@ public class Game implements IGame
     @Override
     public void init(Window window)
     {    
-    	collision = new Collision();
-    	collision.setAuthTiles(Level.getAuthTiles());
+    	Collision.setAuthTiles(Level.getAuthTiles());
     	currentLevel = new Level(LEVEL_DATA_FILE, "1");
     	maze = new ArrayList<Wall>();
         entities = new ArrayList<Entity>();
@@ -90,8 +81,6 @@ public class Game implements IGame
                 else if (currentLevel.getTile(x, y) == Tile.PAC_MAN_START.getValue())
                 {
                 	pacman = new Pacman(x, y);
-                    newDirectionPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
-                    nextTilesPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
                 	entities.add(pacman);
                 }
                 else if (currentLevel.getTile(x, y) == Tile.BLINKY_START.getValue())
@@ -140,7 +129,6 @@ public class Game implements IGame
 	{
 		pacman.setNextDirection(d);
 	}
-	
     
     /**
      * Load all audio files and distribute them where they're needed.
@@ -273,36 +261,6 @@ public class Game implements IGame
 	{
 		return pacman;
 	}
-	
-	public Pacman getNewDirectionPacman()
-	{
-		return newDirectionPacman;
-	}
-	
-	public Pacman getNextTilesPacman()
-	{
-		return nextTilesPacman;
-	}
-	
-	public Direction getNewDirection()
-	{
-		return newDirection;
-	}
-	
-	public Direction getNextTilesDirection()
-	{
-		return nextTilesDirection;
-	}
-	
-	public void setNewDirection(Direction direction)
-	{
-		this.newDirection = direction;
-	}
-	
-	public void setNextTilesDirection(Direction direction)
-	{
-		this.nextTilesDirection = direction;
-	}
 
 	public ArrayList<Wall> getMaze()
 	{
@@ -327,11 +285,6 @@ public class Game implements IGame
 	public Level getCurrentLevel()
 	{
 		return currentLevel;
-	}
-	
-	public Collision getCollision()
-	{
-		return collision;
 	}
 	
 	public void setCurrentLevel(Level level)

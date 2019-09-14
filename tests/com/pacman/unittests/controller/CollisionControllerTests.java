@@ -18,7 +18,6 @@ public class CollisionControllerTests
 {
 
 	private static int[] auth = {0,30,40};
-	private static Collision collision;
 
 	@SuppressWarnings("unused")
 	private static Level level;
@@ -29,8 +28,7 @@ public class CollisionControllerTests
 	{
 		@SuppressWarnings("unused")
 		Level level = new Level(LEVEL_DATA_FILE, "1");
-		collision = new Collision();
-		collision.setAuthTiles(auth);
+		Collision.setAuthTiles(auth);
 	}
 	
     @Test
@@ -43,7 +41,7 @@ public class CollisionControllerTests
     	Mockito.when(obj1.getHitBox().getMinY()).thenReturn(0.0);
     	Mockito.when(obj1.getHitBox().getMaxX()).thenReturn(0.9);
     	Mockito.when(obj1.getHitBox().getMaxY()).thenReturn(0.9);
-    	assertEquals("void",collision.collisionWall(obj1));  
+    	assertEquals("void",Collision.collisionWall(obj1));  
 	}
     
     @Test
@@ -57,7 +55,7 @@ public class CollisionControllerTests
     	Mockito.when(obj1.getHitBox().getMaxX()).thenReturn(1.9);
     	Mockito.when(obj1.getHitBox().getMaxY()).thenReturn(1.9);
     	
-    	assertEquals("wall",collision.collisionWall(obj1));
+    	assertEquals("wall",Collision.collisionWall(obj1));
 	}
     
     @Test
@@ -71,6 +69,6 @@ public class CollisionControllerTests
     	Mockito.when(obj1.getHitBox().getMaxX()).thenReturn(2.4);
     	Mockito.when(obj1.getHitBox().getMaxY()).thenReturn(2.4);
     	
-    	assertEquals("path",collision.collisionWall(obj1));
+    	assertEquals("path",Collision.collisionWall(obj1));
 	}
 }

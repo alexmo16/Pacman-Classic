@@ -1,4 +1,4 @@
-package com.pacman.utils;
+package com.pacman.model.threads;
 
 public class TimerThread implements Runnable
 {

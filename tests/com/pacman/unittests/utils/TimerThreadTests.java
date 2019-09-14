@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.pacman.utils.TimerThread;
+import com.pacman.model.threads.TimerThread;
 
 class TimerThreadTests
 {

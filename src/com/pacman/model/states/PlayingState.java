@@ -61,8 +61,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	        
 	        // Strategy pattern for wall collisions.
 
-	        collision.checkConsumablesCollision(game);
-	        collision.executeWallStrategy(game);
+	        collision.checkConsumablesCollision();
+	        collision.executeWallStrategy();
 		}
 		
 	}

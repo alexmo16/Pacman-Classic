@@ -67,6 +67,8 @@ public class Game implements IGame
     
     private RenderThread renderThread;
     
+    private int resumeTime = 3;
+    
     private Level currentLevel;
     
     private boolean pacmanWon = false;
@@ -371,5 +373,15 @@ public class Game implements IGame
 	public List<GameObject> getGameObjects() 
 	{
 		return gameObjects;
+	}
+
+	public void setResumeTime(int time)
+	{
+		resumeTime = time;
+	}
+	
+	public int getResumeTime()
+	{
+		return resumeTime;
 	}
 }

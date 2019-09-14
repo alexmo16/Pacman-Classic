@@ -46,8 +46,9 @@ public class GameView extends JPanel
         renderGameStatus(g);
         renderPause(g);
         renderGameover(g);
+        renderResumeTime(g);
 	}
-	
+
 	private void renderBackground(Graphics g)
 	{
         g.setColor(Color.black);
@@ -161,6 +162,22 @@ public class GameView extends JPanel
 	        renderString(g, message, x, y);
         }
     }
+	
+	private void renderResumeTime(Graphics g)
+	{
+		if (game.getCurrentState().getName() == StatesName.RESUME)
+        {
+			int time = game.getResumeTime(); // seconds
+			String message = Integer.toString(time);
+			g.setColor(new Color(0, 0, 0, 200));
+		    g.fillRect(0, 0, getWidth(), getHeight());
+		    
+		    int x = (getWidth() - (message.length() * tileSize)) / 2;
+		    int y = getHeight() / 2;
+		    
+		    renderString(g, message, x, y);
+        }
+	}
 	
 	private void renderString(Graphics g, String message, int x, int y)
 	{

@@ -1,10 +1,12 @@
 package com.pacman.model.states;
 
 import com.pacman.model.Game;
+import com.pacman.model.threads.TimerThread;
 
 public class StopState implements IGameState 
 {
 	private Game game;
+	TimerThread timer;
 	private StatesName name = StatesName.STOP;
 	
 	public StopState( Game gm )
@@ -18,13 +20,18 @@ public class StopState implements IGameState
 		game.stopInGameMusics();
 		
 		// Juste pour voir le message gameover
-		// TODO enlever ca quand y va avoir les animations et tout svp.
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (timer == null)
+		{
+			timer = new TimerThread(2);
+			timer.start();
 		}
+		
+		if (timer.isAlive())
+		{
+			return;
+		}
+		
+		timer = null;
 		
 		boolean hasWon = game.isPacmanWon();
 		if (hasWon)

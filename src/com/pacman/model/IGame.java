@@ -42,4 +42,5 @@ public interface IGame
 	public Level getCurrentLevel();
 	
 	public boolean isPacmanWon();
-}
+	public int getResumeTime();
+} 

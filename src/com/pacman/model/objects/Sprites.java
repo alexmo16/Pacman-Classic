@@ -117,10 +117,16 @@ public final class Sprites
     
     private static void loadPacmanDeath()
     {
-    	int idx = 144;
-    	for (int x = 0; x < 12; x++)
+    	int idx = 128;
+    	for (int x = 0; x < 8; x++)
     	{
-    		pacmanDeath.put(x, new Sprite(tiles[idx + x][0], tiles[idx + x][1], 2 * tileSize));
+    		pacmanDeath.put(x, new Sprite(tiles[idx][0], tiles[idx][1], 2 * tileSize));
+    		idx += 2;
+    	}
+    	idx = 160;
+    	for (int x = 8; x < 12; x++)
+    	{
+    		pacmanDeath.put(x, new Sprite(tiles[idx][0], tiles[idx][1], 2 * tileSize));
     		idx += 2;
     	}
     }

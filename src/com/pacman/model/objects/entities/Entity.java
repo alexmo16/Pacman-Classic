@@ -80,5 +80,6 @@ public abstract class Entity extends GameObject
         updateSprite();
     }
     
+    
     public abstract void updateSprite();
 }

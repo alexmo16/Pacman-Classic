@@ -1,6 +1,6 @@
 package com.pacman.model.threads;
 
-import com.pacman.controller.IGame;
+import com.pacman.model.IGame;
 
 public class RenderThread implements Runnable
 {

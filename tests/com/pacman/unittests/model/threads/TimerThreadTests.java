@@ -17,7 +17,7 @@ class TimerThreadTests
         int JOIN_TIMER = 500;
         
         this.time = 3;
-        Thread th = new TimerThread(time);
+        Thread th = new Thread(new TimerThread(time));
         th.start();
         synchronized (th)
         {
@@ -41,7 +41,7 @@ class TimerThreadTests
         int JOIN_TIMER = 500;
         this.time = -1;
         
-        Thread th = new TimerThread(time);
+        Thread th = new Thread(new TimerThread(time));
         th.start();
         
         synchronized (th)

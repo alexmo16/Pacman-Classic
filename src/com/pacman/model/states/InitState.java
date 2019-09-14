@@ -57,6 +57,7 @@ public class InitState implements IGameState
 			GameController.toggleMute();
 		}
 		
+		game.getPacman().respawn();
 		game.playStartingMusic(startingMusicListener);
 	}
 

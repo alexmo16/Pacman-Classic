@@ -2,6 +2,9 @@ package com.pacman.model.states;
 
 import java.util.ArrayList;
 
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
+
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
 import com.pacman.model.objects.consumables.PacDot;
@@ -17,7 +20,21 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	private Game game;
 	private Collision collision;
 	private int i;
+	private volatile boolean isPacmanDying = false;
 
+	LineListener deathSoundListener = new LineListener()
+	{
+	     @Override
+	     public void update(LineEvent event)
+	     {
+	         if (event.getType() == LineEvent.Type.STOP)
+	         {		
+	        	game.setState(game.getPacman().getLives() == 0 ? game.getStopState() : game.getInitState());
+	   			game.stopDeathMusic();
+	   			isPacmanDying = false;
+	         }
+	     }
+	};
 	
 	public PlayingState( Game gm )
 	{
@@ -42,17 +59,21 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update() 
 	{
+		if (isPacmanDying)
+		{
+			return;
+		}
+		
+		Level level = game.getCurrentLevel();
+		ArrayList<PacDot> pacdots = level.getPacDots();
+		if (pacdots.size() == 0)
+		{
+			game.setPacmanWon(true);
+			game.setState(game.getStopState());
+		}
 		
 		for (i = 0; i < Settings.SPEED; i++ )
 		{
-			Level level = game.getCurrentLevel();
-			ArrayList<PacDot> pacdots = level.getPacDots();
-			if (pacdots.size() == 0)
-			{
-				game.setPacmanWon(true);
-				game.setState(game.getStopState());
-			}
-			
 			game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
 			game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
 	        game.getNextTilesPacman().updatePosition(game.getNextTilesDirection());
@@ -79,8 +100,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update(Direction d) 
 	{
-		if ( game.getNewDirection() == game.getPacman().getDirection() ) {
-			
+		if ( game.getNewDirection() == game.getPacman().getDirection() ) 
+		{
 			game.setNextTilesDirection(game.getNewDirection());
 		}
 		game.setNewDirection(d);
@@ -88,9 +109,9 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	
 	public void killPacman()
 	{
+		isPacmanDying = true;
 		game.stopInGameMusics();
 		game.getPacman().looseLive();
-		game.getPacman().respawn();
-		game.setState(game.getPacman().getLives() == 0 ? game.getStopState() : game.getInitState());
+		game.playDeathMusic(deathSoundListener);
 	}
 }

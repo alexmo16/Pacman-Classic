@@ -2,6 +2,8 @@ package com.pacman.model.objects.entities;
 
 import java.util.ArrayList;
 
+import org.mockito.internal.invocation.RealMethod.IsIllegal;
+
 import com.pacman.model.Sound;
 import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;
@@ -18,7 +20,24 @@ import com.pacman.utils.IPublisher;
  */
 public class Pacman extends Entity implements IPublisher, Animation
 {
-	private int animationState = 0, animationCycles = 3;
+	private enum Animation
+	{
+		IDLE(0),
+		MOVING(3),
+		DYING(12);
+		
+		private final int value;
+
+		Animation(final int newValue)
+	    {
+	        value = newValue;
+	    }
+
+	    public int getValue() { return value; }
+	};
+	
+	private Animation currentAnimation = Animation.IDLE;
+	private int animationState = 0;
 	private boolean endOfAnimation = false;
     private Sound chomp;
     private int score = 0;
@@ -82,21 +101,34 @@ public class Pacman extends Entity implements IPublisher, Animation
     @Override
     public void updateSprite()
     {
-    	sprite = Sprites.getPacmanMovement(direction, animationState);
+    	switch(currentAnimation)
+    	{
+		case DYING:
+			sprite = Sprites.getPacmanDeath(animationState);
+			break;
+		case IDLE:
+			sprite = Sprites.getPacmanMovement(direction, 0);
+			break;
+		case MOVING:
+			sprite = Sprites.getPacmanMovement(direction, animationState);
+			break;
+		default:
+			break;
+    	}
     }
     
 	@Override
 	public void nextSprite() 
 	{
-		if (collision == true)
+		endOfAnimation = (animationState + 1 == currentAnimation.getValue()) ? true : endOfAnimation;
+		endOfAnimation = (animationState == 0) ? false : endOfAnimation;
+		if (currentAnimation != Animation.DYING)
 		{
-			animationState = 0;
+			animationState += (endOfAnimation ? -1 : 1);
 		}
 		else 
 		{
-			endOfAnimation = (animationState + 1 == animationCycles) ? true : endOfAnimation;
-			endOfAnimation = (animationState == 0) ? false : endOfAnimation;
-			animationState += (endOfAnimation ? -1 : 1);
+			animationState = animationState != (currentAnimation.getValue() - 1) ? animationState + 1 : animationState;
 		}
 		updateSprite();
 	}
@@ -134,9 +166,13 @@ public class Pacman extends Entity implements IPublisher, Animation
 		}
 	}
 
-	public void setCollision(boolean b, Direction oldDirection) 
+	public void setCollision(boolean isInCollision, Direction oldDirection) 
 	{
-		collision = b;
+		Animation lastAnimation = currentAnimation;
+		currentAnimation = isInCollision ? Animation.IDLE : Animation.MOVING;
+		animationState = lastAnimation != currentAnimation ? 0 : animationState;
+		
+		collision = isInCollision;
 		collisionDirection = oldDirection;
 	}
 
@@ -163,10 +199,15 @@ public class Pacman extends Entity implements IPublisher, Animation
 	public void looseLive()
 	{
 		lifes--;
+		currentAnimation = Animation.DYING;
+		animationState = 0;
 	}
 	
 	public void respawn()
 	{
+		currentAnimation = Animation.IDLE;
+		animationState = 0;
+		
 		setNextDirection(firstDirection);
 		setDirection(firstDirection);
 		hitBox.x = spawnX;

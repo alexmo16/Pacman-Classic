@@ -10,7 +10,7 @@ public class Energizer extends Consumable implements Animation
 	
     public Energizer(double x, double y)
     {
-    	super(x + 0.25, y + 0.25, 0.5, 0.5);
+    	super(x, y);
         points = 50;
         sprite = Sprites.getEnergizer(0);
     }

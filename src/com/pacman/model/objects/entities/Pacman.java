@@ -20,17 +20,13 @@ import com.pacman.utils.IPublisher;
  */
 public class Pacman extends Entity implements IPublisher, Animation
 {
-	
-	
-	private enum Animation
+	public enum Animation
 	{
 		IDLE(0),
 		MOVING(3),
 		DYING(12);
 		
 		private final int value;
-		
-		
 
 		Animation(final int newValue)
 	    {
@@ -71,17 +67,14 @@ public class Pacman extends Entity implements IPublisher, Animation
     	{
     		return;
     	}
-
-
+    	
     	Direction oldDirection = nextDirection;
     	nextDirection = dir;
     	
     	if (oldDirection != nextDirection)
     	{
     		notifyObservers();
-
     	}
-		
     }
     
     /**
@@ -179,6 +172,7 @@ public class Pacman extends Entity implements IPublisher, Animation
 		Animation lastAnimation = currentAnimation;
 		currentAnimation = isInCollision ? Animation.IDLE : Animation.MOVING;
 		animationState = lastAnimation != currentAnimation ? 0 : animationState;
+		endOfAnimation = lastAnimation != currentAnimation ? false : endOfAnimation;
 		
 		collision = isInCollision;
 		collisionDirection = oldDirection;
@@ -209,19 +203,20 @@ public class Pacman extends Entity implements IPublisher, Animation
 		lifes--;
 		currentAnimation = Animation.DYING;
 		animationState = 0;
+		endOfAnimation = false;
 	}
 	
 	public void respawn()
 	{
 		currentAnimation = Animation.IDLE;
 		animationState = 0;
+		endOfAnimation = false;
 		
 		this.setIsTravelling(false);
 		setNextDirection(firstDirection);
 		setDirection(firstDirection);
 		hitBox.x = spawnX;
 		hitBox.y = spawnY;
-		
 	}
 	
 	public void resetLives()
@@ -233,6 +228,16 @@ public class Pacman extends Entity implements IPublisher, Animation
 	{
 		score = 0;
 	}
+	
+	public boolean isEndOfAnimation()
+    {
+        return endOfAnimation;
+    }
+    
+    public final Animation getCurrentAnimation()
+    {
+        return currentAnimation;
+    }
 	
 	public boolean getIstravelling()
 	{

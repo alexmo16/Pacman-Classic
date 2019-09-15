@@ -9,6 +9,7 @@ import javax.sound.sampled.LineListener;
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
 import com.pacman.model.objects.consumables.PacDot;
+import com.pacman.model.objects.entities.Pacman.Animation;
 import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.objects.entities.Ghost;
 import com.pacman.model.threads.TimerThread;
@@ -67,9 +68,13 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update() 
 	{
-		      	
 		if (isPacmanDying)
 		{
+			if (game.getPacman().getCurrentAnimation() == Animation.DYING && game.getPacman().isEndOfAnimation())
+			{
+				game.setState(game.getPacman().getLives() <= 0 ? game.getStopState() : game.getInitState());
+				isPacmanDying = false;
+			}
 			return;
 		}
 		
@@ -174,7 +179,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 			}
 				game.setNewDirection(d);
 			
-		//}
 	}
 	
 	public void killPacman()
@@ -182,7 +186,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		isPacmanDying = true;
 		game.stopInGameMusics();
 		game.getPacman().looseLive();
-		game.playDeathMusic(deathSoundListener);
+		game.playDeathMusic();
 		
 		for (int i = 0; i<4; i++)
 		{

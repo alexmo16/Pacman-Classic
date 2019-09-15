@@ -117,23 +117,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
             {
         		if (((Ghost) entity).getAlive())
                 {
-
-                    Ghost g2 = new Ghost(((Ghost) entity).getX(), ((Ghost) entity).getY(), ((Ghost) entity).getType());
-                    g2.setAuthTiles(level.getAuthTilesGhost(),level.getAuthTilesGhostRoom());
-                    g2.setDirection(((Ghost) entity).getDirection());
-                    g2.getNewDirection();
-                    g2.updatePosition(g2.getDirection());
-                    while (collision.collisionWall(g2) != "path")
-                    {
-                    	g2.getHitBox().setRect(entity.getHitBox());
-                    	g2.setDirection(((Ghost) entity).getDirection());
-                        g2.getNewDirection();
-                        g2.updatePosition(g2.getDirection());
-
-                    }
-                    entity.setDirection(g2.getDirection());
-                    entity.updatePosition(g2.getDirection());
-
+        			collision.ghostMove(entity);
 
                 } else if ( ((Ghost) entity).getSpawning() )
                 {

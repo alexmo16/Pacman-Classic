@@ -6,7 +6,6 @@ import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
-import com.pacman.model.world.Tile;
 
 public class Ghost extends Entity implements Animation
 {

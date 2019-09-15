@@ -17,7 +17,10 @@ public class Level
     private String name;
     private static final int[] AUTH_TILES = { Tile.FLOOR.getValue(), Tile.GUM.getValue(), Tile.ENERGIZER.getValue(), Tile.FRUIT.getValue(), Tile.PAC_MAN_START.getValue(), Tile.TUNNEL.getValue() };
     private static final int[] AUTH_TILES_GHOST = { Tile.FLOOR.getValue(), Tile.GUM.getValue(), Tile.ENERGIZER.getValue(), Tile.FRUIT.getValue(), Tile.PAC_MAN_START.getValue() };
-    private static final int[] AUTH_TILES_GHOST_ROOM = { Tile.FLOOR.getValue(), Tile.GUM.getValue(), Tile.ENERGIZER.getValue(), Tile.FRUIT.getValue(), Tile.PAC_MAN_START.getValue(), Tile.DOOR_1.getValue(), Tile.DOOR_2.getValue(), Tile.DOOR_3.getValue(), Tile.DOOR_4.getValue() };
+    private static final int[] AUTH_TILES_GHOST_ROOM = { Tile.FLOOR.getValue(), Tile.GUM.getValue(), Tile.ENERGIZER.getValue(), Tile.FRUIT.getValue(),
+    		Tile.PAC_MAN_START.getValue(), Tile.DOOR_1.getValue(), Tile.DOOR_2.getValue(),
+    		Tile.DOOR_3.getValue(), Tile.DOOR_4.getValue(),Tile.BLINKY_START.getValue(),
+    		Tile.PINKY_START.getValue(), Tile.INKY_START.getValue(), Tile.CLYDE_START.getValue() };
     
     private ArrayList<Consumable> consumables;
     private ArrayList<PacDot> pacdots;

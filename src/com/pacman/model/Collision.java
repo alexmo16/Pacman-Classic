@@ -251,6 +251,28 @@ public class Collision
 		}
 		
 	}
+	
+	public void ghostMove(Entity obj) {
+		
+		Ghost g2 = new Ghost(((Ghost) obj).getX(), ((Ghost) obj).getY(), ((Ghost) obj).getType());
+        g2.setAlive();
+        g2.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(),game.getCurrentLevel().getAuthTilesGhostRoom());
+        g2.setDirection(((Ghost) obj).getDirection());
+        g2.getNewDirection();
+        g2.updatePosition(g2.getDirection());
+        while (collisionWall(g2) != "path")
+        {
+        	g2.getHitBox().setRect(obj.getHitBox());
+        	g2.setDirection(((Ghost) obj).getDirection());
+            g2.getNewDirection();
+            g2.updatePosition(g2.getDirection());
+
+        }
+        obj.setDirection(g2.getDirection());
+        obj.updatePosition(g2.getDirection());
+
+		
+	}
 
     /**
      * This method check if the maze's tiles at the coordinates given in parameters
@@ -265,8 +287,7 @@ public class Collision
 
         for (int i : entity.getAuthTiles())
         { 
-            if (tiles[x][y] == i || tiles[x][y] == 2 || tiles[x][y] == 15 || tiles[x][y] == 14 || tiles[x][y] == 16
-            		|| tiles[x][y] == 61 || tiles[x][y] == 62 || tiles[x][y] == 63 || tiles[x][y] == 64)
+            if (tiles[x][y] == i)
             {
             	if(i == 70 && (int) game.getPacman().getX() == x && (int) game.getPacman().getY() == y)
             	{

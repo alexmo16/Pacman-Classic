@@ -146,7 +146,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
 	        collision.checkConsumablesCollision();
 	        collision.executeWallStrategy();
-	        System.out.println(game.getPacman().getHitBox());
 		}
 
 		

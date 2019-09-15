@@ -74,6 +74,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		
 		for (i = 0; i < Settings.SPEED; i++ )
 		{
+			
 			game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
 			game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
 	        game.getNextTilesPacman().updatePosition(game.getNextTilesDirection());
@@ -100,11 +101,15 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update(Direction d) 
 	{
-		if ( game.getNewDirection() == game.getPacman().getDirection() ) 
-		{
+		//System.out.println("game " +game.getPacman().getIstravelling());
+
+			if ( game.getNewDirection() == game.getPacman().getDirection() ) 
+			{
 			game.setNextTilesDirection(game.getNewDirection());
-		}
-		game.setNewDirection(d);
+			}
+				game.setNewDirection(d);
+			
+		//}
 	}
 	
 	public void killPacman()

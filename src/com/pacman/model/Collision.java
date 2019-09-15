@@ -22,7 +22,6 @@ public class Collision
     public Collision(Game game)
     {
     	this.game = game;
-        this.game = game;
     }
 
     private class ConsumableCollisionVisitor implements ConsumableVisitor
@@ -159,6 +158,8 @@ public class Collision
         } else
         {
             game.getPacman().setCollision(true, game.getNextTilesDirection());
+            //System.out.println(game.getPacman().getIstravelling());
+            game.getPacman().setIsTravelling(false);
         }
     }
 
@@ -177,11 +178,17 @@ public class Collision
     private void noWallStrategy()
     {
 
-        game.getPacman().updatePosition(game.getNewDirection());
-        game.getPacman().setDirection(game.getNewDirection());
-        game.setNextTilesDirection(game.getNewDirection());
-        game.getPacman().setCollision(false, game.getNewDirection());
-    }
+    	if ( !game.getPacman().getIstravelling() ) 
+    	{
+    		game.getPacman().updatePosition(game.getNewDirection());
+            game.getPacman().setDirection(game.getNewDirection());
+            game.setNextTilesDirection(game.getNewDirection());
+            game.getPacman().setCollision(false, game.getNewDirection());
+        } else {
+        	oneWallStrategy();
+        }
+    	}
+        
 
     /**
      * Check if pacman eats a Gum
@@ -227,6 +234,13 @@ public class Collision
         {
             if (tiles[x][y] == i)
             {
+            	if(i == 70)
+            	{
+            		//System.out.println("tunnel");
+            		game.getPacman().setIsTravelling(true);
+            		
+            		//System.out.println(game.getPacman().getIstravelling());
+            	}
                 return true;
             }
         }

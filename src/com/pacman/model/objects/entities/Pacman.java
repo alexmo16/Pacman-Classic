@@ -2,6 +2,8 @@ package com.pacman.model.objects.entities;
 
 import java.util.ArrayList;
 
+import org.mockito.internal.invocation.RealMethod.IsIllegal;
+
 import com.pacman.model.Sound;
 import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;
@@ -18,6 +20,8 @@ import com.pacman.utils.IPublisher;
  */
 public class Pacman extends Entity implements IPublisher, Animation
 {
+	
+	
 	private enum Animation
 	{
 		IDLE(0),
@@ -25,6 +29,8 @@ public class Pacman extends Entity implements IPublisher, Animation
 		DYING(12);
 		
 		private final int value;
+		
+		
 
 		Animation(final int newValue)
 	    {
@@ -48,6 +54,7 @@ public class Pacman extends Entity implements IPublisher, Animation
     private double spawnX;
     private double spawnY;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
+    private boolean isTravelling = false;
     
     public Pacman(double x, double y)
     {
@@ -64,14 +71,21 @@ public class Pacman extends Entity implements IPublisher, Animation
     	{
     		return;
     	}
-    	
+
+
     	Direction oldDirection = nextDirection;
     	nextDirection = dir;
     	
     	if (oldDirection != nextDirection)
     	{
+    		System.out.println(" pacman " +this.isTravelling);
+    		//if(!this.isTravelling)
+    		//{
+    		
     		notifyObservers();
+    		//}
     	}
+		
     }
     
     /**
@@ -206,10 +220,12 @@ public class Pacman extends Entity implements IPublisher, Animation
 		currentAnimation = Animation.IDLE;
 		animationState = 0;
 		
+		this.setIsTravelling(false);
 		setNextDirection(firstDirection);
 		setDirection(firstDirection);
 		hitBox.x = spawnX;
 		hitBox.y = spawnY;
+		
 	}
 	
 	public void resetLives()
@@ -221,4 +237,15 @@ public class Pacman extends Entity implements IPublisher, Animation
 	{
 		score = 0;
 	}
+	
+	public boolean getIstravelling()
+	{
+		return this.isTravelling;
+	}
+	
+	public void setIsTravelling(boolean bool)
+	{
+		this.isTravelling = bool;
+	}
+	
 }

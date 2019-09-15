@@ -12,7 +12,8 @@ public enum Tile
 	BLINKY_START(61),
 	PINKY_START(62),
 	INKY_START(63),
-	CLYDE_START(64);
+	CLYDE_START(64),
+    TUNNEL(70);
 
     private final int value;
 

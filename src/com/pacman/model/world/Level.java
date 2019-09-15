@@ -15,7 +15,7 @@ public class Level
     private static int[][] tiles = null;
     private static int width = 0, height = 0;
     private String name;
-    private static final int[] AUTH_TILES = { Tile.FLOOR.getValue(), Tile.GUM.getValue(), Tile.ENERGIZER.getValue(), Tile.FRUIT.getValue(), Tile.PAC_MAN_START.getValue() };
+    private static final int[] AUTH_TILES = { Tile.FLOOR.getValue(), Tile.GUM.getValue(), Tile.ENERGIZER.getValue(), Tile.FRUIT.getValue(), Tile.PAC_MAN_START.getValue(), Tile.TUNNEL.getValue() };
     
     private ArrayList<Consumable> consumables;
     private ArrayList<PacDot> pacdots;

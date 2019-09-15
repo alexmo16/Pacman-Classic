@@ -167,7 +167,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update(Direction d) 
 	{
-		//System.out.println("game " +game.getPacman().getIstravelling());
 
 			if ( game.getNewDirection() == game.getPacman().getDirection() ) 
 			{

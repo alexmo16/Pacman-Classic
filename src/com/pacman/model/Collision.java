@@ -164,7 +164,6 @@ public class Collision
         } else
         {
             game.getPacman().setCollision(true, game.getNextTilesDirection());
-            //System.out.println(game.getPacman().getIstravelling());
             game.getPacman().setIsTravelling(false);
         }
     }
@@ -292,7 +291,6 @@ public class Collision
     			Rectangle2D hitboxCollision = hitboxPacman.createIntersection(hitboxGhost);
     			if((hitboxCollision.getHeight() * hitboxCollision.getWidth()) > (hitboxPacman.getHeight() * hitboxPacman.getWidth() ) / 5)
     			{
-    			//System.out.println("collision");
     				return true;
     			}
     		}
@@ -306,7 +304,6 @@ public class Collision
     	double xPacman = game.getPacman().getHitBox().getCenterX();
     	double yPacman = game.getPacman().getHitBox().getCenterY();
     	
-    	//for (Entity entity : game.getEntities())
     	for (int i = 0; i < 4; i++)
     	{
     		
@@ -314,10 +311,6 @@ public class Collision
     		double xEntity = entity.getHitBox().getCenterX();
     		double yEntity = entity.getHitBox().getCenterY();
 
-			//System.out.println(Math.sqrt(Math.pow(xPacman-xEntity,2)));
-			//System.out.println(Math.sqrt(Math.pow(yPacman-yEntity,2)));
-			//System.out.println(entity);
-			//System.out.println(Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)));
 			if (Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)) <= 4)
 			{
 				return (Ghost) entity;

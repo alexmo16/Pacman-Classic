@@ -20,7 +20,7 @@ public class GameView extends JPanel
 	
 	private IGame game;
 	private int tileSize, horizontalBorder, verticalBorder;
-	private boolean debug = false;
+	private boolean debug = true;
 	
 	public GameView(IGame gm)
 	{

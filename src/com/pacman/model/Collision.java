@@ -1,10 +1,14 @@
 package com.pacman.model;
 
+import java.awt.geom.Rectangle2D;
+
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.objects.consumables.ConsumableVisitor;
 import com.pacman.model.objects.consumables.Energizer;
 import com.pacman.model.objects.consumables.PacDot;
+import com.pacman.model.objects.entities.Entity;
+import com.pacman.model.objects.entities.Ghost;
 import com.pacman.model.world.Level;
 
 /**
@@ -236,5 +240,50 @@ public class Collision
     public void setAuthTiles(int[] auth)
     {
         authTiles = auth;
+    }
+    
+    public boolean collisionGhost()
+    {
+    	Ghost ghost = getNearestGhost();
+    	if (ghost != null)
+    	{
+    		double xCoord = ghost.getXCoord();
+    		double yCoord = ghost.getYCoord();
+    		Rectangle2D.Double hitboxGhost = new Rectangle2D.Double(xCoord, yCoord, 2,2);
+    		Rectangle2D.Double hitboxPacman = new Rectangle2D.Double(game.getPacman().getXCoord(),game.getPacman().getYCoord(), 2, 2 );
+    		
+    		if(hitboxGhost.intersects(hitboxPacman))
+    		{
+    			return true;
+    		}
+    	}
+    	return false;
+    	
+    }
+    
+    private Ghost getNearestGhost()
+    {
+    	double xPacman = game.getPacman().getHitBox().getCenterX();
+    	double yPacman = game.getPacman().getHitBox().getCenterY();
+    	
+    	for (Entity entity : game.getEntities())
+    	{
+    	//Entity entity = game.getEntities().get(0);
+    		double xEntity = entity.getHitBox().getCenterX();
+    		double yEntity = entity.getHitBox().getCenterY();
+    		if (xEntity != xPacman && yEntity != yPacman)
+    		{
+    			//System.out.println(Math.sqrt(Math.pow(xPacman-xEntity,2)));
+    			//System.out.println(Math.sqrt(Math.pow(yPacman-yEntity,2)));
+    			//System.out.println(entity);
+    			//System.out.println(Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)));
+    			if (Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)) <= 4)
+    			{
+    				return (Ghost) entity;
+    			}
+    		}
+    			
+    	}
+    	return null;
     }
 }

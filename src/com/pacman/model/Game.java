@@ -106,7 +106,7 @@ public class Game implements IGame
                 }
                 else if (currentLevel.getTile(x, y) == Tile.BLINKY_START.getValue())
                 {
-                	entities.add(new Ghost(x, y, GhostType.BLINKY));
+                	entities.add(new Ghost(3.05, 3.05, GhostType.BLINKY));
                 }
                 else if (currentLevel.getTile(x, y) == Tile.PINKY_START.getValue())
                 {

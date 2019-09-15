@@ -255,9 +255,12 @@ public class Collision
     		
     		if(hitboxPacman.intersects(hitboxGhost))
     		{
+    			Rectangle2D hitboxCollision = hitboxPacman.createIntersection(hitboxGhost);
+    			if((hitboxCollision.getHeight() * hitboxCollision.getWidth()) > (hitboxPacman.getHeight() * hitboxPacman.getWidth() ) / 5)
+    			{
     			//System.out.println("collision");
-    			
-    			return true;
+    				return true;
+    			}
     		}
     	}
     	return false;

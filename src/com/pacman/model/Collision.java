@@ -280,7 +280,7 @@ public class Collision
 			//System.out.println(Math.sqrt(Math.pow(xPacman-xEntity,2)));
 			//System.out.println(Math.sqrt(Math.pow(yPacman-yEntity,2)));
 			//System.out.println(entity);
-			System.out.println(Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)));
+			//System.out.println(Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)));
 			if (Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)) <= 4)
 			{
 				return (Ghost) entity;

@@ -13,6 +13,7 @@ public abstract class Entity extends GameObject
     
     protected static double xOffsetSprite;
     protected static double yOffsetSprite;
+    
 
 
 
@@ -126,4 +127,6 @@ public abstract class Entity extends GameObject
     	this.xCoord = this.getX() - xOffsetSprite ;
     	this.yCoord = this.getY() - yOffsetSprite ;
     }
+    
+    public abstract int[] getAuthTiles();
 }

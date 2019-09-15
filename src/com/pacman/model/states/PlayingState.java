@@ -63,6 +63,9 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
         game.setNextTilesDirection(game.getPacman().getDirection());
         game.setNewDirection(game.getNextTilesDirection());
+
+        game.getNewDirectionPacman().setAuthTiles(game.getCurrentLevel().getAuthTiles());
+        game.getNextTilesPacman().setAuthTiles(game.getCurrentLevel().getAuthTiles());
     }
 
     @Override
@@ -116,6 +119,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
                 {
 
                     Ghost g2 = new Ghost(((Ghost) entity).getX(), ((Ghost) entity).getY(), ((Ghost) entity).getType());
+                    g2.setAuthTiles(level.getAuthTilesGhost(),level.getAuthTilesGhostRoom());
                     g2.setDirection(((Ghost) entity).getDirection());
                     g2.getNewDirection();
                     g2.updatePosition(g2.getDirection());

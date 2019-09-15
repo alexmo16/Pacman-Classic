@@ -85,7 +85,7 @@ public class Game implements IGame
     public void init(Window window)
     {    
     	collision = new Collision(this);
-    	collision.setAuthTiles(Level.getAuthTiles());
+    	//collision.setAuthTiles(Level.getAuthTiles());
     	currentLevel = new Level(LEVEL_DATA_FILE, "1");
     	maze = new ArrayList<Wall>();
         entities = new ArrayList<Entity>();
@@ -105,22 +105,27 @@ public class Game implements IGame
                     newDirectionPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
                     nextTilesPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
                 	entities.add(pacman);
+                	pacman.setAuthTiles(currentLevel.getAuthTiles());
                 }
                 else if (currentLevel.getTile(x, y) == Tile.BLINKY_START.getValue())
                 {
                 	entities.add(new Ghost(x, y, GhostType.BLINKY));
+                	((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
                 }
                 else if (currentLevel.getTile(x, y) == Tile.PINKY_START.getValue())
                 {
                 	entities.add(new Ghost(x, y, GhostType.PINKY));
+                	((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
                 }
                 else if (currentLevel.getTile(x, y) == Tile.INKY_START.getValue())
                 {
                 	entities.add(new Ghost(x, y, GhostType.INKY));
+                	((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
                 }
                 else if (currentLevel.getTile(x, y) == Tile.CLYDE_START.getValue())
                 {
                 	entities.add(new Ghost(x, y, GhostType.CLYDE));
+                	((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
                 }
             }
         }        

@@ -52,6 +52,9 @@ public class Pacman extends Entity implements IPublisher, Animation
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
     private boolean isTravelling = false;
     
+    private int[] authTiles;
+    
+   
     public Pacman(double x, double y)
     {
         super(x+0.05, y+0.05, 0.9, 0.9, Direction.LEFT);
@@ -60,6 +63,7 @@ public class Pacman extends Entity implements IPublisher, Animation
 		lifes = MAX_LIFES;
     	updateSprite();
     }
+
 
     public void setNextDirection(Direction dir)
     {
@@ -249,4 +253,13 @@ public class Pacman extends Entity implements IPublisher, Animation
 		this.isTravelling = bool;
 	}
 	
+	public void setAuthTiles(int[] tab)
+	{
+		this.authTiles = tab;
+	}
+	
+	public int[] getAuthTiles()
+	{
+		return this.authTiles;
+	}
 }

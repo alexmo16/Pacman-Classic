@@ -61,7 +61,7 @@ public class Collision
      * @return "path" if there is no collision, "wall" when obj hits a wall, "void"
      *         when obj enters the tunnel
      */
-    public String collisionWall(GameObject obj)
+    public String collisionWall(Entity obj)
     {
     	
     	int xMin = (int) obj.getHitBox().getMinX(); 
@@ -80,7 +80,7 @@ public class Collision
             return "void";
         }
 
-        else if (isAuth(xMin, yMin) & isAuth(xMin, yMax) & isAuth(xMax, yMin) & isAuth(xMax, yMax))
+        else if (isAuth(xMin, yMin, obj) & isAuth(xMin, yMax, obj) & isAuth(xMax, yMin, obj) & isAuth(xMax, yMax, obj))
         {
 
             return "path";
@@ -227,6 +227,7 @@ public class Collision
 	public void ghostSpawn(GameObject obj) {
 		
 		Ghost g2 = new Ghost( obj.getX(), obj.getY(), ((Ghost)obj).getType() );
+		g2.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(),game.getCurrentLevel().getAuthTilesGhostRoom());
 		g2.updatePosition(g2.getDirection());
 		
 		if ( !((Ghost)obj).getInTheGate() && collisionWall(g2) != "path" )
@@ -258,11 +259,11 @@ public class Collision
      * @return "true" if the the tile is walkable, "false" if the tile is not a
      *         walkable tiles
      */
-    public boolean isAuth(int x, int y)
+    public boolean isAuth(int x, int y, Entity entity)
     {
         int[][] tiles = Level.getTiles();
 
-        for (int i : authTiles)
+        for (int i : entity.getAuthTiles())
         { 
             if (tiles[x][y] == i || tiles[x][y] == 2 || tiles[x][y] == 15 || tiles[x][y] == 14 || tiles[x][y] == 16
             		|| tiles[x][y] == 61 || tiles[x][y] == 62 || tiles[x][y] == 63 || tiles[x][y] == 64)

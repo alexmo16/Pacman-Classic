@@ -4,6 +4,10 @@ public enum Tile
 {
 	FLOOR(0),
     WALL_START(1),
+    DOOR_1(2),
+    DOOR_2(14),
+    DOOR_3(15),
+    DOOR_4(16),
     WALL_END(24),
     GUM(30),
     ENERGIZER(40),

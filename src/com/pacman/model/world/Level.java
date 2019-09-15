@@ -16,6 +16,8 @@ public class Level
     private static int width = 0, height = 0;
     private String name;
     private static final int[] AUTH_TILES = { Tile.FLOOR.getValue(), Tile.GUM.getValue(), Tile.ENERGIZER.getValue(), Tile.FRUIT.getValue(), Tile.PAC_MAN_START.getValue(), Tile.TUNNEL.getValue() };
+    private static final int[] AUTH_TILES_GHOST = { Tile.FLOOR.getValue(), Tile.GUM.getValue(), Tile.ENERGIZER.getValue(), Tile.FRUIT.getValue(), Tile.PAC_MAN_START.getValue() };
+    private static final int[] AUTH_TILES_GHOST_ROOM = { Tile.FLOOR.getValue(), Tile.GUM.getValue(), Tile.ENERGIZER.getValue(), Tile.FRUIT.getValue(), Tile.PAC_MAN_START.getValue(), Tile.DOOR_1.getValue(), Tile.DOOR_2.getValue(), Tile.DOOR_3.getValue(), Tile.DOOR_4.getValue() };
     
     private ArrayList<Consumable> consumables;
     private ArrayList<PacDot> pacdots;
@@ -82,9 +84,19 @@ public class Level
         return height;
     }
     
-    public static int[] getAuthTiles()
+    public int[] getAuthTiles()
     {
     	return AUTH_TILES;
+    }
+    
+    public int[] getAuthTilesGhost()
+    {
+    	return AUTH_TILES_GHOST;
+    }
+    
+    public int[] getAuthTilesGhostRoom()
+    {
+    	return AUTH_TILES_GHOST_ROOM;
     }
     
     public String getName()

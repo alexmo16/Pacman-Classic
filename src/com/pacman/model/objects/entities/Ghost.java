@@ -18,10 +18,14 @@ public class Ghost extends Entity implements Animation
 	private Random random;
 	private int randomInt;
 	private Direction firstDirection = Direction.UP;
+	
 	private double spawnX;
 	private double spawnY;
 	
-    public Ghost(double x, double y, GhostType t)
+	private int[] authTiles;
+	private int[] authTilesRoom;
+	
+    public Ghost(double x, double y, GhostType t )
     {
         super(x, y, 0.9, 0.9, Direction.UP);
         spawnX = x;
@@ -108,5 +112,20 @@ public class Ghost extends Entity implements Animation
 		setDirection(firstDirection);
 		hitBox.x = spawnX;
 		hitBox.y = spawnY;
+	}
+	
+	public void setAuthTiles(int[] tab1, int[] tab2)
+	{
+		this.authTiles = tab1;
+		this.authTilesRoom = tab2;
+	}
+	
+	public int[] getAuthTiles()
+	{
+		if(this.isAlive)
+		{
+			return this.authTiles;
+		}
+		return this.authTilesRoom;
 	}
 }

@@ -25,4 +25,7 @@ public class Settings
     public static int SPEED = 1;
     
     public static final double UPDATE_RATE = 1.0 / 60.0; // pour avoir 60 fps dans notre jeu.
+    
+    public static final double TILES_HEIGHT = 1;
+    public static final double TILES_WIDTH = 1;
 }

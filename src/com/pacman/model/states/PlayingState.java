@@ -136,12 +136,19 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	        game.getNewDirectionPacman().updatePosition(game.getNewDirection());
 
 	        
+	        if (collision.collisionGhost())
+	        {
+	        	game.killPacman();
+	        	return;
+	        }
+
 	        // Strategy pattern for wall collisions.
 
 	        collision.checkConsumablesCollision();
 	        collision.executeWallStrategy();
 	        System.out.println(game.getPacman().getHitBox());
 		}
+
 		
 	}
 

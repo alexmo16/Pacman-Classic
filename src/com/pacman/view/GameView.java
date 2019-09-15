@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 import javax.swing.JPanel;
 
+import com.pacman.controller.GameController;
 import com.pacman.model.IGame;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Sprites;
@@ -107,6 +108,13 @@ public class GameView extends JPanel
         y = verticalBorder / 2;
         s = "Collision ";
         if (game.getPacman().isCollision()) { s += game.getPacman().getCollisionDirection(); };
+        renderString(g, s, x, y);
+        
+        // Top right - FPS
+        x = getWidth() - horizontalBorder + 2 * tileSize;
+        y = verticalBorder / 2;
+        s = "FPS ";
+        s += Integer.toString(GameController.getFps());
         renderString(g, s, x, y);
         
         // Bot left - Score

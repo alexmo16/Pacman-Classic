@@ -28,7 +28,6 @@ public class Collision
     public Collision(Game game)
     {
     	this.game = game;
-        this.game = game;
     }
 
     private class ConsumableCollisionVisitor implements ConsumableVisitor
@@ -165,6 +164,8 @@ public class Collision
         } else
         {
             game.getPacman().setCollision(true, game.getNextTilesDirection());
+            //System.out.println(game.getPacman().getIstravelling());
+            game.getPacman().setIsTravelling(false);
         }
     }
 
@@ -183,11 +184,17 @@ public class Collision
     private void noWallStrategy()
     {
 
-        game.getPacman().updatePosition(game.getNewDirection());
-        game.getPacman().setDirection(game.getNewDirection());
-        game.setNextTilesDirection(game.getNewDirection());
-        game.getPacman().setCollision(false, game.getNewDirection());
-    }
+    	if ( !game.getPacman().getIstravelling() ) 
+    	{
+    		game.getPacman().updatePosition(game.getNewDirection());
+            game.getPacman().setDirection(game.getNewDirection());
+            game.setNextTilesDirection(game.getNewDirection());
+            game.getPacman().setCollision(false, game.getNewDirection());
+        } else {
+        	oneWallStrategy();
+        }
+    	}
+        
 
     /**
      * Check if pacman eats a Gum
@@ -254,6 +261,13 @@ public class Collision
             if (tiles[x][y] == i || tiles[x][y] == 2 || tiles[x][y] == 15 || tiles[x][y] == 14 || tiles[x][y] == 16
             		|| tiles[x][y] == 61 || tiles[x][y] == 62 || tiles[x][y] == 63 || tiles[x][y] == 64)
             {
+            	if(i == 70)
+            	{
+            		//System.out.println("tunnel");
+            		game.getPacman().setIsTravelling(true);
+            		
+            		//System.out.println(game.getPacman().getIstravelling());
+            	}
                 return true;
             }
         }

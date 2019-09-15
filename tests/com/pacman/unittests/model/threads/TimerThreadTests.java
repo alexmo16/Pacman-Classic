@@ -53,8 +53,7 @@ class TimerThreadTests
             } catch (Exception e)
             {
                 isException = true;
-                e.printStackTrace();
-                System.out.println("The timer is negative");
+                System.out.println("java.lang.IllegalArgumentException : The timer is negative");
             }
         }
         assertTrue(isException);

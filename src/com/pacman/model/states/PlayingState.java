@@ -81,7 +81,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
         if (timerThread == null)
         {
 
-            timerThread = new TimerThread(1);
+            timerThread = new TimerThread(5);
             timerThread.start();
         }
 
@@ -93,7 +93,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
             if (!((Ghost) game.getEntities().get(randomInt)).getAlive())
             {
 
-                collision.ghostSpawn(((Ghost) game.getEntities().get(0)));
+                collision.ghostSpawn(((Ghost) game.getEntities().get(randomInt)));
                 ((Ghost) game.getEntities().get(randomInt)).setSpawning();
                 timerThread = null;
             }

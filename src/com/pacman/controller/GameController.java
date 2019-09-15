@@ -1,6 +1,7 @@
 package com.pacman.controller;
 
 import java.awt.event.KeyEvent;
+import java.nio.channels.InterruptedByTimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.pacman.model.IGame;
@@ -26,7 +27,9 @@ public class GameController implements Runnable
  
     private static AtomicBoolean isRunning = new AtomicBoolean(false);
     private volatile static boolean isMuted = false;
-
+    private static int fps;
+    
+    
     private static GameController instance;
 
     /**
@@ -107,6 +110,13 @@ public class GameController implements Runnable
      */
     public static void stopGame()
     {
+    	try 
+    	{
+			game.stopThreads();
+		} catch (InterruptedByTimeoutException | InterruptedException e) 
+    	{
+			e.printStackTrace();
+		}
         isRunning.set(false);
     }
 
@@ -133,7 +143,7 @@ public class GameController implements Runnable
 
         double frameTime = 0;
         int frames = 0;
-        int fps = 0;
+        fps = 0;
 
         while (isRunning.get())
         {
@@ -157,7 +167,6 @@ public class GameController implements Runnable
             {
                 frameTime = 0;
                 fps = frames;
-                //System.out.println(fps);
                 frames = 0;
             }
 
@@ -306,4 +315,12 @@ public class GameController implements Runnable
     		game.setState(game.getResumeState());
     	}
     }
+
+	/**
+	 * @return the fps
+	 */
+	public static int getFps() 
+	{
+		return fps;
+	}
 }

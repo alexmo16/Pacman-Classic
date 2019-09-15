@@ -2,8 +2,6 @@ package com.pacman.model.objects.entities;
 
 import java.util.ArrayList;
 
-import org.mockito.internal.invocation.RealMethod.IsIllegal;
-
 import com.pacman.model.Sound;
 import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;

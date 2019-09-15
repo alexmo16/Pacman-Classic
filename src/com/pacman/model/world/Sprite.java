@@ -70,4 +70,20 @@ public class Sprite
 	{
 		return y + sizeY;
 	}
+
+	/**
+	 * @return Width of the sprite.
+	 */
+	public int getWidth() 
+	{
+		return sizeX;
+	}
+
+	/**
+	 * @return Height of the sprite.
+	 */
+	public int getHeight() 
+	{
+		return sizeY;
+	}
 }

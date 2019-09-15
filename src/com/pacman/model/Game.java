@@ -2,6 +2,7 @@ package com.pacman.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.channels.InterruptedByTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,7 +51,6 @@ public class Game implements IGame
     private Direction newDirection;
         
     private ArrayList<Entity> entities;
-    private List<GameObject> gameObjects;
     
     private Sound startMusic;
     private Sound gameSiren;
@@ -68,6 +68,7 @@ public class Game implements IGame
     private IGameState mainMenuState;
     
     private RenderThread renderThread;
+    private static final int JOIN_TIMER = 500; //ms
     
     private int resumeTime = 3;
     
@@ -122,9 +123,7 @@ public class Game implements IGame
                 	entities.add(new Ghost(x, y, GhostType.CLYDE));
                 }
             }
-        }
-    	
-        gameObjects = Stream.of(maze, getConsumables(), entities).flatMap(x -> x.stream()).collect(Collectors.toList());
+        }        
         
         loadMusics();
         
@@ -383,7 +382,8 @@ public class Game implements IGame
 
 	public List<GameObject> getGameObjects() 
 	{
-		return gameObjects;
+		return Stream.of(getMaze(), getConsumables(), getEntities()).flatMap(x -> x.stream()).collect(Collectors.toList());
+
 	}
 
 	public void setResumeTime(int time)
@@ -406,6 +406,23 @@ public class Game implements IGame
 		{
 			PlayingState state = (PlayingState) currentState;
 			state.killPacman();
+		}
+	}
+
+	/**
+	 * Method to stop all sub threads of the application.
+	 * @throws InterruptedException 
+	 * @throws InterruptedByTimeoutException 
+	 */
+	@Override
+	public void stopThreads() throws InterruptedException, InterruptedByTimeoutException 
+	{
+		renderThread.stopThread();
+		renderThread.join(JOIN_TIMER);
+		if (renderThread.isAlive())
+		{
+			renderThread.interrupt();
+			throw new InterruptedByTimeoutException();
 		}
 	}
 }

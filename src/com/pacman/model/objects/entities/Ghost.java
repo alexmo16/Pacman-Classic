@@ -14,10 +14,15 @@ public class Ghost extends Entity implements Animation
 	private boolean isAlive;
 	private Random random;
 	private int randomInt;
+	private Direction firstDirection = Direction.UP;
+	private double spawnX;
+	private double spawnY;
 	
     public Ghost(double x, double y, GhostType t)
     {
         super(x, y, 0.9, 0.9, Direction.UP);
+        spawnX = x;
+        spawnY = y;
         type = t;
         isAlive = false;
         updateSprite();
@@ -46,6 +51,11 @@ public class Ghost extends Entity implements Animation
 		isAlive = true;
 	}
 	
+	public void setNotAlive()
+	{
+		isAlive = false;
+	}
+	
 	public GhostType getType()
 	{
 		return type;
@@ -55,5 +65,11 @@ public class Ghost extends Entity implements Animation
 		random = new Random();
 		randomInt = random.nextInt(4);
 		return Direction.values()[randomInt];
+	}
+	
+	public void respawn() {
+		setDirection(firstDirection);
+		hitBox.x = spawnX;
+		hitBox.y = spawnY;
 	}
 }

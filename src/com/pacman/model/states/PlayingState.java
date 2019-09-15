@@ -176,5 +176,11 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		game.stopInGameMusics();
 		game.getPacman().looseLive();
 		game.playDeathMusic(deathSoundListener);
+		
+		for (int i = 0; i<4; i++)
+		{
+			((Ghost) game.getEntities().get(i)).respawn();
+			((Ghost) game.getEntities().get(i)).setNotAlive();
+		}
 	}
 }

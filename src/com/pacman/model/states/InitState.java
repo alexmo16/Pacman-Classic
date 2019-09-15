@@ -5,6 +5,8 @@ import javax.sound.sampled.LineListener;
 
 import com.pacman.controller.GameController;
 import com.pacman.model.Game;
+import com.pacman.model.objects.entities.Entity;
+import com.pacman.model.objects.entities.Ghost;
 
 public class InitState implements IGameState
 {
@@ -58,6 +60,8 @@ public class InitState implements IGameState
 		}
 		
 		game.getPacman().respawn();
+		
+		
 		game.playStartingMusic(startingMusicListener);
 	}
 

@@ -6,9 +6,14 @@ public abstract class Consumable extends GameObject
 {
     protected int points;
     
-    public Consumable(double x, double y, double width, double height)
+    protected static double consumableWidth = 0.5,
+                            consumableHeight = 0.5,
+                            xOffset = (1 - consumableWidth) / 2,
+                            yOffset = (1 - consumableHeight) / 2;
+    
+    public Consumable(double x, double y)
     {
-    	super(x, y, width, height);
+    	super(x + xOffset, y + yOffset, consumableWidth, consumableHeight);
         points = 0;
     }
     

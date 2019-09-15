@@ -61,6 +61,11 @@ public class InitState implements IGameState
 		
 		game.getPacman().respawn();
 		
+		for (int i = 0; i < 4; i++)
+	    {
+			((Ghost) game.getEntities().get(i)).respawn();
+	    }
+		
 		
 		game.playStartingMusic(startingMusicListener);
 	}

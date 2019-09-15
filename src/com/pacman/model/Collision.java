@@ -229,7 +229,7 @@ public class Collision
 		Ghost g2 = new Ghost( obj.getX(), obj.getY(), ((Ghost)obj).getType() );
 		g2.updatePosition(g2.getDirection());
 		
-		if (collisionWall(g2) != "path" )
+		if ( !((Ghost)obj).getInTheGate() && collisionWall(g2) != "path" )
 		{
 			if ( g2.getType() == GhostType.BLINKY || g2.getType() == GhostType.PINKY )
 			{
@@ -238,8 +238,15 @@ public class Collision
 			{
 				((Ghost)obj).updatePosition(Direction.LEFT);
 			}
-		} else {
+		} else if (((Ghost)obj).getInTheGate() && collisionWall(g2) != "path")
+		{
 			((Ghost)obj).setAlive();
+			((Ghost)obj).setNotInTheGate();
+			((Ghost)obj).setNotSpawning();
+		} else
+		{
+			((Ghost)obj).setInTheGate();
+			((Ghost)obj).updatePosition(Direction.UP);
 		}
 		
 	}

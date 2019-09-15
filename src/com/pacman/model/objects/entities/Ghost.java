@@ -14,6 +14,7 @@ public class Ghost extends Entity implements Animation
 	private GhostType type;
 	private boolean isAlive;
 	private boolean isSpawning;
+	private boolean isInTheGate;
 	private Random random;
 	private int randomInt;
 	private Direction firstDirection = Direction.UP;
@@ -28,6 +29,7 @@ public class Ghost extends Entity implements Animation
         type = t;
         isAlive = false;
         isSpawning = false;
+        isInTheGate = false;
         updateSprite();
     }
     
@@ -62,6 +64,18 @@ public class Ghost extends Entity implements Animation
 		isSpawning = true;
 	}
 	
+	public boolean getInTheGate() {
+		return isInTheGate;
+	}
+	
+	public void setInTheGate() {
+		isInTheGate = true;
+	}
+	
+	public void setNotInTheGate() {
+		isInTheGate = false;
+	}
+	
 	public void setNotSpawning() {
 		isSpawning = false;
 	}
@@ -90,6 +104,7 @@ public class Ghost extends Entity implements Animation
 	public void respawn() {
 		setNotAlive();
 		setNotSpawning();
+		setNotInTheGate();
 		setDirection(firstDirection);
 		hitBox.x = spawnX;
 		hitBox.y = spawnY;

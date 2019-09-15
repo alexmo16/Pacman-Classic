@@ -81,7 +81,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
         if (timerThread == null)
         {
 
-            timerThread = new TimerThread(5);
+            timerThread = new TimerThread(1);
             timerThread.start();
         }
 
@@ -93,7 +93,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
             if (!((Ghost) game.getEntities().get(randomInt)).getAlive())
             {
 
-                collision.ghostSpawn(((Ghost) game.getEntities().get(randomInt)));
+                collision.ghostSpawn(((Ghost) game.getEntities().get(0)));
                 ((Ghost) game.getEntities().get(randomInt)).setSpawning();
                 timerThread = null;
             }
@@ -110,18 +110,19 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
         for (Entity entity : game.getEntities())
         {
-            if (entity.getHitBox() != game.getPacman().getHitBox())
+        	if (entity.getHitBox() != game.getPacman().getHitBox())
             {
-                if (((Ghost) entity).getAlive())
+        		if (((Ghost) entity).getAlive())
                 {
 
                     Ghost g2 = new Ghost(((Ghost) entity).getX(), ((Ghost) entity).getY(), ((Ghost) entity).getType());
                     g2.setDirection(((Ghost) entity).getDirection());
+                    g2.getNewDirection();
                     g2.updatePosition(g2.getDirection());
                     while (collision.collisionWall(g2) != "path")
                     {
-                        g2 = new Ghost(((Ghost) entity).getX(), ((Ghost) entity).getY(), ((Ghost) entity).getType());
-                        g2.setDirection(((Ghost) entity).getDirection());
+                    	g2.getHitBox().setRect(entity.getHitBox());
+                    	g2.setDirection(((Ghost) entity).getDirection());
                         g2.getNewDirection();
                         g2.updatePosition(g2.getDirection());
 
@@ -129,7 +130,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
                     entity.setDirection(g2.getDirection());
                     entity.updatePosition(g2.getDirection());
 
-                } else if (((Ghost) entity).getSpawning())
+
+                } else if ( ((Ghost) entity).getSpawning() )
                 {
                     collision.ghostSpawn(entity);
                 }

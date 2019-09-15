@@ -1,5 +1,7 @@
 package com.pacman.model.objects.entities;
 
+import java.util.Random;
+
 import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;
 import com.pacman.model.world.Direction;
@@ -9,11 +11,15 @@ public class Ghost extends Entity implements Animation
 {
     private int animationState = 0, animationCycles = 2;
 	private GhostType type;
+	private boolean isAlive;
+	private Random random;
+	private int randomInt;
 	
     public Ghost(double x, double y, GhostType t)
     {
-        super(x, y, 1, 1, Direction.UP);
+        super(x, y, 0.9, 0.9, Direction.UP);
         type = t;
+        isAlive = false;
         updateSprite();
     }
     
@@ -28,5 +34,26 @@ public class Ghost extends Entity implements Animation
 	{
 		animationState = (animationState + 1) % animationCycles;
 		updateSprite();
+	}
+	
+	public boolean getAlive()
+	{
+		return isAlive;
+	}
+	
+	public void setAlive()
+	{
+		isAlive = true;
+	}
+	
+	public GhostType getType()
+	{
+		return type;
+	}
+	
+	public Direction getNewDirection() {
+		random = new Random();
+		randomInt = random.nextInt(4);
+		return Direction.values()[randomInt];
 	}
 }

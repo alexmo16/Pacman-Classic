@@ -211,6 +211,7 @@ public class Collision
         }
 
     }
+    
 
     /**
      * This method check if the maze's tiles at the coordinates given in parameters

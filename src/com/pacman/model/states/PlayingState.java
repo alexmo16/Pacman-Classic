@@ -1,6 +1,7 @@
 package com.pacman.model.states;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
@@ -8,6 +9,8 @@ import javax.sound.sampled.LineListener;
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
 import com.pacman.model.objects.consumables.PacDot;
+import com.pacman.model.objects.entities.Entity;
+import com.pacman.model.objects.entities.Ghost;
 import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
@@ -22,6 +25,10 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	private Collision collision;
 	private int i;
 	private volatile boolean isPacmanDying = false;
+	private Random random;
+	private int randomInt;
+	private ArrayList<Entity> entities;
+	private boolean collisionGhost;
 	
     private TimerThread timerThread;
 
@@ -66,14 +73,22 @@ public class PlayingState implements IGameState, IObserver<Direction>
         if (timerThread == null)
 		{
         	
-        	timerThread = new TimerThread(15);
+        	timerThread = new TimerThread(1);
 			timerThread.start();
 		}
 		
 		if (!timerThread.isAlive())
 		{
+			random = new Random();
+			randomInt = random.nextInt(4);
+
+			if ( !((Ghost) game.getEntities().get(randomInt)).getAlive())
+			{
+				((Ghost)game.getEntities().get(randomInt)).setAlive();
+				game.getEntities().get(randomInt).getHitBox().setRect(14.05,12.05,0.9,0.9);
+				timerThread = null;
+			}
 			
-			timerThread = null;
 		}
 		
 		if (isPacmanDying)
@@ -89,6 +104,30 @@ public class PlayingState implements IGameState, IObserver<Direction>
 			game.setState(game.getStopState());
 		}
 		
+		
+		for (Entity entity : game.getEntities()) {
+			if (entity.getHitBox() != game.getPacman().getHitBox())
+			{
+				if (((Ghost)entity).getAlive())
+				{
+
+					Ghost g2 = new Ghost( ((Ghost)entity).getX(),((Ghost)entity).getY(), ((Ghost)entity).getType() );
+					g2.setDirection(((Ghost)entity).getDirection());
+					g2.updatePosition(g2.getDirection());
+					while (collision.collisionWall(g2) != "path")
+					{
+						g2 = new Ghost( ((Ghost)entity).getX(),((Ghost)entity).getY(), ((Ghost)entity).getType() );
+						g2.setDirection(((Ghost)entity).getNewDirection());
+						g2.updatePosition(g2.getDirection());
+						
+						
+					}
+					entity.setDirection(g2.getDirection());
+					entity.updatePosition(g2.getDirection());
+				}
+			}
+		}
+		
 		for (i = 0; i < Settings.SPEED; i++ )
 		{
 			game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
@@ -101,6 +140,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
 	        collision.checkConsumablesCollision();
 	        collision.executeWallStrategy();
+	        System.out.println(game.getPacman().getHitBox());
 		}
 		
 	}

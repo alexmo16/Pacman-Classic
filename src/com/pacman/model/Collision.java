@@ -1,8 +1,5 @@
 package com.pacman.model;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.objects.consumables.ConsumableVisitor;
@@ -22,12 +19,9 @@ public class Collision
     private int[] authTiles;
     private Game game;
 
-    MathContext mc;
-
     public Collision(Game game)
     {
     	this.game = game;
-    	mc = new MathContext(3);
         this.game = game;
     }
 
@@ -92,13 +86,11 @@ public class Collision
     
     
     public boolean middleOfATiles() {
+    	  	
+    	double x = game.getPacman().getX();
+    	double y = game.getPacman().getY();
     	
-    	BigDecimal x = new BigDecimal(game.getPacman().getHitBox().x - (int) game.getPacman().getHitBox().x,mc);
-    	BigDecimal y = new BigDecimal(game.getPacman().getHitBox().y - (int) game.getPacman().getHitBox().y,mc);
-
-    	BigDecimal value = new BigDecimal(0.05,mc);
-
-    	if (  x.compareTo(value) == 0 && y.compareTo(value) == 0 ) {
+    	if (  x == (int) game.getPacman().getX() + 0.05 && y == (int) game.getPacman().getY() + 0.05 ) {
     		 return true;
     	}
     	
@@ -196,13 +188,15 @@ public class Collision
      */
     public void checkConsumablesCollision()
     {
+
         if (middleOfATiles())
         {
+
             ConsumableCollisionVisitor visitor = new ConsumableCollisionVisitor();
 
             Level level = game.getCurrentLevel();
-            double xPacman = game.getPacman().getHitBox().getX();
-            double yPacman = game.getPacman().getHitBox().getY();
+            double xPacman = game.getPacman().getX();
+            double yPacman = game.getPacman().getY();
 
             Consumable consumable = level.getConsumableAtCoords(xPacman, yPacman);
 

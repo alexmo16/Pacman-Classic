@@ -28,9 +28,9 @@ class DynamicObjectTests
         expectedPacman = new Pacman(10, 10 - speed);
         
         testPacman.updatePosition(Direction.UP);
-        
-        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
-        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
+
+        assertEquals(expectedPacman.getX(), testPacman.getX());
+        assertEquals(expectedPacman.getY(), testPacman.getY());
         
     }
     
@@ -42,8 +42,8 @@ class DynamicObjectTests
         
         testPacman.updatePosition(Direction.RIGHT);
         
-        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
-        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
+        assertEquals(expectedPacman.getX(), testPacman.getX());
+        assertEquals(expectedPacman.getY(), testPacman.getY());
         
     }
     
@@ -55,8 +55,8 @@ class DynamicObjectTests
         
         testPacman.updatePosition(Direction.LEFT);
         
-        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
-        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
+        assertEquals(expectedPacman.getX(), testPacman.getX());
+        assertEquals(expectedPacman.getY(), testPacman.getY());
         
     }
     
@@ -68,8 +68,8 @@ class DynamicObjectTests
         
         testPacman.updatePosition(Direction.DOWN);
         
-        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
-        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
+        assertEquals(expectedPacman.getX(), testPacman.getX());
+        assertEquals(expectedPacman.getY(), testPacman.getY());
         
     }
     
@@ -81,8 +81,8 @@ class DynamicObjectTests
         
         testPacman.tunnel(Direction.UP);
         
-        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
-        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
+        assertEquals(expectedPacman.getX(), testPacman.getX());
+        assertEquals(expectedPacman.getY(), testPacman.getY());
     }
     
     @Test
@@ -93,8 +93,8 @@ class DynamicObjectTests
         
         testPacman.tunnel(Direction.DOWN);
         
-        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
-        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
+        assertEquals(expectedPacman.getX(), testPacman.getX());
+        assertEquals(expectedPacman.getY(), testPacman.getY());
     }
     
     @Test
@@ -105,8 +105,8 @@ class DynamicObjectTests
         
         testPacman.tunnel(Direction.RIGHT);
         
-        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
-        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
+        assertEquals(expectedPacman.getX(), testPacman.getX());
+        assertEquals(expectedPacman.getY(), testPacman.getY());
     }
     
     @Test
@@ -117,8 +117,8 @@ class DynamicObjectTests
         
         testPacman.tunnel(Direction.LEFT);
         
-        assertEquals(expectedPacman.getHitBox().getX(), testPacman.getHitBox().getX());
-        assertEquals(expectedPacman.getHitBox().getY(), testPacman.getHitBox().getY());
+        assertEquals(expectedPacman.getX(), testPacman.getX());
+        assertEquals(expectedPacman.getY(), testPacman.getY());
     }
 
 }

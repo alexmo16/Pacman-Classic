@@ -47,7 +47,7 @@ public class Level
     {
         for (Consumable consumable : consumables)
         {
-            if (consumable.getHitBox().getX() - 0.20 == x && consumable.getHitBox().getY() - 0.20 == y)
+            if (consumable.getX() - 0.20 == x && consumable.getY() - 0.20 == y)
             {
                 return consumable;
             }

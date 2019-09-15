@@ -10,7 +10,7 @@ public class InitState implements IGameState
 {
 	private Game game;
 	private StatesName name = StatesName.INIT;
-	private boolean isMuteNeeded = false;
+	private volatile boolean isMuteNeeded = false;
 	
     LineListener startingMusicListener = new LineListener()
     {
@@ -24,7 +24,7 @@ public class InitState implements IGameState
             	if (isMuteNeeded)
             	{
             		isMuteNeeded = false;
-            		GameController.toggleMute();
+            		GameController.setIsMuted(true);
             	}
             	
             	game.stopStartingMusic();
@@ -54,7 +54,7 @@ public class InitState implements IGameState
 		if (game.isUserMuted())
 		{
 			isMuteNeeded = true;
-			GameController.toggleMute();
+			GameController.setIsMuted(false);
 		}
 		
 		game.getPacman().respawn();

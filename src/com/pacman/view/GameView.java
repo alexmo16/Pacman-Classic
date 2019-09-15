@@ -2,9 +2,6 @@ package com.pacman.view;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.swing.JPanel;
 
@@ -12,7 +9,6 @@ import com.pacman.controller.GameController;
 import com.pacman.model.IGame;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Sprites;
-import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.states.StatesName;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
@@ -43,8 +39,8 @@ public class GameView extends JPanel
         
         renderBackground(g);
         renderGameObjects(g);
-        renderEntities(g);
         renderGameStatus(g);
+        renderDebug(g);
         renderPause(g);
         renderGameover(g);
         renderResumeTime(g);
@@ -58,43 +54,50 @@ public class GameView extends JPanel
 	
 	private void renderGameObjects(Graphics g)
 	{
-        List<GameObject> gameObjects = Stream.of(game.getMaze(), game.getConsumables()).flatMap(x -> x.stream()).collect(Collectors.toList());
-		
         double x, y;
-        for (GameObject obj : gameObjects)
+        int xTileScale, yTileScale;
+        for (GameObject obj : game.getGameObjects())
         {
-        	//  Scaled position of the object      + Offset to fit in the world 
+        	xTileScale = obj.getSprite().getWidth() / Sprites.getTilesize();
+        	yTileScale = obj.getSprite().getHeight() / Sprites.getTilesize();
+        	
             x = (obj.getHitBox().getX() * tileSize) + horizontalBorder;
             y = (obj.getHitBox().getY() * tileSize) + verticalBorder;
-            g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + tileSize), (int)(y + tileSize), obj.getSprite().getX1(), obj.getSprite().getY1(), obj.getSprite().getX2(), obj.getSprite().getY2(), null);  
             
-            if (debug)
-            {
-	            g.setColor(new Color(100, 0, 0, 200));
-	            g.drawRect((int)x, (int)y, tileSize - 1, tileSize - 1);
-            }
-        }
-	}
-	
-	private void renderEntities(Graphics g)
-	{        
-        double x, y;
-        for (Entity entity : game.getEntities())
-        {
-			// TODO : Merge this with the renderGameObjects function when we will fix the collisions/position code.
-            x = (entity.getHitBox().getX() * tileSize) +  ((getWidth() - (tileSize) - (tileSize * Level.getWidth())) / 2) + (tileSize / 4);
-			y = (entity.getHitBox().getY() * tileSize) + ((getHeight() - (tileSize) - (tileSize * Level.getHeight())) / 2) + (tileSize / 4);
-            
-            g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + (2 * tileSize)), (int)(y + (2 * tileSize)), entity.getSprite().getX1(), entity.getSprite().getY1(), entity.getSprite().getX2(), entity.getSprite().getY2(), null);
-            
-            if (debug)
-            {
-                g.setColor(new Color(0, 0, 100, 200));
-                g.fillRect((int)x, (int)y, 2 * tileSize, 2 * tileSize);
-            }
+            g.drawImage(Sprites.getTilesSheet(), 
+        				(int)(x), 
+        				(int)(y), 
+        				(int)(x + (xTileScale * tileSize)), 
+        				(int)(y + (yTileScale * tileSize)), 
+        				obj.getSprite().getX1(), 
+        				obj.getSprite().getY1(), 
+        				obj.getSprite().getX2(), 
+        				obj.getSprite().getY2(), 
+        				null);  
         }
 	}
     
+	private void renderDebug(Graphics g)
+	{
+		if (debug)
+		{
+	        double x, y;
+	        int xTileScale, yTileScale;
+	        for (GameObject obj : game.getGameObjects())
+	        {
+	        	xTileScale = obj.getSprite().getWidth() / Sprites.getTilesize();
+	        	yTileScale = obj.getSprite().getHeight() / Sprites.getTilesize();
+	        	
+	            x = (obj.getHitBox().getX() * tileSize) + horizontalBorder;
+	            y = (obj.getHitBox().getY() * tileSize) + verticalBorder;
+
+	            // Grid of hitbox(red)
+	            g.setColor(new Color(100, 0, 0, 200));
+	            g.drawRect((int)x, (int)y, (int)(obj.getHitBox().getWidth() * tileSize) - 1, (int)(obj.getHitBox().getHeight() * tileSize) - 1);
+	        }
+		}
+	}
+	
 	private void renderGameStatus(Graphics g)
     {
 		// Top left - Game state

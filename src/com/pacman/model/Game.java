@@ -50,7 +50,6 @@ public class Game implements IGame
     private Direction newDirection;
         
     private ArrayList<Entity> entities;
-    private List<GameObject> gameObjects;
     
     private Sound startMusic;
     private Sound gameSiren;
@@ -123,9 +122,7 @@ public class Game implements IGame
                 	entities.add(new Ghost(x, y, GhostType.CLYDE));
                 }
             }
-        }
-    	
-        gameObjects = Stream.of(maze, getConsumables(), entities).flatMap(x -> x.stream()).collect(Collectors.toList());
+        }        
         
         loadMusics();
         
@@ -383,7 +380,8 @@ public class Game implements IGame
 
 	public List<GameObject> getGameObjects() 
 	{
-		return gameObjects;
+		return Stream.of(getMaze(), getConsumables(), getEntities()).flatMap(x -> x.stream()).collect(Collectors.toList());
+
 	}
 
 	public void setResumeTime(int time)

@@ -282,5 +282,13 @@ public final class Sprites
     public static Image getTilesSheet()
     {
         return tilesSheet;
-    }  
+    }
+    
+	/**
+	 * @return The size of a single tile.
+	 */
+	public static int getTilesize() 
+	{
+		return tileSize;
+	}  
 }

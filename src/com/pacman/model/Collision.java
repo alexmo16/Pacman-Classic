@@ -253,8 +253,10 @@ public class Collision
     		Rectangle2D.Double hitboxGhost = new Rectangle2D.Double(xCoord, yCoord, 2,2);
     		Rectangle2D.Double hitboxPacman = new Rectangle2D.Double(game.getPacman().getXCoord(),game.getPacman().getYCoord(), 2, 2 );
     		
-    		if(hitboxGhost.intersects(hitboxPacman))
+    		if(hitboxPacman.intersects(hitboxGhost))
     		{
+    			System.out.println("collision");
+    			
     			return true;
     		}
     	}
@@ -267,22 +269,23 @@ public class Collision
     	double xPacman = game.getPacman().getHitBox().getCenterX();
     	double yPacman = game.getPacman().getHitBox().getCenterY();
     	
-    	for (Entity entity : game.getEntities())
+    	//for (Entity entity : game.getEntities())
+    	for (int i = 0; i < 4; i++)
     	{
-    	//Entity entity = game.getEntities().get(0);
+    		
+    		Entity entity = game.getEntities().get(i);
     		double xEntity = entity.getHitBox().getCenterX();
     		double yEntity = entity.getHitBox().getCenterY();
-    		if (xEntity != xPacman && yEntity != yPacman)
-    		{
-    			//System.out.println(Math.sqrt(Math.pow(xPacman-xEntity,2)));
-    			//System.out.println(Math.sqrt(Math.pow(yPacman-yEntity,2)));
-    			//System.out.println(entity);
-    			//System.out.println(Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)));
-    			if (Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)) <= 4)
-    			{
-    				return (Ghost) entity;
-    			}
-    		}
+
+			//System.out.println(Math.sqrt(Math.pow(xPacman-xEntity,2)));
+			//System.out.println(Math.sqrt(Math.pow(yPacman-yEntity,2)));
+			//System.out.println(entity);
+			System.out.println(Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)));
+			if (Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)) <= 4)
+			{
+				return (Ghost) entity;
+			}
+
     			
     	}
     	return null;

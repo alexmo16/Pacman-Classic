@@ -116,6 +116,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 					while (collision.collisionWall(g2) != "path")
 					{
 						g2 = new Ghost( ((Ghost)entity).getX(),((Ghost)entity).getY(), ((Ghost)entity).getType() );
+						g2.setDirection(((Ghost)entity).getDirection());
 						g2.getNewDirection();
 						g2.updatePosition(g2.getDirection());
 						
@@ -150,7 +151,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	        collision.checkConsumablesCollision();
 	        collision.executeWallStrategy();
 		}
-
 		
 	}
 

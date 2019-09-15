@@ -62,6 +62,10 @@ public class Ghost extends Entity implements Animation
 		isSpawning = true;
 	}
 	
+	public void setNotSpawning() {
+		isSpawning = false;
+	}
+	
 	public void setNotAlive()
 	{
 		isAlive = false;
@@ -75,11 +79,17 @@ public class Ghost extends Entity implements Animation
 	public void getNewDirection() {
 		random = new Random();
 		randomInt = random.nextInt(4);
-		setDirection(Direction.values()[randomInt]);
+		if (Direction.values()[(randomInt+2)%4] != getDirection())
+		{
+			setDirection(Direction.values()[randomInt]);
+		} else {
+			getNewDirection();
+		}
 	}
 	
 	public void respawn() {
 		setNotAlive();
+		setNotSpawning();
 		setDirection(firstDirection);
 		hitBox.x = spawnX;
 		hitBox.y = spawnY;

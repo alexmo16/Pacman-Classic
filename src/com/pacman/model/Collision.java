@@ -74,7 +74,7 @@ public class Collision
 
         int mapW = Level.getWidth();
         int mapH = Level.getHeight();
-
+        
         if ((xMin <= 0 & xMax <= 0) || (xMin >= mapW - 1 & xMax >= mapW - 1) || (yMin <= 0 & yMax <= 0)
                 || (yMin >= mapH - 1 & yMax >= mapH - 1))
         {
@@ -223,7 +223,7 @@ public class Collision
 		Ghost g2 = new Ghost( obj.getX(), obj.getY(), ((Ghost)obj).getType() );
 		g2.updatePosition(g2.getDirection());
 		
-		if (collisionWall(g2) != "path")
+		if (collisionWall(g2) != "path" )
 		{
 			if ( g2.getType() == GhostType.BLINKY || g2.getType() == GhostType.PINKY )
 			{
@@ -250,8 +250,9 @@ public class Collision
         int[][] tiles = Level.getTiles();
 
         for (int i : authTiles)
-        {
-            if (tiles[x][y] == i)
+        { 
+            if (tiles[x][y] == i || tiles[x][y] == 2 || tiles[x][y] == 15 || tiles[x][y] == 14 || tiles[x][y] == 16
+            		|| tiles[x][y] == 61 || tiles[x][y] == 62 || tiles[x][y] == 63 || tiles[x][y] == 64)
             {
                 return true;
             }

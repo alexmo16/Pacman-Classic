@@ -191,9 +191,9 @@ public class Game implements IGame
     	}
     }
 
-    public void playDeathMusic(LineListener listener)
+    public void playDeathMusic()
     {
-    	death.play(listener);
+    	death.play();
     }
     
     /**

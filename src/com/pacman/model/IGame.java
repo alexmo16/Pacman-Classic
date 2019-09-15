@@ -1,5 +1,6 @@
 package com.pacman.model;
 
+import java.nio.channels.InterruptedByTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,4 +45,6 @@ public interface IGame
 	public boolean isPacmanWon();
 	public int getResumeTime();
 	public void killPacman();
+	
+	public void stopThreads() throws InterruptedException, InterruptedByTimeoutException;
 } 

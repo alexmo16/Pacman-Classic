@@ -1,6 +1,7 @@
 package com.pacman.controller;
 
 import java.awt.event.KeyEvent;
+import java.nio.channels.InterruptedByTimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.pacman.model.IGame;
@@ -107,6 +108,13 @@ public class GameController implements Runnable
      */
     public static void stopGame()
     {
+    	try 
+    	{
+			game.stopThreads();
+		} catch (InterruptedByTimeoutException | InterruptedException e) 
+    	{
+			e.printStackTrace();
+		}
         isRunning.set(false);
     }
 

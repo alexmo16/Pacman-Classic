@@ -69,7 +69,12 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update() 
 	{
-		      
+		      	
+		if (isPacmanDying)
+		{
+			return;
+		}
+		
         if (timerThread == null)
 		{
         	
@@ -89,11 +94,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 				timerThread = null;
 			}
 			
-		}
-		
-		if (isPacmanDying)
-		{
-			return;
 		}
 		
 		Level level = game.getCurrentLevel();

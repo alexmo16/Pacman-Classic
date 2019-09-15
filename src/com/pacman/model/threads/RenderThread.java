@@ -7,7 +7,6 @@ import com.pacman.model.objects.GameObject;
 public class RenderThread extends Thread
 {
 	private IGame game;
-	private Thread thread;
 	private int delay = 100;
 	private boolean isRunning = false;
 	
@@ -27,12 +26,6 @@ public class RenderThread extends Thread
     			animation.nextSprite();
     		}
     	}
-    }
-    
-    public void start()
-    {
-    	thread = new Thread(this);
-    	thread.start();
     }
 	
 	@Override

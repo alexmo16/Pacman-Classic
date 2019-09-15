@@ -85,11 +85,11 @@ public class Game implements IGame
     public void init(Window window)
     {    
     	collision = new Collision(this);
-    	//collision.setAuthTiles(Level.getAuthTiles());
     	currentLevel = new Level(LEVEL_DATA_FILE, "1");
     	maze = new ArrayList<Wall>();
         entities = new ArrayList<Entity>();
-        
+        renderThread = new RenderThread(this);
+        renderThread.start();
         for (int y = 0; y < Level.getHeight(); y++)
         {
             for (int x = 0; x < Level.getWidth(); x++)
@@ -128,7 +128,7 @@ public class Game implements IGame
                 	((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
                 }
             }
-        }        
+        }    
         
         loadMusics();
         
@@ -141,10 +141,6 @@ public class Game implements IGame
         playingState = new PlayingState(this);
         stopState = new StopState(this);
         currentState = mainMenuState;
-        
-        renderThread = new RenderThread(this);
-        renderThread.start();
-        
     }
     
     /**

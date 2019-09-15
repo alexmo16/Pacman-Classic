@@ -261,12 +261,10 @@ public class Collision
             if (tiles[x][y] == i || tiles[x][y] == 2 || tiles[x][y] == 15 || tiles[x][y] == 14 || tiles[x][y] == 16
             		|| tiles[x][y] == 61 || tiles[x][y] == 62 || tiles[x][y] == 63 || tiles[x][y] == 64)
             {
-            	if(i == 70)
+            	if(i == 70 && (int) game.getPacman().getX() == x && (int) game.getPacman().getY() == y)
             	{
-            		//System.out.println("tunnel");
             		game.getPacman().setIsTravelling(true);
-            		
-            		//System.out.println(game.getPacman().getIstravelling());
+
             	}
                 return true;
             }

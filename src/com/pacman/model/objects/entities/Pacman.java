@@ -78,12 +78,8 @@ public class Pacman extends Entity implements IPublisher, Animation
     	
     	if (oldDirection != nextDirection)
     	{
-    		System.out.println(" pacman " +this.isTravelling);
-    		//if(!this.isTravelling)
-    		//{
-    		
     		notifyObservers();
-    		//}
+
     	}
 		
     }

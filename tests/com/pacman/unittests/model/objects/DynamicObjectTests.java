@@ -77,7 +77,7 @@ class DynamicObjectTests
     void testTunnelUp()
     {
         testPacman = new Pacman(10, 10);
-        expectedPacman = new Pacman(10,31.6);
+        expectedPacman = new Pacman(10,31.5);
         
         testPacman.tunnel(Direction.UP);
         
@@ -113,7 +113,7 @@ class DynamicObjectTests
     void testTunnelLeft()
     {
         testPacman = new Pacman(10, 10);
-        expectedPacman = new Pacman(28.6, 10);
+        expectedPacman = new Pacman(28.5, 10);
         
         testPacman.tunnel(Direction.LEFT);
         

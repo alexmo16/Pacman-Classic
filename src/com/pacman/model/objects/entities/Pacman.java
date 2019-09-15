@@ -41,12 +41,12 @@ public class Pacman extends Entity implements IPublisher, Animation
 	private boolean endOfAnimation = false;
     private Sound chomp;
     private int score = 0;
-	private final int MAX_LIFES = 3;
+	public final int MAX_LIFES = 3;
     private int lifes;
     private boolean collision = false;
     private Direction collisionDirection = null; 
     private Direction nextDirection = Direction.LEFT;
-    private Direction firstDirection = Direction.LEFT;
+    public final Direction firstDirection = Direction.LEFT;
     private double spawnX;
     private double spawnY;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();

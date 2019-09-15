@@ -8,6 +8,8 @@ import org.mockito.Mockito;
 
 import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Pacman;
+import com.pacman.model.objects.entities.Pacman.Animation;
+import com.pacman.model.world.Direction;
 import com.pacman.utils.Settings;
 import com.pacman.view.Input;
 
@@ -88,6 +90,49 @@ public class PacmanTests
 		assertEquals(pacmanOk.getScore(), pacDot.getPoints());
 
 	}
-
-
+	
+	@Test
+	void testLooseLife()
+	{
+		int lifes = pacmanOk.getLives();
+		pacmanOk.looseLive();
+		assertEquals(pacmanOk.getLives(), lifes - 1);
+		assertEquals(pacmanOk.getCurrentAnimation(), Animation.DYING);
+		assertEquals(pacmanOk.isEndOfAnimation(), false);
+	}
+	
+	@Test
+	void testRespawn()
+	{
+		pacmanOk.respawn();
+		
+		assertEquals(pacmanOk.getCurrentAnimation(), Animation.IDLE);
+		assertEquals(pacmanOk.isEndOfAnimation(), false);
+		assertEquals(pacmanOk.getIstravelling(), false);
+		assertEquals(pacmanOk.getDirection(), pacmanOk.firstDirection);
+	}
+	
+	@Test
+	void testResetLifes()
+	{
+		pacmanOk.resetLives();
+		assertEquals(pacmanOk.getLives(), pacmanOk.MAX_LIFES);
+	}
+	
+	@Test
+	void testResetScore()
+	{
+		pacmanOk.resetScore();
+		assertEquals(pacmanOk.getScore(), 0);
+	}
+	
+	@Test
+	void testSetCollision()
+	{
+		pacmanOk.setCollision(true, Direction.LEFT);
+		assertEquals(pacmanOk.getCurrentAnimation(), Animation.IDLE);
+		
+		pacmanOk.setCollision(false, Direction.LEFT);
+		assertEquals(pacmanOk.getCurrentAnimation(), Animation.MOVING);
+	}
 }

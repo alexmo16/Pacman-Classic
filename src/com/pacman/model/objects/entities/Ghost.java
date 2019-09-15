@@ -6,12 +6,14 @@ import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
+import com.pacman.model.world.Tile;
 
 public class Ghost extends Entity implements Animation
 {
     private int animationState = 0, animationCycles = 2;
 	private GhostType type;
 	private boolean isAlive;
+	private boolean isSpawning;
 	private Random random;
 	private int randomInt;
 	private Direction firstDirection = Direction.UP;
@@ -25,6 +27,7 @@ public class Ghost extends Entity implements Animation
         spawnY = y;
         type = t;
         isAlive = false;
+        isSpawning = false;
         updateSprite();
     }
     
@@ -51,6 +54,14 @@ public class Ghost extends Entity implements Animation
 		isAlive = true;
 	}
 	
+	public boolean getSpawning() {
+		return isSpawning;
+	}
+	
+	public void setSpawning() {
+		isSpawning = true;
+	}
+	
 	public void setNotAlive()
 	{
 		isAlive = false;
@@ -61,13 +72,14 @@ public class Ghost extends Entity implements Animation
 		return type;
 	}
 	
-	public Direction getNewDirection() {
+	public void getNewDirection() {
 		random = new Random();
 		randomInt = random.nextInt(4);
-		return Direction.values()[randomInt];
+		setDirection(Direction.values()[randomInt]);
 	}
 	
 	public void respawn() {
+		setNotAlive();
 		setDirection(firstDirection);
 		hitBox.x = spawnX;
 		hitBox.y = spawnY;

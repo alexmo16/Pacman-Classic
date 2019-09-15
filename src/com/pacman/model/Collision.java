@@ -9,6 +9,8 @@ import com.pacman.model.objects.consumables.Energizer;
 import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.objects.entities.Ghost;
+import com.pacman.model.world.Direction;
+import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Level;
 
 /**
@@ -216,6 +218,25 @@ public class Collision
 
     }
     
+	public void ghostSpawn(GameObject obj) {
+		
+		Ghost g2 = new Ghost( obj.getX(), obj.getY(), ((Ghost)obj).getType() );
+		g2.updatePosition(g2.getDirection());
+		
+		if (collisionWall(g2) != "path")
+		{
+			if ( g2.getType() == GhostType.BLINKY || g2.getType() == GhostType.PINKY )
+			{
+				((Ghost)obj).updatePosition(Direction.RIGHT);
+			} else 
+			{
+				((Ghost)obj).updatePosition(Direction.LEFT);
+			}
+		} else {
+			((Ghost)obj).setAlive();
+		}
+		
+	}
 
     /**
      * This method check if the maze's tiles at the coordinates given in parameters

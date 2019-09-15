@@ -27,8 +27,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	private volatile boolean isPacmanDying = false;
 	private Random random;
 	private int randomInt;
-	private ArrayList<Entity> entities;
-	private boolean collisionGhost;
 	
     private TimerThread timerThread;
 
@@ -89,8 +87,9 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
 			if ( !((Ghost) game.getEntities().get(randomInt)).getAlive())
 			{
-				((Ghost)game.getEntities().get(randomInt)).setAlive();
-				game.getEntities().get(randomInt).getHitBox().setRect(14.05,12.05,0.9,0.9);
+				
+				collision.ghostSpawn(((Ghost)game.getEntities().get(randomInt)));
+				((Ghost)game.getEntities().get(randomInt)).setSpawning();
 				timerThread = null;
 			}
 			
@@ -117,13 +116,17 @@ public class PlayingState implements IGameState, IObserver<Direction>
 					while (collision.collisionWall(g2) != "path")
 					{
 						g2 = new Ghost( ((Ghost)entity).getX(),((Ghost)entity).getY(), ((Ghost)entity).getType() );
-						g2.setDirection(((Ghost)entity).getNewDirection());
+						g2.getNewDirection();
 						g2.updatePosition(g2.getDirection());
 						
 						
 					}
 					entity.setDirection(g2.getDirection());
 					entity.updatePosition(g2.getDirection());
+					
+				} else if (((Ghost)entity).getSpawning())
+				{
+					collision.ghostSpawn(entity);
 				}
 			}
 		}
@@ -180,7 +183,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		for (int i = 0; i<4; i++)
 		{
 			((Ghost) game.getEntities().get(i)).respawn();
-			((Ghost) game.getEntities().get(i)).setNotAlive();
 		}
 	}
 }

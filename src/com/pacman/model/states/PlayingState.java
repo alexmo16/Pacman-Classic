@@ -8,6 +8,7 @@ import javax.sound.sampled.LineListener;
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
 import com.pacman.model.objects.consumables.PacDot;
+import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
 import com.pacman.utils.IObserver;
@@ -21,6 +22,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	private Collision collision;
 	private int i;
 	private volatile boolean isPacmanDying = false;
+	
+    private TimerThread timerThread;
 
 	LineListener deathSoundListener = new LineListener()
 	{
@@ -59,6 +62,20 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	@Override
 	public void update() 
 	{
+		      
+        if (timerThread == null)
+		{
+        	
+        	timerThread = new TimerThread(15);
+			timerThread.start();
+		}
+		
+		if (!timerThread.isAlive())
+		{
+			
+			timerThread = null;
+		}
+		
 		if (isPacmanDying)
 		{
 			return;

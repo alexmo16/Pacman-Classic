@@ -26,6 +26,7 @@ import com.pacman.model.states.ResumeState;
 import com.pacman.model.states.StatesName;
 import com.pacman.model.states.StopState;
 import com.pacman.model.threads.RenderThread;
+import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Level;
@@ -139,6 +140,7 @@ public class Game implements IGame
         
         renderThread = new RenderThread(this);
         renderThread.start();
+        
     }
     
     /**

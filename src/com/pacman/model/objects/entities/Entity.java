@@ -1,4 +1,4 @@
-package com.pacman.model.objects.entities;
+  package com.pacman.model.objects.entities;
 
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.world.Direction;

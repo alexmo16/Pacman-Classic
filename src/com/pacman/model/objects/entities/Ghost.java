@@ -111,6 +111,7 @@ public class Ghost extends Entity implements Animation
 		setDirection(firstDirection);
 		hitBox.x = spawnX;
 		hitBox.y = spawnY;
+		this.setCoord(hitBox.x, hitBox.y);
 	}
 	
 	public void setAuthTiles(int[] tab1, int[] tab2)

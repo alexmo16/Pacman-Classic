@@ -340,7 +340,7 @@ public class Collision
     		double xEntity = entity.getHitBox().getCenterX();
     		double yEntity = entity.getHitBox().getCenterY();
 
-			if (Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)) <= 4)
+			if (Math.sqrt(Math.pow(xPacman-xEntity,2) + Math.pow(yPacman-yEntity,2)) <= 4 && ((Ghost)entity).getAlive() )
 			{
 				return (Ghost) entity;
 			}

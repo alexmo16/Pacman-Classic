@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import com.pacman.controller.GameController;
 import com.pacman.model.menus.MainMenu;
 import com.pacman.model.menus.MenuOption;
 import com.pacman.model.objects.GameObject;
@@ -61,7 +60,6 @@ public class Game implements IGame
     private Sound gameSiren;
     private Sound chomp;
     private Sound death;
-    private boolean isUserMuted = false;
     
     private Collision collision;
     
@@ -83,9 +81,6 @@ public class Game implements IGame
     private boolean pacmanWon = false;
     private final String LEVEL_DATA_FILE = new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"); 
     
-    private float lastMusicVolume = 1f;
-    private float lastSoundsVolume = 1f;
-    
     /**
      * Initialization function called by the engine when it lunch the game.
      */
@@ -101,7 +96,41 @@ public class Game implements IGame
         renderThread.start();
         collision.setAuthTiles(currentLevel.getAuthTiles());
         
-        for (int y = 0; y < Level.getHeight(); y++)
+        loadEntities();
+        loadMusics();
+        
+    	mainMenuState = new MainMenuState(this);
+        initState = new InitState(this);
+        pauseState = new PauseState(this);
+        resumeState = new ResumeState(this);
+        playingState = new PlayingState(this);
+        stopState = new StopState(this);
+        setState(mainMenuState);
+        
+        renderThread = new RenderThread(this);
+        renderThread.start();
+        
+    }
+    
+    /**
+     * Update function called by the engine every tick.
+     */
+    @Override
+    public void update()
+    {
+    	currentState.update();
+    }
+
+	@Override
+	public void setPacmanDirection(Direction d)
+	{
+		pacman.setNextDirection(d);
+	}
+	
+    
+	private void loadEntities()
+	{
+		for (int y = 0; y < Level.getHeight(); y++)
         {
             for (int x = 0; x < Level.getWidth(); x++)
             {
@@ -141,38 +170,8 @@ public class Game implements IGame
                 }
             }
         }    
-        
-        loadMusics();
-        
-    	mainMenuState = new MainMenuState(this);
-        initState = new InitState(this);
-        pauseState = new PauseState(this);
-        resumeState = new ResumeState(this);
-        playingState = new PlayingState(this);
-        stopState = new StopState(this);
-        setState(mainMenuState);
-        
-        renderThread = new RenderThread(this);
-        renderThread.start();
-        
-    }
-    
-    /**
-     * Update function called by the engine every tick.
-     */
-    @Override
-    public void update()
-    {
-    	currentState.update();
-    }
-
-	@Override
-	public void setPacmanDirection(Direction d)
-	{
-		pacman.setNextDirection(d);
 	}
 	
-    
     /**
      * Load all audio files and distribute them where they're needed.
      * @return
@@ -182,10 +181,14 @@ public class Game implements IGame
         try
         {
             startMusic = new Sound(Settings.START_MUSIC_PATH);
+            startMusic.setVolume(Settings.musicVolume);
             gameSiren = new Sound(Settings.GAME_SIREN_PATH);
+            gameSiren.setVolume(Settings.musicVolume);
             chomp = new Sound(Settings.CHOMP_PATH);
+            chomp.setVolume(Settings.soundsVolume);
             pacman.setChompSound(chomp);
             death = new Sound(Settings.DEATH_PATH);
+            death.setVolume(Settings.musicVolume);
         } catch (UnsupportedAudioFileException | IOException e)
         {
             System.out.println("Unable to load sounds!!");
@@ -197,7 +200,7 @@ public class Game implements IGame
 
     public void playStartingMusic( LineListener listener )
     {
-    	startMusic.play(listener, Settings.musicVolume);
+    	startMusic.play(listener);
     }
     
     public void stopStartingMusic()
@@ -210,53 +213,54 @@ public class Game implements IGame
 
     public void playDeathMusic(LineListener listener)
     {
-    	death.play(listener, Settings.musicVolume);
-    }
-    
-    /**
-     * Function called when the user click on the mute button.
-     */
-    public void toggleMuteAudio()
-    {
-    	isUserMuted = !isUserMuted;
-        if (!GameController.getIsMuted())
-        {
-        	muteAudio();
-        }
-        else
-        {
-        	resumeAudio();
-        }
+    	death.play(listener);
     }
     
     public void muteAudio()
     {
-    	if (!GameController.getIsMuted())
-    	{
-    		GameController.setIsMuted(true);
-        	lastMusicVolume = Settings.musicVolume;
-        	lastSoundsVolume = Settings.soundsVolume;
-        	Settings.soundsVolume = 0f;
-        	Settings.musicVolume = 0f;
-        	if (gameSiren != null && startMusic != null && death != null)
-        	{
-        		gameSiren.setVolume(0f);
-        		startMusic.setVolume(0f);
-        		death.setVolume(0f);
-        	}
-    	}
+    	muteMusics();
+    	muteSounds();
     }
     
     public void resumeAudio()
     {
-    	GameController.setIsMuted(false);
-    	Settings.soundsVolume = lastSoundsVolume;
-    	Settings.musicVolume = lastMusicVolume;
-    	if (gameSiren != null && startMusic != null && death != null)
+    	resumeMusics();
+    	resumeSounds();
+    }
+    
+    public void muteMusics()
+    {
+        if (gameSiren != null && startMusic != null)
+        {
+            gameSiren.setVolume(0f);
+            startMusic.setVolume(0f);
+        }
+    }
+    
+    public void muteSounds()
+    {
+	    if (death != null && chomp != null)
+	    {
+	    	death.setVolume(0f);
+	    	chomp.setVolume(0f);
+	    }
+    }
+    
+    public void resumeMusics()
+    {
+    	if (!Settings.isMusicMute() && gameSiren != null && startMusic != null)
     	{
-    		gameSiren.setVolume(lastMusicVolume);
-    		startMusic.setVolume(lastMusicVolume);
-    		death.setVolume(lastSoundsVolume);
+    		gameSiren.setVolume(Settings.musicVolume);
+    		startMusic.setVolume(Settings.musicVolume);
+    	}
+    }
+    
+    public void resumeSounds()
+    {
+    	if (!Settings.isSoundsMute() && death != null && chomp != null)
+    	{
+    		death.setVolume(Settings.soundsVolume);
+    		chomp.setVolume(Settings.soundsVolume);
     	}
     }
     
@@ -280,7 +284,7 @@ public class Game implements IGame
 	{
 		if ( !gameSiren.getIsRunning() )
 		{
-			gameSiren.playLoopBack(Settings.musicVolume);
+			gameSiren.playLoopBack();
 		}
 	}
 	
@@ -509,10 +513,5 @@ public class Game implements IGame
 	public void mainMenuPrevious() 
 	{
 		mainMenu.previous();
-	}
-	
-	public boolean getIsUserMuted()
-	{
-		return isUserMuted;
 	}
 }

@@ -31,8 +31,6 @@ public interface IGame
 	public IGameState getPauseState();
 	public IGameState getResumeState();
 	public IGameState getCurrentState();
-
-	public void toggleMuteAudio();
 	
 	public void setPacmanDirection(Direction d);
 	
@@ -53,4 +51,9 @@ public interface IGame
 	public void killPacman();
 	
 	public void stopThreads() throws InterruptedException, InterruptedByTimeoutException;
+	
+	public void muteMusics();
+	public void resumeMusics();
+	public void muteSounds();
+	public void resumeSounds();
 } 

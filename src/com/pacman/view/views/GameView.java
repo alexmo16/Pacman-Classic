@@ -110,6 +110,11 @@ public class GameView extends View
 	
 	private void renderGameStatus(Graphics g)
     {
+		if (game == null || game.getCurrentState() == null)
+		{
+			return;
+		}
+			
 		// Top left - Game state
         int x = sFactor + horizontalBorder;
         int y = verticalBorder / 2;

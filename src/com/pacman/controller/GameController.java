@@ -26,7 +26,6 @@ public class GameController extends Thread
     private static IWindow window;
  
     private static AtomicBoolean isRunning = new AtomicBoolean(false);
-    private volatile static boolean isMuted = false;
     private static int fps;
     
     
@@ -59,7 +58,6 @@ public class GameController extends Thread
             inputs = new Input();
             inputs.addPressedCallback(KeyEvent.getKeyText(Settings.PAUSE_BUTTON), (KeyEvent e) -> pauseButtonPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(Settings.RESUME_BUTTON), (KeyEvent e) -> resumeButtonPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(Settings.MUTED_BUTTON), (KeyEvent e) -> muteButtonPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_UP), (KeyEvent e) -> arrowsKeysPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_DOWN), (KeyEvent e) -> arrowsKeysPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_RIGHT), (KeyEvent e) -> arrowsKeysPressed(e) );
@@ -68,6 +66,9 @@ public class GameController extends Thread
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE), (KeyEvent e) -> menuKeyPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_ENTER), (KeyEvent e) -> acceptKeyPressed(e) );
             
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_G), (KeyEvent e) -> muteSoundsPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_H), (KeyEvent e) -> muteMusicPressed(e) );
+            
             window.addListener(inputs);
             instance = new GameController();
         }
@@ -75,26 +76,11 @@ public class GameController extends Thread
         return instance;
     }
 
-    public static boolean getIsRunning()
+	public static boolean getIsRunning()
     {
         return isRunning.get();
     }
 
-    public synchronized static boolean getIsMuted()
-    {
-        return isMuted;
-    }
-
-    public synchronized static void setIsMuted(boolean isSoundMuted)
-    {
-        isMuted = isSoundMuted;
-    }
-
-    public synchronized static void toggleMute()
-    {
-        isMuted = !isMuted;
-    }
-    
     /**
      * Stop the game and the engine thread.
      */
@@ -246,21 +232,35 @@ public class GameController extends Thread
 		{
     		resumeGame();
 		}
-    }
+    }    
     
-    private static void muteButtonPressed(KeyEvent e)
-    {
-    	if (game == null)
+    private static void muteMusicPressed(KeyEvent e) 
+    {    	
+    	if(!Settings.isMusicMute())
     	{
-    		return;
+    		Settings.setMusicMute(true);
+    		game.muteMusics();
     	}
-    	
-    	IGameState currentState = game.getCurrentState();
-    	if (currentState != null && (currentState.getName() != StatesName.PAUSE || currentState.getName() != StatesName.RESUME))
+    	else
     	{
-    		game.toggleMuteAudio();
+    		Settings.setMusicMute(false);
+    		game.resumeMusics();
     	}
-    }
+	}
+
+	private static void muteSoundsPressed(KeyEvent e) 
+	{
+		if(!Settings.isSoundsMute())
+    	{
+			Settings.setSoundsMute(true);
+    		game.muteSounds();
+    	}
+    	else
+    	{
+    		Settings.setSoundsMute(false);
+    		game.resumeSounds();
+    	}
+	}
     
     private static void arrowsKeysPressed(KeyEvent e)
     {

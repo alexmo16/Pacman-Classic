@@ -20,6 +20,7 @@ public class Sound
     private Clip audioClip;
     private LineListener defaultListener;
     private boolean isRunning = false;
+    private float volume;
 
     public Sound(String path) throws UnsupportedAudioFileException, IOException
     {
@@ -49,9 +50,9 @@ public class Sound
      * Play sound asynchronously.
      * @return
      */
-    public boolean play(float volume)
+    public boolean play()
     {
-    	return play( defaultListener, volume);
+    	return play( defaultListener);
     }
 
     /**
@@ -59,7 +60,7 @@ public class Sound
      * @param listener
      * @return boolean
      */
-    public boolean play(LineListener listener, float volume)
+    public boolean play(LineListener listener)
     {
         if (isRunning)
         {
@@ -81,8 +82,7 @@ public class Sound
         }
         audioClip.setFramePosition(0);
         audioClip.addLineListener(listener);
-        
-        setVolume(volume);
+        setMasterGain();
         
         isRunning = true;
         audioClip.start();
@@ -105,7 +105,7 @@ public class Sound
      * This will make the sound loopback until the stop function is called.
      * @return
      */
-    public boolean playLoopBack(float volume)
+    public boolean playLoopBack()
     {
         if (isRunning)
         {
@@ -131,8 +131,7 @@ public class Sound
             return false;
         }
         audioClip.setFramePosition(0);
-        
-        setVolume(volume);
+        setMasterGain();
         
         isRunning = true;
         audioClip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -146,22 +145,21 @@ public class Sound
     
     public float getVolume()
     {
-    	if (audioClip == null)
-    	{
-    		return 0f;
-    	}
-    	
-    	FloatControl gainControl = (FloatControl) audioClip.getControl(Type.MASTER_GAIN);
-    	return gainControl.getValue();
+    	return volume;
     }
     
     public void setVolume(float volume)
+    {
+    	this.volume = volume;
+    	setMasterGain();
+    }
+    
+    private void setMasterGain()
     {
     	if (audioClip == null)
     	{
     		return;
     	}
-    	
     	FloatControl gainControl = (FloatControl) audioClip.getControl(Type.MASTER_GAIN);
         gainControl.setValue(20f * (float) Math.log10(volume));
     }

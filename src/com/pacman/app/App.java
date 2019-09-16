@@ -17,7 +17,7 @@ public class App
         IGame game = new Game();
         IWindow window = new Window(game);
         GameController engine = GameController.getInstance(window, game);
-        engine.startGame();
+        engine.start();
     }
 
 }

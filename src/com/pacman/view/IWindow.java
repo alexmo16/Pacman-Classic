@@ -9,4 +9,6 @@ public interface IWindow
 	public void addListener(KeyListener k);
 
 	public void render();
+	
+	public void dispose();
 }

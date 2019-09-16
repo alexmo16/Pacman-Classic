@@ -43,26 +43,29 @@ public class Window implements WindowListener, IWindow
         frame.addWindowListener(this);
     }
 
+    @Override
     public void showView(ViewType type)
     {
     	layout.show(views, type.getValue());
     }
     
+    @Override
     public void addListener(KeyListener k)
     {
     	frame.addKeyListener(k);
     }
     
+    @Override
     public void render()
     {
     	if (frame.getWidth() != 0 && (frame.getHeight() != 0)) { frame.repaint(); }
     }
-    
-    public JFrame getFrame()
-    {
-        return frame;
-    }
 
+	@Override
+	public void dispose() 
+	{
+		frame.dispose();
+	}
     
     @Override
     public void windowOpened(WindowEvent e)
@@ -102,5 +105,10 @@ public class Window implements WindowListener, IWindow
     public void windowDeactivated(WindowEvent e)
     {
     	GameController.pauseGame();
+    }
+    
+    public JFrame getFrame()
+    {
+        return frame;
     }
 }

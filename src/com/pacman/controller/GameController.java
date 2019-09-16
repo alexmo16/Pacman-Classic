@@ -19,9 +19,8 @@ import com.pacman.view.Input;
  * 
  * @Singleton
  */
-public class GameController implements Runnable
+public class GameController extends Thread
 {
-    private Thread thread;
     private static IGame game;
     private static Input inputs;
     private static IWindow window;
@@ -95,19 +94,7 @@ public class GameController implements Runnable
     {
         isMuted = !isMuted;
     }
-
-    /*
-     * start the game engine thread and by the same way the game.
-     */
-    public void startGame()
-    {
-        if (game != null && !isRunning.get())
-        {
-            thread = new Thread(this);
-            thread.start();
-        }
-    }
-
+    
     /**
      * Stop the game and the engine thread.
      */
@@ -116,11 +103,22 @@ public class GameController implements Runnable
     	try 
     	{
 			game.stopThreads();
+			window.dispose();
+			
+	        isRunning.set(false);
+	        instance.join(500);
+			if (instance.isAlive())
+			{
+				instance.interrupt();
+				throw new InterruptedByTimeoutException();
+			}
+			
+			System.exit(0);
+			
 		} catch (InterruptedByTimeoutException | InterruptedException e) 
     	{
 			e.printStackTrace();
 		}
-        isRunning.set(false);
     }
 
     public Input getInputs()
@@ -326,6 +324,10 @@ public class GameController implements Runnable
     	else if (option != null && option == MenuOption.RESUME)
     	{
     		game.setState(game.getResumeState());
+    	}
+    	else if (option != null && option == MenuOption.EXIT)
+    	{
+    		GameController.stopGame();
     	}
     }
     

@@ -206,4 +206,23 @@ class SoundControllerTest
 		assertFalse( isException );
 		assertTrue( isPlayed );
 	}
+	
+	@Test
+	void testVolume()
+	{
+		boolean isException = false;
+		boolean isPlayed = false;
+		try
+		{
+			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			sound.setVolume(0f);
+			isPlayed = sound.play(Settings.musicVolume);
+			assertEquals(0f, sound.getVolume());
+		} catch ( UnsupportedAudioFileException | IOException e ) 
+		{
+			isException = true;
+			assertFalse( isException );
+		}		
+		assertTrue( isPlayed );
+	}
 }

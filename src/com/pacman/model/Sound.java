@@ -82,8 +82,7 @@ public class Sound
         audioClip.setFramePosition(0);
         audioClip.addLineListener(listener);
         
-        FloatControl gainControl = (FloatControl) audioClip.getControl(Type.MASTER_GAIN);
-        gainControl.setValue(20f * (float) Math.log10(volume));
+        setVolume(volume);
         
         isRunning = true;
         audioClip.start();
@@ -133,8 +132,7 @@ public class Sound
         }
         audioClip.setFramePosition(0);
         
-        FloatControl gainControl = (FloatControl) audioClip.getControl(Type.MASTER_GAIN);
-        gainControl.setValue(20f * (float) Math.log10(volume));
+        setVolume(volume);
         
         isRunning = true;
         audioClip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -144,6 +142,17 @@ public class Sound
     public boolean getIsRunning()
     {
         return isRunning;
+    }
+    
+    public float getVolume()
+    {
+    	if (audioClip == null)
+    	{
+    		return 0f;
+    	}
+    	
+    	FloatControl gainControl = (FloatControl) audioClip.getControl(Type.MASTER_GAIN);
+    	return gainControl.getValue();
     }
     
     public void setVolume(float volume)

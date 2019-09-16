@@ -3,12 +3,14 @@ package com.pacman.model.states;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
+
 import com.pacman.model.Collision;
 import com.pacman.model.Game;
 import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.objects.entities.Ghost;
-import com.pacman.model.objects.entities.Pacman.Animation;
 import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
@@ -28,6 +30,20 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
     private TimerThread timerThread;
 
+    private LineListener deathSoundListener = new LineListener()
+    {
+         @Override
+         public void update(LineEvent event)
+         {
+             if (event.getType() == LineEvent.Type.STOP)
+             {        
+                game.setState(game.getPacman().getLives() == 0 ? game.getStopState() : game.getInitState());
+                game.stopDeathMusic();
+                isPacmanDying = false;
+             }
+         }
+    };
+    
     public PlayingState(Game gm)
     {
         if (gm == null)
@@ -56,11 +72,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
     {
         if (isPacmanDying)
         {
-            if (game.getPacman().getCurrentAnimation() == Animation.DYING && game.getPacman().isEndOfAnimation())
-            {
-                game.setState(game.getPacman().getLives() <= 0 ? game.getStopState() : game.getInitState());
-                isPacmanDying = false;
-            }
             return;
         }
         
@@ -158,6 +169,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
         isPacmanDying = true;
         game.stopInGameMusics();
         game.getPacman().looseLive();
-        game.playDeathMusic();
+        game.playDeathMusic(deathSoundListener);
     }
 }

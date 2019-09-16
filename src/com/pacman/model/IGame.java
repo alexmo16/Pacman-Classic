@@ -31,7 +31,7 @@ public interface IGame
 	public IGameState getResumeState();
 	public IGameState getCurrentState();
 
-	public void toggleUserMuteSounds();
+	public void toggleMuteAudio();
 	
 	public void setPacmanDirection(Direction d);
 	

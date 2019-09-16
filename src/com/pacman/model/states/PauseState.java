@@ -1,6 +1,5 @@
 package com.pacman.model.states;
 
-import com.pacman.controller.GameController;
 import com.pacman.model.Game;
 
 public class PauseState implements IGameState
@@ -16,8 +15,7 @@ public class PauseState implements IGameState
 	@Override
 	public void update() 
 	{
-		game.stopInGameMusics();
-		GameController.setIsMuted(true);
+		game.muteAudio();
 	}
 
 	@Override

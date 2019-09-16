@@ -1,6 +1,5 @@
 package com.pacman.model.states;
 
-import com.pacman.controller.GameController;
 import com.pacman.model.Game;
 import com.pacman.model.threads.TimerThread;
 
@@ -38,14 +37,12 @@ public class ResumeState implements IGameState
 		{
 			timer = null;
 			game.setState(game.getPlayingState());
-			if ( !game.isUserMuted() )
+			
+			if (!game.getIsUserMuted())
 			{
-				GameController.setIsMuted(false);
-				game.resumeInGameMusics();
+				game.resumeAudio();
 			}
 		}
-		
-		
 	}
 
 	@Override

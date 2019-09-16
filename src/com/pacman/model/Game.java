@@ -55,6 +55,7 @@ public class Game implements IGame
     private Sound gameSiren;
     private Sound chomp;
     private Sound death;
+    private boolean isUserMuted = false;
     
     private Collision collision;
     
@@ -74,8 +75,10 @@ public class Game implements IGame
     private Level currentLevel;
     
     private boolean pacmanWon = false;
-    private volatile boolean isUserMuted = false; // pour savoir si c'est un mute system ou effectue par le user.
     private final String LEVEL_DATA_FILE = new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"); 
+    
+    private float lastMusicVolume = 1f;
+    private float lastSoundsVolume = 1f;
     
     /**
      * Initialization function called by the engine when it lunch the game.
@@ -185,7 +188,7 @@ public class Game implements IGame
 
     public void playStartingMusic( LineListener listener )
     {
-    	startMusic.play(listener);
+    	startMusic.play(listener, Settings.musicVolume);
     }
     
     public void stopStartingMusic()
@@ -196,25 +199,56 @@ public class Game implements IGame
     	}
     }
 
-    public void playDeathMusic()
+    public void playDeathMusic(LineListener listener)
     {
-    	death.play();
+    	death.play(listener, Settings.musicVolume);
     }
     
     /**
      * Function called when the user click on the mute button.
      */
-    public void toggleUserMuteSounds()
+    public void toggleMuteAudio()
     {
-        GameController.toggleMute();
-        isUserMuted = GameController.getIsMuted();
-        if (isUserMuted)
+    	isUserMuted = !isUserMuted;
+        if (!GameController.getIsMuted())
         {
-        	gameSiren.stop();
-        } else
-        {
-            gameSiren.playLoopBack();
+        	muteAudio();
         }
+        else
+        {
+        	resumeAudio();
+        }
+    }
+    
+    public void muteAudio()
+    {
+    	if (!GameController.getIsMuted())
+    	{
+    		GameController.setIsMuted(true);
+        	lastMusicVolume = Settings.musicVolume;
+        	lastSoundsVolume = Settings.soundsVolume;
+        	Settings.soundsVolume = 0f;
+        	Settings.musicVolume = 0f;
+        	if (gameSiren != null && startMusic != null && death != null)
+        	{
+        		gameSiren.setVolume(0f);
+        		startMusic.setVolume(0f);
+        		death.setVolume(0f);
+        	}
+    	}
+    }
+    
+    public void resumeAudio()
+    {
+    	GameController.setIsMuted(false);
+    	Settings.soundsVolume = lastSoundsVolume;
+    	Settings.musicVolume = lastMusicVolume;
+    	if (gameSiren != null && startMusic != null && death != null)
+    	{
+    		gameSiren.setVolume(lastMusicVolume);
+    		startMusic.setVolume(lastMusicVolume);
+    		death.setVolume(lastSoundsVolume);
+    	}
     }
     
 	public void stopInGameMusics()
@@ -237,7 +271,7 @@ public class Game implements IGame
 	{
 		if ( !gameSiren.getIsRunning() )
 		{
-			gameSiren.playLoopBack();
+			gameSiren.playLoopBack(Settings.musicVolume);
 		}
 	}
 	
@@ -346,11 +380,6 @@ public class Game implements IGame
 		return entities;
 	}
 
-	public boolean isUserMuted() 
-	{
-		return isUserMuted;
-	}
-
 	public Level getCurrentLevel()
 	{
 		return currentLevel;
@@ -430,5 +459,10 @@ public class Game implements IGame
 			renderThread.interrupt();
 			throw new InterruptedByTimeoutException();
 		}
+	}
+	
+	public boolean getIsUserMuted()
+	{
+		return isUserMuted;
 	}
 }

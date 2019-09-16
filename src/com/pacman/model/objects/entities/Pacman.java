@@ -9,6 +9,7 @@ import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
 import com.pacman.utils.IPublisher;
+import com.pacman.utils.Settings;
 
 /**
  * 
@@ -85,7 +86,7 @@ public class Pacman extends Entity implements IPublisher, Animation
     {
     	if ( chomp != null )
     	{
-    		chomp.play();
+    		chomp.play(Settings.soundsVolume);
     	}
     	
         score += consumable.getPoints();

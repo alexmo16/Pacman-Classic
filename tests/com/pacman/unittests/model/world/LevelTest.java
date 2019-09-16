@@ -25,10 +25,10 @@ class LevelTest
 		Level worldData = new Level(good, "1");
 		
         assertNotEquals(worldData, null);
-        assertEquals(worldData.getHeight(), 3);
-        assertEquals(worldData.getWidth(), 4);
+        assertEquals(Level.getHeight(), 3);
+        assertEquals(Level.getWidth(), 4);
         
-        int [][] result = worldData.getTiles();
+        int [][] result = Level.getTiles();
         
         assertEquals(result[0][0], 1);
         assertEquals(result[1][0], 2);
@@ -54,8 +54,8 @@ class LevelTest
 		Level result = new Level(empty, "1");
 		
         assertNotEquals(result, null);
-        assertEquals(result.getHeight(), 0);
-        assertEquals(result.getWidth(), 0);
+        assertEquals(Level.getHeight(), 0);
+        assertEquals(Level.getWidth(), 0);
 	}
 	
 	@Test
@@ -64,8 +64,8 @@ class LevelTest
 		Level result = new Level(badOverhead, "1");
 		
         assertNotEquals(result, null);
-        assertEquals(result.getHeight(), 0);
-        assertEquals(result.getWidth(), 0);
+        assertEquals(Level.getHeight(), 0);
+        assertEquals(Level.getWidth(), 0);
 	}
 	
 	@Test
@@ -74,8 +74,8 @@ class LevelTest
 		Level result = new Level(badRow, "1");
 		
         assertNotEquals(result, null);
-        assertEquals(result.getHeight(), 0);
-        assertEquals(result.getWidth(), 0);
+        assertEquals(Level.getHeight(), 0);
+        assertEquals(Level.getWidth(), 0);
 	}
 	
 	@Test
@@ -84,8 +84,8 @@ class LevelTest
 		Level result = new Level(badCol, "1");
 		
         assertNotEquals(result, null);
-        assertEquals(result.getHeight(), 0);
-        assertEquals(result.getWidth(), 0);
+        assertEquals(Level.getHeight(), 0);
+        assertEquals(Level.getWidth(), 0);
 	}
 	
 	@Test

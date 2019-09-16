@@ -28,4 +28,7 @@ public class Settings
     
     public static final double TILES_HEIGHT = 1;
     public static final double TILES_WIDTH = 1;
+    
+    public volatile static float musicVolume = 1f;
+    public volatile static float soundsVolume = 1f;
 }

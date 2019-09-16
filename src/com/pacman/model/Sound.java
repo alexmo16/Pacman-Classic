@@ -6,12 +6,12 @@ import java.io.IOException;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.FloatControl.Type;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
-import com.pacman.controller.GameController;
 
 public class Sound
 {
@@ -25,7 +25,7 @@ public class Sound
     {
         file = new File(path).getAbsoluteFile();
         inputStream = AudioSystem.getAudioInputStream(file);
-
+        
         Sound that = this;
         defaultListener = new LineListener()
         {
@@ -40,9 +40,6 @@ public class Sound
         };
     }
     
-    /**
-     * Getters
-     */
     public File getFile()
     {
         return file;
@@ -52,9 +49,9 @@ public class Sound
      * Play sound asynchronously.
      * @return
      */
-    public boolean play()
+    public boolean play(float volume)
     {
-    	return play( defaultListener );
+    	return play( defaultListener, volume);
     }
 
     /**
@@ -62,9 +59,9 @@ public class Sound
      * @param listener
      * @return boolean
      */
-    public boolean play(LineListener listener)
+    public boolean play(LineListener listener, float volume)
     {
-        if (GameController.getIsMuted() || isRunning)
+        if (isRunning)
         {
             return false;
         }
@@ -84,6 +81,10 @@ public class Sound
         }
         audioClip.setFramePosition(0);
         audioClip.addLineListener(listener);
+        
+        FloatControl gainControl = (FloatControl) audioClip.getControl(Type.MASTER_GAIN);
+        gainControl.setValue(20f * (float) Math.log10(volume));
+        
         isRunning = true;
         audioClip.start();
         return true;
@@ -105,9 +106,9 @@ public class Sound
      * This will make the sound loopback until the stop function is called.
      * @return
      */
-    public boolean playLoopBack()
+    public boolean playLoopBack(float volume)
     {
-        if (GameController.getIsMuted() || isRunning)
+        if (isRunning)
         {
             return false;
         }
@@ -131,6 +132,10 @@ public class Sound
             return false;
         }
         audioClip.setFramePosition(0);
+        
+        FloatControl gainControl = (FloatControl) audioClip.getControl(Type.MASTER_GAIN);
+        gainControl.setValue(20f * (float) Math.log10(volume));
+        
         isRunning = true;
         audioClip.loop(Clip.LOOP_CONTINUOUSLY);
         return true;
@@ -139,5 +144,16 @@ public class Sound
     public boolean getIsRunning()
     {
         return isRunning;
+    }
+    
+    public void setVolume(float volume)
+    {
+    	if (audioClip == null)
+    	{
+    		return;
+    	}
+    	
+    	FloatControl gainControl = (FloatControl) audioClip.getControl(Type.MASTER_GAIN);
+        gainControl.setValue(20f * (float) Math.log10(volume));
     }
 }

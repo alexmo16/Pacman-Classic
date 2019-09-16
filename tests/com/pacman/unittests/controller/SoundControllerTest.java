@@ -11,6 +11,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.pacman.controller.GameController;
 import com.pacman.model.Sound;
+import com.pacman.utils.Settings;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,7 +77,7 @@ class SoundControllerTest
 		try 
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			isPlayed = sound.play();
+			isPlayed = sound.play(Settings.musicVolume);
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
@@ -94,11 +95,11 @@ class SoundControllerTest
 		try
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			isPlayed = sound.playLoopBack();
+			isPlayed = sound.playLoopBack(Settings.musicVolume);
 			assertTrue( isPlayed );
 			
 			sound = new Sound( "./tests/testAssets/clip.wav" );
-			isPlayed = sound.play();
+			isPlayed = sound.play(Settings.musicVolume);
 			assertTrue( isPlayed );
  
 		} catch ( UnsupportedAudioFileException | IOException e ) 
@@ -118,7 +119,7 @@ class SoundControllerTest
 		try
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			isPlayed = sound.playLoopBack();
+			isPlayed = sound.playLoopBack(Settings.musicVolume);
 			sound.stop();
 		} catch ( UnsupportedAudioFileException | IOException e )
 		{
@@ -138,14 +139,14 @@ class SoundControllerTest
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			GameController.setIsMuted( true );
-			isPlayed = sound.playLoopBack();
+			isPlayed = sound.playLoopBack(Settings.musicVolume);
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
 		}
 		
 		assertFalse( isException );
-		assertFalse( isPlayed );
+		assertTrue( isPlayed );
 	}
 	
 	@Test
@@ -157,14 +158,14 @@ class SoundControllerTest
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			GameController.setIsMuted( true );
-			isPlayed = sound.play();
+			isPlayed = sound.play(Settings.musicVolume);
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
 		}
 		
 		assertFalse( isException );
-		assertFalse( isPlayed );
+		assertTrue( isPlayed );
 		GameController.setIsMuted( false );
 	}
 	
@@ -190,7 +191,7 @@ class SoundControllerTest
 				}
 			};
 			
-			isPlayed = sound.play( listener );
+			isPlayed = sound.play(listener, Settings.musicVolume);
 			
 			while( sound.getIsRunning() )
 			{

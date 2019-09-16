@@ -249,10 +249,15 @@ public class GameController implements Runnable
     
     private static void muteButtonPressed(KeyEvent e)
     {
-    	IGameState currentState = game.getCurrentState();
-    	if ( currentState.getName() == StatesName.PLAY )
+    	if (game == null)
     	{
-    		game.toggleUserMuteSounds();
+    		return;
+    	}
+    	
+    	IGameState currentState = game.getCurrentState();
+    	if (currentState != null && (currentState.getName() != StatesName.PAUSE || currentState.getName() != StatesName.RESUME))
+    	{
+    		game.toggleMuteAudio();
     	}
     }
     

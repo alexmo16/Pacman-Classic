@@ -3,6 +3,7 @@ package com.pacman.app;
 import com.pacman.controller.GameController;
 import com.pacman.model.Game;
 import com.pacman.model.IGame;
+import com.pacman.view.IWindow;
 import com.pacman.view.Window;
 
 public class App
@@ -14,7 +15,7 @@ public class App
     public static void main(String[] args)
     {
         IGame game = new Game();
-        Window window = new Window();
+        IWindow window = new Window(game);
         GameController engine = GameController.getInstance(window, game);
         engine.startGame();
     }

@@ -30,7 +30,7 @@ class GameControllerTests
         try
         {
             gameManager = new Game();
-            window = new Window();
+            window = new Window(gameManager);
             gameManager.init(window);
 
             expectedStartMusic = new Sound("." + File.separator + "assets" + File.separator + "pacman_beginning.wav");

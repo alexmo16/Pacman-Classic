@@ -19,8 +19,6 @@ public class MainMenuState implements IGameState
 		{
 			return;
 		}
-		
-		game.setState(game.getInitState());
 	}
 
 	@Override

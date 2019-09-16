@@ -9,6 +9,7 @@ import com.pacman.controller.GameController;
 import com.pacman.model.IGame;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Sprites;
+import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.states.StatesName;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
@@ -20,7 +21,7 @@ public class GameView extends JPanel
 	
 	private IGame game;
 	private int tileSize, horizontalBorder, verticalBorder;
-	private boolean debug = false;
+	private boolean debug = true;
 	
 	public GameView(IGame gm)
 	{
@@ -61,8 +62,8 @@ public class GameView extends JPanel
         	xTileScale = obj.getSprite().getWidth() / Sprites.getTilesize();
         	yTileScale = obj.getSprite().getHeight() / Sprites.getTilesize();
         	
-            x = (obj.getHitBox().getX() * tileSize) + horizontalBorder;
-            y = (obj.getHitBox().getY() * tileSize) + verticalBorder;
+            x = (obj.getPosition().getX() * tileSize) + horizontalBorder;
+            y = (obj.getPosition().getY() * tileSize) + verticalBorder;
             
             g.drawImage(Sprites.getTilesSheet(), 
         				(int)(x), 
@@ -84,16 +85,27 @@ public class GameView extends JPanel
 	        double x, y;
 	        int xTileScale, yTileScale;
 	        for (GameObject obj : game.getGameObjects())
-	        {
-	        	xTileScale = obj.getSprite().getWidth() / Sprites.getTilesize();
-	        	yTileScale = obj.getSprite().getHeight() / Sprites.getTilesize();
-	        	
+	        {	        	
+	            // Grid of hitbox (red)
 	            x = (obj.getHitBox().getX() * tileSize) + horizontalBorder;
 	            y = (obj.getHitBox().getY() * tileSize) + verticalBorder;
-
-	            // Grid of hitbox(red)
+	        	
 	            g.setColor(new Color(100, 0, 0, 200));
 	            g.drawRect((int)x, (int)y, (int)(obj.getHitBox().getWidth() * tileSize) - 1, (int)(obj.getHitBox().getHeight() * tileSize) - 1);
+	            
+	            // Sprite drawing zone (green)
+	            if (obj instanceof Entity)
+	            {
+		        	xTileScale = obj.getSprite().getWidth() / Sprites.getTilesize();
+		        	yTileScale = obj.getSprite().getHeight() / Sprites.getTilesize();
+		        	
+		            x = (obj.getPosition().getX() * tileSize) + horizontalBorder;
+		            y = (obj.getPosition().getY() * tileSize) + verticalBorder;
+		            
+		            g.setColor(new Color(0,100,0, 200));
+		            g.fillRect((int)x, (int)y, (int)(xTileScale * tileSize), (int)(yTileScale * tileSize));
+	            }
+	        
 	        }
 		}
 	}

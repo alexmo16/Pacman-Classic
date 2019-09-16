@@ -27,7 +27,6 @@ import com.pacman.model.states.ResumeState;
 import com.pacman.model.states.StatesName;
 import com.pacman.model.states.StopState;
 import com.pacman.model.threads.RenderThread;
-import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Level;
@@ -103,6 +102,7 @@ public class Game implements IGame
             	}
                 else if (currentLevel.getTile(x, y) == Tile.PAC_MAN_START.getValue())
                 {
+                	// TODO : Make no sens to hard code some value in the game. Only the Pacman object himself shoudl know about it's correct position.
                 	pacman = new Pacman(x+0.05, y+0.05);
                     newDirectionPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
                     nextTilesPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
@@ -385,8 +385,11 @@ public class Game implements IGame
 
 	public List<GameObject> getGameObjects() 
 	{
-		return Stream.of(getMaze(), getConsumables(), getEntities()).flatMap(x -> x.stream()).collect(Collectors.toList());
-
+		if (getMaze() != null && getConsumables() != null && getEntities() != null)
+		{
+			return Stream.of(getMaze(), getConsumables(), getEntities()).flatMap(x -> x.stream()).collect(Collectors.toList());
+		}
+		return null;
 	}
 
 	public void setResumeTime(int time)

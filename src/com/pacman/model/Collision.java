@@ -92,10 +92,10 @@ public class Collision
     
     public boolean middleOfATiles() {
     	  	
-    	double x = game.getPacman().getX();
-    	double y = game.getPacman().getY();
+    	double x = game.getPacman().getHitBoxX();
+    	double y = game.getPacman().getHitBoxY();
     	
-    	if (  x == (int) game.getPacman().getX() + 0.05 && y == (int) game.getPacman().getY() + 0.05 ) {
+    	if (  x == (int) game.getPacman().getHitBoxX() + 0.05 && y == (int) game.getPacman().getHitBoxY() + 0.05 ) {
     		 return true;
     	}
     	
@@ -207,8 +207,8 @@ public class Collision
             ConsumableCollisionVisitor visitor = new ConsumableCollisionVisitor();
 
             Level level = game.getCurrentLevel();
-            double xPacman = game.getPacman().getX();
-            double yPacman = game.getPacman().getY();
+            double xPacman = game.getPacman().getHitBoxX();
+            double yPacman = game.getPacman().getHitBoxY();
 
             Consumable consumable = level.getConsumableAtCoords(xPacman, yPacman);
 
@@ -226,7 +226,7 @@ public class Collision
     
 	public void ghostSpawn(GameObject obj) {
 		
-		Ghost g2 = new Ghost( obj.getX(), obj.getY(), ((Ghost)obj).getType() );
+		Ghost g2 = new Ghost( obj.getHitBoxX(), obj.getHitBoxY(), ((Ghost)obj).getType() );
 		g2.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(),game.getCurrentLevel().getAuthTilesGhostRoom());
 		g2.updatePosition(g2.getDirection());
 		
@@ -254,7 +254,7 @@ public class Collision
 	
 	public void ghostMove(Entity obj) {
 		
-		Ghost g2 = new Ghost(((Ghost) obj).getX(), ((Ghost) obj).getY(), ((Ghost) obj).getType());
+		Ghost g2 = new Ghost(((Ghost) obj).getHitBoxX(), ((Ghost) obj).getHitBoxY(), ((Ghost) obj).getType());
         g2.setAlive();
         g2.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(),game.getCurrentLevel().getAuthTilesGhostRoom());
         g2.setDirection(((Ghost) obj).getDirection());
@@ -262,7 +262,7 @@ public class Collision
         g2.updatePosition(g2.getDirection());
         while (collisionWall(g2) != "path")
         {
-        	g2.getHitBox().setRect(obj.getHitBox());
+        	g2.setHitBox(obj.getHitBox());
         	g2.setDirection(((Ghost) obj).getDirection());
             g2.getNewDirection();
             g2.updatePosition(g2.getDirection());
@@ -294,7 +294,7 @@ public class Collision
         { 
             if (tiles[x][y] == i)
             {
-            	if(i == 70 && (int) game.getPacman().getX() == x && (int) game.getPacman().getY() == y)
+            	if(i == 70 && (int) game.getPacman().getHitBoxX() == x && (int) game.getPacman().getHitBoxY() == y)
             	{
             		game.getPacman().setIsTravelling(true);
 
@@ -315,10 +315,10 @@ public class Collision
     	Ghost ghost = getNearestGhost();
     	if (ghost != null)
     	{
-    		double xCoord = ghost.getXCoord();
-    		double yCoord = ghost.getYCoord();
+    		double xCoord = ghost.getPosition().x;
+    		double yCoord = ghost.getPosition().y;
     		Rectangle2D.Double hitboxGhost = new Rectangle2D.Double(xCoord, yCoord, 2,2);
-    		Rectangle2D.Double hitboxPacman = new Rectangle2D.Double(game.getPacman().getXCoord(),game.getPacman().getYCoord(), 2, 2 );
+    		Rectangle2D.Double hitboxPacman = new Rectangle2D.Double(game.getPacman().getPosition().x,game.getPacman().getPosition().y, 2, 2 );
     		
     		if(hitboxPacman.intersects(hitboxGhost))
     		{

@@ -109,7 +109,7 @@ public class PacmanTests
 		assertEquals(pacmanOk.getCurrentAnimation(), Animation.IDLE);
 		assertEquals(pacmanOk.isEndOfAnimation(), false);
 		assertEquals(pacmanOk.getIstravelling(), false);
-		assertEquals(pacmanOk.getDirection(), pacmanOk.firstDirection);
+		assertEquals(pacmanOk.getDirection(), Direction.LEFT);
 	}
 	
 	@Test

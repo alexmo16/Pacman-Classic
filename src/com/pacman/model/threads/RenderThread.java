@@ -18,6 +18,11 @@ public class RenderThread extends Thread
 	
     private void update() 
     {
+    	if (game == null)
+    	{
+    		return;
+    	}
+    	
     	for (GameObject obj : game.getGameObjects())
     	{
     		if (obj instanceof Animation)

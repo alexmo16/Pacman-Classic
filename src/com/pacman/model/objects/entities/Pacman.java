@@ -2,8 +2,6 @@ package com.pacman.model.objects.entities;
 
 import java.util.ArrayList;
 
-import org.mockito.internal.invocation.RealMethod.IsIllegal;
-
 import com.pacman.model.Sound;
 import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;
@@ -46,9 +44,6 @@ public class Pacman extends Entity implements IPublisher, Animation
     private boolean collision = false;
     private Direction collisionDirection = null; 
     private Direction nextDirection = Direction.LEFT;
-    public final Direction firstDirection = Direction.LEFT;
-    private double spawnX;
-    private double spawnY;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
     private boolean isTravelling = false;
     
@@ -57,9 +52,7 @@ public class Pacman extends Entity implements IPublisher, Animation
    
     public Pacman(double x, double y)
     {
-        super(x+0.05, y+0.05, 0.9, 0.9, Direction.LEFT);
-        spawnX = x;
-        spawnY = y;
+        super(x, y, Direction.LEFT);
 		lifes = MAX_LIFES;
     	updateSprite();
     }
@@ -217,10 +210,9 @@ public class Pacman extends Entity implements IPublisher, Animation
 		endOfAnimation = false;
 		
 		this.setIsTravelling(false);
-		setNextDirection(firstDirection);
-		setDirection(firstDirection);
-		hitBox.x = spawnX;
-		hitBox.y = spawnY;
+		setNextDirection(spawnDirection);
+		setDirection(spawnDirection);
+		setPosition(spawn.x, spawn.y);
 	}
 	
 	public void resetLives()

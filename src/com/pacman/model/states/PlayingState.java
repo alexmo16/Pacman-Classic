@@ -41,8 +41,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
         game.getPacman().registerObserver(this);
 
-        game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
-        game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
+        game.getNewDirectionPacman().setHitBox(game.getPacman().getHitBox());
+        game.getNextTilesPacman().setHitBox(game.getPacman().getHitBox());
 
         game.setNextTilesDirection(game.getPacman().getDirection());
         game.setNewDirection(game.getNextTilesDirection());
@@ -112,8 +112,8 @@ public class PlayingState implements IGameState, IObserver<Direction>
         for (i = 0; i < Settings.SPEED; i++)
         {
 
-            game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
-            game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
+            game.getNewDirectionPacman().setHitBox(game.getPacman().getHitBox());
+            game.getNextTilesPacman().setHitBox(game.getPacman().getHitBox());
             game.getNextTilesPacman().updatePosition(game.getNextTilesDirection());
             game.getNewDirectionPacman().updatePosition(game.getNewDirection());
 

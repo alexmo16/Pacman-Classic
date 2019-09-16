@@ -16,19 +16,13 @@ public class Ghost extends Entity implements Animation
 	private boolean isInTheGate;
 	private Random random;
 	private int randomInt;
-	private Direction firstDirection = Direction.UP;
-	
-	private double spawnX;
-	private double spawnY;
 	
 	private int[] authTiles;
 	private int[] authTilesRoom;
 	
     public Ghost(double x, double y, GhostType t )
     {
-        super(x, y, 0.9, 0.9, Direction.UP);
-        spawnX = x;
-        spawnY = y;
+        super(x, y, Direction.UP);
         type = t;
         isAlive = false;
         isSpawning = false;
@@ -41,7 +35,17 @@ public class Ghost extends Entity implements Animation
     {
     	sprite = Sprites.getGhost(type, direction, animationState);
     }
-    
+	
+	@Override
+	public int[] getAuthTiles()
+	{
+		if (this.isAlive)
+		{
+			return this.authTiles;
+		}
+		return this.authTilesRoom;
+	}
+	
 	@Override
 	public void nextSprite() 
 	{
@@ -93,39 +97,32 @@ public class Ghost extends Entity implements Animation
 		return type;
 	}
 	
-	public void getNewDirection() {
+	public void getNewDirection() 
+	{
 		random = new Random();
 		randomInt = random.nextInt(4);
 		if (Direction.values()[(randomInt+2)%4] != getDirection())
 		{
 			setDirection(Direction.values()[randomInt]);
-		} else {
+		} 
+		else 
+		{
 			getNewDirection();
 		}
 	}
 	
-	public void respawn() {
+	public void respawn() 
+	{
 		setNotAlive();
 		setNotSpawning();
 		setNotInTheGate();
-		setDirection(firstDirection);
-		hitBox.x = spawnX;
-		hitBox.y = spawnY;
-		this.setCoord(hitBox.x, hitBox.y);
+		setDirection(spawnDirection);
+		setPosition(spawn.x, spawn.y);
 	}
 	
 	public void setAuthTiles(int[] tab1, int[] tab2)
 	{
 		this.authTiles = tab1;
 		this.authTilesRoom = tab2;
-	}
-	
-	public int[] getAuthTiles()
-	{
-		if(this.isAlive)
-		{
-			return this.authTiles;
-		}
-		return this.authTilesRoom;
 	}
 }

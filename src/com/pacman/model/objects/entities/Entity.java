@@ -1,5 +1,8 @@
   package com.pacman.model.objects.entities;
 
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
@@ -8,58 +11,46 @@ import com.pacman.utils.Settings;
 public abstract class Entity extends GameObject
 {
     protected Direction direction;
-    private Double x,y;
-    private double xCoord,yCoord;
-    
-    protected static double xOffsetSprite;
-    protected static double yOffsetSprite;
-    
+	protected Point2D.Double spawn;
+	protected Direction spawnDirection;
 
-
-
-
-
-    public Entity(double x, double y, double width, double height, Direction dir)
+    public Entity(double x, double y, Direction dir)
     {
-        super(x, y, width, height);
-    	xOffsetSprite = (2 * Settings.TILES_WIDTH - width) / 2;
-    	yOffsetSprite = (2 * Settings.TILES_HEIGHT - height) / 2;
-        this.xCoord = x - xOffsetSprite;
-        this.yCoord = y - yOffsetSprite;
+        super(x, y, new Point2D.Double(0.5, 0.5), new Rectangle2D.Double(x + 0.05, y + 0.05, 0.9, 0.9));
         direction = dir;
+        spawn = new Point2D.Double(x,  y);
+        spawnDirection = dir;
     }
 
+    public abstract void updateSprite();
+    
+    public abstract int[] getAuthTiles();
     
     public void updatePosition(Direction dir)
     {
+    	double x = 0, y = 0;
         if (dir == Direction.UP)
         {
-        	x = getX();
-        	y = getY() - Settings.MOVEMENT;
-        	this.setCoord(x, y);
-
+        	x = getHitBoxX();
+        	y = getHitBoxY() - Settings.MOVEMENT;
         }
         else if (dir == Direction.DOWN)
         {
-            x = getX();
-            y = getY() + Settings.MOVEMENT;
-            this.setCoord(x, y);
+            x = getHitBoxX();
+            y = getHitBoxY() + Settings.MOVEMENT;
         }
         else if (dir == Direction.RIGHT)
         {
-            x = y = getX() + Settings.MOVEMENT;
-            y = getY();
-            this.setCoord(x, y);
+            x = getHitBoxX() + Settings.MOVEMENT;
+            y = getHitBoxY();
         }
         else if (dir == Direction.LEFT)
         {
-            x = y = getX() - Settings.MOVEMENT;
-            y = getY();
-            this.setCoord(x, y);
+            x = getHitBoxX() - Settings.MOVEMENT;
+            y = getHitBoxY();
         }
-        //System.out.println(getXCoord());
-        //System.out.println(getYCoord());
-        hitBox.setRect(x, y, hitBox.getWidth(), hitBox.getHeight());
+
+        setPosition(x, y);
     }
 
     public void tunnel(Direction dir)
@@ -67,30 +58,26 @@ public abstract class Entity extends GameObject
     	double x = 0, y = 0;
         if (dir == Direction.UP)
         {
-        	x = getX(); 
+        	x = getHitBoxX(); 
         	y = Level.getHeight() - hitBox.getHeight() - 0.55;
-        	this.setCoord(x, y);
         }
         if (dir == Direction.DOWN)
         {
-            x = getX();
+            x = getHitBoxX();
             y = 0.55;
-            this.setCoord(x, y);
         }
         if (dir == Direction.RIGHT)
         {
             x = 0.55;
-            y = getY();
-            this.setCoord(x, y);
+            y = getHitBoxY();
         }
         if (dir == Direction.LEFT)
         {
             x = Level.getWidth() - hitBox.getWidth() - 0.55;
-            y = getY();
-            this.setCoord(x, y);
+            y = getHitBoxY();
         }
 
-        hitBox.setRect(x, y, hitBox.getWidth(), hitBox.getHeight());
+        setPosition(x, y);
     }
     
     public Direction getDirection()
@@ -103,30 +90,4 @@ public abstract class Entity extends GameObject
         direction = dir;
         updateSprite();
     }
-    
-    public abstract void updateSprite();
-    
-    public double getXCoord()
-    {
-    	return this.xCoord;
-    }
-    
-    public double getYCoord()
-    {
-    	return this.yCoord;
-    }
-    
-    public void setCoord(double x, double y)
-    {
-    	this.xCoord = x - xOffsetSprite ;
-    	this.yCoord = y - yOffsetSprite ;
-    }
-    
-    public void updateCoord()
-    {
-    	this.xCoord = this.getX() - xOffsetSprite ;
-    	this.yCoord = this.getY() - yOffsetSprite ;
-    }
-    
-    public abstract int[] getAuthTiles();
 }

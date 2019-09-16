@@ -12,6 +12,8 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.pacman.controller.GameController;
+import com.pacman.model.menus.MainMenu;
+import com.pacman.model.menus.MenuOption;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Wall;
 import com.pacman.model.objects.consumables.Consumable;
@@ -32,8 +34,8 @@ import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Level;
 import com.pacman.model.world.Tile;
 import com.pacman.utils.Settings;
-import com.pacman.view.GameView;
-import com.pacman.view.Window;
+import com.pacman.view.IWindow;
+import com.pacman.view.ViewType;
 
 /**
  * Contains an observer design pattern and a state pattern.
@@ -41,6 +43,10 @@ import com.pacman.view.Window;
  */
 public class Game implements IGame
 {
+	private MainMenu mainMenu = new MainMenu();
+	
+	private IWindow window;
+	
     private Pacman pacman;
     private ArrayList<Wall> maze;
     private Pacman newDirectionPacman;
@@ -84,8 +90,9 @@ public class Game implements IGame
      * Initialization function called by the engine when it lunch the game.
      */
     @Override
-    public void init(Window window)
+    public void init(IWindow w)
     {    
+    	window = w;
     	collision = new Collision(this);
     	currentLevel = new Level(LEVEL_DATA_FILE, "1");
     	maze = new ArrayList<Wall>();
@@ -137,15 +144,17 @@ public class Game implements IGame
         
         loadMusics();
         
-    	window.setContainer(new GameView(this));
-    	
     	mainMenuState = new MainMenuState(this);
         initState = new InitState(this);
         pauseState = new PauseState(this);
         resumeState = new ResumeState(this);
         playingState = new PlayingState(this);
         stopState = new StopState(this);
-        currentState = mainMenuState;
+        setState(mainMenuState);
+        
+        renderThread = new RenderThread(this);
+        renderThread.start();
+        
     }
     
     /**
@@ -277,6 +286,23 @@ public class Game implements IGame
 	
 	public void setState( IGameState state )
 	{
+		if (state.getName() == StatesName.INIT)
+		{		
+			window.showView(ViewType.GAME);
+			mainMenu.setResumeState();
+		}
+		else if (state.getName() == StatesName.RESUME && currentState.getName() == StatesName.MAIN_MENU)
+		{
+			window.showView(ViewType.GAME);
+		}
+		else if (state.getName() == StatesName.STOP)
+		{
+			mainMenu.setStartState();
+		}
+		else if (state.getName() == StatesName.MAIN_MENU)
+		{
+			window.showView(ViewType.MAIN_MENU);
+		}
 		currentState = state;
 	}
 	
@@ -459,6 +485,30 @@ public class Game implements IGame
 			renderThread.interrupt();
 			throw new InterruptedByTimeoutException();
 		}
+	}
+
+	@Override
+	public ArrayList<MenuOption> getMainMenuOptions() 
+	{	
+		return mainMenu.getOptions();
+	}
+
+	@Override
+	public MenuOption getCurrentSelection() 
+	{
+		return mainMenu.getCurrentSelection();
+	}
+
+	@Override
+	public void mainMenuNext() 
+	{
+		mainMenu.next();
+	}
+
+	@Override
+	public void mainMenuPrevious() 
+	{
+		mainMenu.previous();
 	}
 	
 	public boolean getIsUserMuted()

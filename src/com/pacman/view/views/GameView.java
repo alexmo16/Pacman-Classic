@@ -1,9 +1,7 @@
-package com.pacman.view;
+package com.pacman.view.views;
 
 import java.awt.Color;
 import java.awt.Graphics;
-
-import javax.swing.JPanel;
 
 import com.pacman.controller.GameController;
 import com.pacman.model.IGame;
@@ -14,14 +12,16 @@ import com.pacman.model.states.StatesName;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
 import com.pacman.model.world.Sprite;
+import com.pacman.view.ViewType;
 
-public class GameView extends JPanel
+public class GameView extends View
 {
 	private static final long serialVersionUID = 1594565623438214915L;  
+	private static final ViewType name = ViewType.GAME;
 	
 	private IGame game;
-	private int tileSize, horizontalBorder, verticalBorder;
-	private boolean debug = true;
+	private int horizontalBorder, verticalBorder;
+	private boolean debug = false;
 	
 	public GameView(IGame gm)
 	{
@@ -31,26 +31,24 @@ public class GameView extends JPanel
 	@Override
 	public void paintComponent(Graphics g) 
 	{
-		tileSize = Math.min(getHeight() / (Level.getHeight() + 4), getWidth() / Level.getWidth());
-        if ( (tileSize & 1) != 0 ) { tileSize--; } // Odd tile size will break tile tileSize.
+		if (Level.getWidth() == 0 || Level.getHeight() == 0)
+		{
+			return;
+		}
+		
+		super.paintComponent(g);
 
         // Offset to fit in the world 
-        horizontalBorder = (getWidth() - (tileSize * Level.getWidth())) / 2;
-        verticalBorder = (getHeight() - (tileSize * Level.getHeight())) / 2;
+        horizontalBorder = (getWidth() - (sFactor * Level.getWidth())) / 2;
+        verticalBorder = (getHeight() - (sFactor * Level.getHeight())) / 2;
         
-        renderBackground(g);
+        renderBackground(g, Color.black);
         renderGameObjects(g);
         renderGameStatus(g);
         renderDebug(g);
         renderPause(g);
         renderGameover(g);
         renderResumeTime(g);
-	}
-
-	private void renderBackground(Graphics g)
-	{
-        g.setColor(Color.black);
-        g.fillRect(0, 0, getWidth(), getHeight());
 	}
 	
 	private void renderGameObjects(Graphics g)
@@ -62,14 +60,14 @@ public class GameView extends JPanel
         	xTileScale = obj.getSprite().getWidth() / Sprites.getTilesize();
         	yTileScale = obj.getSprite().getHeight() / Sprites.getTilesize();
         	
-            x = (obj.getPosition().getX() * tileSize) + horizontalBorder;
-            y = (obj.getPosition().getY() * tileSize) + verticalBorder;
+            x = (obj.getPosition().getX() * sFactor) + horizontalBorder;
+            y = (obj.getPosition().getY() * sFactor) + verticalBorder;
             
             g.drawImage(Sprites.getTilesSheet(), 
         				(int)(x), 
         				(int)(y), 
-        				(int)(x + (xTileScale * tileSize)), 
-        				(int)(y + (yTileScale * tileSize)), 
+        				(int)(x + (xTileScale * sFactor)), 
+        				(int)(y + (yTileScale * sFactor)), 
         				obj.getSprite().getX1(), 
         				obj.getSprite().getY1(), 
         				obj.getSprite().getX2(), 
@@ -87,11 +85,11 @@ public class GameView extends JPanel
 	        for (GameObject obj : game.getGameObjects())
 	        {	        	
 	            // Grid of hitbox (red)
-	            x = (obj.getHitBox().getX() * tileSize) + horizontalBorder;
-	            y = (obj.getHitBox().getY() * tileSize) + verticalBorder;
+	            x = (obj.getHitBox().getX() * sFactor) + horizontalBorder;
+	            y = (obj.getHitBox().getY() * sFactor) + verticalBorder;
 	        	
 	            g.setColor(new Color(100, 0, 0, 200));
-	            g.drawRect((int)x, (int)y, (int)(obj.getHitBox().getWidth() * tileSize) - 1, (int)(obj.getHitBox().getHeight() * tileSize) - 1);
+	            g.drawRect((int)x, (int)y, (int)(obj.getHitBox().getWidth() * sFactor) - 1, (int)(obj.getHitBox().getHeight() * sFactor) - 1);
 	            
 	            // Sprite drawing zone (green)
 	            if (obj instanceof Entity)
@@ -99,11 +97,11 @@ public class GameView extends JPanel
 		        	xTileScale = obj.getSprite().getWidth() / Sprites.getTilesize();
 		        	yTileScale = obj.getSprite().getHeight() / Sprites.getTilesize();
 		        	
-		            x = (obj.getPosition().getX() * tileSize) + horizontalBorder;
-		            y = (obj.getPosition().getY() * tileSize) + verticalBorder;
+		            x = (obj.getPosition().getX() * sFactor) + horizontalBorder;
+		            y = (obj.getPosition().getY() * sFactor) + verticalBorder;
 		            
 		            g.setColor(new Color(0,100,0, 200));
-		            g.fillRect((int)x, (int)y, (int)(xTileScale * tileSize), (int)(yTileScale * tileSize));
+		            g.fillRect((int)x, (int)y, (int)(xTileScale * sFactor), (int)(yTileScale * sFactor));
 	            }
 	        
 	        }
@@ -113,7 +111,7 @@ public class GameView extends JPanel
 	private void renderGameStatus(Graphics g)
     {
 		// Top left - Game state
-        int x = tileSize + horizontalBorder;
+        int x = sFactor + horizontalBorder;
         int y = verticalBorder / 2;
         String s = "State " + game.getCurrentState().getName().getValue();
         renderString(g, s, x, y);
@@ -126,35 +124,35 @@ public class GameView extends JPanel
         renderString(g, s, x, y);
         
         // Top right - FPS
-        x = getWidth() - horizontalBorder + 2 * tileSize;
+        x = getWidth() - horizontalBorder + 2 * sFactor;
         y = verticalBorder / 2;
         s = "FPS ";
         s += Integer.toString(GameController.getFps());
         renderString(g, s, x, y);
         
         // Bot left - Score
-        x = tileSize + horizontalBorder;
-        y = getHeight() - tileSize / 2 - (verticalBorder / 2);
+        x = sFactor + horizontalBorder;
+        y = getHeight() - sFactor / 2 - (verticalBorder / 2);
         s = new String("score " + game.getPacman().getScore());
         renderString(g, s, x, y);
         
         // Bot center - Lives
         s = "Lives ";
-		x = (getWidth() / 2) - (s.length() * tileSize) / 2;
+		x = (getWidth() / 2) - (s.length() * sFactor) / 2;
         renderString(g, s, x, y);
-		x = (getWidth() / 2) + (s.length() * tileSize) / 2;
-        y = getHeight() - tileSize - (verticalBorder / 2);
+		x = (getWidth() / 2) + (s.length() * sFactor) / 2;
+        y = getHeight() - sFactor - (verticalBorder / 2);
         for (int lives = 1; lives < game.getPacman().getLives(); lives++)
         {
         	Sprite pacman = Sprites.getPacmanMovement(Direction.RIGHT, 0);
-            g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + (2 * tileSize)), (int)(y + (2 * tileSize)), pacman.getX1(), pacman.getY1(), pacman.getX2(), pacman.getY2(), null);
-            x += 2 * tileSize;
+            g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + (2 * sFactor)), (int)(y + (2 * sFactor)), pacman.getX1(), pacman.getY1(), pacman.getX2(), pacman.getY2(), null);
+            x += 2 * sFactor;
         }
         
         // Bot right - Level
         s = "Level " + game.getCurrentLevel().getName();
-		x = getWidth() - horizontalBorder - (s.length() * tileSize);
-        y = getHeight() - tileSize / 2 - (verticalBorder / 2);
+		x = getWidth() - horizontalBorder - (s.length() * sFactor);
+        y = getHeight() - sFactor / 2 - (verticalBorder / 2);
         renderString(g, s, x, y);
     }
 	
@@ -165,7 +163,7 @@ public class GameView extends JPanel
 	        g.setColor(new Color(0, 0, 0, 200));
 	        g.fillRect(0, 0, getWidth(), getHeight());
 	        
-	        int x = (getWidth() - (StatesName.PAUSE.getValue().length() * tileSize)) / 2;
+	        int x = (getWidth() - (StatesName.PAUSE.getValue().length() * sFactor)) / 2;
 	        int y = getHeight() / 2;
 	        
 	        renderString(g, StatesName.PAUSE.getValue(), x, y);
@@ -179,7 +177,7 @@ public class GameView extends JPanel
         	String message = "Gameover";
 	        g.setColor(new Color(0, 0, 0, 200));
 	        
-	        int x = (getWidth() - (message.length() * tileSize)) / 2;
+	        int x = (getWidth() - (message.length() * sFactor)) / 2;
 	        int y = getHeight() / 2;
 	        
 	        renderString(g, message, x, y);
@@ -195,22 +193,16 @@ public class GameView extends JPanel
 			g.setColor(new Color(0, 0, 0, 200));
 		    g.fillRect(0, 0, getWidth(), getHeight());
 		    
-		    int x = (getWidth() - (message.length() * tileSize)) / 2;
+		    int x = (getWidth() - (message.length() * sFactor)) / 2;
 		    int y = getHeight() / 2;
 		    
 		    renderString(g, message, x, y);
         }
 	}
 	
-	private void renderString(Graphics g, String message, int x, int y)
+	@Override
+	public String getName()
 	{
-		for (int i = 0; i < message.length(); i++)
-        {
-        	if (message.charAt(i) != ' ')
-        	{
-        		Sprite k = Sprites.getCharacter(message.charAt(i));
-        		g.drawImage(Sprites.getTilesSheet(), x + i * tileSize, y, x + i * tileSize + tileSize, y + tileSize, k.getX1(), k.getY1(), k.getX2(), k.getY2(), null);
-        	}
-        }
+		return name.getValue();
 	}
 }

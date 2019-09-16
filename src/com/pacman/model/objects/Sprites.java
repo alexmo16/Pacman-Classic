@@ -27,7 +27,7 @@ public final class Sprites
     private final static HashMap<Integer, Sprite> energizer = new HashMap<Integer, Sprite>();
     private final static HashMap<Character, Sprite> characters = new HashMap<Character, Sprite>();
     private final static HashMap<Integer, Sprite> points = new HashMap<Integer, Sprite>();
-    private final static Sprite title = new Sprite(tiles[87][0], tiles[87][1], 8 * tileSize, 2 * tileSize);
+    private final static Sprite title = new Sprite(tiles[72][0], tiles[72][1], 8 * tileSize, 2 * tileSize);
     private final static HashMap<Direction, HashMap<Integer, Sprite>> pacmanMovement = new HashMap<Direction, HashMap<Integer, Sprite>>();
     private final static HashMap<Integer, Sprite> pacmanDeath = new HashMap<Integer, Sprite>();
     private final static HashMap<Integer, Sprite> frightenedGhosts = new HashMap<Integer, Sprite>();

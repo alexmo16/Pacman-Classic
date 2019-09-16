@@ -5,12 +5,13 @@ import java.nio.channels.InterruptedByTimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.pacman.model.IGame;
+import com.pacman.model.menus.MenuOption;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.states.StatesName;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.Settings;
+import com.pacman.view.IWindow;
 import com.pacman.view.Input;
-import com.pacman.view.Window;
 
 /**
  * Classe principale de l'engin de jeu, Engine, gere donc la gameloop de
@@ -23,7 +24,7 @@ public class GameController implements Runnable
     private Thread thread;
     private static IGame game;
     private static Input inputs;
-    private static Window window;
+    private static IWindow window;
  
     private static AtomicBoolean isRunning = new AtomicBoolean(false);
     private volatile static boolean isMuted = false;
@@ -45,7 +46,7 @@ public class GameController implements Runnable
      * @param game the object that implements the IGame interface. 
      * @return Engine
      */
-    public static GameController getInstance(Window w, IGame g)
+    public static GameController getInstance(IWindow w, IGame g)
     {
         if (instance == null)
         {
@@ -65,6 +66,8 @@ public class GameController implements Runnable
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_RIGHT), (KeyEvent e) -> arrowsKeysPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_LEFT), (KeyEvent e) -> arrowsKeysPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_K), (KeyEvent e) -> killButtonPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE), (KeyEvent e) -> menuKeyPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_ENTER), (KeyEvent e) -> acceptKeyPressed(e) );
             
             window.addListener(inputs);
             instance = new GameController();
@@ -288,11 +291,55 @@ public class GameController implements Runnable
 			
 			game.setPacmanDirection(dir);
 		}
+		else if (currentState.getName() == StatesName.MAIN_MENU)
+		{
+			switch(e.getKeyCode())
+			{
+			case KeyEvent.VK_UP:
+				game.mainMenuPrevious();
+				break;
+				
+			case KeyEvent.VK_DOWN:
+				game.mainMenuNext();
+				break;
+			}
+		}
     }
     
     private static void killButtonPressed(KeyEvent e)
     {
     	game.killPacman();
+    }
+    
+    private static void menuKeyPressed(KeyEvent e)
+    {
+    	mainMenuGame();
+    }
+    
+    private static void acceptKeyPressed(KeyEvent e)
+    {
+    	MenuOption option = game.getCurrentSelection();
+    	if (option != null && option == MenuOption.START)
+    	{
+    		game.setState(game.getInitState());
+    	}
+    	else if (option != null && option == MenuOption.RESUME)
+    	{
+    		game.setState(game.getResumeState());
+    	}
+    }
+    
+    public static void mainMenuGame()
+    {
+    	if (game == null)
+    	{
+    		return;
+    	}
+    	IGameState currentState = game.getCurrentState();
+    	if (currentState != null && currentState.getName() == StatesName.PLAY)
+    	{
+    		game.setState(game.getMainMenuState());
+    	}
     }
     
     public static void pauseGame()

@@ -4,6 +4,7 @@ import java.nio.channels.InterruptedByTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pacman.model.menus.MenuOption;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Wall;
 import com.pacman.model.objects.consumables.Consumable;
@@ -12,14 +13,14 @@ import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
-import com.pacman.view.Window;
+import com.pacman.view.IWindow;
 
 /**
  * Interface which the engine will interact with to talk with the game.
  */
 public interface IGame
 {
-    public void init(Window window);
+    public void init(IWindow window);
     public void update();
 
 	public void setState(IGameState state);
@@ -39,8 +40,13 @@ public interface IGame
 	public ArrayList<Wall> getMaze();
 	public ArrayList<Consumable> getConsumables(); 
 	public List<GameObject> getGameObjects();
+	public MenuOption getCurrentSelection();
+	public void mainMenuNext();
+	public void mainMenuPrevious();
 	public Pacman getPacman();
 	public Level getCurrentLevel();
+	
+	public ArrayList<MenuOption> getMainMenuOptions();
 	
 	public boolean isPacmanWon();
 	public int getResumeTime();

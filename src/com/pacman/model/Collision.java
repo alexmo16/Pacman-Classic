@@ -285,7 +285,12 @@ public class Collision
     {
         int[][] tiles = Level.getTiles();
 
-        for (int i : entity.getAuthTiles())
+        int[] authTiles = entity.getAuthTiles() ;
+        if(authTiles == null)
+        {
+        	authTiles = this.authTiles;
+        }
+        for (int i : authTiles)
         { 
             if (tiles[x][y] == i)
             {

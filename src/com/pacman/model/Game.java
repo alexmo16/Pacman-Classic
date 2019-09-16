@@ -90,6 +90,8 @@ public class Game implements IGame
         entities = new ArrayList<Entity>();
         renderThread = new RenderThread(this);
         renderThread.start();
+        collision.setAuthTiles(currentLevel.getAuthTiles());
+        
         for (int y = 0; y < Level.getHeight(); y++)
         {
             for (int x = 0; x < Level.getWidth(); x++)

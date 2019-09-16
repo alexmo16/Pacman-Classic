@@ -37,7 +37,7 @@ public class CollisionControllerTests
 		collision.setAuthTiles(auth);
 	}
 	
- /*   @Test
+    @Test
     void test_collisionWall_void() 
     {
     	Entity obj1 = Mockito.mock(Entity.class);
@@ -76,6 +76,6 @@ public class CollisionControllerTests
     	Mockito.when(obj1.getHitBox().getMaxY()).thenReturn(2.4);
     	
     	assertEquals("path",collision.collisionWall(obj1));
-	}*/
+	}
 
 }

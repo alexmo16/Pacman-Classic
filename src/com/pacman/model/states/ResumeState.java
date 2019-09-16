@@ -37,11 +37,7 @@ public class ResumeState implements IGameState
 		{
 			timer = null;
 			game.setState(game.getPlayingState());
-			
-			if (!game.getIsUserMuted())
-			{
-				game.resumeAudio();
-			}
+			game.resumeAudio();
 		}
 	}
 

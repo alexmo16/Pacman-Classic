@@ -30,5 +30,40 @@ public class Settings
     public static final double TILES_WIDTH = 1;
     
     public volatile static float musicVolume = 1f;
+    private volatile static boolean musicMute = false;
     public volatile static float soundsVolume = 1f;
+    private volatile static boolean soundsMute = false;
+	
+    
+	public static boolean isMusicMute() 
+	{
+		synchronized ("MUSIC_KEY") 
+		{
+			return musicMute;
+		}
+	}
+	
+	public static void setMusicMute(boolean musicMute) 
+	{
+		synchronized ("MUSIC_KEY") 
+		{
+			Settings.musicMute = musicMute;
+		}
+	}
+	
+	public static boolean isSoundsMute() 
+	{
+		synchronized ("SOUND_KEY") 
+		{
+			return soundsMute;
+		}
+	}
+	
+	public static void setSoundsMute(boolean soundsMute) 
+	{
+		synchronized ("SOUND_KEY") 
+		{
+			Settings.soundsMute = soundsMute;
+		}
+	}
 }

@@ -1,6 +1,8 @@
 package com.pacman.unittests.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -9,19 +11,19 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import com.pacman.controller.GameController;
-import com.pacman.model.Sound;
-import com.pacman.utils.Settings;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import com.pacman.model.Sound;
+import com.pacman.utils.Settings;
 
 class SoundControllerTest 
 {
 	@BeforeEach
 	void testSetMuteToFalse() 
 	{
-		GameController.setIsMuted( false );
+		Settings.setMusicMute(false);
+		Settings.setSoundsMute(false);
 	}
 	
 	@Test
@@ -77,7 +79,8 @@ class SoundControllerTest
 		try 
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			isPlayed = sound.play(Settings.musicVolume);
+			isPlayed = sound.play();
+			sound.setVolume(0.5f);
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
@@ -95,11 +98,11 @@ class SoundControllerTest
 		try
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			isPlayed = sound.playLoopBack(Settings.musicVolume);
+			isPlayed = sound.playLoopBack();
 			assertTrue( isPlayed );
 			
 			sound = new Sound( "./tests/testAssets/clip.wav" );
-			isPlayed = sound.play(Settings.musicVolume);
+			isPlayed = sound.play();
 			assertTrue( isPlayed );
  
 		} catch ( UnsupportedAudioFileException | IOException e ) 
@@ -119,7 +122,8 @@ class SoundControllerTest
 		try
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			isPlayed = sound.playLoopBack(Settings.musicVolume);
+			isPlayed = sound.playLoopBack();
+			sound.setVolume(0.5f);
 			sound.stop();
 		} catch ( UnsupportedAudioFileException | IOException e )
 		{
@@ -138,8 +142,9 @@ class SoundControllerTest
 		try 
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			GameController.setIsMuted( true );
-			isPlayed = sound.playLoopBack(Settings.musicVolume);
+			Settings.setMusicMute(true);
+			isPlayed = sound.playLoopBack();
+			sound.setVolume(0.5f);
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
@@ -157,8 +162,9 @@ class SoundControllerTest
 		try
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			GameController.setIsMuted( true );
-			isPlayed = sound.play(Settings.musicVolume);
+			Settings.setMusicMute(true);
+			isPlayed = sound.play();
+			sound.setVolume(0.5f);
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
@@ -166,7 +172,7 @@ class SoundControllerTest
 		
 		assertFalse( isException );
 		assertTrue( isPlayed );
-		GameController.setIsMuted( false );
+		Settings.setMusicMute(false);
 	}
 	
 	@Test
@@ -191,7 +197,8 @@ class SoundControllerTest
 				}
 			};
 			
-			isPlayed = sound.play(listener, Settings.musicVolume);
+			isPlayed = sound.play(listener);
+			sound.setVolume(0.5f);
 			
 			while( sound.getIsRunning() )
 			{
@@ -216,7 +223,7 @@ class SoundControllerTest
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			sound.setVolume(0f);
-			isPlayed = sound.play(Settings.musicVolume);
+			isPlayed = sound.play();
 			assertEquals(0f, sound.getVolume());
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{

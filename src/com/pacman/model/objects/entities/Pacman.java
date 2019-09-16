@@ -84,9 +84,9 @@ public class Pacman extends Entity implements IPublisher, Animation
      */
     public void eat(Consumable consumable)
     {
-    	if ( chomp != null )
+    	if ( chomp != null && !Settings.isSoundsMute() )
     	{
-    		chomp.play(Settings.soundsVolume);
+    		chomp.play();
     	}
     	
         score += consumable.getPoints();

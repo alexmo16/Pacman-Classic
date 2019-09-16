@@ -154,6 +154,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
     public void killPacman()
     {
+    	timerThread = null;
         isPacmanDying = true;
         game.stopInGameMusics();
         game.getPacman().looseLive();

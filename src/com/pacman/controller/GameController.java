@@ -12,6 +12,8 @@ import com.pacman.model.world.Direction;
 import com.pacman.utils.Settings;
 import com.pacman.view.IWindow;
 import com.pacman.view.Input;
+import com.pacman.view.KeyInput;
+import com.pacman.view.ViewType;
 
 /**
  * Classe principale de l'engin de jeu, Engine, gere donc la gameloop de
@@ -56,18 +58,17 @@ public class GameController extends Thread
             
             window = w;
             inputs = new Input();
-            inputs.addPressedCallback(KeyEvent.getKeyText(Settings.PAUSE_BUTTON), (KeyEvent e) -> pauseButtonPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(Settings.RESUME_BUTTON), (KeyEvent e) -> resumeButtonPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_UP), (KeyEvent e) -> arrowsKeysPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_DOWN), (KeyEvent e) -> arrowsKeysPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_RIGHT), (KeyEvent e) -> arrowsKeysPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_LEFT), (KeyEvent e) -> arrowsKeysPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_K), (KeyEvent e) -> killButtonPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE), (KeyEvent e) -> menuKeyPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_ENTER), (KeyEvent e) -> acceptKeyPressed(e) );
-            
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_G), (KeyEvent e) -> muteSoundsPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyEvent.VK_H), (KeyEvent e) -> muteMusicPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.P.getValue()), (KeyEvent e) -> pauseButtonPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.R.getValue()), (KeyEvent e) -> resumeButtonPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.G.getValue()), (KeyEvent e) -> muteSoundsPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.H.getValue()), (KeyEvent e) -> muteMusicPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.UP.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.DOWN.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.RIGHT.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.LEFT.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.K.getValue()), (KeyEvent e) -> killButtonPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.ESCAPE.getValue()), (KeyEvent e) -> menuKeyPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.ENTER.getValue()), (KeyEvent e) -> acceptKeyPressed(e) );
             
             window.addListener(inputs);
             instance = new GameController();
@@ -91,7 +92,7 @@ public class GameController extends Thread
 			game.stopThreads();
 			window.dispose();
 			
-	        isRunning.set(false);
+			isRunning.set(false);
 	        instance.join(500);
 			if (instance.isAlive())
 			{
@@ -324,6 +325,17 @@ public class GameController extends Thread
     	else if (option != null && option == MenuOption.RESUME)
     	{
     		game.setState(game.getResumeState());
+    	}
+    	else if (option != null && option == MenuOption.HELP)
+    	{
+    		if (window.getCurrentView() == ViewType.HELP)
+    		{
+    			window.showView(ViewType.MAIN_MENU);
+    		}
+    		else
+    		{
+    			window.showView(ViewType.HELP);
+    		}
     	}
     	else if (option != null && option == MenuOption.EXIT)
     	{

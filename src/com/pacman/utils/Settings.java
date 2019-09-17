@@ -1,6 +1,5 @@
 package com.pacman.utils;
 
-import java.awt.event.KeyEvent;
 import java.io.File;
 
 public class Settings
@@ -12,12 +11,9 @@ public class Settings
 					           CHOMP_PATH = "." + File.separator + "assets" + File.separator + "pacman_chomp.wav",
 					           DEATH_PATH = "." + File.separator + "assets" + File.separator + "pacman_death.wav";
  
-    public static final int MUTED_BUTTON = KeyEvent.VK_M, 
-    				 		PAUSE_BUTTON = KeyEvent.VK_P,
-    				 		RESUME_BUTTON = KeyEvent.VK_R,
-				 			MIN_WINDOW_WIDTH = 800,
+    public static final int MIN_WINDOW_WIDTH = 800,
 				 			MIN_WINDOW_HEIGHT = 600;
-
+    
     public static final float SCALE = 1.0f;
     
     public static final double MOVEMENT = 0.1;

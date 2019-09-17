@@ -6,6 +6,8 @@ public interface IWindow
 {
 	public void showView(ViewType view);
 
+	public ViewType getCurrentView();
+	
 	public void addListener(KeyListener k);
 
 	public void render();

@@ -112,6 +112,7 @@ public class Game implements IGame
         
         renderThread = new RenderThread(this);
         renderThread.start();
+        physicsThread.start();
         
     }
     
@@ -424,19 +425,6 @@ public class Game implements IGame
 		return physicsThread;
 	}
 	
-	public synchronized void setPhysicsThread(PhysicsThread physicsThread)
-	{
-	    this.physicsThread = physicsThread;
-	}
-	
-	public synchronized void startPhysicsThread()
-	{
-	    if (this.physicsThread != null)
-	    {
-	        this.physicsThread.start();
-	    }
-	}
-	
 	public void setCurrentLevel(Level level)
 	{
 		currentLevel = level;
@@ -501,10 +489,14 @@ public class Game implements IGame
 	    }
 	}
 
-	/**
-	 * FOR TESTING ONLY
-	 */
-	@Override
+	public void notifyPhysics()
+	{
+        synchronized (this)
+		{
+			notify();
+		}
+	}
+	
 	public void killPacman()
 	{
 		if (currentState.getName() == StatesName.PLAY)
@@ -530,6 +522,10 @@ public class Game implements IGame
 			throw new InterruptedByTimeoutException();
 		}
         
+		synchronized (this)
+		{
+			notifyAll();
+		}
         physicsThread.stopThread();
         physicsThread.join(JOIN_TIMER);
         if (physicsThread.isAlive())

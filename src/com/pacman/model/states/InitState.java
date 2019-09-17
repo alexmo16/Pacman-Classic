@@ -37,7 +37,6 @@ public class InitState implements IGameState
 		if (game.isPacmanWon())
 		{
 			game.setPacmanWon(false);
-			game.getPacman().respawn();
 			int levelNumber = Integer.parseInt(game.getCurrentLevel().getName());
 			levelNumber++;	
 			game.loadLevel(Integer.toString(levelNumber));

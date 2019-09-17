@@ -35,12 +35,12 @@ public class Pacman extends Entity implements IPublisher, Animation
 	    public int getValue() { return value; }
 	};
 	
-	private Animation currentAnimation = Animation.IDLE;
-	private int animationState = 0;
+	private  Animation currentAnimation = Animation.IDLE;
+	private  int animationState = 0;
 	private boolean endOfAnimation = false;
     private Sound chomp;
     private int score = 0;
-	public final int MAX_LIFES = 3;
+	public  final int MAX_LIFES = 3;
     private int lifes;
     private boolean collision = false;
     private Direction collisionDirection = null; 
@@ -117,7 +117,7 @@ public class Pacman extends Entity implements IPublisher, Animation
     }
     
 	@Override
-	public void nextSprite() 
+	public synchronized void nextSprite() 
 	{
 		endOfAnimation = (animationState + 1 == currentAnimation.getValue()) ? true : endOfAnimation;
 		endOfAnimation = (animationState == 0) ? false : endOfAnimation;
@@ -165,8 +165,10 @@ public class Pacman extends Entity implements IPublisher, Animation
 		}
 	}
 
-	public void setCollision(boolean isInCollision, Direction oldDirection) 
+	public synchronized void setCollision(boolean isInCollision, Direction oldDirection) 
 	{
+		if (currentAnimation == Animation.DYING) return;
+		
 		Animation lastAnimation = currentAnimation;
 		currentAnimation = isInCollision ? Animation.IDLE : Animation.MOVING;
 		animationState = lastAnimation != currentAnimation ? 0 : animationState;
@@ -196,7 +198,7 @@ public class Pacman extends Entity implements IPublisher, Animation
 		return lifes;
 	}
 
-	public void looseLive()
+	public synchronized void looseLive()
 	{
 		lifes--;
 		currentAnimation = Animation.DYING;
@@ -204,7 +206,7 @@ public class Pacman extends Entity implements IPublisher, Animation
 		endOfAnimation = false;
 	}
 	
-	public void respawn()
+	public synchronized void respawn()
 	{
 		currentAnimation = Animation.IDLE;
 		animationState = 0;

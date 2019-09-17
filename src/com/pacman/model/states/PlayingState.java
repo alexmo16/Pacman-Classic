@@ -1,20 +1,19 @@
 package com.pacman.model.states;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 
 import com.pacman.model.Game;
+import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.consumables.PacDot;
-import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.objects.entities.Ghost;
-import com.pacman.model.threads.PhysicsThread;
 import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
 import com.pacman.utils.IObserver;
-import com.pacman.utils.Settings;
 
 public class PlayingState implements IGameState, IObserver<Direction>
 {
@@ -77,21 +76,24 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
         if (game.getTimerThread() == null)
         {
-
             game.setTimerThread(new TimerThread(5));
             game.startTimerThread();
         }
 
         if (!game.getTimerThread().isAlive())
         {
-            game.setPhysicsThread(new PhysicsThread(game, "GhostSpawn"));
-            game.startPhysicsThread();
+        	 Random random = new Random();
+             int randomInt = random.nextInt(4);
 
+             if (!((Ghost) game.getEntities().get(randomInt)).getAlive())
+             {
+                 ghostSpawn(((Ghost) game.getEntities().get(randomInt)));
+                 ((Ghost) game.getEntities().get(randomInt)).setSpawning();
+                 game.setTimerThreadNull();
+             }
         }
-        game.setPhysicsThread(new PhysicsThread(game, "Move"));
-        game.startPhysicsThread();
         
-
+        game.notifyPhysics();
     }
 
     @Override
@@ -123,4 +125,11 @@ public class PlayingState implements IGameState, IObserver<Direction>
         game.getPacman().looseLive();
         game.playDeathMusic(deathSoundListener);
     }
+    
+	public void ghostSpawn(GameObject obj)
+	{
+		Ghost g2 = new Ghost(obj.getHitBoxX(), obj.getHitBoxY(), ((Ghost) obj).getType());
+		g2.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(), game.getCurrentLevel().getAuthTilesGhostRoom());
+		g2.updatePosition(g2.getDirection());
+	}
 }

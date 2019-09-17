@@ -66,7 +66,6 @@ public class GameController extends Thread
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.DOWN.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.RIGHT.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.LEFT.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.K.getValue()), (KeyEvent e) -> killButtonPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.ESCAPE.getValue()), (KeyEvent e) -> menuKeyPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.ENTER.getValue()), (KeyEvent e) -> acceptKeyPressed(e) );
             
@@ -303,11 +302,6 @@ public class GameController extends Thread
 				break;
 			}
 		}
-    }
-    
-    private static void killButtonPressed(KeyEvent e)
-    {
-    	game.killPacman();
     }
     
     private static void menuKeyPressed(KeyEvent e)

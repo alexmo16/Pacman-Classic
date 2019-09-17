@@ -17,6 +17,11 @@ public class TimerThread extends Thread
     {
         return isRunning && timerCount <= timeInMs;
     }
+    
+    public void stopThread()
+    {
+        this.isRunning = false;
+    }
 
     @Override
     public void run()

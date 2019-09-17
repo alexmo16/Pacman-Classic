@@ -22,9 +22,9 @@ public class Level
     		Tile.DOOR_3.getValue(), Tile.DOOR_4.getValue(),Tile.BLINKY_START.getValue(),
     		Tile.PINKY_START.getValue(), Tile.INKY_START.getValue(), Tile.CLYDE_START.getValue() };
     
-    private ArrayList<Consumable> consumables;
-    private ArrayList<PacDot> pacdots;
-    private ArrayList<Energizer> energizers;
+    private volatile ArrayList<Consumable> consumables;
+    private volatile ArrayList<PacDot> pacdots;
+    private volatile ArrayList<Energizer> energizers;
     
     public Level(String worldFilePath, String levelName)
     {
@@ -48,7 +48,7 @@ public class Level
     	return null;
     }
     
-    public Consumable getConsumableAtCoords(double x, double y)
+    public synchronized Consumable getConsumableAtCoords(double x, double y)
     {
         for (Consumable consumable : consumables)
         {
@@ -107,17 +107,17 @@ public class Level
     	return name;
     }
     
-    public ArrayList<Consumable> getConsumables()
+    public synchronized ArrayList<Consumable> getConsumables()
     {
     	return consumables;
     }
     
-    public ArrayList<PacDot> getPacDots()
+    public synchronized ArrayList<PacDot> getPacDots()
     {
     	return pacdots;
     }
     
-    public ArrayList<Energizer> getEnergizers()
+    public synchronized ArrayList<Energizer> getEnergizers()
     {
     	return energizers;
     }
@@ -192,7 +192,7 @@ public class Level
         }
     }
     
-    public void generateConsumables()
+    public synchronized void generateConsumables()
     {
     	consumables = new ArrayList<Consumable>();
         pacdots = new ArrayList<PacDot>();

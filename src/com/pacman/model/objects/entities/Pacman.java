@@ -35,8 +35,9 @@ public class Pacman extends Entity implements IPublisher, Animation
 	    public int getValue() { return value; }
 	};
 	
-	private  Animation currentAnimation = Animation.IDLE;
-	private  int animationState = 0;
+	private Animation currentAnimation = Animation.IDLE;
+    private long timeSinceLastSpriteUpdate = 0;
+	private int animationState = 0;
 	private boolean endOfAnimation = false;
     private Sound chomp;
     private int score = 0;
@@ -46,7 +47,7 @@ public class Pacman extends Entity implements IPublisher, Animation
     private Direction collisionDirection = null; 
     private Direction nextDirection = Direction.LEFT;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
-    private boolean isTravelling = false;
+    private boolean isTravelling = false;    
     
     private int[] authTiles;
     
@@ -256,5 +257,23 @@ public class Pacman extends Entity implements IPublisher, Animation
 	public int[] getAuthTiles()
 	{
 		return this.authTiles;
+	}
+	
+	@Override
+	public int spritePerSecond()
+	{
+		return 8;
+	}
+	
+	@Override
+	public long getTimeSinceLastSpriteUpdate() 
+	{
+		return timeSinceLastSpriteUpdate;
+	}
+	
+	@Override
+	public void setTimeSinceLastSpriteUpdate(long time)
+	{
+		timeSinceLastSpriteUpdate = time;
 	}
 }

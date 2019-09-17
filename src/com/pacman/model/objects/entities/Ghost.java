@@ -10,6 +10,7 @@ import com.pacman.model.world.GhostType;
 public class Ghost extends Entity implements Animation
 {
     private int animationState = 0, animationCycles = 2;
+	private long timeSinceLastSpriteUpdate = 0;
 	private GhostType type;
 	private boolean isAlive;
 	private volatile boolean isSpawning;
@@ -125,4 +126,23 @@ public class Ghost extends Entity implements Animation
 		this.authTiles = tab1;
 		this.authTilesRoom = tab2;
 	}
+	
+	@Override
+	public int spritePerSecond()
+	{
+		return 4;
+	}
+	
+	@Override
+	public long getTimeSinceLastSpriteUpdate() 
+	{
+		return timeSinceLastSpriteUpdate;
+	}
+	
+	@Override
+	public void setTimeSinceLastSpriteUpdate(long time)
+	{
+		timeSinceLastSpriteUpdate = time;
+	}
+	
 }

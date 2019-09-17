@@ -2,14 +2,12 @@ package com.pacman.model.objects.entities;
 
 import java.util.ArrayList;
 
-import com.pacman.model.Sound;
 import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;
 import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
 import com.pacman.utils.IPublisher;
-import com.pacman.utils.Settings;
 
 /**
  * 
@@ -39,7 +37,6 @@ public class Pacman extends Entity implements IPublisher, Animation
     private long timeSinceLastSpriteUpdate = 0;
 	private int animationState = 0;
 	private boolean endOfAnimation = false;
-    private Sound chomp;
     private int score = 0;
 	public  final int MAX_LIFES = 3;
     private int lifes;
@@ -85,17 +82,7 @@ public class Pacman extends Entity implements IPublisher, Animation
      */
     public void eat(Consumable consumable)
     {
-    	if ( chomp != null && !Settings.isSoundsMute() )
-    	{
-    		chomp.play();
-    	}
-    	
         score += consumable.getPoints();
-    }
-    
-    public void setChompSound( Sound sound )
-    {
-    	chomp = sound;
     }
     
     @Override

@@ -1,4 +1,4 @@
-package com.pacman.model.menus;
+package com.pacman.view.menus;
 
 public enum MenuOption 
 {
@@ -6,7 +6,12 @@ public enum MenuOption
 	RESUME("Resume"),
 	AUDIO("Audio"),
 	HELP("Help"),
-	EXIT("Exit");
+	EXIT("Exit"),
+	MUSIC_VOLUME("Music volume"),
+	SOUND_VOLUME("Sound volume"),
+	MUTE_MUSIC("Mute music"),
+	MUTE_SOUND("Mute sound"),
+	BACK("Back");
 
     private final String value;
 

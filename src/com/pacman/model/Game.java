@@ -11,8 +11,6 @@ import java.util.stream.Stream;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import com.pacman.model.menus.MainMenu;
-import com.pacman.model.menus.MenuOption;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Wall;
 import com.pacman.model.objects.consumables.Consumable;
@@ -36,16 +34,14 @@ import com.pacman.model.world.Level;
 import com.pacman.model.world.Tile;
 import com.pacman.utils.Settings;
 import com.pacman.view.IWindow;
-import com.pacman.view.ViewType;
+import com.pacman.view.views.ViewType;
 
 /**
  * Contains an observer design pattern and a state pattern.
  *
  */
 public class Game implements IGame
-{
-	private MainMenu mainMenu = new MainMenu();
-	
+{	
 	private IWindow window;
 	
     private Pacman pacman;
@@ -322,7 +318,7 @@ public class Game implements IGame
 		if (state.getName() == StatesName.INIT)
 		{		
 			window.showView(ViewType.GAME);
-			mainMenu.setResumeState();
+			window.setIsGameActive(true);
 		}
 		else if (state.getName() == StatesName.RESUME && currentState.getName() == StatesName.MAIN_MENU)
 		{
@@ -330,7 +326,7 @@ public class Game implements IGame
 		}
 		else if (state.getName() == StatesName.STOP)
 		{
-			mainMenu.setStartState();
+			window.setIsGameActive(false);
 		}
 		else if (state.getName() == StatesName.MAIN_MENU)
 		{
@@ -557,29 +553,5 @@ public class Game implements IGame
             physicsThread.interrupt();
             throw new InterruptedByTimeoutException();
         }
-	}
-
-	@Override
-	public ArrayList<MenuOption> getMainMenuOptions() 
-	{	
-		return mainMenu.getOptions();
-	}
-
-	@Override
-	public MenuOption getCurrentSelection() 
-	{
-		return mainMenu.getCurrentSelection();
-	}
-
-	@Override
-	public void mainMenuNext() 
-	{
-		mainMenu.next();
-	}
-
-	@Override
-	public void mainMenuPrevious() 
-	{
-		mainMenu.previous();
 	}
 }

@@ -5,8 +5,8 @@ import javax.swing.JFrame;
 import org.junit.jupiter.api.BeforeAll;
 import org.mockito.Mockito;
 
-import com.pacman.view.Input;
 import com.pacman.view.Window;
+import com.pacman.view.inputs.Input;
 
 class InputControllerTest 
 {

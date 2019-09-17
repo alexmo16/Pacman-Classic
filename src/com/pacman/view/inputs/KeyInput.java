@@ -1,14 +1,11 @@
-package com.pacman.view;
+package com.pacman.view.inputs;
 
 import java.awt.event.KeyEvent;
 
 public enum KeyInput
 {
-	G(KeyEvent.VK_G, "Mute sound"),
-	H(KeyEvent.VK_H, "Mute music"), 
 	P(KeyEvent.VK_P, "Pause"),
 	R(KeyEvent.VK_R, "Resume"),
-	K(KeyEvent.VK_K, "Kill pacman"),
 	UP(KeyEvent.VK_UP, "Move up"),
 	DOWN(KeyEvent.VK_DOWN, "Move down"), 
 	RIGHT(KeyEvent.VK_RIGHT, "Move right"),

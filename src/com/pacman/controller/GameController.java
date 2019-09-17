@@ -5,15 +5,14 @@ import java.nio.channels.InterruptedByTimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.pacman.model.IGame;
-import com.pacman.model.menus.MenuOption;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.states.StatesName;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.Settings;
 import com.pacman.view.IWindow;
-import com.pacman.view.Input;
-import com.pacman.view.KeyInput;
-import com.pacman.view.ViewType;
+import com.pacman.view.inputs.Input;
+import com.pacman.view.inputs.KeyInput;
+import com.pacman.view.menus.MenuOption;
 
 /**
  * Classe principale de l'engin de jeu, Engine, gere donc la gameloop de
@@ -23,66 +22,56 @@ import com.pacman.view.ViewType;
  */
 public class GameController extends Thread
 {
-	private static IGame game;
-	private static Input inputs;
-	private static IWindow window;
+    private static IGame game;
+    private static Input inputs;
+    private static IWindow window;
+ 
+    private static AtomicBoolean isRunning = new AtomicBoolean(false);
+    private volatile static int fps;
+    
+    
+    private static GameController instance;
 
-	private static AtomicBoolean isRunning = new AtomicBoolean(false);
-	private volatile static int fps;
+    /**
+     * Constructeur prive puisque c'est un singleton. Il faut passer par getInstance
+     */
+    private GameController()
+    {
+    }
+    
+    /**
+     * Getter for the singleton.
+     * @param window the window object where the game will be render.
+     * @param game the object that implements the IGame interface. 
+     * @return Engine
+     */
+    public static GameController getInstance(IWindow w, IGame g)
+    {
+        if (instance == null)
+        {
+            if (g == null || w == null)
+            {
+                return null;
+            }
+            game = g;
+            
+            window = w;
+            inputs = new Input();
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.P.getValue()), (KeyEvent e) -> pauseButtonPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.R.getValue()), (KeyEvent e) -> resumeButtonPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.UP.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.DOWN.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.RIGHT.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.LEFT.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.ESCAPE.getValue()), (KeyEvent e) -> menuKeyPressed(e) );
+            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.ENTER.getValue()), (KeyEvent e) -> acceptKeyPressed(e) );
+            
+            window.addListener(inputs);
+            instance = new GameController();
+        }
 
-	private static GameController instance;
-
-	/**
-	 * Constructeur prive puisque c'est un singleton. Il faut passer par getInstance
-	 */
-	private GameController()
-	{
-	}
-
-	/**
-	 * Getter for the singleton.
-	 * 
-	 * @param window the window object where the game will be render.
-	 * @param game   the object that implements the IGame interface.
-	 * @return Engine
-	 */
-	public static GameController getInstance(IWindow w, IGame g)
-	{
-		if (instance == null)
-		{
-			if (g == null || w == null)
-			{
-				return null;
-			}
-			game = g;
-
-			window = w;
-			inputs = new Input();
-			inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.P.getValue()),
-					(KeyEvent e) -> pauseButtonPressed(e));
-			inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.R.getValue()),
-					(KeyEvent e) -> resumeButtonPressed(e));
-			inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.G.getValue()), (KeyEvent e) -> muteSoundsPressed(e));
-			inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.H.getValue()), (KeyEvent e) -> muteMusicPressed(e));
-			inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.UP.getValue()),
-					(KeyEvent e) -> arrowsKeysPressed(e));
-			inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.DOWN.getValue()),
-					(KeyEvent e) -> arrowsKeysPressed(e));
-			inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.RIGHT.getValue()),
-					(KeyEvent e) -> arrowsKeysPressed(e));
-			inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.LEFT.getValue()),
-					(KeyEvent e) -> arrowsKeysPressed(e));
-			inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.ESCAPE.getValue()),
-					(KeyEvent e) -> menuKeyPressed(e));
-			inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.ENTER.getValue()),
-					(KeyEvent e) -> acceptKeyPressed(e));
-
-			window.addListener(inputs);
-			instance = new GameController();
-		}
-
-		return instance;
-	}
+        return instance;
+    }
 
 	public IWindow getWindow()
 	{
@@ -309,83 +298,94 @@ public class GameController extends Thread
 			switch (e.getKeyCode())
 			{
 			case KeyEvent.VK_UP:
-				game.mainMenuPrevious();
+				window.previousOption();
 				break;
 
 			case KeyEvent.VK_DOWN:
-				game.mainMenuNext();
+				window.nextOption();
 				break;
 			}
 		}
-	}
-
-	private static void menuKeyPressed(KeyEvent e)
-	{
-		mainMenuGame();
-	}
-
-	private static void acceptKeyPressed(KeyEvent e)
-	{
-		MenuOption option = game.getCurrentSelection();
-		if (option != null && option == MenuOption.START)
-		{
-			game.setState(game.getInitState());
-		} else if (option != null && option == MenuOption.RESUME)
-		{
-			game.setState(game.getResumeState());
-		} else if (option != null && option == MenuOption.HELP)
-		{
-			if (window.getCurrentView() == ViewType.HELP)
-			{
-				window.showView(ViewType.MAIN_MENU);
-			} else
-			{
-				window.showView(ViewType.HELP);
-			}
-		} else if (option != null && option == MenuOption.EXIT)
-		{
-			GameController.stopGame();
-		}
-	}
-
-	public static void mainMenuGame()
-	{
-		if (game == null)
-		{
-			return;
-		}
-		IGameState currentState = game.getCurrentState();
-		if (currentState != null && currentState.getName() == StatesName.PLAY)
-		{
-			game.setState(game.getMainMenuState());
-		}
-	}
-
-	public static void pauseGame()
-	{
-		if (game == null)
-		{
-			return;
-		}
-		IGameState currentState = game.getCurrentState();
-		if (currentState != null && currentState.getName() == StatesName.PLAY)
-		{
-			game.setState(game.getPauseState());
-		}
-	}
-
-	public static void resumeGame()
-	{
-		if (game == null)
-		{
-			return;
-		}
-		IGameState currentState = game.getCurrentState();
-		if (currentState != null && currentState.getName() == StatesName.PAUSE)
-		{
-			game.setState(game.getResumeState());
-		}
-	}
+    }
+    
+    private static void menuKeyPressed(KeyEvent e)
+    {
+    	mainMenuGame();
+    }
+    
+    private static void acceptKeyPressed(KeyEvent e)
+    {
+    	if (game.getCurrentState().getName() == StatesName.MAIN_MENU)
+    	{
+    		MenuOption option = window.getMenuOption();
+    		if (option != null)
+    		{
+            	if (option == MenuOption.START)
+            	{
+            		game.setState(game.getInitState());
+            	}
+            	else if (option == MenuOption.RESUME)
+            	{
+            		game.setState(game.getResumeState());
+            	}
+            	else if (option == MenuOption.AUDIO)
+            	{
+            		window.setAudioMenu();
+            	}
+            	else if (option == MenuOption.HELP)
+            	{
+            		window.setHelpMenu();
+            	}
+            	else if (option == MenuOption.BACK)
+            	{
+            		window.setMainMenu();
+            	}
+            	else if (option == MenuOption.EXIT)
+            	{
+            		GameController.stopGame();
+            	}
+    		}	
+    	}
+    }
+    
+    public static void mainMenuGame()
+    {
+    	if (game == null)
+    	{
+    		return;
+    	}
+    	IGameState currentState = game.getCurrentState();
+    	if (currentState != null && currentState.getName() == StatesName.PLAY)
+    	{
+    		game.setState(game.getMainMenuState());
+    	}
+    }
+    
+    public static void pauseGame()
+    {
+    	if (game == null)
+    	{
+    		return;
+    	}
+    	IGameState currentState = game.getCurrentState();
+    	if (currentState != null && currentState.getName() == StatesName.PLAY)
+    	{
+    		game.setState(game.getPauseState());
+    	}
+    }
+    
+    public static void resumeGame()
+    {
+    	if (game == null)
+    	{
+    		return;
+    	}
+    	IGameState currentState = game.getCurrentState();
+    	if (currentState != null && currentState.getName() == StatesName.PAUSE)
+    	{
+    		game.setState(game.getResumeState());
+    	}
+    }
 
 	/**
 	 * @return the fps

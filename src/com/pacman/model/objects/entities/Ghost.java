@@ -12,7 +12,7 @@ public class Ghost extends Entity implements Animation
     private int animationState = 0, animationCycles = 2;
 	private GhostType type;
 	private boolean isAlive;
-	private boolean isSpawning;
+	private volatile boolean isSpawning;
 	private boolean isInTheGate;
 	private Random random;
 	private int randomInt;
@@ -63,11 +63,11 @@ public class Ghost extends Entity implements Animation
 		isAlive = true;
 	}
 	
-	public boolean getSpawning() {
+	public synchronized boolean getSpawning() {
 		return isSpawning;
 	}
 	
-	public void setSpawning() {
+	public synchronized void setSpawning() {
 		isSpawning = true;
 	}
 	
@@ -83,7 +83,7 @@ public class Ghost extends Entity implements Animation
 		isInTheGate = false;
 	}
 	
-	public void setNotSpawning() {
+	public synchronized void setNotSpawning() {
 		isSpawning = false;
 	}
 	

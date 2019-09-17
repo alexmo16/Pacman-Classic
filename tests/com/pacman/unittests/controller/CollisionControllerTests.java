@@ -9,10 +9,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import com.pacman.model.Collision;
 import com.pacman.model.Game;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.entities.Entity;
+import com.pacman.model.threads.PhysicsThread;
 import com.pacman.model.world.Level;
 
 
@@ -20,7 +20,7 @@ public class CollisionControllerTests
 {
 
 	private static int[] auth = {0,30,40};
-	private static Collision collision;
+	private static PhysicsThread collision;
 
 	@SuppressWarnings("unused")
 	private static Level level;
@@ -33,7 +33,7 @@ public class CollisionControllerTests
 		@SuppressWarnings("unused")
 		Level level = new Level(LEVEL_DATA_FILE, "1");
 		Game game = Mockito.mock(Game.class);
-		collision = new Collision(game);
+		collision = new PhysicsThread(game);
 		collision.setAuthTiles(auth);
 	}
 	

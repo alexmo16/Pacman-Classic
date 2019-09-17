@@ -27,7 +27,9 @@ import com.pacman.model.states.PlayingState;
 import com.pacman.model.states.ResumeState;
 import com.pacman.model.states.StatesName;
 import com.pacman.model.states.StopState;
+import com.pacman.model.threads.PhysicsThread;
 import com.pacman.model.threads.RenderThread;
+import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Level;
@@ -54,14 +56,15 @@ public class Game implements IGame
     private Direction nextTilesDirection;
     private Direction newDirection;
         
-    private ArrayList<Entity> entities;
+    private volatile ArrayList<Entity> entities;
     
     private Sound startMusic;
     private Sound gameSiren;
     private Sound chomp;
     private Sound death;
     
-    private Collision collision;
+    private PhysicsThread physicsThread;
+    private volatile TimerThread timerThread;
     
     private IGameState initState;
     private IGameState stopState;
@@ -86,20 +89,20 @@ public class Game implements IGame
      */
     @Override
     public void init(IWindow w)
-    {    
-    	window = w;
-    	collision = new Collision(this);
+    {
+        window = w;
+    	physicsThread = new PhysicsThread(this);
     	currentLevel = new Level(LEVEL_DATA_FILE, "1");
     	maze = new ArrayList<Wall>();
         entities = new ArrayList<Entity>();
         renderThread = new RenderThread(this);
         renderThread.start();
-        collision.setAuthTiles(currentLevel.getAuthTiles());
+        physicsThread.setAuthTiles(currentLevel.getAuthTiles());
         
         loadEntities();
         loadMusics();
         
-    	mainMenuState = new MainMenuState(this);
+        mainMenuState = new MainMenuState(this);
         initState = new InitState(this);
         pauseState = new PauseState(this);
         resumeState = new ResumeState(this);
@@ -118,60 +121,61 @@ public class Game implements IGame
     @Override
     public void update()
     {
-    	currentState.update();
+        currentState.update();
     }
 
-	@Override
-	public void setPacmanDirection(Direction d)
-	{
-		pacman.setNextDirection(d);
-	}
-	
+    @Override
+    public void setPacmanDirection(Direction d)
+    {
+        pacman.setNextDirection(d);
+    }
     
-	private void loadEntities()
-	{
-		for (int y = 0; y < Level.getHeight(); y++)
+    
+    private void loadEntities()
+    {
+        for (int y = 0; y < Level.getHeight(); y++)
         {
             for (int x = 0; x < Level.getWidth(); x++)
             {
 
                 if (currentLevel.getTile(x, y) >= Tile.WALL_START.getValue() && currentLevel.getTile(x, y) <= Tile.WALL_END.getValue())
-            	{
-                	maze.add(new Wall(x, y, currentLevel.getTile(x, y)));
-            	}
+                {
+                    maze.add(new Wall(x, y, currentLevel.getTile(x, y)));
+                }
                 else if (currentLevel.getTile(x, y) == Tile.PAC_MAN_START.getValue())
                 {
-                	// TODO : Make no sens to hard code some value in the game. Only the Pacman object himself shoudl know about it's correct position.
-                	pacman = new Pacman(x+0.05, y+0.05);
+                    // TODO : Make no sens to hard code some value in the game. Only the Pacman object himself shoudl know about it's correct position.
+                    pacman = new Pacman(x+0.05, y+0.05);
                     newDirectionPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
                     nextTilesPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
-                	entities.add(pacman);
-                	pacman.setAuthTiles(currentLevel.getAuthTiles());
+                    entities.add(pacman);
+                    pacman.setAuthTiles(currentLevel.getAuthTiles());
                 }
                 else if (currentLevel.getTile(x, y) == Tile.BLINKY_START.getValue())
                 {
-                	entities.add(new Ghost(x, y, GhostType.BLINKY));
-                	((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
+                    entities.add(new Ghost(x, y, GhostType.BLINKY));
+                    ((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
                 }
                 else if (currentLevel.getTile(x, y) == Tile.PINKY_START.getValue())
                 {
-                	entities.add(new Ghost(x, y, GhostType.PINKY));
-                	((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
+                    entities.add(new Ghost(x, y, GhostType.PINKY));
+                    ((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
                 }
                 else if (currentLevel.getTile(x, y) == Tile.INKY_START.getValue())
                 {
-                	entities.add(new Ghost(x, y, GhostType.INKY));
-                	((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
+                    entities.add(new Ghost(x, y, GhostType.INKY));
+                    ((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
                 }
                 else if (currentLevel.getTile(x, y) == Tile.CLYDE_START.getValue())
                 {
-                	entities.add(new Ghost(x, y, GhostType.CLYDE));
-                	((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
+                    entities.add(new Ghost(x, y, GhostType.CLYDE));
+                    ((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
                 }
             }
         }    
-	}
+    }
 	
+    
     /**
      * Load all audio files and distribute them where they're needed.
      * @return
@@ -400,12 +404,12 @@ public class Game implements IGame
 		return maze;
 	}
 
-	public ArrayList<Consumable> getConsumables() 
+	public synchronized ArrayList<Consumable> getConsumables() 
 	{
 		return currentLevel.getConsumables();
 	}
 
-	public ArrayList<Entity> getEntities() 
+	public synchronized ArrayList<Entity> getEntities() 
 	{
 		return entities;
 	}
@@ -415,9 +419,22 @@ public class Game implements IGame
 		return currentLevel;
 	}
 	
-	public Collision getCollision()
+	public synchronized PhysicsThread getPhysicsThread()
 	{
-		return collision;
+		return physicsThread;
+	}
+	
+	public synchronized void setPhysicsThread(PhysicsThread physicsThread)
+	{
+	    this.physicsThread = physicsThread;
+	}
+	
+	public synchronized void startPhysicsThread()
+	{
+	    if (this.physicsThread != null)
+	    {
+	        this.physicsThread.start();
+	    }
 	}
 	
 	public void setCurrentLevel(Level level)
@@ -442,7 +459,7 @@ public class Game implements IGame
 		currentLevel.generateConsumables();
 	}
 
-	public List<GameObject> getGameObjects() 
+	public synchronized List<GameObject> getGameObjects() 
 	{
 		if (getMaze() != null && getConsumables() != null && getEntities() != null)
 		{
@@ -459,6 +476,29 @@ public class Game implements IGame
 	public int getResumeTime()
 	{
 		return resumeTime;
+	}
+	
+	public synchronized TimerThread getTimerThread()
+	{
+	    return timerThread;
+	}
+	
+	public synchronized void setTimerThread(TimerThread timerThread)
+	{
+	    this.timerThread = timerThread;
+	}
+	
+	public synchronized void setTimerThreadNull()
+	{
+	    this.timerThread = null;
+	}
+	
+	public synchronized void startTimerThread()
+	{
+	    if (this.timerThread != null)
+	    {
+	        this.timerThread.start();
+	    }
 	}
 
 	/**
@@ -489,6 +529,14 @@ public class Game implements IGame
 			renderThread.interrupt();
 			throw new InterruptedByTimeoutException();
 		}
+        
+        physicsThread.stopThread();
+        physicsThread.join(JOIN_TIMER);
+        if (physicsThread.isAlive())
+        {
+            physicsThread.interrupt();
+            throw new InterruptedByTimeoutException();
+        }
 	}
 
 	@Override

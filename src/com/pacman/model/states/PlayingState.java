@@ -1,16 +1,15 @@
 package com.pacman.model.states;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 
-import com.pacman.model.Collision;
 import com.pacman.model.Game;
 import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.objects.entities.Ghost;
+import com.pacman.model.threads.PhysicsThread;
 import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
@@ -22,13 +21,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
     private StatesName name = StatesName.PLAY;
 
     private Game game;
-    private Collision collision;
-    private int i;
     private volatile boolean isPacmanDying = false;
-    private Random random;
-    private int randomInt;
-
-    private TimerThread timerThread;
 
     private LineListener deathSoundListener = new LineListener()
     {
@@ -53,7 +46,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
         game = gm;
 
-        collision = game.getCollision();
 
         game.getPacman().registerObserver(this);
 
@@ -83,62 +75,22 @@ public class PlayingState implements IGameState, IObserver<Direction>
             game.setState(game.getStopState());
         }
 
-        if (timerThread == null)
+        if (game.getTimerThread() == null)
         {
 
-            timerThread = new TimerThread(5);
-            timerThread.start();
+            game.setTimerThread(new TimerThread(5));
+            game.startTimerThread();
         }
 
-        if (!timerThread.isAlive())
+        if (!game.getTimerThread().isAlive())
         {
-            random = new Random();
-            randomInt = random.nextInt(4);
-
-            if (!((Ghost) game.getEntities().get(randomInt)).getAlive())
-            {
-
-                collision.ghostSpawn(((Ghost) game.getEntities().get(randomInt)));
-                ((Ghost) game.getEntities().get(randomInt)).setSpawning();
-                timerThread = null;
-            }
+            game.setPhysicsThread(new PhysicsThread(game, "GhostSpawn"));
+            game.startPhysicsThread();
 
         }
-
-        for (Entity entity : game.getEntities())
-        {
-        	if (entity.getHitBox() != game.getPacman().getHitBox())
-            {
-        		if (((Ghost) entity).getAlive())
-                {
-        			collision.ghostMove(entity);
-
-                } else if ( ((Ghost) entity).getSpawning() )
-                {
-                    collision.ghostSpawn(entity);
-                }
-            }
-        }
-
-        for (i = 0; i < Settings.SPEED; i++)
-        {
-
-            game.getNewDirectionPacman().setHitBox(game.getPacman().getHitBox());
-            game.getNextTilesPacman().setHitBox(game.getPacman().getHitBox());
-            game.getNextTilesPacman().updatePosition(game.getNextTilesDirection());
-            game.getNewDirectionPacman().updatePosition(game.getNewDirection());
-
-            if (collision.collisionGhost())
-            {
-                game.killPacman();
-                return;
-            }
-
-            // Strategy pattern for wall collisions.
-
-            collision.checkConsumablesCollision();
-            collision.executeWallStrategy();
-        }
+        game.setPhysicsThread(new PhysicsThread(game, "Move"));
+        game.startPhysicsThread();
+        
 
     }
 
@@ -165,7 +117,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
     public void killPacman()
     {
-    	timerThread = null;
+    	game.setTimerThreadNull();
         isPacmanDying = true;
         game.stopInGameMusics();
         game.getPacman().looseLive();

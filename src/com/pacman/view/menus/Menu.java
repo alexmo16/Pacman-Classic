@@ -21,7 +21,7 @@ abstract public class Menu
 		return options;
 	}
 	
-	public MenuType getMenuState()
+	public MenuType getMenuType()
 	{
 		return menuType;
 	}

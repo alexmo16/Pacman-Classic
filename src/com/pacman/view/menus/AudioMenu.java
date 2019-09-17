@@ -3,6 +3,7 @@ package com.pacman.view.menus;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.pacman.utils.Settings;
 import com.pacman.view.utils.Renderer;
 
 public class AudioMenu extends Menu
@@ -37,20 +38,43 @@ public class AudioMenu extends Menu
 	public void renderBody(Graphics g, int w, int h, int s)
 	{
         int idx = 1, x, y;
+        String txt;
         for (MenuOption option : getOptions())
         {
-        	x = (w - (option.getValue().length() * s)) / 2;
+        	txt = option.getValue() + " " +getValue(option);
+        	x = (w - (txt.length() * s)) / 2;
         	y = (idx * s) + topOffset;
         	
-        	Renderer.renderString(g, option.getValue(), x, y, s);
+        	Renderer.renderString(g, txt, x, y, s);
         	
         	if (option.getValue() == getCurrentSelection().getValue())
         	{
         		g.setColor(Color.yellow);
-        		g.fillRect(x, y + s, option.getValue().length() * s, s / 10);
+        		g.fillRect(x, y + s, txt.length() * s, s / 10);
         	}
         	
         	idx += 2;
         }
+	}
+	
+	public String getValue(MenuOption option)
+	{
+		if (option == MenuOption.MUSIC_VOLUME)
+		{
+			return Integer.toString(Settings.getMusicVolume());
+		}
+		else if (option == MenuOption.SOUND_VOLUME)
+		{
+			return Integer.toString(Settings.getSoundsVolume());
+		}
+		else if (option == MenuOption.MUTE_MUSIC)
+		{
+			return Settings.isMusicMute() ? "OFF" : "ON";
+		}
+		else if (option == MenuOption.MUTE_SOUND)
+		{
+			return  Settings.isSoundsMute() ? "OFF" : "ON";
+		}
+		return "";
 	}
 }

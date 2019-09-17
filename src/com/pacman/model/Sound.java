@@ -148,9 +148,9 @@ public class Sound
     	return volume;
     }
     
-    public void setVolume(float volume)
+    public void setVolume(int volume)
     {
-    	this.volume = volume;
+    	this.volume = (float)volume / 100f;
     	setMasterGain();
     }
     

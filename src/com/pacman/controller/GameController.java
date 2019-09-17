@@ -13,6 +13,7 @@ import com.pacman.view.IWindow;
 import com.pacman.view.inputs.Input;
 import com.pacman.view.inputs.KeyInput;
 import com.pacman.view.menus.MenuOption;
+import com.pacman.view.menus.MenuType;
 
 /**
  * Classe principale de l'engin de jeu, Engine, gere donc la gameloop de
@@ -219,42 +220,49 @@ public class GameController extends Thread
 		{
 			resumeGame();
 		}
+    }    
+    
+    /**
+     * @param volume Must be between 0 and 100.
+     */
+    public static void changeMusicVolume(int delta)
+    {
+    	int tmpVolume = Settings.getMusicVolume() + delta;
+    	if (tmpVolume >= 0 && tmpVolume <= 100)
+    	{
+        	Settings.setMusicVolume(tmpVolume);
+        	game.setMusicVolume(tmpVolume);
+    	}
+    }
+    
+    /**
+     * @param volume Must be between 0 and 100.
+     */
+    public static void changeSoundsVolume(int delta)
+    {
+    	int tmpVolume = Settings.getSoundsVolume() + delta;
+    	if (tmpVolume >= 0 && tmpVolume <= 100)
+    	{
+        	Settings.setSoundsVolume(tmpVolume);
+        	game.setSoundsVolume(tmpVolume);
+    	}
+    }
+    
+    private static void muteMusicPressed() 
+    {    	
+    	if(!Settings.isMusicMute())
+    	{
+    		Settings.setMusicMute(true);
+    		game.muteMusics();
+    	}
+    	else
+    	{
+    		Settings.setMusicMute(false);
+    		game.resumeMusics();
+    	}
 	}
 
-	/**
-	 * @param volume Must be between 0 and 100.
-	 */
-	public static void changeMusicVolume(int volume)
-	{
-		float volumeFloat = volume / 100;
-		Settings.setMusicVolume(volumeFloat);
-		game.setMusicVolume(volumeFloat);
-	}
-
-	/**
-	 * @param volume Must be between 0 and 100.
-	 */
-	public static void changeSoundsVolume(int volume)
-	{
-		float volumeFloat = volume / 100;
-		Settings.setSoundsVolume(volumeFloat);
-		game.setSoundsVolume(volumeFloat);
-	}
-
-	private static void muteMusicPressed(KeyEvent e)
-	{
-		if (!Settings.isMusicMute())
-		{
-			Settings.setMusicMute(true);
-			game.muteMusics();
-		} else
-		{
-			Settings.setMusicMute(false);
-			game.resumeMusics();
-		}
-	}
-
-	private static void muteSoundsPressed(KeyEvent e)
+	private static void muteSoundsPressed()
 	{
 		if (!Settings.isSoundsMute())
 		{
@@ -305,7 +313,52 @@ public class GameController extends Thread
 				window.nextOption();
 				break;
 			}
-		}
+			
+			if (window.getMenuType() == MenuType.AUDIO)
+			{
+
+				switch(e.getKeyCode())
+				{
+					case KeyEvent.VK_LEFT:
+						if (window.getMenuOption() == MenuOption.MUSIC_VOLUME)
+						{
+							changeMusicVolume(-10);
+						}
+						else if (window.getMenuOption() == MenuOption.SOUND_VOLUME)
+						{
+							changeSoundsVolume(-10);
+						}
+						else if (window.getMenuOption() == MenuOption.MUTE_MUSIC)
+						{
+							muteMusicPressed();
+						}
+						else if (window.getMenuOption() == MenuOption.MUTE_SOUND)
+						{
+							muteSoundsPressed();	
+						}
+						break;
+					
+					case KeyEvent.VK_RIGHT:
+						if (window.getMenuOption() == MenuOption.MUSIC_VOLUME)
+						{
+							changeMusicVolume(10);
+						}
+						else if (window.getMenuOption() == MenuOption.SOUND_VOLUME)
+						{
+							changeSoundsVolume(10);
+						}
+						else if (window.getMenuOption() == MenuOption.MUTE_MUSIC)
+						{
+							muteMusicPressed();
+						}
+						else if (window.getMenuOption() == MenuOption.MUTE_SOUND)
+						{
+							muteSoundsPressed();	
+						}
+						break;
+				}
+			}
+		}	
     }
     
     private static void menuKeyPressed(KeyEvent e)
@@ -317,6 +370,7 @@ public class GameController extends Thread
     {
     	if (game.getCurrentState().getName() == StatesName.MAIN_MENU)
     	{
+    		window.getCurrentView().getValue();
     		MenuOption option = window.getMenuOption();
     		if (option != null)
     		{
@@ -339,6 +393,14 @@ public class GameController extends Thread
             	else if (option == MenuOption.BACK)
             	{
             		window.setMainMenu();
+            	}
+            	else if (option == MenuOption.MUTE_MUSIC)
+            	{
+            		muteMusicPressed();
+            	}
+            	else if (option == MenuOption.MUTE_SOUND)
+            	{
+            		muteSoundsPressed();	
             	}
             	else if (option == MenuOption.EXIT)
             	{

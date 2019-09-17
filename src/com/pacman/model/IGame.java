@@ -45,10 +45,10 @@ public interface IGame
 	
 	public void stopThreads() throws InterruptedException, InterruptedByTimeoutException;
 	
-	public void setMusicVolume(float volume);
+	public void setMusicVolume(int volume);
 	public void muteMusics();
 	public void resumeMusics();
-	public void setSoundsVolume(float volume);
+	public void setSoundsVolume(int volume);
 	public void muteSounds();
 	public void resumeSounds();
 } 

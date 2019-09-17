@@ -13,6 +13,7 @@ import com.pacman.controller.GameController;
 import com.pacman.model.IGame;
 import com.pacman.utils.Settings;
 import com.pacman.view.menus.MenuOption;
+import com.pacman.view.menus.MenuType;
 import com.pacman.view.views.GameView;
 import com.pacman.view.views.MainMenuView;
 import com.pacman.view.views.ViewType;
@@ -162,5 +163,11 @@ public class Window implements WindowListener, IWindow
 	public void setIsGameActive(boolean state) 
 	{
 		mainMenuView.setIsGameActive(state);
+	}
+
+	@Override
+	public MenuType getMenuType() 
+	{
+		return mainMenuView.getMenuType();
 	}
 }

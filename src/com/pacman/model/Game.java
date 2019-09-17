@@ -218,7 +218,7 @@ public class Game implements IGame
     }
     
 	@Override
-	public void setMusicVolume(float volume)
+	public void setMusicVolume(int volume)
 	{
 		if (!Settings.isMusicMute())
 		{
@@ -228,7 +228,7 @@ public class Game implements IGame
 	}
 
 	@Override
-	public void setSoundsVolume(float volume)
+	public void setSoundsVolume(int volume)
 	{
 		if (!Settings.isSoundsMute())
 		{
@@ -254,8 +254,8 @@ public class Game implements IGame
     {
         if (gameSiren != null && startMusic != null)
         {
-            gameSiren.setVolume(0f);
-            startMusic.setVolume(0f);
+            gameSiren.setVolume(0);
+            startMusic.setVolume(0);
         }
     }
     
@@ -264,8 +264,8 @@ public class Game implements IGame
     {
 	    if (death != null && chomp != null)
 	    {
-	    	death.setVolume(0f);
-	    	chomp.setVolume(0f);
+	    	death.setVolume(0);
+	    	chomp.setVolume(0);
 	    }
     }
     

@@ -8,6 +8,7 @@ import com.pacman.view.menus.HelpMenu;
 import com.pacman.view.menus.MainMenu;
 import com.pacman.view.menus.Menu;
 import com.pacman.view.menus.MenuOption;
+import com.pacman.view.menus.MenuType;
 import com.pacman.view.utils.Renderer;
 
 public class MainMenuView extends View
@@ -44,6 +45,11 @@ public class MainMenuView extends View
 	public MenuOption getMenuOption()
 	{
 		return currentMenu.getCurrentSelection();
+	}
+	
+	public MenuType getMenuType()
+	{
+		return currentMenu.getMenuType();
 	}
 	
 	public void nextOption()

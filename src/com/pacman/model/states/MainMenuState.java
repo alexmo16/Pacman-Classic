@@ -15,10 +15,8 @@ public class MainMenuState implements IGameState
 	@Override
 	public void update()
 	{
-		if (game == null)
-		{
-			return;
-		}
+		if (game == null) return;
+		game.stopMusic();
 	}
 
 	@Override

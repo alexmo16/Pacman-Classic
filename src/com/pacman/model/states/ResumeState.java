@@ -37,6 +37,7 @@ public class ResumeState implements IGameState
 		{
 			timer = null;
 			game.setState(game.getPlayingState());
+			game.playInGameMusic();
 			game.resumeAudio();
 		}
 	}

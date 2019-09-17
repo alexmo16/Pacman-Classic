@@ -1,4 +1,4 @@
-package com.pacman.view;
+package com.pacman.view.inputs;
 
 import java.awt.event.KeyEvent;
 

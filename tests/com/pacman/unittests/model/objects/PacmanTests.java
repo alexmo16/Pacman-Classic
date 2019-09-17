@@ -11,7 +11,7 @@ import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.objects.entities.Pacman.Animation;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.Settings;
-import com.pacman.view.Input;
+import com.pacman.view.inputs.Input;
 
 public class PacmanTests
 {

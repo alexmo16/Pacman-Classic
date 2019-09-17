@@ -417,13 +417,6 @@ public class PhysicsThread extends Thread
 				executeWallStrategy();
 			}
 		}
-
-		try
-		{
-			Thread.sleep(5);
-		} catch (Exception e)
-		{
-		}
 	}
 
 	public void stopThread()

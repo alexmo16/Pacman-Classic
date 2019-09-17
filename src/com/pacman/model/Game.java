@@ -377,6 +377,11 @@ public class Game implements IGame
     {
         return gameSiren;
     }
+    
+    public Sound[] getChomps()
+	{
+		return chomps;
+	}
 	
 	public Pacman getPacman()
 	{

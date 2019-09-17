@@ -197,7 +197,8 @@ class SoundControllerTest
 				}
 			};
 			
-			isPlayed = sound.play(listener);
+			sound.setListener(listener);
+			isPlayed = sound.play();
 			sound.setVolume(50);
 			
 			while( sound.getIsRunning() )

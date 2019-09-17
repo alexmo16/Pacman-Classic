@@ -46,7 +46,7 @@ class GameControllerTests
 
         assertEquals(expectedStartMusic.getFile(), gameManager.getStartMusic().getFile());
         assertEquals(expectedGameSirent.getFile(), gameManager.getGameSiren().getFile());
-        assertEquals(expectedChomp.getFile(), gameManager.getChomp().getFile());
+        assertEquals(expectedChomp.getFile(), gameManager.getChomps()[0].getFile());
         assertFalse(isException);
     }
 

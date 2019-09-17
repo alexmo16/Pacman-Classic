@@ -30,7 +30,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
              if (event.getType() == LineEvent.Type.STOP)
              {        
                 game.setState(game.getPacman().getLives() == 0 ? game.getStopState() : game.getInitState());
-                game.stopDeathMusic();
                 isPacmanDying = false;
              }
          }
@@ -121,9 +120,9 @@ public class PlayingState implements IGameState, IObserver<Direction>
     {
     	game.setTimerThreadNull();
         isPacmanDying = true;
-        game.stopInGameMusics();
+        game.stopMusic();
         game.getPacman().looseLive();
-        game.playDeathMusic(deathSoundListener);
+        game.playDeathSound(deathSoundListener);
     }
     
 	public void ghostSpawn(GameObject obj)

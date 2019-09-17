@@ -10,6 +10,7 @@ public class InitState implements IGameState
 {
 	private Game game;
 	private StatesName name = StatesName.INIT;
+	private volatile boolean init = true;
 	
     LineListener startingMusicListener = new LineListener()
     {
@@ -19,8 +20,9 @@ public class InitState implements IGameState
             if (event.getType() == LineEvent.Type.STOP)
             {
             	game.setState(game.getPlayingState());
-            	game.stopStartingMusic();
-            	game.resumeInGameMusics();
+            	game.stopMusic();
+            	game.playInGameMusic();
+            	init = true;
             }
         }
     };
@@ -50,7 +52,12 @@ public class InitState implements IGameState
 	    }
 		
 		
-		game.playStartingMusic(startingMusicListener);
+		if(init)
+		{			
+			game.stopMusic();
+			game.playStartingMusic(startingMusicListener);
+			init = false;
+		}
 	}
 
 	@Override

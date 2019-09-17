@@ -44,7 +44,7 @@ class EngineTest
 	@Test
 	void testStartGame() 
 	{
-		engine.startGame();
+		engine.start();
 		try 
 		{
 			Thread.sleep( 1000 );
@@ -52,30 +52,6 @@ class EngineTest
 		{
 			fail();
 		}
-		assertTrue( GameController.getIsRunning() );
-		
-		synchronized( this ) 
-        { 
-			GameController.stopGame();
-        } 
-	}
-	
-	@Test
-	void testDoubleStartGame() 
-	{
-		engine.startGame();
-		try 
-		{
-			Thread.sleep( 1000 );
-		} catch (InterruptedException e) 
-		{
-			fail();
-		}
-		
-		assertTrue( GameController.getIsRunning() );
-		
-		engine.startGame();
-		
 		assertTrue( GameController.getIsRunning() );
 		
 		synchronized( this ) 

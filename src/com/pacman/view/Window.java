@@ -13,6 +13,7 @@ import com.pacman.controller.GameController;
 import com.pacman.model.IGame;
 import com.pacman.utils.Settings;
 import com.pacman.view.views.GameView;
+import com.pacman.view.views.HelpView;
 import com.pacman.view.views.MainMenuView;
 
 public class Window implements WindowListener, IWindow
@@ -23,6 +24,8 @@ public class Window implements WindowListener, IWindow
     	
 	private GameView gameView;
 	private MainMenuView mainMenuView;
+	private HelpView helpView;
+	private ViewType currentView;
     
     public Window(IGame game)
     {
@@ -30,9 +33,11 @@ public class Window implements WindowListener, IWindow
     	
     	gameView = new GameView(game);
     	mainMenuView = new MainMenuView(game);
+    	helpView = new HelpView();
     
     	views.add(gameView, gameView.getName());
     	views.add(mainMenuView, mainMenuView.getName());
+    	views.add(helpView, helpView.getName());
     	
         frame.setMinimumSize(new Dimension(Settings.MIN_WINDOW_WIDTH, Settings.MIN_WINDOW_HEIGHT));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,6 +52,7 @@ public class Window implements WindowListener, IWindow
     public void showView(ViewType type)
     {
     	layout.show(views, type.getValue());
+    	currentView = type;
     }
     
     @Override
@@ -111,4 +117,9 @@ public class Window implements WindowListener, IWindow
     {
         return frame;
     }
+
+	public ViewType getCurrentView() 
+	{
+		return currentView;
+	}
 }

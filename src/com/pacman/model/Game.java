@@ -420,7 +420,7 @@ public class Game implements IGame
 		this.nextTilesDirection = direction;
 	}
 
-	public ArrayList<Wall> getMaze()
+	public synchronized ArrayList<Wall> getMaze()
 	{
 		return maze;
 	}

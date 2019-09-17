@@ -80,7 +80,7 @@ class SoundControllerTest
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.play();
-			sound.setVolume(0.5f);
+			sound.setVolume(50);
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
@@ -123,7 +123,7 @@ class SoundControllerTest
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.playLoopBack();
-			sound.setVolume(0.5f);
+			sound.setVolume(50);
 			sound.stop();
 		} catch ( UnsupportedAudioFileException | IOException e )
 		{
@@ -144,7 +144,7 @@ class SoundControllerTest
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			Settings.setMusicMute(true);
 			isPlayed = sound.playLoopBack();
-			sound.setVolume(0.5f);
+			sound.setVolume(50);
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
@@ -164,7 +164,7 @@ class SoundControllerTest
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
 			Settings.setMusicMute(true);
 			isPlayed = sound.play();
-			sound.setVolume(0.5f);
+			sound.setVolume(50);
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;
@@ -198,7 +198,7 @@ class SoundControllerTest
 			};
 			
 			isPlayed = sound.play(listener);
-			sound.setVolume(0.5f);
+			sound.setVolume(50);
 			
 			while( sound.getIsRunning() )
 			{
@@ -222,9 +222,9 @@ class SoundControllerTest
 		try
 		{
 			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
-			sound.setVolume(0f);
+			sound.setVolume(50);
 			isPlayed = sound.play();
-			assertEquals(0f, sound.getVolume());
+			assertEquals(0.5f, sound.getVolume());
 		} catch ( UnsupportedAudioFileException | IOException e ) 
 		{
 			isException = true;

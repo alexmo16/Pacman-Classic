@@ -1,13 +1,14 @@
 package com.pacman.model.threads;
 
+import com.pacman.controller.GameController;
 import com.pacman.model.IGame;
 import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.GameObject;
+import com.pacman.view.IWindow;
 
 public class RenderThread extends Thread
 {
 	private IGame game;
-	private int delay = 100;
 	private boolean isRunning = false;
 	
 	public RenderThread(IGame g)
@@ -37,30 +38,40 @@ public class RenderThread extends Thread
 	public void run() 
 	{
 		isRunning = true;
-        long beforeTime, timeDiff, sleep;
-
+        long beforeTime, timeDiff;
+        int frames = 0;
+        long framesTime = 0;
+        
         beforeTime = System.currentTimeMillis();
-
+        GameController gc = GameController.getInstance(null, null);
+        if (gc == null) return;
+        IWindow window = gc.getWindow();
+        if (window == null) return;
+        
         while (isRunning) 
         {
-
+        	synchronized (gc)
+			{
+				try
+				{
+					gc.wait();
+				} catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+			}
         	update();
-
+        	window.render();
+        	frames++;
+        	
             timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = delay - timeDiff;
+            framesTime += timeDiff;
 
-            if (sleep < 0) 
+            if (framesTime >= 1000)
             {
-                sleep = 2;
-            }
-
-            try 
-            {
-                Thread.sleep(sleep);
-            } catch (InterruptedException e) 
-            {
-                String msg = String.format("Thread interrupted: %s", e.getMessage());
-                System.out.println(msg);
+            	GameController.setFps(frames);
+            	frames = 0;
+            	framesTime = 0;
             }
 
             beforeTime = System.currentTimeMillis();

@@ -31,7 +31,7 @@ public class GameView extends View
 	@Override
 	public void paintComponent(Graphics g) 
 	{
-		if (Level.getWidth() == 0 || Level.getHeight() == 0)
+		if (Level.getWidth() == 0 || Level.getHeight() == 0 || game == null || game.getCurrentState() == null)
 		{
 			return;
 		}
@@ -109,12 +109,7 @@ public class GameView extends View
 	}
 	
 	private void renderGameStatus(Graphics g)
-    {
-		if (game == null || game.getCurrentState() == null)
-		{
-			return;
-		}
-			
+    {		
 		// Top left - Game state
         int x = sFactor + horizontalBorder;
         int y = verticalBorder / 2;

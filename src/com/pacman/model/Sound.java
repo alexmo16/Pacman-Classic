@@ -18,6 +18,7 @@ public class Sound
     private File file;
     private AudioInputStream inputStream;
     private Clip audioClip;
+    private LineListener listener;
     private LineListener defaultListener;
     private boolean isRunning = false;
     private float volume;
@@ -35,6 +36,10 @@ public class Sound
             {
                 if (event.getType() == LineEvent.Type.STOP)
                 {
+                	if (listener != null)
+                	{
+                		listener.update(event);
+                	}
                     that.stop();
                 }
             }
@@ -48,19 +53,10 @@ public class Sound
 
     /**
      * Play sound asynchronously.
-     * @return
-     */
-    public boolean play()
-    {
-    	return play( defaultListener);
-    }
-
-    /**
-     * Play sound asynchronously with a custom listener on the audio line.
      * @param listener
      * @return boolean
      */
-    public boolean play(LineListener listener)
+    public boolean play()
     {
         if (isRunning)
         {
@@ -81,7 +77,7 @@ public class Sound
             return false;
         }
         audioClip.setFramePosition(0);
-        audioClip.addLineListener(listener);
+        audioClip.addLineListener(defaultListener);
         setMasterGain();
         
         isRunning = true;
@@ -152,6 +148,11 @@ public class Sound
     {
     	this.volume = (float)volume / 100f;
     	setMasterGain();
+    }
+    
+    public void setListener(LineListener l)
+    {
+    	listener = l;
     }
     
     private void setMasterGain()

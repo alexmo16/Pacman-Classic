@@ -25,6 +25,7 @@ import com.pacman.model.states.PlayingState;
 import com.pacman.model.states.ResumeState;
 import com.pacman.model.states.StatesName;
 import com.pacman.model.states.StopState;
+import com.pacman.model.threads.AudioThread;
 import com.pacman.model.threads.PhysicsThread;
 import com.pacman.model.threads.RenderThread;
 import com.pacman.model.threads.TimerThread;
@@ -56,11 +57,14 @@ public class Game implements IGame
     
     private Sound startMusic;
     private Sound gameSiren;
-    private Sound chomp;
+    private Sound[] chomps = new Sound[4];
     private Sound death;
     
     private PhysicsThread physicsThread;
     private volatile TimerThread timerThread;
+    private RenderThread renderThread;
+    private AudioThread audioThread;
+    private static final int JOIN_TIMER = 500; //ms
     
     private IGameState initState;
     private IGameState stopState;
@@ -69,9 +73,6 @@ public class Game implements IGame
     private IGameState resumeState;
     private IGameState currentState;
     private IGameState mainMenuState;
-    
-    private RenderThread renderThread;
-    private static final int JOIN_TIMER = 500; //ms
     
     private int resumeTime = 3;
     
@@ -107,9 +108,10 @@ public class Game implements IGame
         setState(mainMenuState);
         
         renderThread = new RenderThread(this);
+        audioThread = new AudioThread();
         renderThread.start();
         physicsThread.start();
-        
+        audioThread.start();
     }
     
     /**
@@ -185,9 +187,14 @@ public class Game implements IGame
             startMusic.setVolume(Settings.getMusicVolume());
             gameSiren = new Sound(Settings.GAME_SIREN_PATH);
             gameSiren.setVolume(Settings.getMusicVolume());
-            chomp = new Sound(Settings.CHOMP_PATH);
-            chomp.setVolume(Settings.getSoundsVolume());
-            pacman.setChompSound(chomp);
+            
+            for (int index = 0 ; index < chomps.length ; index++)
+            {
+            	Sound chomp = new Sound(Settings.CHOMP_PATH);
+            	chomp.setVolume(Settings.getSoundsVolume());
+            	chomps[index] = chomp;
+            }
+            	
             death = new Sound(Settings.DEATH_PATH);
             death.setVolume(Settings.getSoundsVolume());
         } catch (UnsupportedAudioFileException | IOException e)
@@ -201,20 +208,24 @@ public class Game implements IGame
 
     public void playStartingMusic( LineListener listener )
     {
-    	startMusic.play(listener);
+    	startMusic.setListener(listener);
+    	audioThread.playSound(startMusic);
     }
     
-    public void stopStartingMusic()
+    public void playInGameMusic()
     {
-    	if (startMusic.getIsRunning())
-    	{
-    		startMusic.stop();
-    	}
+    	audioThread.playMusic(gameSiren);
+    }
+    
+    public void stopMusic()
+    {
+    	audioThread.stopMusic();
     }
 
-    public void playDeathMusic(LineListener listener)
+    public void playDeathSound(LineListener listener)
     {
-    	death.play(listener);
+    	death.setListener(listener);
+    	audioThread.playSound(death);
     }
     
 	@Override
@@ -232,7 +243,10 @@ public class Game implements IGame
 	{
 		if (!Settings.isSoundsMute())
 		{
-			chomp.setVolume(volume);
+			for (Sound chomp : chomps)
+			{
+				chomp.setVolume(volume);
+			}
 			death.setVolume(volume);
 		}
 	}
@@ -262,10 +276,14 @@ public class Game implements IGame
     @Override
     public void muteSounds()
     {
-	    if (death != null && chomp != null)
+	    if (death != null && chomps != null)
 	    {
 	    	death.setVolume(0);
-	    	chomp.setVolume(0);
+	    	for (Sound chomp : chomps)
+	    	{
+	    		if (chomp == null) continue;
+	    		chomp.setVolume(0);
+	    	}
 	    }
     }
     
@@ -282,36 +300,16 @@ public class Game implements IGame
     @Override
     public void resumeSounds()
     {
-    	if (!Settings.isSoundsMute() && death != null && chomp != null)
+    	if (!Settings.isSoundsMute() && death != null && chomps != null)
     	{
     		death.setVolume(Settings.getSoundsVolume());
-    		chomp.setVolume(Settings.getSoundsVolume());
+    		for (Sound chomp : chomps)
+    		{
+    			if (chomp == null) continue;
+    			chomp.setVolume(Settings.getSoundsVolume());
+    		}
     	}
     }
-    
-	public void stopInGameMusics()
-	{
-		if ( gameSiren.getIsRunning() )
-		{
-			gameSiren.stop();
-		}
-	}
-	
-	public void stopDeathMusic()
-	{
-		if ( death.getIsRunning() )
-		{
-			death.stop();
-		}
-	}
-	
-	public void resumeInGameMusics()
-	{
-		if ( !gameSiren.getIsRunning() )
-		{
-			gameSiren.playLoopBack();
-		}
-	}
 	
 	public void setState( IGameState state )
 	{
@@ -378,11 +376,6 @@ public class Game implements IGame
     public Sound getGameSiren()
     {
         return gameSiren;
-    }
-
-    public Sound getChomp()
-    {
-        return chomp;
     }
 	
 	public Pacman getPacman()
@@ -553,5 +546,28 @@ public class Game implements IGame
             physicsThread.interrupt();
             throw new InterruptedByTimeoutException();
         }
+        
+        audioThread.stopThread();
+        synchronized (audioThread)
+		{
+        	audioThread.notify();
+        	audioThread.join(JOIN_TIMER);
+        	if (audioThread.isAlive())
+        	{
+        		audioThread.interrupt();
+        		throw new InterruptedByTimeoutException();
+        	}
+		}
+	}
+
+	public void pacmanEatConsummable(Consumable consumable)
+	{
+		pacman.eat(consumable);
+		for (Sound chomp : chomps)
+		{
+			if (chomp == null) continue;
+			if (chomp.getIsRunning()) continue;
+			audioThread.playSound(chomp);
+		}
 	}
 }

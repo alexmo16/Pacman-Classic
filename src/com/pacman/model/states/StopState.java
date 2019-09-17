@@ -17,7 +17,7 @@ public class StopState implements IGameState
 	@Override
 	public void update() 
 	{
-		game.stopInGameMusics();
+		game.stopMusic();
 		
 		// Juste pour voir le message gameover
 		if (timer == null)

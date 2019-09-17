@@ -55,7 +55,7 @@ public class PhysicsThread extends Thread
 		@Override
 		public void visitDefault(Consumable consumable)
 		{
-			game.getPacman().eat(consumable);
+			game.pacmanEatConsummable(consumable);
 			game.getConsumables().remove(consumable);
 		}
 	}

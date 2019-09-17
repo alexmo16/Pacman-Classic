@@ -1,10 +1,9 @@
-package com.pacman.view;
+package com.pacman.view.views;
 
 public enum ViewType
 {
 	MAIN_MENU("MainMenu"),
-	GAME("Game"),
-	HELP("Help");
+	GAME("Game");
 
     private final String value;
 

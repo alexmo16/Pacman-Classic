@@ -5,15 +5,14 @@ import java.nio.channels.InterruptedByTimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.pacman.model.IGame;
-import com.pacman.model.menus.MenuOption;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.states.StatesName;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.Settings;
 import com.pacman.view.IWindow;
-import com.pacman.view.Input;
-import com.pacman.view.KeyInput;
-import com.pacman.view.ViewType;
+import com.pacman.view.inputs.Input;
+import com.pacman.view.inputs.KeyInput;
+import com.pacman.view.menus.MenuOption;
 
 /**
  * Classe principale de l'engin de jeu, Engine, gere donc la gameloop de
@@ -60,8 +59,6 @@ public class GameController extends Thread
             inputs = new Input();
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.P.getValue()), (KeyEvent e) -> pauseButtonPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.R.getValue()), (KeyEvent e) -> resumeButtonPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.G.getValue()), (KeyEvent e) -> muteSoundsPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.H.getValue()), (KeyEvent e) -> muteMusicPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.UP.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.DOWN.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
             inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.RIGHT.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
@@ -314,11 +311,11 @@ public class GameController extends Thread
 			switch(e.getKeyCode())
 			{
 			case KeyEvent.VK_UP:
-				game.mainMenuPrevious();
+				window.previousOption();
 				break;
 				
 			case KeyEvent.VK_DOWN:
-				game.mainMenuNext();
+				window.nextOption();
 				break;
 			}
 		}
@@ -331,29 +328,36 @@ public class GameController extends Thread
     
     private static void acceptKeyPressed(KeyEvent e)
     {
-    	MenuOption option = game.getCurrentSelection();
-    	if (option != null && option == MenuOption.START)
+    	if (game.getCurrentState().getName() == StatesName.MAIN_MENU)
     	{
-    		game.setState(game.getInitState());
-    	}
-    	else if (option != null && option == MenuOption.RESUME)
-    	{
-    		game.setState(game.getResumeState());
-    	}
-    	else if (option != null && option == MenuOption.HELP)
-    	{
-    		if (window.getCurrentView() == ViewType.HELP)
+    		MenuOption option = window.getMenuOption();
+    		if (option != null)
     		{
-    			window.showView(ViewType.MAIN_MENU);
-    		}
-    		else
-    		{
-    			window.showView(ViewType.HELP);
-    		}
-    	}
-    	else if (option != null && option == MenuOption.EXIT)
-    	{
-    		GameController.stopGame();
+            	if (option == MenuOption.START)
+            	{
+            		game.setState(game.getInitState());
+            	}
+            	else if (option == MenuOption.RESUME)
+            	{
+            		game.setState(game.getResumeState());
+            	}
+            	else if (option == MenuOption.AUDIO)
+            	{
+            		window.setAudioMenu();
+            	}
+            	else if (option == MenuOption.HELP)
+            	{
+            		window.setHelpMenu();
+            	}
+            	else if (option == MenuOption.BACK)
+            	{
+            		window.setMainMenu();
+            	}
+            	else if (option == MenuOption.EXIT)
+            	{
+            		GameController.stopGame();
+            	}
+    		}	
     	}
     }
     

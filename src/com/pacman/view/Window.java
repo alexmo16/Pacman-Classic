@@ -12,9 +12,10 @@ import javax.swing.JPanel;
 import com.pacman.controller.GameController;
 import com.pacman.model.IGame;
 import com.pacman.utils.Settings;
+import com.pacman.view.menus.MenuOption;
 import com.pacman.view.views.GameView;
-import com.pacman.view.views.HelpView;
 import com.pacman.view.views.MainMenuView;
+import com.pacman.view.views.ViewType;
 
 public class Window implements WindowListener, IWindow
 {
@@ -24,7 +25,6 @@ public class Window implements WindowListener, IWindow
     	
 	private GameView gameView;
 	private MainMenuView mainMenuView;
-	private HelpView helpView;
 	private ViewType currentView;
     
     public Window(IGame game)
@@ -32,12 +32,10 @@ public class Window implements WindowListener, IWindow
     	views.setLayout(layout);
     	
     	gameView = new GameView(game);
-    	mainMenuView = new MainMenuView(game);
-    	helpView = new HelpView();
+    	mainMenuView = new MainMenuView();
     
     	views.add(gameView, gameView.getName());
     	views.add(mainMenuView, mainMenuView.getName());
-    	views.add(helpView, helpView.getName());
     	
         frame.setMinimumSize(new Dimension(Settings.MIN_WINDOW_WIDTH, Settings.MIN_WINDOW_HEIGHT));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,7 +70,13 @@ public class Window implements WindowListener, IWindow
 	{
 		frame.dispose();
 	}
-    
+
+    @Override
+	public ViewType getCurrentView() 
+	{
+		return currentView;
+	}
+	
     @Override
     public void windowOpened(WindowEvent e)
     {
@@ -112,14 +116,51 @@ public class Window implements WindowListener, IWindow
     {
     	GameController.pauseGame();
     }
-    
+	
     public JFrame getFrame()
     {
         return frame;
     }
 
-	public ViewType getCurrentView() 
+	@Override
+	public void setMainMenu() 
 	{
-		return currentView;
+		mainMenuView.setMainMenu();
+	}
+
+	@Override
+	public void setAudioMenu() 
+	{
+		mainMenuView.setAudioMenu();
+	}
+
+	@Override
+	public void setHelpMenu() 
+	{
+		mainMenuView.setHelpMenu();
+	}
+	
+	@Override
+	public MenuOption getMenuOption() 
+	{
+		return mainMenuView.getMenuOption();
+	}
+
+	@Override
+	public void nextOption()
+	{
+		mainMenuView.nextOption();
+	}
+
+	@Override
+	public void previousOption() 
+	{
+		mainMenuView.previousOption();
+	}
+
+	@Override
+	public void setIsGameActive(boolean state) 
+	{
+		mainMenuView.setIsGameActive(state);
 	}
 }

@@ -234,6 +234,26 @@ public class GameController extends Thread
 		}
     }    
     
+    /**
+     * @param volume Must be between 0 and 100.
+     */
+    public static void changeMusicVolume(int volume)
+    {
+    	float volumeFloat = volume / 100;
+    	Settings.setMusicVolume(volumeFloat);
+    	game.setMusicVolume(volumeFloat);
+    }
+    
+    /**
+     * @param volume Must be between 0 and 100.
+     */
+    public static void changeSoundsVolume(int volume)
+    {
+    	float volumeFloat = volume / 100;
+    	Settings.setSoundsVolume(volumeFloat);
+    	game.setSoundsVolume(volumeFloat);
+    }
+    
     private static void muteMusicPressed(KeyEvent e) 
     {    	
     	if(!Settings.isMusicMute())

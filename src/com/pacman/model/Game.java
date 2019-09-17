@@ -186,14 +186,14 @@ public class Game implements IGame
         try
         {
             startMusic = new Sound(Settings.START_MUSIC_PATH);
-            startMusic.setVolume(Settings.musicVolume);
+            startMusic.setVolume(Settings.getMusicVolume());
             gameSiren = new Sound(Settings.GAME_SIREN_PATH);
-            gameSiren.setVolume(Settings.musicVolume);
+            gameSiren.setVolume(Settings.getMusicVolume());
             chomp = new Sound(Settings.CHOMP_PATH);
-            chomp.setVolume(Settings.soundsVolume);
+            chomp.setVolume(Settings.getSoundsVolume());
             pacman.setChompSound(chomp);
             death = new Sound(Settings.DEATH_PATH);
-            death.setVolume(Settings.musicVolume);
+            death.setVolume(Settings.getSoundsVolume());
         } catch (UnsupportedAudioFileException | IOException e)
         {
             System.out.println("Unable to load sounds!!");
@@ -221,6 +221,26 @@ public class Game implements IGame
     	death.play(listener);
     }
     
+	@Override
+	public void setMusicVolume(float volume)
+	{
+		if (!Settings.isMusicMute())
+		{
+			gameSiren.setVolume(volume);
+			startMusic.setVolume(volume);
+		}
+	}
+
+	@Override
+	public void setSoundsVolume(float volume)
+	{
+		if (!Settings.isSoundsMute())
+		{
+			chomp.setVolume(volume);
+			death.setVolume(volume);
+		}
+	}
+    
     public void muteAudio()
     {
     	muteMusics();
@@ -233,6 +253,7 @@ public class Game implements IGame
     	resumeSounds();
     }
     
+    @Override
     public void muteMusics()
     {
         if (gameSiren != null && startMusic != null)
@@ -242,6 +263,7 @@ public class Game implements IGame
         }
     }
     
+    @Override
     public void muteSounds()
     {
 	    if (death != null && chomp != null)
@@ -251,21 +273,23 @@ public class Game implements IGame
 	    }
     }
     
+    @Override
     public void resumeMusics()
     {
     	if (!Settings.isMusicMute() && gameSiren != null && startMusic != null)
     	{
-    		gameSiren.setVolume(Settings.musicVolume);
-    		startMusic.setVolume(Settings.musicVolume);
+    		gameSiren.setVolume(Settings.getMusicVolume());
+    		startMusic.setVolume(Settings.getMusicVolume());
     	}
     }
     
+    @Override
     public void resumeSounds()
     {
     	if (!Settings.isSoundsMute() && death != null && chomp != null)
     	{
-    		death.setVolume(Settings.soundsVolume);
-    		chomp.setVolume(Settings.soundsVolume);
+    		death.setVolume(Settings.getSoundsVolume());
+    		chomp.setVolume(Settings.getSoundsVolume());
     	}
     }
     

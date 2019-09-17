@@ -25,9 +25,9 @@ public class Settings
     public static final double TILES_HEIGHT = 1;
     public static final double TILES_WIDTH = 1;
     
-    public volatile static float musicVolume = 1f;
+    private volatile static float musicVolume = 1f;
     private volatile static boolean musicMute = false;
-    public volatile static float soundsVolume = 1f;
+    private volatile static float soundsVolume = 1f;
     private volatile static boolean soundsMute = false;
 	
     
@@ -60,6 +60,38 @@ public class Settings
 		synchronized ("SOUND_KEY") 
 		{
 			Settings.soundsMute = soundsMute;
+		}
+	}
+
+	public static float getMusicVolume()
+	{
+		synchronized("MUSIC_KEY")
+		{
+			return musicVolume;
+		}
+	}
+
+	public static void setMusicVolume(float musicVolume)
+	{
+		synchronized("MUSIC_KEY")
+		{
+			Settings.musicVolume = musicVolume;
+		}
+	}
+
+	public static float getSoundsVolume()
+	{
+		synchronized("SOUND_KEY")
+		{
+			return soundsVolume;
+		}
+	}
+
+	public static void setSoundsVolume(float soundsVolume)
+	{
+		synchronized("SOUND_KEY")
+		{
+			Settings.soundsVolume = soundsVolume;
 		}
 	}
 }

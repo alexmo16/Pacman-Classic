@@ -155,7 +155,7 @@ class AudioThreadTest
 	}
 	
 	@Test
-	void testAddSoundInBuffer() throws InterruptedException
+	void testAddSoundInBuffer() throws InterruptedException, InterruptedByTimeoutException
 	{
 		Sound firstSound = Mockito.mock(Sound.class);
 		Mockito.when(firstSound.play()).thenReturn(true);
@@ -169,9 +169,9 @@ class AudioThreadTest
 		synchronized (thread)
 		{
 			thread.wait(100);
+			Mockito.verify(firstSound).play();
+			Mockito.verify(secondSound).play();
 		}
-		Mockito.verify(firstSound).play();
-		Mockito.verify(secondSound).play();
 	}
 	
 	@Test

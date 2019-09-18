@@ -21,24 +21,24 @@ public class AudioThread extends Thread
 			{
 				if(!sounds.isEmpty())
 				{
-					Sound sound = sounds.remove(sounds.size() - 1);
-					sound.play();
+					for ( int index = sounds.size() - 1; index >= 0; index-- )
+					{
+						if (sounds.isEmpty()) break;
+						Sound sound = sounds.remove(sounds.size() - 1);
+						sound.play();
+					}
 				}
 				
 				if (music != null)
 				{
 					music.playLoopBack();
 				}
-				
-				if (sounds.isEmpty())
+				try
 				{
-					try
-					{
-						wait();
-					} catch (InterruptedException e)
-					{
-						e.printStackTrace();
-					}
+					wait();
+				} catch (InterruptedException e)
+				{
+					e.printStackTrace();
 				}
 			}
 		}

@@ -573,6 +573,7 @@ public class Game implements IGame
 			if (chomp == null) continue;
 			if (chomp.getIsRunning()) continue;
 			audioThread.playSound(chomp);
+			break;
 		}
 	}
 }

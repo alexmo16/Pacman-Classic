@@ -14,7 +14,7 @@ public class HelpMenu extends Menu
 	
 	public HelpMenu()
 	{
-		super(MenuType.AUDIO,
+		super(MenuType.HELP,
 			  new MenuOption[] {MenuOption.BACK});
 	}
 	

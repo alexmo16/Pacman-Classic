@@ -131,18 +131,18 @@ public class GameView extends View
         Renderer.renderString(g, s, x, y, sFactor);
         
         // Bot left - Score
-        x = sFactor + horizontalBorder;
+        x = horizontalBorder;
         y = getHeight() - sFactor / 2 - (verticalBorder / 2);
         s = new String("score " + game.getPacman().getScore());
         Renderer.renderString(g, s, x, y, sFactor);
         
         // Bot center - Lives
         s = "Lives ";
-		x = (getWidth() / 2) - (s.length() * sFactor) / 2;
+		x = (getWidth() / 2) - sFactor - (s.length() * sFactor) / 2;
 		Renderer.renderString(g, s, x, y, sFactor);
-		x = (getWidth() / 2) + (s.length() * sFactor) / 2;
+		x = (getWidth() / 2) - sFactor + (s.length() * sFactor) / 2;
         y = getHeight() - sFactor - (verticalBorder / 2);
-        for (int lives = 1; lives < game.getPacman().getLives(); lives++)
+        for (int lives = 0; lives < game.getPacman().getLives(); lives++)
         {
         	Sprite pacman = Sprites.getPacmanMovement(Direction.RIGHT, 0);
             g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + (2 * sFactor)), (int)(y + (2 * sFactor)), pacman.getX1(), pacman.getY1(), pacman.getX2(), pacman.getY2(), null);
@@ -150,7 +150,7 @@ public class GameView extends View
         }
         
         // Bot right - Level
-        s = "Level " + game.getCurrentLevel().getName();
+        s = "Lvl " + game.getCurrentLevel().getName();
 		x = getWidth() - horizontalBorder - (s.length() * sFactor);
         y = getHeight() - sFactor / 2 - (verticalBorder / 2);
         Renderer.renderString(g, s, x, y, sFactor);
@@ -174,7 +174,7 @@ public class GameView extends View
     {
         if (game.getCurrentState().getName() == StatesName.STOP && !game.isPacmanWon())
         {
-        	String message = "Gameover";
+        	String message = "Game over";
 	        g.setColor(new Color(0, 0, 0, 200));
 	        
 	        int x = (getWidth() - (message.length() * sFactor)) / 2;

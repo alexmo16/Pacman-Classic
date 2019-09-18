@@ -75,7 +75,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
         if (game.getTimerThread() == null)
         {
-            game.setTimerThread(new TimerThread(5));
+            game.setTimerThread(new TimerThread(1));
             game.startTimerThread();
         }
 

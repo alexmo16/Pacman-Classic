@@ -28,7 +28,8 @@ public class TimerThread extends Thread
     {
         this.isRunning = true;
         this.timerCount = 0;
-
+        
+        System.out.println("Start: Timer Thread");
         while (verifStop())
         {
             try
@@ -45,6 +46,7 @@ public class TimerThread extends Thread
                 e.printStackTrace();
             }
         }
+        System.out.println("Stop: Timer Thread");
     }
 
     public synchronized long getTime()

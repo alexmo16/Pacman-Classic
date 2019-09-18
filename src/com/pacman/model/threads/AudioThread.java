@@ -15,6 +15,7 @@ public class AudioThread extends Thread
 	public void run()
 	{
 		isRunning = true;
+		System.out.println("Start: Audio Thread");
 		while(isRunning)
 		{
 			synchronized (this)
@@ -42,6 +43,7 @@ public class AudioThread extends Thread
 				}
 			}
 		}
+		System.out.println("Stop: Audio Thread");
 	}
 	
 	public void stopThread()

@@ -92,8 +92,6 @@ public class Game implements IGame
     	currentLevel = new Level(LEVEL_DATA_FILE, "1");
     	maze = new ArrayList<Wall>();
         entities = new ArrayList<Entity>();
-        renderThread = new RenderThread(this);
-        renderThread.start();
         physicsThread.setAuthTiles(currentLevel.getAuthTiles());
         
         loadEntities();

@@ -49,7 +49,7 @@ public class RenderThread extends Thread
         if (gc == null) return;
         IWindow window = gc.getWindow();
         if (window == null) return;
-
+        System.out.println("Start: Render Thread");
         while (isRunning) 
         {
         	synchronized (gc)
@@ -79,6 +79,7 @@ public class RenderThread extends Thread
             }
             beforeTime = System.currentTimeMillis();
         }
+        System.out.println("Stop: Render Thread");
 	}
 
 

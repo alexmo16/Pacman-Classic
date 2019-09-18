@@ -369,6 +369,7 @@ public class PhysicsThread extends Thread
 	{
 		this.isRunning = true;
 
+		System.out.println("Start: Physics Thread");
 		while (isRunning)
 		{
 			synchronized (game)
@@ -417,6 +418,7 @@ public class PhysicsThread extends Thread
 				executeWallStrategy();
 			}
 		}
+		System.out.println("Stop: Physics Thread");
 	}
 
 	public void stopThread()

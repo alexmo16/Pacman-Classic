@@ -2,6 +2,8 @@ package com.pacman.unittests.model.threads;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.nio.channels.InterruptedByTimeoutException;
+
 import org.junit.jupiter.api.Test;
 
 import com.pacman.model.threads.TimerThread;
@@ -31,7 +33,6 @@ class TimerThreadTests
             }
         }
         assertFalse(isException);
-        
     }
     
     @Test
@@ -59,4 +60,28 @@ class TimerThreadTests
         assertTrue(isException);
     }
 
+    @Test
+	void testStopThread() throws InterruptedException
+	{
+    	TimerThread thread = new TimerThread(5);
+		synchronized (thread)
+		{
+			thread.wait(100);
+		}
+		
+		try
+		{
+			thread.stopThread();
+			thread.join(500);
+			if (thread.isAlive())
+			{
+				thread.interrupt();
+				throw new InterruptedByTimeoutException();
+			}
+		}
+		catch (InterruptedByTimeoutException e)
+		{
+			fail("Should not throw an exception.");
+		}
+	}
 }

@@ -1,7 +1,5 @@
 package com.pacman.model.threads;
 
-import java.util.ArrayList;
-
 import com.pacman.controller.GameController;
 import com.pacman.model.IGame;
 import com.pacman.model.objects.Animation;
@@ -11,39 +9,31 @@ import com.pacman.view.IWindow;
 public class RenderThread extends Thread
 {
 	private IGame game;
-	private ArrayList<Animation> animations = new ArrayList<Animation>();
 	private boolean isRunning = false;
 	
 	public RenderThread(IGame g)
 	{
 		game = g;
+	}
+
+    private void updateAnimation(long timeDiff) 
+    {
+    	if (game == null) return;
+    	
 		for (GameObject obj : game.getGameObjects())
 		{
     		if (obj instanceof Animation)
     		{
-    			animations.add((Animation)obj);
+    			Animation animation = (Animation)obj;
+    			long t = animation.getTimeSinceLastSpriteUpdate() + timeDiff;
+    			if (t >= (1000 / animation.spritePerSecond()))
+    			{
+    				animation.nextSprite();
+    				t = 0;
+    			}
+    			animation.setTimeSinceLastSpriteUpdate(t);
     		}
 		}
-	}
-
-	
-    private void updateAnimation(long timeDiff) 
-    {
-    	if (game == null)
-    	{
-    		return;
-    	}
-    	
-    	for (Animation animation : animations)
-    	{
-			long t = animation.getTimeSinceLastSpriteUpdate() + timeDiff;
-			if (t >= (1000 / animation.spritePerSecond()))
-			{
-				animation.nextSprite();
-				t = 0;
-			}
-			animation.setTimeSinceLastSpriteUpdate(t);
-    	}
     }
 	
 	@Override

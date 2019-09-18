@@ -88,6 +88,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
              {
                  ghostSpawn(((Ghost) game.getEntities().get(randomInt)));
                  ((Ghost) game.getEntities().get(randomInt)).setSpawning();
+                 ((Ghost) game.getEntities().get(randomInt)).setAlive();
                  game.setTimerThreadNull();
              }
         }

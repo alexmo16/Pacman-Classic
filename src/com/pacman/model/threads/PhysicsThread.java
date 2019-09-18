@@ -383,9 +383,9 @@ public class PhysicsThread extends Thread
 			}
 			for (Entity entity : game.getEntities())
 			{
-				if (entity.getHitBox() != game.getPacman().getHitBox())
+				if (entity instanceof Ghost)
 				{
-					if (((Ghost) entity).getAlive())
+					if (((Ghost) entity).getAlive() && !((Ghost) entity).getSpawning())
 					{
 						ghostMove(entity);
 

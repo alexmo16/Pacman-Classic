@@ -29,12 +29,16 @@ public class AudioThread extends Thread
 				{
 					music.playLoopBack();
 				}
-				try
+				
+				if (sounds.isEmpty())
 				{
-					wait();
-				} catch (InterruptedException e)
-				{
-					e.printStackTrace();
+					try
+					{
+						wait();
+					} catch (InterruptedException e)
+					{
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -57,6 +61,7 @@ public class AudioThread extends Thread
 	
 	public synchronized void playSound(Sound sound)
 	{
+		if (sound == null) return;
 		this.sounds.add(sound);
 		this.notify();
 	}

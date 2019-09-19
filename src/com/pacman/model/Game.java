@@ -207,12 +207,12 @@ public class Game implements IGame
     public void playStartingMusic( LineListener listener )
     {
     	startMusic.setListener(listener);
-    	audioThread.playSound(startMusic);
+    	audioThread.addSound(startMusic);
     }
     
     public void playInGameMusic()
     {
-    	audioThread.playMusic(gameSiren);
+    	audioThread.addMusic(gameSiren);
     }
     
     public void stopMusic()
@@ -223,7 +223,7 @@ public class Game implements IGame
     public void playDeathSound(LineListener listener)
     {
     	death.setListener(listener);
-    	audioThread.playSound(death);
+    	audioThread.addSound(death);
     }
     
 	@Override
@@ -570,7 +570,7 @@ public class Game implements IGame
 		{
 			if (chomp == null) continue;
 			if (chomp.getIsRunning()) continue;
-			audioThread.playSound(chomp);
+			audioThread.addSound(chomp);
 			break;
 		}
 	}

@@ -109,7 +109,7 @@ class AudioThreadTest
 	{
 		Sound sound = Mockito.mock(Sound.class);
 		Mockito.when(sound.playLoopBack()).thenReturn(true);
-		thread.playMusic(sound);
+		thread.addMusic(sound);
 	}
 	
 	@Test
@@ -117,7 +117,7 @@ class AudioThreadTest
 	{
 		synchronized (thread)
 		{
-			thread.playMusic(null);
+			thread.addMusic(null);
 			thread.wait(100);
 		}
 	}
@@ -128,12 +128,12 @@ class AudioThreadTest
 		Sound firstMusic = Mockito.mock(Sound.class);
 		Mockito.when(firstMusic.playLoopBack()).thenReturn(true);
 		
-		thread.playMusic(firstMusic);
+		thread.addMusic(firstMusic);
 		
 		Sound secondMusic = Mockito.mock(Sound.class);
 		Mockito.when(secondMusic.playLoopBack()).thenReturn(true);
 		
-		thread.playMusic(secondMusic);
+		thread.addMusic(secondMusic);
 	}
 	
 	@Test
@@ -141,7 +141,7 @@ class AudioThreadTest
 	{
 		Sound sound = Mockito.mock(Sound.class);
 		Mockito.when(sound.play()).thenReturn(true);
-		thread.playSound(sound);
+		thread.addSound(sound);
 	}
 	
 	@Test
@@ -149,7 +149,7 @@ class AudioThreadTest
 	{
 		synchronized (thread)
 		{
-			thread.playSound(null);
+			thread.addSound(null);
 			thread.wait(100);
 		}
 	}
@@ -163,8 +163,8 @@ class AudioThreadTest
 		Sound secondSound = Mockito.mock(Sound.class);
 		Mockito.when(secondSound.play()).thenReturn(true);
 	
-		thread.playSound(firstSound);		
-		thread.playSound(secondSound);
+		thread.addSound(firstSound);		
+		thread.addSound(secondSound);
 		
 		synchronized (thread)
 		{
@@ -180,7 +180,7 @@ class AudioThreadTest
 		Sound firstSound = Mockito.mock(Sound.class);
 		Mockito.when(firstSound.playLoopBack()).thenReturn(true);
 		
-		thread.playMusic(firstSound);
+		thread.addMusic(firstSound);
 		synchronized (thread)
 		{
 			thread.wait(WAIT_TIME);

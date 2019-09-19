@@ -1,0 +1,25 @@
+RENDERTHEAD  = CREATED,
+CREATED      = (start           							   ->RUNNING),
+RUNNING      = (wait           								   ->NON_RUNNABLE  
+               |stop              							   ->TERMINATED         
+               |updateAnimations->render->updateFrameTime ->RUNNING),
+NON_RUNNABLE = (notifyRenderThread->RUNNING),
+TERMINATED   = STOP.
+
+PHYSICTHREAD  = CREATED,
+CREATED      = (start           						  ->RUNNING),
+RUNNING      = (wait           							  ->NON_RUNNABLE  
+               |stop              						  ->TERMINATED         
+               |checkCollisions                           ->SENDMESSAGE),
+SENDMESSAGE = (sentMessages->RUNNING),
+NON_RUNNABLE = (notifyPhysicThread->RUNNING),
+TERMINATED   = STOP.
+
+AUDIOTHREAD = CREATED,
+CREATED      = (start           						  ->RUNNING),
+RUNNING      = (wait           							  ->NON_RUNNABLE  
+               |stop              						  ->TERMINATED
+               |getSound->playSound                       ->RUNNING
+               |getMusic->playMusic                       ->RUNNING),
+NON_RUNNABLE = (notifyAudioThread->RUNNING),
+TERMINATED   = STOP.

@@ -10,7 +10,7 @@ import com.pacman.model.world.Sprite;
 import com.pacman.utils.SpriteUtils;
 
 /**
- * @author Felix Roy
+ * @authors Alexis Morel-mora2316 Felix Roy-royf3005 Jordan Ros Chantrabot-rosj2204 Andrien Lacomme-laca2111 Louis Ryckebusch-rycl2501
  *
  * This class clips every object in the pacman tiles sheet, and stores them in multiple sprites.
  */

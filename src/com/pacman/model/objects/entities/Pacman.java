@@ -13,6 +13,7 @@ import com.pacman.utils.IPublisher;
  * 
  * Class which implement every method for a Pacman object, such as direction or render
  * Observer design pattern
+ * @authors Alexis Morel-mora2316 Felix Roy-royf3005 Jordan Ros Chantrabot-rosj2204 Andrien Lacomme-laca2111 Louis Ryckebusch-rycl2501
  *
  */
 public class Pacman extends Entity implements IPublisher, Animation

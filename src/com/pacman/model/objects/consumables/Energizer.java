@@ -3,6 +3,11 @@ package com.pacman.model.objects.consumables;
 import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;
 
+/**
+ * 
+ * @authors Alexis Morel-mora2316 Felix Roy-royf3005 Jordan Ros Chantrabot-rosj2204 Andrien Lacomme-laca2111 Louis Ryckebusch-rycl2501
+ *
+ */
 public class Energizer extends Consumable implements Animation
 {
     int animationState = 0, animationCycles = 3;

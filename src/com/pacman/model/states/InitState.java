@@ -6,6 +6,11 @@ import javax.sound.sampled.LineListener;
 import com.pacman.model.Game;
 import com.pacman.model.objects.entities.Ghost;
 
+/**
+ * 
+ * @authors Alexis Morel-mora2316 Felix Roy-royf3005 Jordan Ros Chantrabot-rosj2204 Andrien Lacomme-laca2111 Louis Ryckebusch-rycl2501
+ *
+ */
 public class InitState implements IGameState
 {
 	private Game game;

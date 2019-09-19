@@ -8,7 +8,7 @@ import java.math.MathContext;
 import com.pacman.model.world.Sprite;
 
 /**
- * Definie un objet qui possede une boite de collision.
+ * @authors Alexis Morel-mora2316 Felix Roy-royf3005 Jordan Ros Chantrabot-rosj2204 Andrien Lacomme-laca2111 Louis Ryckebusch-rycl2501
  *
  */
 public abstract class GameObject

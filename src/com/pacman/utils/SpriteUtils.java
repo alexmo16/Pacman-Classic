@@ -6,6 +6,11 @@ import java.nio.file.Paths;
 
 import javax.swing.ImageIcon;
 
+/**
+ * 
+ * @authors Alexis Morel-mora2316 Felix Roy-royf3005 Jordan Ros Chantrabot-rosj2204 Andrien Lacomme-laca2111 Louis Ryckebusch-rycl2501
+ *
+ */
 public class SpriteUtils
 {
     public static Image getSpritesSheetImage(String spritesSheetFilePath)

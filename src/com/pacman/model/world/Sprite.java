@@ -1,7 +1,7 @@
 package com.pacman.model.world;
 
 /**
- * @author Felix Roy
+ * @authors Alexis Morel-mora2316 Felix Roy-royf3005 Jordan Ros Chantrabot-rosj2204 Andrien Lacomme-laca2111 Louis Ryckebusch-rycl2501
  * 
  * This class is used to store Sprite's coordinate.
  * Those coordinate are used to locate the sprite on a tiles sheet

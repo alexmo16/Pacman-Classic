@@ -1,10 +1,11 @@
 RENDERTHEAD  = CREATED,
 CREATED      = (start           							   ->RUNNING),
-RUNNING      = (wait           								   ->NON_RUNNABLE  
-               |stop              							   ->TERMINATED         
-               |updateAnimations->render->updateFrameTime ->RUNNING),
-NON_RUNNABLE = (notifyRenderThread->RUNNING),
+RUNNING      = (wait           								   ->WAITING
+               |stop              							   ->TERMINATED),
+PROCESSFRAMES = updateAnimations->render->updateFrameTime->RUNNING,
+WAITING      = notifyRenderThread->PROCESSFRAMES,
 TERMINATED   = STOP.
+
 
 PHYSICTHREAD  = CREATED,
 CREATED      = (start           						  ->RUNNING),
@@ -14,6 +15,7 @@ RUNNING      = (wait           							  ->NON_RUNNABLE
 SENDMESSAGE = (sentMessages->RUNNING),
 NON_RUNNABLE = (notifyPhysicThread->RUNNING),
 TERMINATED   = STOP.
+
 
 AUDIOTHREAD = CREATED,
 CREATED      = (start           						  ->RUNNING),

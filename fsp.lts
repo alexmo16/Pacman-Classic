@@ -19,9 +19,9 @@ TERMINATED   = STOP.
 
 AUDIOTHREAD = CREATED,
 CREATED      = (start           						  ->RUNNING),
-RUNNING      = (wait           							  ->NON_RUNNABLE  
-               |stop              						  ->TERMINATED
-               |getSound->playSound                       ->RUNNING
-               |getMusic->playMusic                       ->RUNNING),
-NON_RUNNABLE = (notify->RUNNING),
+RUNNING      = (wait           							  ->WAITING
+               |stop              						  ->TERMINATED),
+PROCESSSOUNDS = (getSound->playSound                       ->RUNNING
+                |getMusic->playMusic                       ->RUNNING),
+WAITING = (notify->PROCESSSOUNDS),
 TERMINATED   = STOP.

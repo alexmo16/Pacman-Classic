@@ -65,8 +65,6 @@ public class RenderThread extends Thread
 					e.printStackTrace();
 				}
 			}
-    		
-        	System.out.println("ASDF");
         	
         	updateAnimation(System.currentTimeMillis() - beforeTime);
         	window.render();

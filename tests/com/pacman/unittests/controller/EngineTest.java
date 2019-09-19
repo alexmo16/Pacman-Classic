@@ -1,6 +1,5 @@
 package com.pacman.unittests.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -22,12 +21,6 @@ class EngineTest
 	static Window window;
 	static GameController engine;
 	
-	private static void testCreateEngineWithoutGame() 
-	{
-		GameController e = GameController.getInstance( Mockito.mock( Window.class ), null );
-		assertEquals( null, e );
-	}
-	
 	@BeforeAll
 	static void setupTests()
 	{	
@@ -35,8 +28,6 @@ class EngineTest
 		Mockito.when( window.getFrame() ).thenReturn( new JFrame() );
 		
 		game = Mockito.mock( IGame.class );
-		
-		EngineTest.testCreateEngineWithoutGame();
 		
 		engine = GameController.getInstance( window, game );
 	}

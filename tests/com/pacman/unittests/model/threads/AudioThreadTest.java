@@ -15,7 +15,7 @@ import com.pacman.model.threads.AudioThread;
 
 class AudioThreadTest
 {
-	private final int WAIT_TIME = 100;
+	private final int WAIT_TIME = 400;
 	private final int JOIN_TIME = 1000;
 	
 	private AudioThread thread;

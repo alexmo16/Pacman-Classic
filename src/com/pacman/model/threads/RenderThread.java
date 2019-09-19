@@ -8,10 +8,10 @@ import com.pacman.view.IWindow;
 
 /**
  * RENDERTHREAD  = CREATED,
- * CREATED      = (start           							   ->RUNNING),
- * RUNNING      = (wait           								   ->WAITING
- *              |stop              							   ->TERMINATED),
- * PROCESSFRAMES = (updateAnimations->render->updateFrameTime->RUNNING),
+ * CREATED      = (start           							  ->RUNNING),
+ * RUNNING      = (wait           							  ->WAITING
+ *                |stop              						  ->TERMINATED),
+ * PROCESSFRAMES = (updateAnimations->render->updateFrameTime ->RUNNING),
  * WAITING      = (notify->PROCESSFRAMES),
  * TERMINATED   = STOP.
  *
@@ -78,6 +78,8 @@ public class RenderThread extends Thread
         	
         	updateAnimation(System.currentTimeMillis() - beforeTime);
         	window.render();
+        	
+        	// updateFrameTime 
         	frames++;
         	
             timeDiff = System.currentTimeMillis() - beforeTime;

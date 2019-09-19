@@ -29,11 +29,13 @@ public class Settings
     private volatile static boolean musicMute = false;
     private volatile static int soundsVolume = 100;
     private volatile static boolean soundsMute = false;
+    private final static String MUSIC_KEY = "MK";
+    private final static String SOUNDS_KEY = "SK";
 	
     
 	public static boolean isMusicMute() 
 	{
-		synchronized ("MUSIC_KEY") 
+		synchronized (MUSIC_KEY) 
 		{
 			return musicMute;
 		}
@@ -41,7 +43,7 @@ public class Settings
 	
 	public static void setMusicMute(boolean musicMute) 
 	{
-		synchronized ("MUSIC_KEY") 
+		synchronized (MUSIC_KEY) 
 		{
 			Settings.musicMute = musicMute;
 		}
@@ -49,7 +51,7 @@ public class Settings
 	
 	public static boolean isSoundsMute() 
 	{
-		synchronized ("SOUND_KEY") 
+		synchronized (SOUNDS_KEY) 
 		{
 			return soundsMute;
 		}
@@ -57,7 +59,7 @@ public class Settings
 	
 	public static void setSoundsMute(boolean soundsMute) 
 	{
-		synchronized ("SOUND_KEY") 
+		synchronized (SOUNDS_KEY) 
 		{
 			Settings.soundsMute = soundsMute;
 		}
@@ -65,7 +67,7 @@ public class Settings
 
 	public static int getMusicVolume()
 	{
-		synchronized("MUSIC_KEY")
+		synchronized(MUSIC_KEY)
 		{
 			return musicVolume;
 		}
@@ -73,7 +75,7 @@ public class Settings
 
 	public static void setMusicVolume(int musicVolume)
 	{
-		synchronized("MUSIC_KEY")
+		synchronized(MUSIC_KEY)
 		{
 			Settings.musicVolume = musicVolume;
 		}
@@ -81,7 +83,7 @@ public class Settings
 
 	public static int getSoundsVolume()
 	{
-		synchronized("SOUND_KEY")
+		synchronized(SOUNDS_KEY)
 		{
 			return soundsVolume;
 		}
@@ -89,7 +91,7 @@ public class Settings
 
 	public static void setSoundsVolume(int soundsVolume)
 	{
-		synchronized("SOUND_KEY")
+		synchronized(SOUNDS_KEY)
 		{
 			Settings.soundsVolume = soundsVolume;
 		}

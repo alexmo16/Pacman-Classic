@@ -1,19 +1,19 @@
-RENDERTHEAD  = CREATED,
+RENDERTHREAD  = CREATED,
 CREATED      = (start           							   ->RUNNING),
 RUNNING      = (wait           								   ->WAITING
                |stop              							   ->TERMINATED),
-PROCESSFRAMES = updateAnimations->render->updateFrameTime->RUNNING,
-WAITING      = notifyRenderThread->PROCESSFRAMES,
+PROCESSFRAMES = (updateAnimations->render->updateFrameTime->RUNNING),
+WAITING      = (notify->PROCESSFRAMES),
 TERMINATED   = STOP.
 
 
 PHYSICTHREAD  = CREATED,
 CREATED      = (start           						  ->RUNNING),
-RUNNING      = (wait           							  ->NON_RUNNABLE  
-               |stop              						  ->TERMINATED         
-               |checkCollisions                           ->SENDMESSAGE),
-SENDMESSAGE = (sentMessages->RUNNING),
-NON_RUNNABLE = (notifyPhysicThread->RUNNING),
+RUNNING      = (wait           							  ->WAITING
+               |stop              						  ->TERMINATED),         
+VERIFY_COLLISIONS = (checkCollisions                      ->SENDMESSAGE),
+SENDMESSAGE = (sendMessages->RUNNING),
+WAITING = (notify->VERIFY_COLLISIONS),
 TERMINATED   = STOP.
 
 
@@ -23,5 +23,5 @@ RUNNING      = (wait           							  ->NON_RUNNABLE
                |stop              						  ->TERMINATED
                |getSound->playSound                       ->RUNNING
                |getMusic->playMusic                       ->RUNNING),
-NON_RUNNABLE = (notifyAudioThread->RUNNING),
+NON_RUNNABLE = (notify->RUNNING),
 TERMINATED   = STOP.

@@ -18,7 +18,7 @@ public class RenderThread extends Thread
 
     private void updateAnimation(long timeDiff) 
     {
-    	if (game == null) return;
+    	if (game == null || game.getGameObjects() == null) return;
     	
 		for (GameObject obj : game.getGameObjects())
 		{
@@ -39,16 +39,19 @@ public class RenderThread extends Thread
 	@Override
 	public void run() 
 	{
-		isRunning = true;
-        long beforeTime, timeDiff;
-        int frames = 0;
-        long framesTime = 0;
+        GameController gc;
+        if ((gc = GameController.getInstance(null, null)) == null) return;
         
-        beforeTime = System.currentTimeMillis();
-        GameController gc = GameController.getInstance(null, null);
-        if (gc == null) return;
-        IWindow window = gc.getWindow();
-        if (window == null) return;
+        IWindow window;
+        if ((window = gc.getWindow()) == null) return;
+
+        long beforeTime = System.currentTimeMillis(), 
+        	 timeDiff = 0, 
+        	 framesTime = 0;
+        
+        int frames = 0;
+		
+        isRunning = true;
         System.out.println("Start: Render Thread");
         while (isRunning) 
         {
@@ -63,6 +66,8 @@ public class RenderThread extends Thread
 				}
 			}
     		
+        	System.out.println("ASDF");
+        	
         	updateAnimation(System.currentTimeMillis() - beforeTime);
         	window.render();
         	frames++;

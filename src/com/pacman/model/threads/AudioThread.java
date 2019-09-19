@@ -4,6 +4,19 @@ import java.util.ArrayList;
 
 import com.pacman.model.Sound;
 
+/**
+ * AUDIOTHREAD = CREATED,
+ * CREATED      = (start           						  ->RUNNING),
+ * RUNNING      = (wait           							  ->WAITING
+ *                |stop              						  ->TERMINATED),
+ * PROCESSSOUNDS = (getSound->playSound                       ->RUNNING
+ *                 |getMusic->playMusic                       ->RUNNING
+ * 				   |getSound->RUNNING
+ * 				   |getMusic->RUNNING),
+ * WAITING = (notify->PROCESSSOUNDS),
+ * TERMINATED   = STOP.
+ *
+ */
 public class AudioThread extends Thread
 {
 	private boolean isRunning = false;

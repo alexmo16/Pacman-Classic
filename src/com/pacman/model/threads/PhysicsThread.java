@@ -16,9 +16,14 @@ import com.pacman.model.world.Level;
 import com.pacman.utils.Settings;
 
 /**
- * 
- * Check the collisions between the different object in the game, pacman, the
- * walls and the gums
+ * PHYSICTHREAD  = CREATED,
+ * CREATED      = (start           						  ->RUNNING),
+ * RUNNING      = (wait           							  ->WAITING
+ *                |stop              						  ->TERMINATED),         
+ * VERIFY_COLLISIONS = (checkCollisions                      ->SENDMESSAGE),
+ * SENDMESSAGE = (sendMessages->RUNNING),
+ * WAITING = (notify->VERIFY_COLLISIONS),
+ * TERMINATED   = STOP.
  *
  */
 public class PhysicsThread extends Thread

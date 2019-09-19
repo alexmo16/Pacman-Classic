@@ -6,6 +6,16 @@ import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.GameObject;
 import com.pacman.view.IWindow;
 
+/**
+ * RENDERTHREAD  = CREATED,
+ * CREATED      = (start           							   ->RUNNING),
+ * RUNNING      = (wait           								   ->WAITING
+ *              |stop              							   ->TERMINATED),
+ * PROCESSFRAMES = (updateAnimations->render->updateFrameTime->RUNNING),
+ * WAITING      = (notify->PROCESSFRAMES),
+ * TERMINATED   = STOP.
+ *
+ */
 public class RenderThread extends Thread
 {
 	private IGame game;

@@ -22,6 +22,8 @@ CREATED      = (start           						  ->RUNNING),
 RUNNING      = (wait           							  ->WAITING
                |stop              						  ->TERMINATED),
 PROCESSSOUNDS = (getSound->playSound                       ->RUNNING
-                |getMusic->playMusic                       ->RUNNING),
+                |getMusic->playMusic                       ->RUNNING
+				|getSound->RUNNING
+				|getMusic->RUNNING),
 WAITING = (notify->PROCESSSOUNDS),
 TERMINATED   = STOP.

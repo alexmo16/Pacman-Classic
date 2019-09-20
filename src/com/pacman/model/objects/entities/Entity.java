@@ -83,7 +83,6 @@ public abstract class Entity extends GameObject
         }
 
         setPosition(x, y);
-        System.out.println(getHitBox());
     }
     
     public Direction getDirection()

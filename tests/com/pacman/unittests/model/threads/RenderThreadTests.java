@@ -22,7 +22,7 @@ import com.pacman.view.IWindow;
 public class RenderThreadTests 
 {
 	private final int WAIT_TIME = 100;
-	private final int JOIN_TIME = 500;
+	private final int JOIN_TIME = 1000;
 	
 	private IGame game = Mockito.mock( IGame.class );
 	private IWindow window = Mockito.mock( IWindow.class );

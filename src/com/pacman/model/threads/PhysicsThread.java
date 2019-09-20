@@ -1,6 +1,7 @@
 package com.pacman.model.threads;
 
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 
 import com.pacman.model.Game;
 import com.pacman.model.objects.GameObject;
@@ -10,6 +11,7 @@ import com.pacman.model.objects.consumables.Energizer;
 import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.objects.entities.Ghost;
+import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Level;
@@ -72,7 +74,7 @@ public class PhysicsThread extends Thread
 	 * @return "path" if there is no collision, "wall" when obj hits a wall, "void"
 	 *         when obj enters the tunnel
 	 */
-	public String collisionWall(Entity obj)
+	private String collisionWall(Entity obj)
 	{
 
 		int xMin = (int) obj.getHitBox().getMinX();
@@ -100,13 +102,13 @@ public class PhysicsThread extends Thread
 		return "wall";
 	}
 
-	public boolean middleOfATiles()
+	private boolean middleOfATiles(Entity entity)
 	{
 
-		double x = game.getPacman().getHitBoxX();
-		double y = game.getPacman().getHitBoxY();
-
-		if (x == (int) game.getPacman().getHitBoxX() + 0.05 && y == (int) game.getPacman().getHitBoxY() + 0.05)
+		double x = entity.getHitBoxX();
+		double y = entity.getHitBoxY();
+		
+		if (x == (int) x + 0.05 && y == (int) y + 0.05)
 		{
 			return true;
 		}
@@ -122,7 +124,7 @@ public class PhysicsThread extends Thread
 	 * @return "true" if there is a collision between the 2 objects, "false" if
 	 *         there is no collision.
 	 */
-	public boolean collisionObj(GameObject obj1, GameObject obj2)
+	private boolean collisionObj(GameObject obj1, GameObject obj2)
 	{
 		return obj1.getHitBox().intersects(obj2.getHitBox());
 	}
@@ -134,8 +136,8 @@ public class PhysicsThread extends Thread
 	 */
 	public void executeWallStrategy()
 	{
-
-		if (middleOfATiles())
+		Pacman pacman = game.getPacman();
+		if (middleOfATiles(pacman))
 		{
 			String checkWallCollision = collisionWall(game.getNewDirectionPacman());
 			if (checkWallCollision == "void")
@@ -213,7 +215,7 @@ public class PhysicsThread extends Thread
 	public void checkConsumablesCollision()
 	{
 
-		if (middleOfATiles())
+		if (middleOfATiles(game.getPacman()))
 		{
 
 			ConsumableCollisionVisitor visitor = new ConsumableCollisionVisitor();
@@ -294,7 +296,7 @@ public class PhysicsThread extends Thread
 	 * @return "true" if the the tile is walkable, "false" if the tile is not a
 	 *         walkable tiles
 	 */
-	public boolean isAuth(int x, int y, Entity entity)
+	private boolean isAuth(int x, int y, Entity entity)
 	{
 		int[][] tiles = Level.getTiles();
 
@@ -324,51 +326,63 @@ public class PhysicsThread extends Thread
 	}
 
 	public boolean collisionGhost()
-	{
-		Ghost ghost = getNearestGhost();
-		if (ghost != null)
-		{
-			double xCoord = ghost.getPosition().x;
-			double yCoord = ghost.getPosition().y;
-			Rectangle2D.Double hitboxGhost = new Rectangle2D.Double(xCoord, yCoord, 2, 2);
-			Rectangle2D.Double hitboxPacman = new Rectangle2D.Double(game.getPacman().getPosition().x,
-					game.getPacman().getPosition().y, 2, 2);
+    {
+    	double xPacman = game.getPacman().getHitBox().getCenterX();
+    	double yPacman = game.getPacman().getHitBox().getCenterY();
+        Ghost ghost = getNearestGhost(xPacman, yPacman, game.getEntities());
+        if (ghost.getAlive() == true)
+        {
+            double xCoord = ghost.getPosition().x;
+            double yCoord = ghost.getPosition().y;
+            Rectangle2D.Double hitboxGhost = new Rectangle2D.Double(xCoord, yCoord, 2, 2);
+            Rectangle2D.Double hitboxPacman = new Rectangle2D.Double(game.getPacman().getPosition().x,game.getPacman().getPosition().y, 2, 2 );
 
-			if (hitboxPacman.intersects(hitboxGhost))
-			{
-				Rectangle2D hitboxCollision = hitboxPacman.createIntersection(hitboxGhost);
-				if ((hitboxCollision.getHeight()
-						* hitboxCollision.getWidth()) > (hitboxPacman.getHeight() * hitboxPacman.getWidth()) / 5)
-				{
-					return true;
-				}
-			}
-		}
-		return false;
 
-	}
+            if (hitboxPacman.intersects(hitboxGhost))
+            {
+                Rectangle2D hitboxCollision = hitboxPacman.createIntersection(hitboxGhost);
+                if ((hitboxCollision.getHeight()
+                        * hitboxCollision.getWidth()) > (hitboxPacman.getHeight() * hitboxPacman.getWidth()) / 5)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
 
-	private Ghost getNearestGhost()
-	{
-		double xPacman = game.getPacman().getHitBox().getCenterX();
-		double yPacman = game.getPacman().getHitBox().getCenterY();
+    }
 
-		for (int i = 0; i < 4; i++)
-		{
+    private Ghost getNearestGhost(double x, double y, ArrayList<Entity> entities)
+    {
 
-			Entity entity = game.getEntities().get(i);
-			double xEntity = entity.getHitBox().getCenterX();
-			double yEntity = entity.getHitBox().getCenterY();
+        for (Entity entity : entities )
+        {
+        	if (entity instanceof Ghost)
+        	{
+        		double xEntity = entity.getHitBox().getCenterX();
+                double yEntity = entity.getHitBox().getCenterY();
 
-			if (Math.sqrt(Math.pow(xPacman - xEntity, 2) + Math.pow(yPacman - yEntity, 2)) <= 4
-					&& ((Ghost) entity).getAlive())
-			{
-				return (Ghost) entity;
-			}
+                if (Math.sqrt(Math.pow(x - xEntity, 2) + Math.pow(y - yEntity, 2)) <= 4
+                        && ((Ghost) entity).getAlive())
+                {
+                    return (Ghost) entity;
+                
+                }
+            }
 
-		}
-		return null;
-	}
+        }
+        return new Ghost(1.0, 1.0, GhostType.BLINKY);
+    }
+    
+    public synchronized void preparePacman()
+    {
+        game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
+        game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
+        game.getNextTilesPacman().updatePosition(game.getNextTilesDirection());
+
+        game.getNewDirectionPacman().setDirection(game.getNewDirection());
+        game.getNewDirectionPacman().updatePosition(game.getNewDirectionPacman().getDirection());
+    }
 
 	@Override
 	public void run()
@@ -405,14 +419,9 @@ public class PhysicsThread extends Thread
 
 			for (int i = 0; i < Settings.SPEED; i++)
 			{
-
-				game.getNewDirectionPacman().getHitBox().setRect(game.getPacman().getHitBox());
-				game.getNextTilesPacman().getHitBox().setRect(game.getPacman().getHitBox());
-				game.getNextTilesPacman().updatePosition(game.getNextTilesDirection());
-
-				game.getNewDirectionPacman().setDirection(game.getNewDirection());
-				game.getNewDirectionPacman().updatePosition(game.getNewDirectionPacman().getDirection());
-
+			    
+			    preparePacman();
+			    
 				if (collisionGhost())
 				{
 					game.killPacman();

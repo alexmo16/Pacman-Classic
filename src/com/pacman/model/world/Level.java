@@ -117,6 +117,11 @@ public class Level
     	return consumables;
     }
     
+    public synchronized void setConsumables(ArrayList<Consumable> list)
+    {
+        this.consumables = list;
+    }
+    
     public synchronized ArrayList<PacDot> getPacDots()
     {
     	return pacdots;

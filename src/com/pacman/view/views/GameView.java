@@ -136,27 +136,24 @@ public class GameView extends View
         Renderer.renderString(g, s, x, y, sFactor);
         
         // Bot left - Score
-        x = horizontalBorder;
+        x = horizontalBorder + sFactor;
         y = getHeight() - sFactor / 2 - (verticalBorder / 2);
         s = new String("score " + game.getPacman().getScore());
         Renderer.renderString(g, s, x, y, sFactor);
         
-        // Bot center - Lives
-        s = "Lives ";
-		x = (getWidth() / 2) - sFactor - (s.length() * sFactor) / 2;
+        // Bot center right - Lives
+        s = game.getPacman().getLives() + " x ";
+		x = sFactor + getWidth() / 2;
 		Renderer.renderString(g, s, x, y, sFactor);
-		x = (getWidth() / 2) - sFactor + (s.length() * sFactor) / 2;
+		
+		x += s.length() * sFactor;
         y = getHeight() - sFactor - (verticalBorder / 2);
-        for (int lives = 0; lives < game.getPacman().getLives(); lives++)
-        {
-        	Sprite pacman = Sprites.getPacmanMovement(Direction.RIGHT, 0);
-            g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + (2 * sFactor)), (int)(y + (2 * sFactor)), pacman.getX1(), pacman.getY1(), pacman.getX2(), pacman.getY2(), null);
-            x += 2 * sFactor;
-        }
+    	Sprite pacman = Sprites.getPacmanMovement(Direction.RIGHT, 0);
+        g.drawImage(Sprites.getTilesSheet(), (int)x, (int)y, (int)(x + (2 * sFactor)), (int)(y + (2 * sFactor)), pacman.getX1(), pacman.getY1(), pacman.getX2(), pacman.getY2(), null);
         
         // Bot right - Level
         s = "Lvl " + game.getCurrentLevel().getName();
-		x = getWidth() - horizontalBorder - (s.length() * sFactor);
+		x += 3 * sFactor;
         y = getHeight() - sFactor / 2 - (verticalBorder / 2);
         Renderer.renderString(g, s, x, y, sFactor);
     }

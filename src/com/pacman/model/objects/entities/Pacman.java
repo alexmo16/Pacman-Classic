@@ -46,7 +46,8 @@ public class Pacman extends Entity implements IPublisher, Animation
     private Direction collisionDirection = null; 
     private Direction nextDirection = Direction.LEFT;
     private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
-    private boolean isTravelling = false;    
+    private boolean isTravelling = false;   
+    private boolean isInvincible = false;
     
     private int[] authTiles;
     
@@ -271,5 +272,16 @@ public class Pacman extends Entity implements IPublisher, Animation
 	public void setTimeSinceLastSpriteUpdate(long time)
 	{
 		timeSinceLastSpriteUpdate = time;
+	}
+
+	public synchronized boolean isInvincible()
+	{
+		return isInvincible;
+	}
+
+
+	public synchronized void setInvincibility(boolean b)
+	{
+		isInvincible = b;
 	}
 }

@@ -62,8 +62,11 @@ public class GameView extends View
         int xTileScale, yTileScale;
         for (GameObject obj : game.getGameObjects())
         {
-        	xTileScale = obj.getSprite().getWidth() / Sprites.getTilesize();
-        	yTileScale = obj.getSprite().getHeight() / Sprites.getTilesize();
+        	Sprite sprite = obj.getSprite();
+        	if (sprite == null) continue;
+        	
+        	xTileScale = sprite.getWidth() / Sprites.getTilesize();
+        	yTileScale = sprite.getHeight() / Sprites.getTilesize();
         	
             x = (obj.getPosition().getX() * sFactor) + horizontalBorder;
             y = (obj.getPosition().getY() * sFactor) + verticalBorder;
@@ -73,10 +76,10 @@ public class GameView extends View
         				(int)(y), 
         				(int)(x + (xTileScale * sFactor)), 
         				(int)(y + (yTileScale * sFactor)), 
-        				obj.getSprite().getX1(), 
-        				obj.getSprite().getY1(), 
-        				obj.getSprite().getX2(), 
-        				obj.getSprite().getY2(), 
+        				sprite.getX1(), 
+        				sprite.getY1(), 
+        				sprite.getX2(), 
+        				sprite.getY2(), 
         				null);  
         }
 	}

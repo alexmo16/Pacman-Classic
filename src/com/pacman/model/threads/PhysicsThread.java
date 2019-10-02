@@ -51,6 +51,7 @@ public class PhysicsThread extends Thread
 		{
 			Level level = game.getCurrentLevel();
 			level.getEnergizers().remove(energizer);
+			game.activateEnergizer();
 		}
 
 		@Override
@@ -422,7 +423,7 @@ public class PhysicsThread extends Thread
 			    
 			    preparePacman();
 			    
-				if (collisionGhost())
+				if (collisionGhost() && !game.getPacman().isInvincible())
 				{
 					game.killPacman();
 				}

@@ -574,4 +574,27 @@ public class Game implements IGame
 			break;
 		}
 	}
+
+	public void activateEnergizer()
+	{
+		if (currentState.getName() == StatesName.PLAY)
+		{
+			PlayingState state = (PlayingState) currentState;
+			state.activateEnergizer();
+		}
+	}
+	
+	public ArrayList<Ghost> getGhosts()
+	{
+		ArrayList<Ghost> ghosts = new ArrayList<Ghost>();
+		for (Entity entity : entities)
+		{
+			if (entity instanceof Ghost)
+			{
+				Ghost ghost = (Ghost) entity;
+				ghosts.add(ghost);
+			}
+		}
+		return ghosts;
+	}
 }

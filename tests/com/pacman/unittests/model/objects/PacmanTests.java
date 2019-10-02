@@ -116,7 +116,7 @@ public class PacmanTests
 	void testResetLifes()
 	{
 		pacmanOk.resetLives();
-		assertEquals(pacmanOk.getLives(), pacmanOk.MAX_LIFES);
+		assertEquals(pacmanOk.getLives(), pacmanOk.LIFES);
 	}
 	
 	@Test

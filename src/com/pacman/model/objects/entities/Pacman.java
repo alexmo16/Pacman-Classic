@@ -39,8 +39,9 @@ public class Pacman extends Entity implements IPublisher, Animation
 	private int animationState = 0;
 	private boolean endOfAnimation = false;
     private int score = 0;
-	public  final int MAX_LIFES = 3;
+	public  final int LIFES = 3;
     private int lifes;
+    private boolean canGetBonusLife = true;
     private boolean collision = false;
     private Direction collisionDirection = null; 
     private Direction nextDirection = Direction.LEFT;
@@ -53,7 +54,7 @@ public class Pacman extends Entity implements IPublisher, Animation
     public Pacman(double x, double y)
     {
         super(x, y, Direction.LEFT);
-		lifes = MAX_LIFES;
+		lifes = LIFES;
     	updateSprite();
     }
 
@@ -84,6 +85,12 @@ public class Pacman extends Entity implements IPublisher, Animation
     public void eat(Consumable consumable)
     {
         score += consumable.getPoints();
+        
+        if (score >= 10000 && canGetBonusLife)
+        {
+        	canGetBonusLife = false;
+        	lifes += 1;
+        }
     }
     
     @Override
@@ -209,7 +216,8 @@ public class Pacman extends Entity implements IPublisher, Animation
 	
 	public void resetLives()
 	{
-		lifes = MAX_LIFES;
+		lifes = LIFES;
+		canGetBonusLife = true;
 	}
 	
 	public void resetScore()

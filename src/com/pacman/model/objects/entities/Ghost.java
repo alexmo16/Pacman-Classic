@@ -14,7 +14,24 @@ import com.pacman.model.world.GhostType;
  */
 public class Ghost extends Entity implements Animation
 {
-    private int animationState = 0, animationCycles = 2;
+	public enum Animation
+	{
+		MOVING(2),
+		FRIGHTENED(2),
+		BLINKING(4);
+		
+		private final int value;
+
+		Animation(final int newValue)
+	    {
+	        value = newValue;
+	    }
+
+	    public int getValue() { return value; }
+	};
+	
+	private Animation currentAnimation = Animation.MOVING;
+    private int animationState = 0;
 	private long timeSinceLastSpriteUpdate = 0;
 	private GhostType type;
 	private boolean isAlive;
@@ -39,7 +56,20 @@ public class Ghost extends Entity implements Animation
     @Override
     public void updateSprite()
     {
-    	sprite = Sprites.getGhost(type, direction, animationState);
+    	switch (currentAnimation)
+    	{
+    	case MOVING:
+    		sprite = Sprites.getGhost(type, direction, animationState);
+    		break;
+    	case FRIGHTENED:
+    		sprite = Sprites.getFrightenedGhost(animationState + 2);
+    		break;
+    	case BLINKING:
+    		sprite = Sprites.getFrightenedGhost(animationState);
+    		break;
+    	default:
+    		break;
+    	}
     }
 	
 	@Override
@@ -55,7 +85,7 @@ public class Ghost extends Entity implements Animation
 	@Override
 	public void nextSprite() 
 	{
-		animationState = (animationState + 1) % animationCycles;
+		animationState = (animationState + 1) % currentAnimation.getValue();
 		updateSprite();
 	}
 	

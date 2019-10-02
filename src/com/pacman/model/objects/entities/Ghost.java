@@ -83,7 +83,7 @@ public class Ghost extends Entity implements Animation
 	}
 	
 	@Override
-	public void nextSprite() 
+	public synchronized void nextSprite() 
 	{
 		animationState = (animationState + 1) % currentAnimation.getValue();
 		updateSprite();
@@ -179,5 +179,10 @@ public class Ghost extends Entity implements Animation
 	{
 		timeSinceLastSpriteUpdate = time;
 	}
-	
+
+	// TODO il faut pas faire ca. va falloir que chaque strategie possede sa propre animation par exemple.
+	public synchronized void setCurrentAnimation(Animation animation)
+	{
+		currentAnimation = animation;
+	}
 }

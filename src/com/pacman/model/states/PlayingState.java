@@ -10,6 +10,7 @@ import com.pacman.model.Game;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Ghost;
+import com.pacman.model.objects.entities.Ghost.Animation;
 import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
@@ -26,7 +27,9 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
     private Game game;
     private volatile boolean isPacmanDying = false;
-
+    private TimerThread intermissionTimer;
+    private int intermissionTime = 8; // seconds
+    
     private LineListener deathSoundListener = new LineListener()
     {
          @Override
@@ -64,7 +67,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
     @Override
     public void update()
-    {
+    {	
         if (isPacmanDying)
         {
             return;
@@ -136,5 +139,33 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		Ghost g2 = new Ghost(obj.getHitBoxX(), obj.getHitBoxY(), ((Ghost) obj).getType());
 		g2.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(), game.getCurrentLevel().getAuthTilesGhostRoom());
 		g2.updatePosition(g2.getDirection());
+	}
+	
+	public void activateEnergizer()
+	{
+		if (intermissionTimer == null || !intermissionTimer.isAlive())
+		{
+			game.getPacman().setInvincibility(true);
+			intermissionTimer = new TimerThread(intermissionTime);
+			intermissionTimer.setEndCallback(() -> { endEnergizer(); });
+			intermissionTimer.setCallbackAtTime(intermissionTime * 1000 - 3000, () -> { setGhostsAnimation(Animation.BLINKING); });
+			intermissionTimer.start();
+			setGhostsAnimation(Animation.FRIGHTENED);
+		}
+	}
+	
+	private void endEnergizer()
+	{
+		game.getPacman().setInvincibility(false);
+		setGhostsAnimation(Animation.MOVING);
+	}
+	
+	private void setGhostsAnimation(Animation animation)
+	{
+		ArrayList<Ghost> ghosts = game.getGhosts();
+		for (Ghost ghost : ghosts)
+		{
+			ghost.setCurrentAnimation(animation);
+		}
 	}
 }

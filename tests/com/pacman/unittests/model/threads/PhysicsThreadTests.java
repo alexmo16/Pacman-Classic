@@ -2,6 +2,8 @@ package com.pacman.unittests.model.threads;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.geom.Point2D;
@@ -227,7 +229,7 @@ public class PhysicsThreadTests
     	
     	Mockito.when(ghost.getAlive()).thenReturn(false);
 		
-		assertEquals(false, collision.collisionGhost());
+		assertNull(collision.collisionGhost());
     	
     }
 	
@@ -281,7 +283,7 @@ public class PhysicsThreadTests
 		Mockito.when(hitboxPacman.getHeight()).thenReturn(5.0);
 		Mockito.when(hitboxPacman.getWidth()).thenReturn(1.0);
 		
-		assertEquals(true, collision.collisionGhost());
+		assertNotNull(collision.collisionGhost());
 		
     }
 	

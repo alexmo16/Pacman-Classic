@@ -153,7 +153,9 @@ public class Ghost extends Entity implements Animation
 		setNotSpawning();
 		setNotInTheGate();
 		setDirection(spawnDirection);
+		setCurrentAnimation(Animation.MOVING);
 		setPosition(spawn.x, spawn.y);
+		
 	}
 	
 	public void setAuthTiles(int[] tab1, int[] tab2)

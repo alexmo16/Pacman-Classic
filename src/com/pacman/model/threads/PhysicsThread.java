@@ -326,7 +326,7 @@ public class PhysicsThread extends Thread
 		authTiles = auth;
 	}
 
-	public boolean collisionGhost()
+	public Ghost collisionGhost()
     {
     	double xPacman = game.getPacman().getHitBox().getCenterX();
     	double yPacman = game.getPacman().getHitBox().getCenterY();
@@ -345,11 +345,11 @@ public class PhysicsThread extends Thread
                 if ((hitboxCollision.getHeight()
                         * hitboxCollision.getWidth()) > (hitboxPacman.getHeight() * hitboxPacman.getWidth()) / 5)
                 {
-                    return true;
+                    return ghost;
                 }
             }
         }
-        return false;
+        return null;
 
     }
 
@@ -423,9 +423,15 @@ public class PhysicsThread extends Thread
 			    
 			    preparePacman();
 			    
-				if (collisionGhost() && !game.getPacman().isInvincible())
+			    Ghost collisionGhost = collisionGhost();
+			    
+				if (collisionGhost != null && !game.getPacman().isInvincible())
 				{
 					game.killPacman();
+				}
+				else if (collisionGhost != null && game.getPacman().isInvincible())
+				{
+					game.killGhost(collisionGhost);
 				}
 
 				// Strategy pattern for wall collisions.

@@ -617,7 +617,6 @@ public class Game implements IGame
 		}
 		return ghosts;
 	}
-	
 	public TimerThread getIntermissionThread()
 	{
 		return intermissionThread;
@@ -626,5 +625,10 @@ public class Game implements IGame
 	public void setIntermissionThread(TimerThread timer)
 	{
 		intermissionThread = timer;
+	}
+	
+	public void killGhost(Ghost ghost) 
+	{
+		ghost.respawn();
 	}
 }

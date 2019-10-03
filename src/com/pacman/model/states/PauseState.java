@@ -1,6 +1,8 @@
 package com.pacman.model.states;
 
 import com.pacman.model.Game;
+import com.pacman.model.threads.TimerThread;
+import com.pacman.utils.Settings;
 
 /**
  * 
@@ -20,7 +22,16 @@ public class PauseState implements IGameState
 	@Override
 	public void update() 
 	{
-		game.muteAudio();
+		if (!Settings.isMusicMute() || !Settings.isSoundsMute())
+		{
+			game.muteAudio();
+		}
+		
+		TimerThread intermissionThread = game.getIntermissionThread();
+		if (intermissionThread != null)
+		{
+			intermissionThread.setPause(true);
+		}
 	}
 
 	@Override

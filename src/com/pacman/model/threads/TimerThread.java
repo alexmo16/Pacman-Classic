@@ -11,7 +11,8 @@ public class TimerThread extends Thread
 {
     private final int SLEEP_TIMER = 100;
     private int timeInMs;                           /* Time the timer should be running */
-    private volatile boolean isRunning;     /* State of  */
+    private volatile boolean isRunning = false;     /* State of  */
+    private Boolean isPause = false;
     private volatile long timerCount;
     private Lambda endCallback = () -> {};
     private int specialCallbackTime;
@@ -20,7 +21,6 @@ public class TimerThread extends Thread
     public TimerThread(int timer)
     {
         this.timeInMs = timer * 1000;
-        this.isRunning = false;
     }
 
     private boolean verifStop()
@@ -31,6 +31,14 @@ public class TimerThread extends Thread
     public void stopThread()
     {
         this.isRunning = false;
+    }
+    
+    public void setPause(boolean b)
+    {
+    	synchronized (isPause) 
+    	{
+    		isPause = b;
+		}
     }
 
     @Override
@@ -46,6 +54,11 @@ public class TimerThread extends Thread
             {
                 long counterStart = System.currentTimeMillis();
                 sleep(SLEEP_TIMER);
+                
+                synchronized (isPause)
+                {
+					if (isPause) continue;
+				}
                 
                 synchronized (this)
 				{

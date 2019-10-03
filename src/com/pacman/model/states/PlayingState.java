@@ -158,6 +158,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	{
 		game.getPacman().setInvincibility(false);
 		setGhostsAnimation(Animation.MOVING);
+		game.playInGameMusic();
 	}
 	
 	private void setGhostsAnimation(Animation animation)

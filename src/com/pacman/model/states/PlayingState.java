@@ -27,7 +27,6 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
     private Game game;
     private volatile boolean isPacmanDying = false;
-    private TimerThread intermissionTimer;
     private int intermissionTime = 8; // seconds
     
     private LineListener deathSoundListener = new LineListener()
@@ -143,6 +142,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 	
 	public void activateEnergizer()
 	{
+		TimerThread intermissionTimer = game.getIntermissionThread();
 		if (intermissionTimer == null || !intermissionTimer.isAlive())
 		{
 			game.getPacman().setInvincibility(true);
@@ -151,6 +151,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 			intermissionTimer.setCallbackAtTime(intermissionTime * 1000 - 3000, () -> { setGhostsAnimation(Animation.BLINKING); });
 			intermissionTimer.start();
 			setGhostsAnimation(Animation.FRIGHTENED);
+			game.setIntermissionThread(intermissionTimer);
 		}
 	}
 	

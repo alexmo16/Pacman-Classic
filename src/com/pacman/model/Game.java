@@ -65,6 +65,8 @@ public class Game implements IGame
     private volatile TimerThread timerThread;
     private RenderThread renderThread;
     private AudioThread audioThread;
+    private TimerThread intermissionThread;
+    
     private static final int JOIN_TIMER = 500; //ms
     
     private IGameState initState;
@@ -567,6 +569,17 @@ public class Game implements IGame
         		throw new InterruptedByTimeoutException();
         	}
 		}
+        
+        if (intermissionThread != null)
+        {
+        	intermissionThread.stopThread();
+        	intermissionThread.join(JOIN_TIMER);
+        	if (intermissionThread.isAlive())
+        	{
+        		intermissionThread.interrupt();
+        		throw new InterruptedByTimeoutException();
+        	}
+        }
 	}
 
 	public void pacmanEatConsummable(Consumable consumable)
@@ -603,5 +616,15 @@ public class Game implements IGame
 			}
 		}
 		return ghosts;
+	}
+	
+	public TimerThread getIntermissionThread()
+	{
+		return intermissionThread;
+	}
+	
+	public void setIntermissionThread(TimerThread timer)
+	{
+		intermissionThread = timer;
 	}
 }

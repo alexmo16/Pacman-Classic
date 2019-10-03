@@ -43,6 +43,11 @@ public class ResumeState implements IGameState
 			timer = null;
 			game.setState(game.getPlayingState());
 			game.resumeAudio();
+			TimerThread intermissionThread = game.getIntermissionThread();
+			if (intermissionThread != null)
+			{
+				intermissionThread.setPause(false);
+			}
 		}
 	}
 

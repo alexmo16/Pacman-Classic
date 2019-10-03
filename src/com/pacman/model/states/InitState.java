@@ -59,7 +59,7 @@ public class InitState implements IGameState
 		
 		if(init)
 		{			
-			game.stopMusic();
+			game.resumeAudio();
 			game.playStartingMusic(startingMusicListener);
 			init = false;
 		}

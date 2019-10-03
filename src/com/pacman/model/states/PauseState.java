@@ -22,10 +22,7 @@ public class PauseState implements IGameState
 	@Override
 	public void update() 
 	{
-		if (!Settings.isMusicMute() || !Settings.isSoundsMute())
-		{
-			game.muteAudio();
-		}
+		game.muteAudio();
 		
 		TimerThread intermissionThread = game.getIntermissionThread();
 		if (intermissionThread != null)

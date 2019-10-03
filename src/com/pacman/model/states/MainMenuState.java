@@ -1,6 +1,7 @@
 package com.pacman.model.states;
 
 import com.pacman.model.Game;
+import com.pacman.model.threads.TimerThread;
 
 /**
  * 
@@ -21,7 +22,12 @@ public class MainMenuState implements IGameState
 	public void update()
 	{
 		if (game == null) return;
-		game.stopMusic();
+		game.muteAudio();
+		TimerThread intermissionThread = game.getIntermissionThread();
+		if (intermissionThread != null)
+		{
+			intermissionThread.setPause(true);
+		}
 	}
 
 	@Override

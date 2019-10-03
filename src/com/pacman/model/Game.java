@@ -270,7 +270,7 @@ public class Game implements IGame
     @Override
     public void muteMusics()
     {
-        if (gameSiren != null && startMusic != null)
+        if (gameSiren != null && startMusic != null && intermission != null)
         {
             gameSiren.setVolume(0);
             startMusic.setVolume(0);

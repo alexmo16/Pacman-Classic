@@ -15,7 +15,6 @@ import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Level;
-import com.pacman.utils.Settings;
 
 /**
  * PHYSICTHREAD  = CREATED,
@@ -109,8 +108,17 @@ public class PhysicsThread extends Thread
 		double x = entity.getHitBoxX();
 		double y = entity.getHitBoxY();
 		
+
+		
 		if (x == (int) x + 0.05 && y == (int) y + 0.05)
 		{
+			return true;
+		// We need to have a margin of error due to the +20% of speed when invincible
+		// With this boost of speed, we will skip some Tiles if we don't use a margin
+		} else if (x >= (int) x + 0.01 && x <= (int) x + 0.09
+				&& y >= (int) y + 0.01 && y <= (int) y + 0.09 )
+		{
+			entity.setPosition((int)x +0.05, (int)y +0.05);
 			return true;
 		}
 
@@ -416,11 +424,7 @@ public class PhysicsThread extends Thread
 						ghostSpawn(entity);
 					}
 				}
-			}
-
-			for (int i = 0; i < Settings.SPEED; i++)
-			{
-			    
+			}    
 			    preparePacman();
 			    
 			    Ghost collisionGhost = collisionGhost();
@@ -438,7 +442,6 @@ public class PhysicsThread extends Thread
 
 				checkConsumablesCollision();
 				executeWallStrategy();
-			}
 		}
 		System.out.println("Stop: Physics Thread");
 	}

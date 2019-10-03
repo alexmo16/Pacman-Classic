@@ -6,7 +6,6 @@ import java.awt.geom.Rectangle2D;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
-import com.pacman.utils.Settings;
 
 /**
  * 
@@ -37,25 +36,29 @@ public abstract class Entity extends GameObject
         if (dir == Direction.UP)
         {
         	x = getHitBoxX();
-        	y = getHitBoxY() - Settings.MOVEMENT;
+        	y = getHitBoxY() - getSpeed();
         }
         else if (dir == Direction.DOWN)
         {
             x = getHitBoxX();
-            y = getHitBoxY() + Settings.MOVEMENT;
+            y = getHitBoxY() + getSpeed();
         }
         else if (dir == Direction.RIGHT)
         {
-            x = getHitBoxX() + Settings.MOVEMENT;
+            x = getHitBoxX() + getSpeed();
             y = getHitBoxY();
         }
         else if (dir == Direction.LEFT)
         {
-            x = getHitBoxX() - Settings.MOVEMENT;
+            x = getHitBoxX() - getSpeed();
             y = getHitBoxY();
         }
 
         setPosition(x, y);
+    }
+    
+    public double getSpeed() {
+    	return 0;
     }
 
     public void tunnel(Direction dir)

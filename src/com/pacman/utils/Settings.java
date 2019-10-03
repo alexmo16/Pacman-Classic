@@ -22,9 +22,9 @@ public class Settings
     
     public static final float SCALE = 1.0f;
     
-    public static final double MOVEMENT = 0.1;
-    
-    public static int SPEED = 1;
+    public static double SPEED = 0.1;
+    public static double INVINCIBLE_SPEED = 0.12;
+    public static double MARGIN_OF_ERROR = 0.04;
     
     public static final double UPDATE_RATE = 1.0 / 60.0; // pour avoir 60 fps dans notre jeu.
     

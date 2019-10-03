@@ -6,6 +6,7 @@ import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
+import com.pacman.utils.Settings;
 
 /**
  * 
@@ -162,6 +163,11 @@ public class Ghost extends Entity implements Animation
 	{
 		this.authTiles = tab1;
 		this.authTilesRoom = tab2;
+	}
+	
+	@Override
+	public double getSpeed() {
+		return Settings.SPEED;
 	}
 	
 	@Override

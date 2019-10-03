@@ -8,6 +8,7 @@ import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.world.Direction;
 import com.pacman.utils.IObserver;
 import com.pacman.utils.IPublisher;
+import com.pacman.utils.Settings;
 
 /**
  * 
@@ -244,6 +245,15 @@ public class Pacman extends Entity implements IPublisher, Animation
 	public void setIsTravelling(boolean bool)
 	{
 		this.isTravelling = bool;
+	}
+	
+	@Override
+	public double getSpeed() {
+		if (!isInvincible()) {
+			return Settings.SPEED;
+		} else {
+			return Settings.INVINCIBLE_SPEED;
+		}
 	}
 	
 	public void setAuthTiles(int[] tab)

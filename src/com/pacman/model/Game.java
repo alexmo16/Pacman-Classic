@@ -59,6 +59,7 @@ public class Game implements IGame
     private Sound gameSiren;
     private Sound[] chomps = new Sound[4];
     private Sound death;
+    private Sound intermission;
     
     private PhysicsThread physicsThread;
     private volatile TimerThread timerThread;
@@ -185,6 +186,8 @@ public class Game implements IGame
             startMusic.setVolume(Settings.getMusicVolume());
             gameSiren = new Sound(Settings.GAME_SIREN_PATH);
             gameSiren.setVolume(Settings.getMusicVolume());
+            intermission = new Sound(Settings.INTERMISSION_PATH);
+            intermission.setVolume(Settings.getMusicVolume());
             
             for (int index = 0 ; index < chomps.length ; index++)
             {
@@ -233,6 +236,7 @@ public class Game implements IGame
 		{
 			gameSiren.setVolume(volume);
 			startMusic.setVolume(volume);
+			intermission.setVolume(volume);
 		}
 	}
 
@@ -268,6 +272,7 @@ public class Game implements IGame
         {
             gameSiren.setVolume(0);
             startMusic.setVolume(0);
+            intermission.setVolume(0);
         }
     }
     
@@ -288,10 +293,11 @@ public class Game implements IGame
     @Override
     public void resumeMusics()
     {
-    	if (!Settings.isMusicMute() && gameSiren != null && startMusic != null)
+    	if (!Settings.isMusicMute() && gameSiren != null && startMusic != null && intermission != null)
     	{
     		gameSiren.setVolume(Settings.getMusicVolume());
     		startMusic.setVolume(Settings.getMusicVolume());
+    		intermission.setVolume(Settings.getMusicVolume());
     	}
     }
     
@@ -581,6 +587,7 @@ public class Game implements IGame
 		{
 			PlayingState state = (PlayingState) currentState;
 			state.activateEnergizer();
+			audioThread.addMusic(intermission);
 		}
 	}
 	

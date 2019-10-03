@@ -14,7 +14,8 @@ public class Settings
     public static final String START_MUSIC_PATH = "." + File.separator + "assets" + File.separator + "pacman_beginning.wav",
 					    	   GAME_SIREN_PATH = "." + File.separator + "assets" + File.separator + "siren.wav",
 					           CHOMP_PATH = "." + File.separator + "assets" + File.separator + "pacman_chomp.wav",
-					           DEATH_PATH = "." + File.separator + "assets" + File.separator + "pacman_death.wav";
+					           DEATH_PATH = "." + File.separator + "assets" + File.separator + "pacman_death.wav",
+					           INTERMISSION_PATH = "." + File.separator + "assets" + File.separator + "pacman_intermission.wav";
  
     public static final int MIN_WINDOW_WIDTH = 800,
 				 			MIN_WINDOW_HEIGHT = 600;

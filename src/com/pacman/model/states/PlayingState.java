@@ -80,13 +80,13 @@ public class PlayingState implements IGameState, IObserver<Direction>
             game.setState(game.getStopState());
         }
 
-        if (game.getTimerThread() == null)
+        if (game.getTimerThread() == null && !game.getPacman().isInvincible())
         {
             game.setTimerThread(new TimerThread(1));
             game.startTimerThread();
         }
 
-        if (!game.getTimerThread().isAlive())
+        if (!game.getTimerThread().isAlive() && !game.getPacman().isInvincible())
         {
         	 Random random = new Random();
              int randomInt = random.nextInt(4);
@@ -167,7 +167,10 @@ public class PlayingState implements IGameState, IObserver<Direction>
 		ArrayList<Ghost> ghosts = game.getGhosts();
 		for (Ghost ghost : ghosts)
 		{
-			ghost.setCurrentAnimation(animation);
+			if (ghost.getAlive())
+			{
+				ghost.setCurrentAnimation(animation);
+			}
 		}
 	}
 }

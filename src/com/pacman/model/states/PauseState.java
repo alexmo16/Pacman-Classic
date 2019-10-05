@@ -2,7 +2,6 @@ package com.pacman.model.states;
 
 import com.pacman.model.Game;
 import com.pacman.model.threads.TimerThread;
-import com.pacman.utils.Settings;
 
 /**
  * 

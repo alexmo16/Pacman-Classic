@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.channels.InterruptedByTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.LinkedTransferQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,36 +41,48 @@ import com.pacman.view.views.ViewType;
 
 /**
  * Contains an observer design pattern and a state pattern.
- * @authors Alexis Morel-mora2316 Felix Roy-royf3005 Jordan Ros Chantrabot-rosj2204 Andrien Lacomme-laca2111 Louis Ryckebusch-rycl2501
+ * 
+ * @authors Alexis Morel-mora2316 Felix Roy-royf3005 Jordan Ros
+ *          Chantrabot-rosj2204 Andrien Lacomme-laca2111 Louis
+ *          Ryckebusch-rycl2501
  */
 public class Game implements IGame
-{	
-	private IWindow window;
-	
+{
+    private IWindow window;
+
     private Pacman pacman;
     private ArrayList<Wall> maze;
     private Pacman newDirectionPacman;
     private Pacman nextTilesPacman;
-    
+
     private Direction nextTilesDirection;
     private Direction newDirection;
-        
+
     private volatile ArrayList<Entity> entities;
-    
+
     private Sound startMusic;
     private Sound gameSiren;
     private Sound[] chomps = new Sound[4];
     private Sound death;
     private Sound intermission;
-    
+
     private PhysicsThread physicsThread;
     private volatile TimerThread timerThread;
     private RenderThread renderThread;
     private AudioThread audioThread;
     private TimerThread intermissionThread;
+
+    private static final int JOIN_TIMER = 500; // ms
+
+    private static PriorityBlockingQueue<String> collisionQueue;
+    private static PriorityBlockingQueue<String> collisionNextPacmanQueue;
     
-    private static final int JOIN_TIMER = 500; //ms
+    private static PriorityBlockingQueue<String> collisionConsumableQueue;
+    private static LinkedTransferQueue<Consumable> consumableQueue;
     
+    private static PriorityBlockingQueue<String> collisionGhostQueue;
+    private static LinkedTransferQueue<Ghost> ghostQueue;
+
     private IGameState initState;
     private IGameState stopState;
     private IGameState playingState;
@@ -76,14 +90,15 @@ public class Game implements IGame
     private IGameState resumeState;
     private IGameState currentState;
     private IGameState mainMenuState;
-    
+
     private int resumeTime = 3;
-    
+
     private Level currentLevel;
-    
+
     private boolean pacmanWon = false;
-    private final String LEVEL_DATA_FILE = new String(System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt"); 
-    
+    private final String LEVEL_DATA_FILE = new String(
+            System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt");
+
     /**
      * Initialization function called by the engine when it lunch the game.
      */
@@ -91,15 +106,24 @@ public class Game implements IGame
     public void init(IWindow w)
     {
         window = w;
-    	physicsThread = new PhysicsThread(this);
-    	currentLevel = new Level(LEVEL_DATA_FILE, "1");
-    	maze = new ArrayList<Wall>();
+        physicsThread = new PhysicsThread(this);
+        currentLevel = new Level(LEVEL_DATA_FILE, "1");
+        maze = new ArrayList<Wall>();
         entities = new ArrayList<Entity>();
         physicsThread.setAuthTiles(currentLevel.getAuthTiles());
+
+        collisionQueue = new PriorityBlockingQueue<String>(10);
+        collisionNextPacmanQueue = new PriorityBlockingQueue<String>(10);
         
+        collisionConsumableQueue = new PriorityBlockingQueue<String>(10);
+        consumableQueue = new LinkedTransferQueue<Consumable>();
+        
+        collisionGhostQueue = new PriorityBlockingQueue<String>(10);
+        ghostQueue = new LinkedTransferQueue<Ghost>();
+
         loadEntities();
         loadMusics();
-        
+
         mainMenuState = new MainMenuState(this);
         initState = new InitState(this);
         pauseState = new PauseState(this);
@@ -107,14 +131,14 @@ public class Game implements IGame
         playingState = new PlayingState(this);
         stopState = new StopState(this);
         setState(mainMenuState);
-        
+
         renderThread = new RenderThread(this);
         audioThread = new AudioThread();
         renderThread.start();
         physicsThread.start();
         audioThread.start();
     }
-    
+
     /**
      * Update function called by the engine every tick.
      */
@@ -129,8 +153,7 @@ public class Game implements IGame
     {
         pacman.setNextDirection(d);
     }
-    
-    
+
     private void loadEntities()
     {
         for (int y = 0; y < Level.getHeight(); y++)
@@ -138,46 +161,47 @@ public class Game implements IGame
             for (int x = 0; x < Level.getWidth(); x++)
             {
 
-                if (currentLevel.getTile(x, y) >= Tile.WALL_START.getValue() && currentLevel.getTile(x, y) <= Tile.WALL_END.getValue())
+                if (currentLevel.getTile(x, y) >= Tile.WALL_START.getValue()
+                        && currentLevel.getTile(x, y) <= Tile.WALL_END.getValue())
                 {
                     maze.add(new Wall(x, y, currentLevel.getTile(x, y)));
-                }
-                else if (currentLevel.getTile(x, y) == Tile.PAC_MAN_START.getValue())
+                } else if (currentLevel.getTile(x, y) == Tile.PAC_MAN_START.getValue())
                 {
-                    // TODO : Make no sens to hard code some value in the game. Only the Pacman object himself shoudl know about it's correct position.
-                    pacman = new Pacman(x+0.05, y+0.05);
+                    // TODO : Make no sens to hard code some value in the game. Only the Pacman
+                    // object himself shoudl know about it's correct position.
+                    pacman = new Pacman(x + 0.05, y + 0.05);
                     newDirectionPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
                     nextTilesPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
                     entities.add(pacman);
                     pacman.setAuthTiles(currentLevel.getAuthTiles());
-                }
-                else if (currentLevel.getTile(x, y) == Tile.BLINKY_START.getValue())
+                } else if (currentLevel.getTile(x, y) == Tile.BLINKY_START.getValue())
                 {
                     entities.add(new Ghost(x, y, GhostType.BLINKY));
-                    ((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
-                }
-                else if (currentLevel.getTile(x, y) == Tile.PINKY_START.getValue())
+                    ((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),
+                            currentLevel.getAuthTilesGhostRoom());
+                } else if (currentLevel.getTile(x, y) == Tile.PINKY_START.getValue())
                 {
                     entities.add(new Ghost(x, y, GhostType.PINKY));
-                    ((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
-                }
-                else if (currentLevel.getTile(x, y) == Tile.INKY_START.getValue())
+                    ((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),
+                            currentLevel.getAuthTilesGhostRoom());
+                } else if (currentLevel.getTile(x, y) == Tile.INKY_START.getValue())
                 {
                     entities.add(new Ghost(x, y, GhostType.INKY));
-                    ((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
-                }
-                else if (currentLevel.getTile(x, y) == Tile.CLYDE_START.getValue())
+                    ((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),
+                            currentLevel.getAuthTilesGhostRoom());
+                } else if (currentLevel.getTile(x, y) == Tile.CLYDE_START.getValue())
                 {
                     entities.add(new Ghost(x, y, GhostType.CLYDE));
-                    ((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),currentLevel.getAuthTilesGhostRoom());
+                    ((Ghost) getEntities().get(0)).setAuthTiles(currentLevel.getAuthTilesGhost(),
+                            currentLevel.getAuthTilesGhostRoom());
                 }
             }
-        }    
+        }
     }
-	
-    
+
     /**
      * Load all audio files and distribute them where they're needed.
+     * 
      * @return
      */
     private boolean loadMusics()
@@ -190,14 +214,14 @@ public class Game implements IGame
             gameSiren.setVolume(Settings.getMusicVolume());
             intermission = new Sound(Settings.INTERMISSION_PATH);
             intermission.setVolume(Settings.getMusicVolume());
-            
-            for (int index = 0 ; index < chomps.length ; index++)
+
+            for (int index = 0; index < chomps.length; index++)
             {
-            	Sound chomp = new Sound(Settings.CHOMP_PATH);
-            	chomp.setVolume(Settings.getSoundsVolume());
-            	chomps[index] = chomp;
+                Sound chomp = new Sound(Settings.CHOMP_PATH);
+                chomp.setVolume(Settings.getSoundsVolume());
+                chomps[index] = chomp;
             }
-            	
+
             death = new Sound(Settings.DEATH_PATH);
             death.setVolume(Settings.getSoundsVolume());
         } catch (UnsupportedAudioFileException | IOException e)
@@ -209,64 +233,64 @@ public class Game implements IGame
         return true;
     }
 
-    public void playStartingMusic( LineListener listener )
+    public void playStartingMusic(LineListener listener)
     {
-    	startMusic.setListener(listener);
-    	audioThread.addSound(startMusic);
+        startMusic.setListener(listener);
+        audioThread.addSound(startMusic);
     }
-    
+
     public void playInGameMusic()
     {
-    	audioThread.addMusic(gameSiren);
+        audioThread.addMusic(gameSiren);
     }
-    
+
     public void stopMusic()
     {
-    	audioThread.stopMusic();
+        audioThread.stopMusic();
     }
 
     public void playDeathSound(LineListener listener)
     {
-    	death.setListener(listener);
-    	audioThread.addSound(death);
+        death.setListener(listener);
+        audioThread.addSound(death);
     }
-    
-	@Override
-	public void setMusicVolume(int volume)
-	{
-		if (!Settings.isMusicMute())
-		{
-			gameSiren.setVolume(volume);
-			startMusic.setVolume(volume);
-			intermission.setVolume(volume);
-		}
-	}
 
-	@Override
-	public void setSoundsVolume(int volume)
-	{
-		if (!Settings.isSoundsMute())
-		{
-			for (Sound chomp : chomps)
-			{
-				chomp.setVolume(volume);
-			}
-			death.setVolume(volume);
-		}
-	}
-    
+    @Override
+    public void setMusicVolume(int volume)
+    {
+        if (!Settings.isMusicMute())
+        {
+            gameSiren.setVolume(volume);
+            startMusic.setVolume(volume);
+            intermission.setVolume(volume);
+        }
+    }
+
+    @Override
+    public void setSoundsVolume(int volume)
+    {
+        if (!Settings.isSoundsMute())
+        {
+            for (Sound chomp : chomps)
+            {
+                chomp.setVolume(volume);
+            }
+            death.setVolume(volume);
+        }
+    }
+
     public void muteAudio()
     {
-    	muteMusics();
-    	muteSounds();
+        muteMusics();
+        muteSounds();
     }
-    
+
     public void resumeAudio()
     {
-    	resumeMusics();
-    	resumeSounds();
+        resumeMusics();
+        resumeSounds();
     }
-    
+
     @Override
     public void muteMusics()
     {
@@ -277,102 +301,101 @@ public class Game implements IGame
             intermission.setVolume(0);
         }
     }
-    
+
     @Override
     public void muteSounds()
     {
-	    if (death != null && chomps != null)
-	    {
-	    	death.setVolume(0);
-	    	for (Sound chomp : chomps)
-	    	{
-	    		if (chomp == null) continue;
-	    		chomp.setVolume(0);
-	    	}
-	    }
+        if (death != null && chomps != null)
+        {
+            death.setVolume(0);
+            for (Sound chomp : chomps)
+            {
+                if (chomp == null)
+                    continue;
+                chomp.setVolume(0);
+            }
+        }
     }
-    
+
     @Override
     public void resumeMusics()
     {
-    	if (!Settings.isMusicMute() && gameSiren != null && startMusic != null && intermission != null)
-    	{
-    		gameSiren.setVolume(Settings.getMusicVolume());
-    		startMusic.setVolume(Settings.getMusicVolume());
-    		intermission.setVolume(Settings.getMusicVolume());
-    	}
+        if (!Settings.isMusicMute() && gameSiren != null && startMusic != null && intermission != null)
+        {
+            gameSiren.setVolume(Settings.getMusicVolume());
+            startMusic.setVolume(Settings.getMusicVolume());
+            intermission.setVolume(Settings.getMusicVolume());
+        }
     }
-    
+
     @Override
     public void resumeSounds()
     {
-    	if (!Settings.isSoundsMute() && death != null && chomps != null)
-    	{
-    		death.setVolume(Settings.getSoundsVolume());
-    		for (Sound chomp : chomps)
-    		{
-    			if (chomp == null) continue;
-    			chomp.setVolume(Settings.getSoundsVolume());
-    		}
-    	}
+        if (!Settings.isSoundsMute() && death != null && chomps != null)
+        {
+            death.setVolume(Settings.getSoundsVolume());
+            for (Sound chomp : chomps)
+            {
+                if (chomp == null)
+                    continue;
+                chomp.setVolume(Settings.getSoundsVolume());
+            }
+        }
     }
-	
-	public void setState( IGameState state )
-	{
-		if (state.getName() == StatesName.INIT)
-		{		
-			window.showView(ViewType.GAME);
-			window.setIsGameActive(true);
-		}
-		else if (state.getName() == StatesName.RESUME && currentState.getName() == StatesName.MAIN_MENU)
-		{
-			window.showView(ViewType.GAME);
-		}
-		else if (state.getName() == StatesName.STOP)
-		{
-			window.setIsGameActive(false);
-		}
-		else if (state.getName() == StatesName.MAIN_MENU)
-		{
-			window.showView(ViewType.MAIN_MENU);
-		}
-		currentState = state;
-	}
-	
-	public IGameState getInitState()
-	{
-		return initState;
-	}
 
-	public IGameState getStopState()
-	{
-		return stopState;
-	}
+    public void setState(IGameState state)
+    {
+        if (state.getName() == StatesName.INIT)
+        {
+            window.showView(ViewType.GAME);
+            window.setIsGameActive(true);
+        } else if (state.getName() == StatesName.RESUME && currentState.getName() == StatesName.MAIN_MENU)
+        {
+            window.showView(ViewType.GAME);
+        } else if (state.getName() == StatesName.STOP)
+        {
+            window.setIsGameActive(false);
+        } else if (state.getName() == StatesName.MAIN_MENU)
+        {
+            window.showView(ViewType.MAIN_MENU);
+        }
+        currentState = state;
+    }
 
-	public IGameState getPlayingState()
-	{
-		return playingState;
-	}
+    public IGameState getInitState()
+    {
+        return initState;
+    }
 
-	public IGameState getPauseState()
-	{
-		return pauseState;
-	}
+    public IGameState getStopState()
+    {
+        return stopState;
+    }
 
-	public IGameState getResumeState()
-	{
-		return resumeState;
-	}
+    public IGameState getPlayingState()
+    {
+        return playingState;
+    }
 
-	public IGameState getCurrentState()
-	{
-		return currentState;
-	}
-	
-	public IGameState getMainMenuState()
-	{
-		return mainMenuState;
-	}
+    public IGameState getPauseState()
+    {
+        return pauseState;
+    }
+
+    public IGameState getResumeState()
+    {
+        return resumeState;
+    }
+
+    public IGameState getCurrentState()
+    {
+        return currentState;
+    }
+
+    public IGameState getMainMenuState()
+    {
+        return mainMenuState;
+    }
 
     public Sound getStartMusic()
     {
@@ -383,173 +406,175 @@ public class Game implements IGame
     {
         return gameSiren;
     }
-    
+
     public Sound[] getChomps()
-	{
-		return chomps;
-	}
-	
-	public Pacman getPacman()
-	{
-		return pacman;
-	}
-	
-	public Pacman getNewDirectionPacman()
-	{
-		return newDirectionPacman;
-	}
-	
-	public Pacman getNextTilesPacman()
-	{
-		return nextTilesPacman;
-	}
-	
-	public Direction getNewDirection()
-	{
-		return newDirection;
-	}
-	
-	public Direction getNextTilesDirection()
-	{
-		return nextTilesDirection;
-	}
-	
-	public void setNewDirection(Direction direction)
-	{
-		this.newDirection = direction;
-	}
-	
-	public void setNextTilesDirection(Direction direction)
-	{
-		this.nextTilesDirection = direction;
-	}
+    {
+        return chomps;
+    }
 
-	public synchronized ArrayList<Wall> getMaze()
-	{
-		return maze;
-	}
+    public Pacman getPacman()
+    {
+        return pacman;
+    }
 
-	public synchronized ArrayList<Consumable> getConsumables() 
-	{
-		return currentLevel.getConsumables();
-	}
+    public Pacman getNewDirectionPacman()
+    {
+        return newDirectionPacman;
+    }
 
-	public synchronized ArrayList<Entity> getEntities() 
-	{
-		return entities;
-	}
+    public Pacman getNextTilesPacman()
+    {
+        return nextTilesPacman;
+    }
 
-	public Level getCurrentLevel()
-	{
-		return currentLevel;
-	}
-	
-	public synchronized PhysicsThread getPhysicsThread()
-	{
-		return physicsThread;
-	}
-	
-	public void setCurrentLevel(Level level)
-	{
-		currentLevel = level;
-	}
+    public Direction getNewDirection()
+    {
+        return newDirection;
+    }
 
-	public boolean isPacmanWon()
-	{
-		return pacmanWon;
-	}
+    public Direction getNextTilesDirection()
+    {
+        return nextTilesDirection;
+    }
 
-	public void setPacmanWon(boolean pacmanWon)
-	{
-		this.pacmanWon = pacmanWon;
-	}
+    public void setNewDirection(Direction direction)
+    {
+        this.newDirection = direction;
+    }
 
-	public void loadLevel(String levelName)
-	{
-		Level level = new Level(LEVEL_DATA_FILE, levelName);
-		currentLevel = level;
-		currentLevel.generateConsumables();
-	}
+    public void setNextTilesDirection(Direction direction)
+    {
+        this.nextTilesDirection = direction;
+    }
 
-	public synchronized List<GameObject> getGameObjects() 
-	{
-		if (getMaze() != null && getConsumables() != null && getEntities() != null)
-		{
-			return Stream.of(getMaze(), getConsumables(), getEntities()).flatMap(x -> x.stream()).collect(Collectors.toList());
-		}
-		return null;
-	}
+    public synchronized ArrayList<Wall> getMaze()
+    {
+        return maze;
+    }
 
-	public void setResumeTime(int time)
-	{
-		resumeTime = time;
-	}
-	
-	public int getResumeTime()
-	{
-		return resumeTime;
-	}
-	
-	public synchronized TimerThread getTimerThread()
-	{
-	    return timerThread;
-	}
-	
-	public synchronized void setTimerThread(TimerThread timerThread)
-	{
-	    this.timerThread = timerThread;
-	}
-	
-	public synchronized void setTimerThreadNull()
-	{
-	    this.timerThread = null;
-	}
-	
-	public synchronized void startTimerThread()
-	{
-	    if (this.timerThread != null)
-	    {
-	        this.timerThread.start();
-	    }
-	}
+    public synchronized ArrayList<Consumable> getConsumables()
+    {
+        return currentLevel.getConsumables();
+    }
 
-	public void notifyPhysics()
-	{
+    public synchronized ArrayList<Entity> getEntities()
+    {
+        return entities;
+    }
+
+    public synchronized Level getCurrentLevel()
+    {
+        return currentLevel;
+    }
+
+    public synchronized PhysicsThread getPhysicsThread()
+    {
+        return physicsThread;
+    }
+
+    public void setCurrentLevel(Level level)
+    {
+        currentLevel = level;
+    }
+
+    public boolean isPacmanWon()
+    {
+        return pacmanWon;
+    }
+
+    public void setPacmanWon(boolean pacmanWon)
+    {
+        this.pacmanWon = pacmanWon;
+    }
+
+    public void loadLevel(String levelName)
+    {
+        Level level = new Level(LEVEL_DATA_FILE, levelName);
+        currentLevel = level;
+        currentLevel.generateConsumables();
+    }
+
+    public synchronized List<GameObject> getGameObjects()
+    {
+        if (getMaze() != null && getConsumables() != null && getEntities() != null)
+        {
+            return Stream.of(getMaze(), getConsumables(), getEntities()).flatMap(x -> x.stream())
+                    .collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    public void setResumeTime(int time)
+    {
+        resumeTime = time;
+    }
+
+    public int getResumeTime()
+    {
+        return resumeTime;
+    }
+
+    public synchronized TimerThread getTimerThread()
+    {
+        return timerThread;
+    }
+
+    public synchronized void setTimerThread(TimerThread timerThread)
+    {
+        this.timerThread = timerThread;
+    }
+
+    public synchronized void setTimerThreadNull()
+    {
+        this.timerThread = null;
+    }
+
+    public synchronized void startTimerThread()
+    {
+        if (this.timerThread != null)
+        {
+            this.timerThread.start();
+        }
+    }
+
+    public void notifyPhysics()
+    {
         synchronized (this)
-		{
-			notify();
-		}
-	}
-	
-	public void killPacman()
-	{
-		if (currentState.getName() == StatesName.PLAY)
-		{
-			PlayingState state = (PlayingState) currentState;
-			state.killPacman();
-		}
-	}
+        {
+            notify();
+        }
+    }
 
-	/**
-	 * Method to stop all sub threads of the application.
-	 * @throws InterruptedException 
-	 * @throws InterruptedByTimeoutException 
-	 */
-	@Override
-	public void stopThreads() throws InterruptedException, InterruptedByTimeoutException 
-	{
-		renderThread.stopThread();
-		renderThread.join(JOIN_TIMER);
-		if (renderThread.isAlive())
-		{
-			renderThread.interrupt();
-			throw new InterruptedByTimeoutException();
-		}
-        
-		synchronized (this)
-		{
-			notifyAll();
-		}
+    public void killPacman()
+    {
+        if (currentState.getName() == StatesName.PLAY)
+        {
+            PlayingState state = (PlayingState) currentState;
+            state.killPacman();
+        }
+    }
+
+    /**
+     * Method to stop all sub threads of the application.
+     * 
+     * @throws InterruptedException
+     * @throws InterruptedByTimeoutException
+     */
+    @Override
+    public void stopThreads() throws InterruptedException, InterruptedByTimeoutException
+    {
+        renderThread.stopThread();
+        renderThread.join(JOIN_TIMER);
+        if (renderThread.isAlive())
+        {
+            renderThread.interrupt();
+            throw new InterruptedByTimeoutException();
+        }
+
+        synchronized (this)
+        {
+            notifyAll();
+        }
         physicsThread.stopThread();
         physicsThread.join(JOIN_TIMER);
         if (physicsThread.isAlive())
@@ -557,78 +582,250 @@ public class Game implements IGame
             physicsThread.interrupt();
             throw new InterruptedByTimeoutException();
         }
-        
+
         audioThread.stopThread();
         synchronized (audioThread)
-		{
-        	audioThread.notify();
-        	audioThread.join(JOIN_TIMER);
-        	if (audioThread.isAlive())
-        	{
-        		audioThread.interrupt();
-        		throw new InterruptedByTimeoutException();
-        	}
-		}
-        
+        {
+            audioThread.notify();
+            audioThread.join(JOIN_TIMER);
+            if (audioThread.isAlive())
+            {
+                audioThread.interrupt();
+                throw new InterruptedByTimeoutException();
+            }
+        }
+
         if (intermissionThread != null)
         {
-        	intermissionThread.stopThread();
-        	intermissionThread.join(JOIN_TIMER);
-        	if (intermissionThread.isAlive())
-        	{
-        		intermissionThread.interrupt();
-        		throw new InterruptedByTimeoutException();
-        	}
+            intermissionThread.stopThread();
+            intermissionThread.join(JOIN_TIMER);
+            if (intermissionThread.isAlive())
+            {
+                intermissionThread.interrupt();
+                throw new InterruptedByTimeoutException();
+            }
         }
-	}
+    }
 
-	public void pacmanEatConsummable(Consumable consumable)
-	{
-		pacman.eat(consumable);
-		for (Sound chomp : chomps)
-		{
-			if (chomp == null) continue;
-			if (chomp.getIsRunning()) continue;
-			audioThread.addSound(chomp);
-			break;
-		}
-	}
+    public synchronized void pacmanEatConsummable(Consumable consumable)
+    {
+        pacman.eat(consumable);
+        for (Sound chomp : chomps)
+        {
+            if (chomp == null)
+                continue;
+            if (chomp.getIsRunning())
+                continue;
+            audioThread.addSound(chomp);
+            break;
+        }
+    }
 
-	public void activateEnergizer()
-	{
-		if (currentState.getName() == StatesName.PLAY)
-		{
-			PlayingState state = (PlayingState) currentState;
-			state.activateEnergizer();
-			audioThread.addMusic(intermission);
-		}
-	}
-	
-	public ArrayList<Ghost> getGhosts()
-	{
-		ArrayList<Ghost> ghosts = new ArrayList<Ghost>();
-		for (Entity entity : entities)
-		{
-			if (entity instanceof Ghost)
-			{
-				Ghost ghost = (Ghost) entity;
-				ghosts.add(ghost);
-			}
-		}
-		return ghosts;
-	}
-	public TimerThread getIntermissionThread()
-	{
-		return intermissionThread;
-	}
-	
-	public void setIntermissionThread(TimerThread timer)
-	{
-		intermissionThread = timer;
-	}
-	
-	public void killGhost(Ghost ghost) 
-	{
-		ghost.respawn();
-	}
+    public void activateEnergizer()
+    {
+        if (currentState.getName() == StatesName.PLAY)
+        {
+            PlayingState state = (PlayingState) currentState;
+            state.activateEnergizer();
+            audioThread.addMusic(intermission);
+        }
+    }
+
+    public ArrayList<Ghost> getGhosts()
+    {
+        ArrayList<Ghost> ghosts = new ArrayList<Ghost>();
+        for (Entity entity : entities)
+        {
+            if (entity instanceof Ghost)
+            {
+                Ghost ghost = (Ghost) entity;
+                ghosts.add(ghost);
+            }
+        }
+        return ghosts;
+    }
+
+    public TimerThread getIntermissionThread()
+    {
+        return intermissionThread;
+    }
+
+    public void setIntermissionThread(TimerThread timer)
+    {
+        intermissionThread = timer;
+    }
+
+    public void killGhost(Ghost ghost)
+    {
+        ghost.respawn();
+    }
+
+    public synchronized PriorityBlockingQueue<String> getCollisionQueue()
+    {
+        return collisionQueue;
+    }
+
+    public synchronized void addCollisionQueue(String s)
+    {
+        try
+        {
+            collisionQueue.offer(s);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized String readCollisionQueue()
+    {
+        try
+        {
+            return collisionQueue.poll();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    public synchronized PriorityBlockingQueue<String> getCollisionNextPacmanQueue()
+    {
+        return collisionNextPacmanQueue;
+    }
+
+    public synchronized void addCollisionNextPacmanQueue(String s)
+    {
+        try
+        {
+            collisionNextPacmanQueue.offer(s);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized String readCollisionNextPacmanQueue()
+    {
+        try
+        {
+            return collisionNextPacmanQueue.poll();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public synchronized LinkedTransferQueue<Consumable> getConsumableQueue()
+    {
+        return consumableQueue;
+    }
+
+    public synchronized void addConsumableQueue(Consumable c)
+    {
+        try
+        {
+            consumableQueue.offer(c);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized Consumable readConsumableQueue()
+    {
+        try
+        {
+            return consumableQueue.poll();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public synchronized PriorityBlockingQueue<String> getcollisionConsumableQueue()
+    {
+        return collisionConsumableQueue;
+    }
+
+    public synchronized void addCollisionConsumableQueue(String s)
+    {
+        try
+        {
+            collisionConsumableQueue.offer(s);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized String readCollisionConsumableQueue()
+    {
+        try
+        {
+            return collisionConsumableQueue.poll();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public synchronized PriorityBlockingQueue<String> getCollisionGhostQueue()
+    {
+        return collisionGhostQueue;
+    }
+    
+    public synchronized void addCollisionGhostQueue(String s)
+    {
+        try
+        {
+            collisionGhostQueue.offer(s);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public synchronized String readCollisionGhostQueue()
+    {
+        try
+        {
+            return collisionGhostQueue.poll();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public synchronized LinkedTransferQueue<Ghost> getGhostQueue()
+    {
+        return ghostQueue;
+    }
+    
+    public synchronized void addGhostQueue(Ghost g)
+    {
+        try
+        {
+            ghostQueue.offer(g);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public synchronized Ghost readGhostQueue()
+    {
+        try
+        {
+            return ghostQueue.poll();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

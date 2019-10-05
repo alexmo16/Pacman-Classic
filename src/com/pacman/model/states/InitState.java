@@ -51,6 +51,15 @@ public class InitState implements IGameState
 		
 		game.getPacman().respawn();
 		
+		game.getCollisionQueue().clear();
+        game.getCollisionNextPacmanQueue().clear();
+        
+        game.getConsumableQueue().clear();
+        game.getcollisionConsumableQueue().clear();
+        
+        game.getCollisionGhostQueue().clear();
+        game.getGhostQueue().clear();
+		
 		for (int i = 0; i < 4; i++)
 	    {
 			((Ghost) game.getEntities().get(i)).respawn();

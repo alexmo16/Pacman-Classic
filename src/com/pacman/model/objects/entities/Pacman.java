@@ -52,6 +52,8 @@ public class Pacman extends Entity implements IPublisher, Animation
     
     private int[] authTiles;
     
+    private int eatenGhosts = 0;
+    
    
     public Pacman(double x, double y)
     {
@@ -87,6 +89,18 @@ public class Pacman extends Entity implements IPublisher, Animation
     public void eat(Consumable consumable)
     {
         score += consumable.getPoints();
+        
+        if (score >= 10000 && canGetBonusLife)
+        {
+        	canGetBonusLife = false;
+        	lifes += 1;
+        }
+    }
+    
+    public void eatGhost(Ghost ghost)
+    {
+        score += ghost.getPoints() * Math.pow(2, eatenGhosts);
+        eatenGhosts++ ;
         
         if (score >= 10000 && canGetBonusLife)
         {
@@ -293,5 +307,10 @@ public class Pacman extends Entity implements IPublisher, Animation
 	public synchronized void setInvincibility(boolean b)
 	{
 		isInvincible = b;
+	}
+	
+	public void resetEatenGhosts()
+	{
+		eatenGhosts = 0;
 	}
 }

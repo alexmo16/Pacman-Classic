@@ -173,6 +173,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
             Ghost ghost = game.readGhostQueue();
             if (ghost != null) 
             {
+            	game.getPacman().eatGhost(ghost);
                 game.killGhost(ghost);
             }
         }
@@ -314,6 +315,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
             intermissionTimer.setEndCallback(() ->
             {
                 endEnergizer();
+                
             });
             intermissionTimer.setCallbackAtTime(intermissionTime * 1000 - 3000, () ->
             {
@@ -327,6 +329,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
     private void endEnergizer()
     {
+    	game.getPacman().resetEatenGhosts();
         game.getPacman().setInvincibility(false);
         setGhostsAnimation(Animation.MOVING);
         game.playInGameMusic();

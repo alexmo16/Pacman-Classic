@@ -44,6 +44,8 @@ public class Ghost extends Entity implements Animation
 	private int[] authTiles;
 	private int[] authTilesRoom;
 	
+	private final int ghostPoint = 200;
+	
     public Ghost(double x, double y, GhostType t )
     {
         super(x, y, Direction.UP);
@@ -192,5 +194,10 @@ public class Ghost extends Entity implements Animation
 	public synchronized void setCurrentAnimation(Animation animation)
 	{
 		currentAnimation = animation;
+	}
+	
+	public int getPoints()
+	{
+		return ghostPoint;
 	}
 }

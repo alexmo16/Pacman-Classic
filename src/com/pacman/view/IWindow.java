@@ -4,6 +4,7 @@ import java.awt.event.KeyListener;
 
 import com.pacman.view.menus.MenuOption;
 import com.pacman.view.menus.MenuType;
+import com.pacman.view.views.GameView;
 import com.pacman.view.views.ViewType;
 
 /**
@@ -16,6 +17,7 @@ public interface IWindow
 	public void showView(ViewType view);
 
 	public ViewType getCurrentView();
+	public GameView getGameView();
 	
 	public void moveSelectionUp();
 	public void moveSelectionDown();

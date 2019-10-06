@@ -86,6 +86,12 @@ public class Window implements WindowListener, IWindow
 	{
 		return currentView;
 	}
+    
+    @Override
+    public GameView getGameView()
+    {
+    	return gameView;
+    }
 	
     @Override
     public void windowOpened(WindowEvent e)

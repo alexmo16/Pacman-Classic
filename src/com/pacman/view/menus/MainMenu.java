@@ -19,6 +19,7 @@ public class MainMenu extends Menu
 		super(MenuType.MAIN_MENU,
 			  new MenuOption[] {MenuOption.START,
 					  			MenuOption.AUDIO,
+					  			MenuOption.HIGHSCORES,
 					  			MenuOption.HELP,
 					  			MenuOption.EXIT});
 	}

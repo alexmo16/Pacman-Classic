@@ -12,6 +12,7 @@ public enum StatesName
     PLAY("Play"),
     STOP("Stop"),
     PAUSE("Pause"),
+    NEW_HIGHSCORE("New highscore"),
 	RESUME("Resume");
 
     private final String value;

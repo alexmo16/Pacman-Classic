@@ -16,6 +16,7 @@ import com.pacman.view.menus.MenuOption;
 import com.pacman.view.menus.MenuType;
 import com.pacman.view.views.GameView;
 import com.pacman.view.views.MainMenuView;
+import com.pacman.view.views.NewHighScoreView;
 import com.pacman.view.views.ViewType;
 
 /**
@@ -31,6 +32,7 @@ public class Window implements WindowListener, IWindow
     	
 	private GameView gameView;
 	private MainMenuView mainMenuView;
+	private NewHighScoreView newHighscoreView;
 	private ViewType currentView;
     
     public Window(IGame game)
@@ -38,10 +40,12 @@ public class Window implements WindowListener, IWindow
     	views.setLayout(layout);
     	
     	gameView = new GameView(game);
-    	mainMenuView = new MainMenuView();
+    	mainMenuView = new MainMenuView();	
+    	newHighscoreView = new NewHighScoreView(game);
     
     	views.add(gameView, gameView.getName());
     	views.add(mainMenuView, mainMenuView.getName());
+    	views.add(newHighscoreView, newHighscoreView.getName());
     	
         frame.setMinimumSize(new Dimension(Settings.MIN_WINDOW_WIDTH, Settings.MIN_WINDOW_HEIGHT));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -135,6 +139,12 @@ public class Window implements WindowListener, IWindow
 	}
 
 	@Override
+	public void setHighscoresMenu() 
+	{
+		mainMenuView.setHighscoresMenu();
+	}
+	
+	@Override
 	public void setAudioMenu() 
 	{
 		mainMenuView.setAudioMenu();
@@ -174,5 +184,35 @@ public class Window implements WindowListener, IWindow
 	public MenuType getMenuType() 
 	{
 		return mainMenuView.getMenuType();
+	}
+	
+	@Override
+	public String getPlayerName()
+	{
+		return newHighscoreView.getCurrentName();
+	}
+
+	@Override
+	public void moveSelectionUp() 
+	{
+		newHighscoreView.nextCharacter();
+	}
+
+	@Override
+	public void moveSelectionDown() 
+	{
+		newHighscoreView.previousCharacter();
+	}
+
+	@Override
+	public void moveSelectionLeft() 
+	{
+		newHighscoreView.moveSelectionLeft();
+	}
+
+	@Override
+	public void moveSelectionRight() 
+	{
+		newHighscoreView.moveSelectionRight();
 	}
 }

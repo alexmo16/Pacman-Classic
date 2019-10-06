@@ -1,6 +1,7 @@
 package com.pacman.model.states;
 
 import com.pacman.model.Game;
+import com.pacman.model.highscores.Highscores;
 import com.pacman.model.threads.TimerThread;
 
 /**
@@ -47,9 +48,17 @@ public class StopState implements IGameState
 		else
 		{
            	game.getPacman().resetLives();
-			game.getPacman().resetScore();
 			game.loadLevel("1");
-			game.setState(game.getMainMenuState());
+			
+			if (Highscores.isNew(game.getPacman().getScore()))
+			{
+				game.setState(game.getNewHighscoreState());
+			}
+			else
+			{
+				game.setState(game.getMainMenuState());
+				game.getPacman().resetScore();
+			}
 		}
 	}
 

@@ -8,7 +8,8 @@ package com.pacman.view.views;
 public enum ViewType
 {
 	MAIN_MENU("MainMenu"),
-	GAME("Game");
+	GAME("Game"),
+	NEW_HIGHSCORE("New highscore");
 
     private final String value;
 

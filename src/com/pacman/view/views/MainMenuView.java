@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import com.pacman.view.menus.AudioMenu;
 import com.pacman.view.menus.HelpMenu;
+import com.pacman.view.menus.HighscoresMenu;
 import com.pacman.view.menus.MainMenu;
 import com.pacman.view.menus.Menu;
 import com.pacman.view.menus.MenuOption;
@@ -22,6 +23,7 @@ public class MainMenuView extends View
 	private static final ViewType name = ViewType.MAIN_MENU;
 	
     private Menu mainMenu = new MainMenu();
+    private Menu highscoresMenu = new HighscoresMenu();
     private Menu audioMenu = new AudioMenu();
     private Menu helpMenu = new HelpMenu();
     private Menu currentMenu = mainMenu;
@@ -35,6 +37,11 @@ public class MainMenuView extends View
 	public void setMainMenu()
 	{
 		currentMenu = mainMenu;
+	}
+	
+	public void setHighscoresMenu()
+	{
+		currentMenu = highscoresMenu;
 	}
 	
 	public void setAudioMenu()

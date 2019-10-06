@@ -17,14 +17,20 @@ public interface IWindow
 
 	public ViewType getCurrentView();
 	
+	public void moveSelectionUp();
+	public void moveSelectionDown();
+	public void moveSelectionLeft();
+	public void moveSelectionRight();
 	public void nextOption();
 	public void previousOption();
 	public MenuOption getMenuOption();
 	public MenuType getMenuType();
 	public void setMainMenu();
+	public void setHighscoresMenu();
 	public void setAudioMenu();
 	public void setHelpMenu();
 	public void setIsGameActive(boolean state);
+	public String getPlayerName();
 	
 	public void addListener(KeyListener k);
 

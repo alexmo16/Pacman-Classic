@@ -14,6 +14,7 @@ import com.pacman.model.objects.consumables.Energizer;
 import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Ghost;
 import com.pacman.model.objects.entities.Ghost.Animation;
+import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.objects.entities.behaviours.BehaviourFactory;
 import com.pacman.model.objects.entities.behaviours.IBehaviour;
 import com.pacman.model.objects.entities.behaviours.IBehaviour.behavioursID;
@@ -21,6 +22,7 @@ import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
 import com.pacman.utils.IObserver;
+import com.pacman.utils.IPublisher.UpdateID;
 
 /**
  * 
@@ -29,7 +31,7 @@ import com.pacman.utils.IObserver;
  *          Ryckebusch-rycl2501
  *
  */
-public class PlayingState implements IGameState, IObserver<Direction>
+public class PlayingState implements IGameState, IObserver
 {
     private StatesName name = StatesName.PLAY;
 
@@ -178,7 +180,7 @@ public class PlayingState implements IGameState, IObserver<Direction>
             Ghost ghost = game.readGhostQueue();
             if (ghost != null) 
             {
-            	game.getPacman().eatGhost(ghost);
+            	game.getPacman().eat(ghost);
                 game.killGhost(ghost);
             }
         }
@@ -275,14 +277,16 @@ public class PlayingState implements IGameState, IObserver<Direction>
      * update of the observer
      */
     @Override
-    public void update(Direction d)
+    public void updateObservers(UpdateID updateID)
     {
-
-        if (game.getNewDirection() == game.getPacman().getDirection())
+    	if (updateID != UpdateID.CHANGE_DIRECTION) return;
+    	
+    	Pacman pacman = game.getPacman();
+        if (game.getNewDirection() == pacman.getDirection())
         {
             game.setNextTilesDirection(game.getNewDirection());
         }
-        game.setNewDirection(d);
+        game.setNewDirection(pacman.getNextDirection());
 
     }
 

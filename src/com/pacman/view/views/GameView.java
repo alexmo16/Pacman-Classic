@@ -2,16 +2,22 @@ package com.pacman.view.views;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 import com.pacman.controller.GameController;
 import com.pacman.model.IGame;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Sprites;
 import com.pacman.model.objects.entities.Entity;
+import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.states.StatesName;
+import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
 import com.pacman.model.world.Sprite;
+import com.pacman.utils.IObserver;
+import com.pacman.utils.IPublisher.UpdateID;
 import com.pacman.view.utils.Renderer;
 
 /**
@@ -19,7 +25,7 @@ import com.pacman.view.utils.Renderer;
  * @authors Alexis Morel-mora2316 Felix Roy-royf3005 Jordan Ros Chantrabot-rosj2204 Andrien Lacomme-laca2111 Louis Ryckebusch-rycl2501
  *
  */
-public class GameView extends View
+public class GameView extends View implements IObserver
 {
 	private static final long serialVersionUID = 1594565623438214915L;  
 	private static final ViewType name = ViewType.GAME;
@@ -27,6 +33,9 @@ public class GameView extends View
 	private IGame game;
 	private int horizontalBorder, verticalBorder;
 	private boolean debug = false;
+	private ArrayList<Point2D.Double> ghostScorePositions = new ArrayList<Point2D.Double>();
+	private ArrayList<Integer> ghostKillScores = new ArrayList<Integer>();
+	private final int scoreShowTime = 2;
 	
 	public GameView(IGame gm)
 	{
@@ -49,6 +58,7 @@ public class GameView extends View
         
         Renderer.renderBackground(g, Color.black, getWidth(), getHeight());
         renderGameObjects(g);
+        renderInMazeScores(g);
         renderGameStatus(g);
         renderDebug(g);
         renderPause(g);
@@ -56,6 +66,23 @@ public class GameView extends View
         renderResumeTime(g);
 	}
 	
+	private void renderInMazeScores(Graphics g) 
+	{
+		if (game.getCurrentState() == null || game.getCurrentState().getName() != StatesName.PLAY) return;
+		if (ghostScorePositions.isEmpty() || ghostKillScores.isEmpty()) return;
+         
+        for (Integer score : ghostKillScores)
+        {    		
+        	String message = Integer.toString(score);
+        	Point2D.Double position = ghostScorePositions.get(ghostKillScores.indexOf(score));
+        	
+        	double x = (position.getX() * sFactor) + horizontalBorder;
+            double y = (position.getY() * sFactor) + verticalBorder  + (sFactor / 2);
+        	
+            Renderer.renderString(g, message, (int)x, (int)y, (int) (sFactor / 1.5));
+        }
+	}
+
 	private void renderGameObjects(Graphics g)
 	{
         double x, y;
@@ -209,5 +236,36 @@ public class GameView extends View
 	public String getName()
 	{
 		return name.getValue();
+	}
+	
+	/**
+	 * Observer to show the score associated to the death of a ghost.
+	 */
+	@Override
+	public void updateObservers(UpdateID updateID)
+	{
+		if (updateID != UpdateID.KILL_GHOST) return;
+		
+		Pacman pacman = game.getPacman();
+		if (pacman == null) return;
+		
+		if (game.getCurrentState() != null && game.getCurrentState().getName() == StatesName.PLAY)
+		{
+			Point2D.Double position = pacman.getKillPosition(); 
+			ghostScorePositions.add(position);
+			Integer score = pacman.getKillScore();
+			ghostKillScores.add(score);
+			
+			TimerThread killScoreTimer = new TimerThread(scoreShowTime);
+			killScoreTimer.setEndCallback(() -> 
+	    	{
+	    		synchronized (this) 
+	    		{
+	    			ghostScorePositions.remove(ghostScorePositions.indexOf(position));
+		    		ghostKillScores.remove(ghostKillScores.indexOf(score));
+				}
+	    	});
+			killScoreTimer.start();
+		}
 	}
 }

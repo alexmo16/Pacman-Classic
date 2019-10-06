@@ -6,7 +6,12 @@ package com.pacman.utils;
  */
 public interface IPublisher 
 {
-	public void registerObserver(IObserver<?> observer);
-	public void removeObserver(IObserver<?> observer);
-	public void notifyObservers();
+	public enum UpdateID
+	{
+		KILL_GHOST,
+		CHANGE_DIRECTION,
+	};
+	public void registerObserver(IObserver observer);
+	public void removeObserver(IObserver observer);
+	public void notifyObservers(UpdateID updateID);
 }

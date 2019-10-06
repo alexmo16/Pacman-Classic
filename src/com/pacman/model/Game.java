@@ -36,6 +36,7 @@ import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Level;
 import com.pacman.model.world.Tile;
+import com.pacman.utils.IObserver;
 import com.pacman.utils.Settings;
 import com.pacman.view.IWindow;
 import com.pacman.view.views.ViewType;
@@ -124,6 +125,12 @@ public class Game implements IGame
         ghostQueue = new LinkedTransferQueue<Ghost>();
 
         loadEntities();
+        if (pacman != null)
+        {
+        	IObserver observer = window.getGameView();
+        	pacman.registerObserver(observer);
+        }
+        
         loadMusics();
 
         mainMenuState = new MainMenuState(this);

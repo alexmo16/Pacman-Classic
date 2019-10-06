@@ -1,5 +1,7 @@
 package com.pacman.model.objects.entities;
 
+import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 
 import com.pacman.model.objects.Animation;
@@ -46,13 +48,15 @@ public class Pacman extends Entity implements IPublisher, Animation
     private boolean collision = false;
     private Direction collisionDirection = null; 
     private Direction nextDirection = Direction.LEFT;
-    private ArrayList<IObserver<Direction>> observers = new ArrayList<IObserver<Direction>>();
+    private ArrayList<IObserver> observers = new ArrayList<IObserver>();
     private boolean isTravelling = false;   
     private boolean isInvincible = false;
     
     private int[] authTiles;
     
     private int eatenGhosts = 0;
+    private Point2D.Double killPosition = new Double();
+    private Integer killScore = 0;
     
    
     public Pacman(double x, double y)
@@ -75,8 +79,13 @@ public class Pacman extends Entity implements IPublisher, Animation
     	
     	if (oldDirection != nextDirection)
     	{
-    		notifyObservers();
+    		notifyObservers(UpdateID.CHANGE_DIRECTION);
     	}
+    }
+    
+    public Direction getNextDirection()
+    {
+    	return nextDirection;
     }
     
     /**
@@ -97,16 +106,26 @@ public class Pacman extends Entity implements IPublisher, Animation
         }
     }
     
-    public void eatGhost(Ghost ghost)
+    public void eat(Ghost ghost)
     {
-        score += ghost.getPoints() * Math.pow(2, eatenGhosts);
-        eatenGhosts++ ;
+    	synchronized (killScore) 
+    	{
+    		killScore = (int) (ghost.getPoints() * Math.pow(2, eatenGhosts));
+		}
+        score += killScore;
+        eatenGhosts++;
         
         if (score >= 10000 && canGetBonusLife)
         {
         	canGetBonusLife = false;
         	lifes += 1;
         }
+        synchronized (killPosition) 
+        {
+        	// We need to make a copy, because the score position will change with movement if it is a reference.
+        	killPosition = (Double) ghost.getPosition().clone();
+		}
+        notifyObservers(UpdateID.KILL_GHOST);
     }
     
     @Override
@@ -145,18 +164,13 @@ public class Pacman extends Entity implements IPublisher, Animation
 	}
     
 	@Override
-	public void registerObserver(IObserver<?> observer) 
+	public void registerObserver(IObserver observer) 
 	{
-		@SuppressWarnings("unchecked")
-		IObserver<Direction> tempObserver = (IObserver<Direction>)observer;
-		if ( tempObserver != null )
-		{
-			observers.add(tempObserver);
-		}
+		observers.add(observer);
 	}
 
 	@Override
-	public void removeObserver(IObserver<?> observer) 
+	public void removeObserver(IObserver observer) 
 	{
 		int index = observers.indexOf(observer);
 		if (index >= 0)
@@ -166,13 +180,13 @@ public class Pacman extends Entity implements IPublisher, Animation
 	}
 
 	@Override
-	public void notifyObservers() 
+	public void notifyObservers(UpdateID updateID) 
 	{
-		for ( IObserver<Direction> observer : observers )
+		for (IObserver observer : observers)
 		{
 			if (observer != null)
 			{
-				observer.update( nextDirection );
+				observer.updateObservers(updateID);
 			}
 		}
 	}
@@ -312,5 +326,21 @@ public class Pacman extends Entity implements IPublisher, Animation
 	public void resetEatenGhosts()
 	{
 		eatenGhosts = 0;
+	}
+	
+	public final Point2D.Double getKillPosition()
+	{
+		synchronized (killPosition) 
+		{
+			return killPosition;
+		}
+	}
+
+	public Integer getKillScore() 
+	{
+		synchronized (killScore) 
+		{
+			return killScore;
+		}
 	}
 }

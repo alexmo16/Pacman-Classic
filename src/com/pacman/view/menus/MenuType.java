@@ -9,7 +9,8 @@ public enum MenuType
 {
 	MAIN_MENU("Main Menu"),
 	AUDIO("Audio"),
-    HELP("Help");
+    HELP("Help"),
+    HIGHSCORES("Highscores");
 
     private final String value;
 

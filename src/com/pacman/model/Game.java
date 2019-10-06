@@ -22,6 +22,7 @@ import com.pacman.model.objects.entities.Pacman;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.states.InitState;
 import com.pacman.model.states.MainMenuState;
+import com.pacman.model.states.NewHighscore;
 import com.pacman.model.states.PauseState;
 import com.pacman.model.states.PlayingState;
 import com.pacman.model.states.ResumeState;
@@ -90,7 +91,8 @@ public class Game implements IGame
     private IGameState resumeState;
     private IGameState currentState;
     private IGameState mainMenuState;
-
+    private IGameState newHighscoreState;
+    
     private int resumeTime = 3;
 
     private Level currentLevel;
@@ -130,6 +132,7 @@ public class Game implements IGame
         resumeState = new ResumeState(this);
         playingState = new PlayingState(this);
         stopState = new StopState(this);
+        newHighscoreState = new NewHighscore();
         setState(mainMenuState);
 
         renderThread = new RenderThread(this);
@@ -355,7 +358,11 @@ public class Game implements IGame
         } else if (state.getName() == StatesName.STOP)
         {
             window.setIsGameActive(false);
-        } else if (state.getName() == StatesName.MAIN_MENU)
+        } 
+        else if (state.getName() == StatesName.NEW_HIGHSCORE)
+		{
+			window.showView(ViewType.NEW_HIGHSCORE);
+		}else if (state.getName() == StatesName.MAIN_MENU)
         {
             window.showView(ViewType.MAIN_MENU);
         }
@@ -397,6 +404,11 @@ public class Game implements IGame
         return mainMenuState;
     }
 
+	public IGameState getNewHighscoreState()
+	{
+		return newHighscoreState;
+	}
+	
     public Sound getStartMusic()
     {
         return startMusic;

@@ -5,6 +5,8 @@ import java.nio.channels.InterruptedByTimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.pacman.model.IGame;
+import com.pacman.model.highscores.Highscores;
+import com.pacman.model.highscores.Score;
 import com.pacman.model.states.IGameState;
 import com.pacman.model.states.StatesName;
 import com.pacman.model.world.Direction;
@@ -358,9 +360,30 @@ public class GameController extends Thread
 						break;
 				}
 			}
-		}	
+		}
+		else if (currentState.getName() == StatesName.NEW_HIGHSCORE)
+		{
+			switch (e.getKeyCode())
+			{
+			case KeyEvent.VK_UP:
+				window.moveSelectionUp();
+				break;
+
+			case KeyEvent.VK_DOWN:
+				window.moveSelectionDown();
+				break;
+				
+			case KeyEvent.VK_LEFT:
+				window.moveSelectionLeft();
+				break;
+				
+			case KeyEvent.VK_RIGHT:
+				window.moveSelectionRight();
+				break;
+			}
+		}
     }
-    
+	
     private static void menuKeyPressed(KeyEvent e)
     {
     	mainMenuGame();
@@ -368,10 +391,9 @@ public class GameController extends Thread
     
     private static void acceptKeyPressed(KeyEvent e)
     {
+    	MenuOption option = window.getMenuOption();
     	if (game.getCurrentState().getName() == StatesName.MAIN_MENU)
     	{
-    		window.getCurrentView().getValue();
-    		MenuOption option = window.getMenuOption();
     		if (option != null)
     		{
             	if (option == MenuOption.START)
@@ -381,6 +403,10 @@ public class GameController extends Thread
             	else if (option == MenuOption.RESUME)
             	{
             		game.setState(game.getResumeState());
+            	}
+            	else if (option == MenuOption.HIGHSCORES)
+            	{
+            		window.setHighscoresMenu();
             	}
             	else if (option == MenuOption.AUDIO)
             	{
@@ -407,6 +433,12 @@ public class GameController extends Thread
             		GameController.stopGame();
             	}
     		}	
+    	}
+    	else if (game.getCurrentState().getName() == StatesName.NEW_HIGHSCORE)
+    	{
+			Highscores.setNew(new Score(game.getPacman().getScore(), window.getPlayerName()));
+			game.getPacman().resetScore();
+			game.setState(game.getMainMenuState());
     	}
     }
     

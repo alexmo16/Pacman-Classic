@@ -10,6 +10,7 @@ public enum MenuOption
 	START("Start"),
 	RESUME("Resume"),
 	AUDIO("Audio"),
+	HIGHSCORES("Highscores"),
 	HELP("Help"),
 	EXIT("Exit"),
 	MUSIC_VOLUME("Music volume"),

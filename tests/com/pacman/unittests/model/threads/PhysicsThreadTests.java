@@ -1,38 +1,31 @@
 package com.pacman.unittests.model.threads;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.nio.channels.InterruptedByTimeoutException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import com.pacman.model.Game;
-import com.pacman.model.objects.GameObject;
-import com.pacman.model.objects.Sprites;
-import com.pacman.model.objects.consumables.Consumable;
-import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.objects.entities.Ghost;
 import com.pacman.model.objects.entities.Pacman;
+import com.pacman.model.objects.entities.behaviours.BehaviourFactory;
+import com.pacman.model.objects.entities.behaviours.IBehaviour;
+import com.pacman.model.objects.entities.behaviours.IBehaviour.behavioursID;
 import com.pacman.model.threads.PhysicsThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Level;
-import com.pacman.model.world.Sprite;
 
 
 public class PhysicsThreadTests 
@@ -46,6 +39,8 @@ public class PhysicsThreadTests
 	private static Level level;
 	private final static String LEVEL_DATA_FILE = new String(System.getProperty("user.dir") + File.separator + "tests" + File.separator + "testAssets" + File.separator + "map.txt"); 
 	private static Game game;
+	
+	private static BehaviourFactory ghostBehaviourFactory = new BehaviourFactory();
 	
 	@BeforeEach
 	void generateLevel()
@@ -319,6 +314,8 @@ public class PhysicsThreadTests
     {
     	
     	Ghost ghost = new Ghost(16,15,GhostType.BLINKY);
+    	IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        ghost.setBehaviour(behaviour);
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhostRoom()).thenReturn(authGhost);
@@ -334,6 +331,8 @@ public class PhysicsThreadTests
     {
     	
     	Ghost ghost = new Ghost(16,15,GhostType.CLYDE);
+    	IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        ghost.setBehaviour(behaviour);
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhostRoom()).thenReturn(authGhost);
@@ -349,6 +348,8 @@ public class PhysicsThreadTests
     {
     	
     	Ghost ghost = new Ghost(16,15,GhostType.PINKY);
+    	IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        ghost.setBehaviour(behaviour);
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhostRoom()).thenReturn(authGhost);
@@ -364,6 +365,8 @@ public class PhysicsThreadTests
     {
     	
     	Ghost ghost = new Ghost(16,15,GhostType.INKY);
+    	IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        ghost.setBehaviour(behaviour);
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhostRoom()).thenReturn(authGhost);
@@ -379,6 +382,8 @@ public class PhysicsThreadTests
     {
     	
     	Ghost ghost = new Ghost(15,15,GhostType.BLINKY);
+    	IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        ghost.setBehaviour(behaviour);
     	ghost.setInTheGate();
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
@@ -395,6 +400,8 @@ public class PhysicsThreadTests
     {
     	
     	Ghost ghost = new Ghost(15,12,GhostType.BLINKY);
+    	IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        ghost.setBehaviour(behaviour);
     	ghost.setInTheGate();
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
@@ -412,6 +419,8 @@ public class PhysicsThreadTests
     {
     	
     	Ghost ghost = new Ghost(2,30,GhostType.BLINKY);
+    	IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        ghost.setBehaviour(behaviour);
     	ghost.setAlive();
     	ghost.setDirection(Direction.LEFT);
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));

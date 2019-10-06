@@ -9,6 +9,9 @@ import com.pacman.model.objects.consumables.Consumable;
 import com.pacman.model.objects.entities.Entity;
 import com.pacman.model.objects.entities.Ghost;
 import com.pacman.model.objects.entities.Pacman;
+import com.pacman.model.objects.entities.behaviours.BehaviourFactory;
+import com.pacman.model.objects.entities.behaviours.IBehaviour;
+import com.pacman.model.objects.entities.behaviours.IBehaviour.behavioursID;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Level;
@@ -31,6 +34,7 @@ public class PhysicsThread extends Thread
     private Game game;
 
     private volatile boolean isRunning;
+    private BehaviourFactory ghostBehaviourFactory = new BehaviourFactory();
 
     public PhysicsThread(Game game)
     {
@@ -166,20 +170,23 @@ public class PhysicsThread extends Thread
     public void ghostSpawn(GameObject obj)
     {
 
-        Ghost g2 = new Ghost(obj.getHitBoxX(), obj.getHitBoxY(), ((Ghost) obj).getType());
-        g2.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(), game.getCurrentLevel().getAuthTilesGhostRoom());
-        g2.updatePosition(g2.getDirection());
+        Ghost ghost = new Ghost(obj.getHitBoxX(), obj.getHitBoxY(), ((Ghost) obj).getType());
+        IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        ghost.setBehaviour(behaviour);
+        
+        ghost.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(), game.getCurrentLevel().getAuthTilesGhostRoom());
+        ghost.updatePosition(ghost.getDirection());
 
-        if (!((Ghost) obj).getInTheGate() && collisionWall(g2) != "path")
+        if (!((Ghost) obj).getInTheGate() && collisionWall(ghost) != "path")
         {
-            if (g2.getType() == GhostType.BLINKY || g2.getType() == GhostType.PINKY)
+            if (ghost.getType() == GhostType.BLINKY || ghost.getType() == GhostType.PINKY)
             {
                 ((Ghost) obj).updatePosition(Direction.RIGHT);
             } else
             {
                 ((Ghost) obj).updatePosition(Direction.LEFT);
             }
-        } else if (((Ghost) obj).getInTheGate() && collisionWall(g2) != "path")
+        } else if (((Ghost) obj).getInTheGate() && collisionWall(ghost) != "path")
         {
             ((Ghost) obj).setAlive();
             ((Ghost) obj).setNotInTheGate();
@@ -195,22 +202,25 @@ public class PhysicsThread extends Thread
     public void ghostMove(Entity obj)
     {
 
-        Ghost g2 = new Ghost(((Ghost) obj).getHitBoxX(), ((Ghost) obj).getHitBoxY(), ((Ghost) obj).getType());
-        g2.setAlive();
-        g2.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(), game.getCurrentLevel().getAuthTilesGhostRoom());
-        g2.setDirection(((Ghost) obj).getDirection());
-        g2.getNewDirection();
-        g2.updatePosition(g2.getDirection());
-        while (collisionWall(g2) != "path")
+        Ghost ghost = new Ghost(((Ghost) obj).getHitBoxX(), ((Ghost) obj).getHitBoxY(), ((Ghost) obj).getType());
+        IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        ghost.setBehaviour(behaviour);
+        
+        ghost.setAlive();
+        ghost.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(), game.getCurrentLevel().getAuthTilesGhostRoom());
+        ghost.setDirection(((Ghost) obj).getDirection());
+        ghost.getNewDirection();
+        ghost.updatePosition(ghost.getDirection());
+        while (collisionWall(ghost) != "path")
         {
-            g2.getHitBox().setRect(obj.getHitBox());
-            g2.setDirection(((Ghost) obj).getDirection());
-            g2.getNewDirection();
-            g2.updatePosition(g2.getDirection());
+        	ghost.getHitBox().setRect(obj.getHitBox());
+        	ghost.setDirection(((Ghost) obj).getDirection());
+        	ghost.getNewDirection();
+            ghost.updatePosition(ghost.getDirection());
 
         }
-        obj.setDirection(g2.getDirection());
-        obj.updatePosition(g2.getDirection());
+        obj.setDirection(ghost.getDirection());
+        obj.updatePosition(ghost.getDirection());
 
     }
 
@@ -295,7 +305,10 @@ public class PhysicsThread extends Thread
             }
 
         }
-        return new Ghost(1.0, 1.0, GhostType.BLINKY);
+        Ghost ghost = new Ghost(1.0, 1.0, GhostType.BLINKY);
+        IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        ghost.setBehaviour(behaviour);
+        return ghost;
     }
 
     public synchronized void preparePacman()

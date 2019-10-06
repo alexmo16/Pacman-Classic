@@ -1,9 +1,8 @@
 package com.pacman.model.objects.entities;
 
-import java.util.Random;
-
 import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;
+import com.pacman.model.objects.entities.behaviours.IBehaviour;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
 import com.pacman.utils.Settings;
@@ -38,15 +37,15 @@ public class Ghost extends Entity implements Animation
 	private boolean isAlive;
 	private volatile boolean isSpawning;
 	private boolean isInTheGate;
-	private Random random;
-	private int randomInt;
 	
 	private int[] authTiles;
 	private int[] authTilesRoom;
 	
 	private final int ghostPoint = 200;
 	
-    public Ghost(double x, double y, GhostType t )
+	private IBehaviour behaviour;
+	
+    public Ghost(double x, double y, GhostType t)
     {
         super(x, y, Direction.UP);
         type = t;
@@ -102,27 +101,33 @@ public class Ghost extends Entity implements Animation
 		isAlive = true;
 	}
 	
-	public synchronized boolean getSpawning() {
+	public synchronized boolean getSpawning() 
+	{
 		return isSpawning;
 	}
 	
-	public synchronized void setSpawning() {
+	public synchronized void setSpawning() 
+	{
 		isSpawning = true;
 	}
 	
-	public boolean getInTheGate() {
+	public boolean getInTheGate() 
+	{
 		return isInTheGate;
 	}
 	
-	public void setInTheGate() {
+	public void setInTheGate() 
+	{
 		isInTheGate = true;
 	}
 	
-	public void setNotInTheGate() {
+	public void setNotInTheGate() 
+	{
 		isInTheGate = false;
 	}
 	
-	public synchronized void setNotSpawning() {
+	public synchronized void setNotSpawning() 
+	{
 		isSpawning = false;
 	}
 	
@@ -138,15 +143,9 @@ public class Ghost extends Entity implements Animation
 	
 	public void getNewDirection() 
 	{
-		random = new Random();
-		randomInt = random.nextInt(4);
-		if (Direction.values()[(randomInt+2)%4] != getDirection())
+		if (behaviour != null)
 		{
-			setDirection(Direction.values()[randomInt]);
-		} 
-		else 
-		{
-			getNewDirection();
+			behaviour.getNewDirection();
 		}
 	}
 	
@@ -158,7 +157,6 @@ public class Ghost extends Entity implements Animation
 		setDirection(spawnDirection);
 		setCurrentAnimation(Animation.MOVING);
 		setPosition(spawn.x, spawn.y);
-		
 	}
 	
 	public void setAuthTiles(int[] tab1, int[] tab2)
@@ -168,7 +166,8 @@ public class Ghost extends Entity implements Animation
 	}
 	
 	@Override
-	public double getSpeed() {
+	public double getSpeed() 
+	{
 		return Settings.SPEED;
 	}
 	
@@ -190,7 +189,6 @@ public class Ghost extends Entity implements Animation
 		timeSinceLastSpriteUpdate = time;
 	}
 
-	// TODO il faut pas faire ca. va falloir que chaque strategie possede sa propre animation par exemple.
 	public synchronized void setCurrentAnimation(Animation animation)
 	{
 		currentAnimation = animation;
@@ -199,5 +197,10 @@ public class Ghost extends Entity implements Animation
 	public int getPoints()
 	{
 		return ghostPoint;
+	}
+	
+	public void setBehaviour(IBehaviour b)
+	{
+		behaviour = b;
 	}
 }

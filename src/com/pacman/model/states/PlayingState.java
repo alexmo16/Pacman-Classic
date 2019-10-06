@@ -14,6 +14,9 @@ import com.pacman.model.objects.consumables.Energizer;
 import com.pacman.model.objects.consumables.PacDot;
 import com.pacman.model.objects.entities.Ghost;
 import com.pacman.model.objects.entities.Ghost.Animation;
+import com.pacman.model.objects.entities.behaviours.BehaviourFactory;
+import com.pacman.model.objects.entities.behaviours.IBehaviour;
+import com.pacman.model.objects.entities.behaviours.IBehaviour.behavioursID;
 import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.Level;
@@ -38,7 +41,9 @@ public class PlayingState implements IGameState, IObserver<Direction>
     private String collisionString = null;
     private String collisionConsumable = null;
     private String collisionGhost = null;
-
+    
+    private BehaviourFactory ghostBehaviourFactory = new BehaviourFactory();
+    
     private class ConsumableCollisionVisitor implements ConsumableVisitor
     {
 
@@ -300,9 +305,12 @@ public class PlayingState implements IGameState, IObserver<Direction>
 
     public void ghostSpawn(GameObject obj)
     {
-        Ghost g2 = new Ghost(obj.getHitBoxX(), obj.getHitBoxY(), ((Ghost) obj).getType());
-        g2.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(), game.getCurrentLevel().getAuthTilesGhostRoom());
-        g2.updatePosition(g2.getDirection());
+        Ghost ghost = new Ghost(obj.getHitBoxX(), obj.getHitBoxY(), ((Ghost) obj).getType());
+        IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        ghost.setBehaviour(behaviour);
+        
+        ghost.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(), game.getCurrentLevel().getAuthTilesGhostRoom());
+        ghost.updatePosition(ghost.getDirection());
     }
 
     public void activateEnergizer()

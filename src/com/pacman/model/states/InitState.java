@@ -4,7 +4,6 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 
 import com.pacman.model.Game;
-import com.pacman.model.objects.entities.Ghost;
 
 /**
  * 
@@ -60,13 +59,12 @@ public class InitState implements IGameState
         game.getCollisionGhostQueue().clear();
         game.getGhostQueue().clear();
 		
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < game.getGhosts().size(); i++)
 	    {
-			((Ghost) game.getEntities().get(i)).respawn();
+			game.getGhosts().get(i).respawn();
 	    }
 		
-		
-		if(init)
+		if (init)
 		{			
 			game.resumeAudio();
 			game.playStartingMusic(startingMusicListener);

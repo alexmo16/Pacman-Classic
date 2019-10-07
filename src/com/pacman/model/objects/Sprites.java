@@ -84,7 +84,7 @@ public final class Sprites
     
     private static void loadPoints()
     {
-    	int idx = 80;
+    	int idx = 64;
     	for (int point = 200; point <= 1600; point = 2 * point)
     	{
     		points.put(point, new Sprite(tiles[idx][0], tiles[idx][1], 2 * tileSize));

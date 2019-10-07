@@ -41,7 +41,7 @@ public class Ghost extends Entity implements Animation
 	private int[] authTiles;
 	private int[] authTilesRoom;
 	
-	private final int ghostPoint = 200;
+	private final int ghostPoint = 800;
 	
 	private IBehaviour behaviour;
 	

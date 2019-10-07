@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import com.pacman.controller.GameController;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Wall;
 import com.pacman.model.objects.consumables.Consumable;
@@ -51,7 +52,7 @@ import com.pacman.view.views.ViewType;
 public class Game implements IGame
 {
     private IWindow window;
-
+    
     private Pacman pacman;
     private ArrayList<Wall> maze;
     private Pacman newDirectionPacman;
@@ -99,18 +100,18 @@ public class Game implements IGame
     private Level currentLevel;
 
     private boolean pacmanWon = false;
-    private final String LEVEL_DATA_FILE = new String(
-            System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt");
 
+    private String levelDataFile = System.getProperty("user.dir") + File.separator + "assets" + File.separator + "map.txt";
+    
     /**
      * Initialization function called by the engine when it lunch the game.
      */
     @Override
-    public void init(IWindow w)
+    public void init(IWindow w, GameController gc)
     {
         window = w;
         physicsThread = new PhysicsThread(this);
-        currentLevel = new Level(LEVEL_DATA_FILE, "1");
+        currentLevel = new Level(levelDataFile, "1");
         maze = new ArrayList<Wall>();
         entities = new ArrayList<Entity>();
         physicsThread.setAuthTiles(currentLevel.getAuthTiles());
@@ -142,7 +143,7 @@ public class Game implements IGame
         newHighscoreState = new NewHighscore();
         setState(mainMenuState);
 
-        renderThread = new RenderThread(this);
+        renderThread = new RenderThread(this, gc);
         audioThread = new AudioThread();
         renderThread.start();
         physicsThread.start();
@@ -491,11 +492,6 @@ public class Game implements IGame
         return physicsThread;
     }
 
-    public void setCurrentLevel(Level level)
-    {
-        currentLevel = level;
-    }
-
     public boolean isPacmanWon()
     {
         return pacmanWon;
@@ -508,9 +504,10 @@ public class Game implements IGame
 
     public void loadLevel(String levelName)
     {
-        Level level = new Level(LEVEL_DATA_FILE, levelName);
+        Level level = new Level(levelDataFile, levelName);
         currentLevel = level;
         currentLevel.generateConsumables();
+        physicsThread.setAuthTiles(currentLevel.getAuthTiles());
     }
 
     public synchronized List<GameObject> getGameObjects()
@@ -847,4 +844,9 @@ public class Game implements IGame
             return null;
         }
     }
+
+	public void setLevelDataFile(String lvl) 
+	{
+		levelDataFile = lvl;
+	}
 }

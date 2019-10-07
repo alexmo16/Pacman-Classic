@@ -21,7 +21,8 @@ public class App
     {
         IGame game = new Game();
         IWindow window = new Window(game);
-        GameController engine = GameController.getInstance(window, game);
+        GameController engine = new GameController(window, game);
+        window.addGameController(engine);
         engine.start();
     }
 

@@ -10,6 +10,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.jupiter.api.Test;
 
+import com.pacman.controller.GameController;
 import com.pacman.model.Game;
 import com.pacman.model.Sound;
 import com.pacman.view.Window;
@@ -19,6 +20,7 @@ class GameControllerTests
 
     Game gameManager;
     Window window;
+    
 
     @Test
     void testLoadedMusics()
@@ -31,7 +33,8 @@ class GameControllerTests
         {
             gameManager = new Game();
             window = new Window(gameManager);
-            gameManager.init(window);
+            GameController gameController = new GameController(window, gameManager);
+            gameManager.init(window, gameController);
 
             expectedStartMusic = new Sound("." + File.separator + "assets" + File.separator + "pacman_beginning.wav");
             expectedGameSirent = new Sound("." + File.separator + "assets" + File.separator + "siren.wav");

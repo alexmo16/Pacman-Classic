@@ -4,6 +4,7 @@ import java.nio.channels.InterruptedByTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pacman.controller.GameController;
 import com.pacman.model.objects.GameObject;
 import com.pacman.model.objects.Wall;
 import com.pacman.model.objects.consumables.Consumable;
@@ -20,7 +21,7 @@ import com.pacman.view.IWindow;
  */
 public interface IGame
 {
-    public void init(IWindow window);
+    public void init(IWindow window, GameController gc);
     public void update();
 
 	public void setState(IGameState state);

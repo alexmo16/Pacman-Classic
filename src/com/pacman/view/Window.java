@@ -29,7 +29,9 @@ public class Window implements WindowListener, IWindow
     private JFrame frame = new JFrame(Settings.TITLE);
     private JPanel views =  new JPanel();
     private CardLayout layout = new CardLayout();
-    	
+ 
+    private GameController gameController;
+    
 	private GameView gameView;
 	private MainMenuView mainMenuView;
 	private NewHighScoreView newHighscoreView;
@@ -70,6 +72,13 @@ public class Window implements WindowListener, IWindow
     }
     
     @Override
+    public void addGameController(GameController gc)
+    {
+    	gameController = gc;
+    	gameView.addGameController(gc);
+    }
+    
+    @Override
     public void render()
     {
     	if (frame.getWidth() != 0 && (frame.getHeight() != 0)) { frame.repaint(); }
@@ -101,7 +110,7 @@ public class Window implements WindowListener, IWindow
     @Override
     public void windowClosing(WindowEvent e)
     {
-        GameController.stopGame();
+        gameController.stopGame();
     }
 
     @Override
@@ -112,25 +121,25 @@ public class Window implements WindowListener, IWindow
     @Override
     public void windowIconified(WindowEvent e)
     {
-    	GameController.pauseGame();
+    	gameController.pauseGame();
     }
 
     @Override
     public void windowDeiconified(WindowEvent e)
     {
-    	GameController.resumeGame();
+    	gameController.resumeGame();
     }
 
     @Override
     public void windowActivated(WindowEvent e)
     {
-    	GameController.resumeGame();
+    	gameController.resumeGame();
     }
 
     @Override
     public void windowDeactivated(WindowEvent e)
     {
-    	GameController.pauseGame();
+    	gameController.pauseGame();
     }
 	
     public JFrame getFrame()
@@ -207,9 +216,8 @@ public class Window implements WindowListener, IWindow
 	@Override
 	public void moveSelectionDown() 
 	{
-		newHighscoreView.previousCharacter();
+		newHighscoreView.previousCharacter();
 	}
-
 	@Override
 	public void moveSelectionLeft() 
 	{

@@ -26,13 +26,13 @@ public class RenderThreadTests
 	
 	private IGame game = Mockito.mock( IGame.class );
 	private IWindow window = Mockito.mock( IWindow.class );
-	private GameController gc = GameController.getInstance(window, game);
+	private GameController gc = new GameController(window, game);
 	private RenderThread thread;
 	
 	@BeforeEach
 	void createThread()
 	{
-		thread = new RenderThread(game);
+		thread = new RenderThread(game, gc);
 		thread.start();
 		assert(thread.isAlive());
 	}

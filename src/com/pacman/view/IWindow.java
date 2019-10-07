@@ -2,6 +2,7 @@ package com.pacman.view;
 
 import java.awt.event.KeyListener;
 
+import com.pacman.controller.GameController;
 import com.pacman.view.menus.MenuOption;
 import com.pacman.view.menus.MenuType;
 import com.pacman.view.views.GameView;
@@ -18,6 +19,7 @@ public interface IWindow
 
 	public ViewType getCurrentView();
 	public GameView getGameView();
+	public void addGameController(GameController gc);
 	
 	public void moveSelectionUp();
 	public void moveSelectionDown();

@@ -29,7 +29,7 @@ class EngineTest
 		
 		game = Mockito.mock( IGame.class );
 		
-		engine = GameController.getInstance( window, game );
+		engine = new GameController( window, game );
 	}
 	
 	@Test
@@ -43,11 +43,11 @@ class EngineTest
 		{
 			fail();
 		}
-		assertTrue( GameController.getIsRunning() );
+		assertTrue( engine.getIsRunning() );
 		
 		synchronized( this ) 
         { 
-			GameController.stopGame();
+			engine.stopGame();
         } 
 	}
 }

@@ -25,55 +25,37 @@ import com.pacman.view.menus.MenuType;
  */
 public class GameController extends Thread
 {
-    private static IGame game;
-    private static Input inputs;
-    private static IWindow window;
+    private IGame game;
+    private Input inputs;
+    private IWindow window;
  
-    private static AtomicBoolean isRunning = new AtomicBoolean(false);
-    private volatile static int fps;
-    
-    
-    private static GameController instance;
-
-    /**
-     * Constructeur prive puisque c'est un singleton. Il faut passer par getInstance
-     */
-    private GameController()
-    {
-    }
+    private AtomicBoolean isRunning = new AtomicBoolean(false);
+    private volatile static int fps = 0;
     
     /**
-     * Getter for the singleton.
      * @param window the window object where the game will be render.
      * @param game the object that implements the IGame interface. 
-     * @return Engine
      */
-    public static GameController getInstance(IWindow w, IGame g)
+    public GameController(IWindow w, IGame g)
     {
-        if (instance == null)
+        if (g == null || w == null)
         {
-            if (g == null || w == null)
-            {
-                return null;
-            }
-            game = g;
-            
-            window = w;
-            inputs = new Input();
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.P.getValue()), (KeyEvent e) -> pauseButtonPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.R.getValue()), (KeyEvent e) -> resumeButtonPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.UP.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.DOWN.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.RIGHT.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.LEFT.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.ESCAPE.getValue()), (KeyEvent e) -> menuKeyPressed(e) );
-            inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.ENTER.getValue()), (KeyEvent e) -> acceptKeyPressed(e) );
-            
-            window.addListener(inputs);
-            instance = new GameController();
+            return;
         }
-
-        return instance;
+        game = g;
+        
+        window = w;
+        inputs = new Input();
+        inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.P.getValue()), (KeyEvent e) -> pauseButtonPressed(e) );
+        inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.R.getValue()), (KeyEvent e) -> resumeButtonPressed(e) );
+        inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.UP.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
+        inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.DOWN.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
+        inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.RIGHT.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
+        inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.LEFT.getValue()), (KeyEvent e) -> arrowsKeysPressed(e) );
+        inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.ESCAPE.getValue()), (KeyEvent e) -> menuKeyPressed(e) );
+        inputs.addPressedCallback(KeyEvent.getKeyText(KeyInput.ENTER.getValue()), (KeyEvent e) -> acceptKeyPressed(e) );
+        
+        window.addListener(inputs);
     }
 
 	public IWindow getWindow()
@@ -81,7 +63,7 @@ public class GameController extends Thread
 		return window;
 	}
 
-	public static boolean getIsRunning()
+	public  boolean getIsRunning()
 	{
 		return isRunning.get();
 	}
@@ -89,20 +71,20 @@ public class GameController extends Thread
 	/**
 	 * Stop the game and the engine thread.
 	 */
-	public static void stopGame()
+	public void stopGame()
 	{
 		try
 		{
 			isRunning.set(false);
 			game.stopThreads();
 			window.dispose();
-			instance.join(500);
-			if (instance.isAlive())
+			join(500);
+			if (isAlive())
 			{
-				instance.interrupt();
+				interrupt();
 				throw new InterruptedByTimeoutException();
 			}
-
+			
 			System.exit(0);
 
 		} catch (InterruptedByTimeoutException | InterruptedException e)
@@ -123,6 +105,7 @@ public class GameController extends Thread
 	 */
 	public void run()
 	{
+		System.out.println("Start: Game loop Thread");
 		init();
 
 		boolean render = false;
@@ -169,11 +152,13 @@ public class GameController extends Thread
 		{
 			notifyAll();
 		}
+		
+		System.out.println("Stop: Game loop Thread");
 	}
 
 	private void init()
 	{
-		game.init(window);
+		game.init(window, this);
 		isRunning.set(true);
 	}
 
@@ -201,12 +186,12 @@ public class GameController extends Thread
 		}
 	}
 
-	private static double getCurrentTimeInMillis()
+	private double getCurrentTimeInMillis()
 	{
 		return System.nanoTime() / 1000000000.0;
 	}
 
-	private static void pauseButtonPressed(KeyEvent e)
+	private void pauseButtonPressed(KeyEvent e)
 	{
 		IGameState currentState = game.getCurrentState();
 		if (currentState.getName() == StatesName.PLAY)
@@ -215,7 +200,7 @@ public class GameController extends Thread
 		}
 	}
 
-	private static void resumeButtonPressed(KeyEvent e)
+	private void resumeButtonPressed(KeyEvent e)
 	{
 		IGameState currentState = game.getCurrentState();
 		if (currentState.getName() == StatesName.PAUSE)
@@ -227,7 +212,7 @@ public class GameController extends Thread
     /**
      * @param volume Must be between 0 and 100.
      */
-    public static void changeMusicVolume(int delta)
+    public void changeMusicVolume(int delta)
     {
     	int tmpVolume = Settings.getMusicVolume() + delta;
     	if (tmpVolume >= 0 && tmpVolume <= 100)
@@ -240,7 +225,7 @@ public class GameController extends Thread
     /**
      * @param volume Must be between 0 and 100.
      */
-    public static void changeSoundsVolume(int delta)
+    public void changeSoundsVolume(int delta)
     {
     	int tmpVolume = Settings.getSoundsVolume() + delta;
     	if (tmpVolume >= 0 && tmpVolume <= 100)
@@ -250,7 +235,7 @@ public class GameController extends Thread
     	}
     }
     
-    private static void muteMusicPressed() 
+    private void muteMusicPressed() 
     {    	
     	if(!Settings.isMusicMute())
     	{
@@ -264,7 +249,7 @@ public class GameController extends Thread
     	}
 	}
 
-	private static void muteSoundsPressed()
+	private void muteSoundsPressed()
 	{
 		if (!Settings.isSoundsMute())
 		{
@@ -277,7 +262,7 @@ public class GameController extends Thread
 		}
 	}
 
-	private static void arrowsKeysPressed(KeyEvent e)
+	private void arrowsKeysPressed(KeyEvent e)
 	{
 		IGameState currentState = game.getCurrentState();
 		if (currentState.getName() == StatesName.PLAY)
@@ -384,12 +369,12 @@ public class GameController extends Thread
 		}
     }
 	
-    private static void menuKeyPressed(KeyEvent e)
+    private void menuKeyPressed(KeyEvent e)
     {
     	mainMenuGame();
     }
     
-    private static void acceptKeyPressed(KeyEvent e)
+    private void acceptKeyPressed(KeyEvent e)
     {
     	MenuOption option = window.getMenuOption();
     	if (game.getCurrentState().getName() == StatesName.MAIN_MENU)
@@ -430,7 +415,7 @@ public class GameController extends Thread
             	}
             	else if (option == MenuOption.EXIT)
             	{
-            		GameController.stopGame();
+            		stopGame();
             	}
     		}	
     	}
@@ -442,7 +427,7 @@ public class GameController extends Thread
     	}
     }
     
-    public static void mainMenuGame()
+    public void mainMenuGame()
     {
     	if (game == null)
     	{
@@ -455,7 +440,7 @@ public class GameController extends Thread
     	}
     }
     
-    public static void pauseGame()
+    public void pauseGame()
     {
     	if (game == null)
     	{
@@ -468,7 +453,7 @@ public class GameController extends Thread
     	}
     }
     
-    public static void resumeGame()
+    public void resumeGame()
     {
     	if (game == null)
     	{
@@ -484,12 +469,12 @@ public class GameController extends Thread
 	/**
 	 * @return the fps
 	 */
-	public synchronized static int getFps()
+	public synchronized int getFps()
 	{
 		return fps;
 	}
 
-	public synchronized static void setFps(int frames)
+	public synchronized void setFps(int frames)
 	{
 		fps = frames;
 	}

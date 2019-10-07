@@ -20,11 +20,13 @@ import com.pacman.view.IWindow;
 public class RenderThread extends Thread
 {
 	private IGame game;
+	private GameController gameController;
 	private boolean isRunning = false;
 	
-	public RenderThread(IGame g)
+	public RenderThread(IGame g, GameController gc)
 	{
 		game = g;
+		gameController = gc;
 	}
 
     private void updateAnimation(long timeDiff) 
@@ -50,11 +52,10 @@ public class RenderThread extends Thread
 	@Override
 	public void run() 
 	{
-        GameController gc;
-        if ((gc = GameController.getInstance(null, null)) == null) return;
+        if (gameController == null) return;
         
         IWindow window;
-        if ((window = gc.getWindow()) == null) return;
+        if ((window = gameController.getWindow()) == null) return;
 
         long beforeTime = System.currentTimeMillis(), 
         	 timeDiff = 0, 
@@ -66,11 +67,11 @@ public class RenderThread extends Thread
         System.out.println("Start: Render Thread");
         while (isRunning) 
         {
-        	synchronized (gc)
+        	synchronized (gameController)
 			{
 				try
 				{
-					gc.wait();
+					gameController.wait();
 				} catch (InterruptedException e)
 				{
 					e.printStackTrace();
@@ -89,7 +90,7 @@ public class RenderThread extends Thread
             
             if (framesTime >= 1000)
             {
-            	GameController.setFps(frames);
+            	gameController.setFps(frames);
             	frames = 0;
             	framesTime = 0;
             }

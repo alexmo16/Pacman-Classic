@@ -31,6 +31,7 @@ public class GameView extends View implements IObserver
 	private static final ViewType name = ViewType.GAME;
 	
 	private IGame game;
+	private GameController gameController;
 	private int horizontalBorder, verticalBorder;
 	private boolean debug = false;
 	private ArrayList<Point2D.Double> ghostScorePositions = new ArrayList<Point2D.Double>();
@@ -40,6 +41,11 @@ public class GameView extends View implements IObserver
 	public GameView(IGame gm)
 	{
 		game = gm;
+	}
+	
+	public void addGameController(GameController gc)
+	{
+		gameController = gc;
 	}
 	
 	@Override
@@ -73,13 +79,26 @@ public class GameView extends View implements IObserver
          
         for (Integer score : ghostKillScores)
         {    		
-        	String message = Integer.toString(score);
         	Point2D.Double position = ghostScorePositions.get(ghostKillScores.indexOf(score));
         	
-        	double x = (position.getX() * sFactor) + horizontalBorder;
-            double y = (position.getY() * sFactor) + verticalBorder  + (sFactor / 2);
+        	Sprite sprite = Sprites.getPoints(score);
         	
-            Renderer.renderString(g, message, (int)x, (int)y, (int) (sFactor / 1.5));
+        	int xTileScale = sprite.getWidth() / Sprites.getTilesize();
+        	int yTileScale = sprite.getHeight() / Sprites.getTilesize();
+        	
+        	double x = (position.getX() * sFactor) + horizontalBorder;
+            double y = (position.getY() * sFactor) + verticalBorder;
+            
+            g.drawImage(Sprites.getTilesSheet(), 
+        				(int)(x), 
+        				(int)(y), 
+        				(int)(x + (xTileScale * sFactor)), 
+        				(int)(y + (yTileScale * sFactor)), 
+        				sprite.getX1(), 
+        				sprite.getY1(), 
+        				sprite.getX2(), 
+        				sprite.getY2(), 
+        				null); 
         }
 	}
 
@@ -162,7 +181,7 @@ public class GameView extends View implements IObserver
         x = getWidth() - horizontalBorder + 2 * sFactor;
         y = verticalBorder / 2;
         s = "FPS ";
-        s += Integer.toString(GameController.getFps());
+        if (gameController != null) { s += Integer.toString(gameController.getFps()); };
         Renderer.renderString(g, s, x, y, sFactor);
         
         // Bot left - Score

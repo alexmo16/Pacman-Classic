@@ -337,6 +337,24 @@ public class PlayingState implements IGameState, IObserver
             setGhostsAnimation(Animation.FRIGHTENED);
             game.setIntermissionThread(intermissionTimer);
         }
+        else
+        {
+        	intermissionTimer.stopThread();
+        	try 
+        	{
+				intermissionTimer.join(500);
+				if (intermissionTimer.isAlive())
+				{
+					intermissionTimer.interrupt();
+					// If there is an interruption, we call manually endEnergizer, because the thread will not call it.
+					endEnergizer();
+				}
+			} catch (InterruptedException e) 
+        	{
+				e.printStackTrace();
+			}
+        	activateEnergizer();
+        }        	
     }
 
     private void endEnergizer()

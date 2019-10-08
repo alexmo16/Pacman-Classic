@@ -32,7 +32,7 @@ public class NewHighScoreView extends View
 	
 	public void previousCharacter()
 	{
-		charsId[selection] = (charsId[selection] - 1 <= 0) ? CHARACTERS.length - 1 : charsId[selection] - 1; 
+		charsId[selection] = (charsId[selection] - 1 < 0) ? CHARACTERS.length - 1 : charsId[selection] - 1; 
 	}
 	
 	public void moveSelectionRight()

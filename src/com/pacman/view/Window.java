@@ -110,7 +110,10 @@ public class Window implements WindowListener, IWindow
     @Override
     public void windowClosing(WindowEvent e)
     {
-        gameController.stopGame();
+    	if (gameController != null)
+    	{
+    		gameController.stopGame();
+    	}
     }
 
     @Override

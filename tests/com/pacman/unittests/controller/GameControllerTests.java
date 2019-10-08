@@ -23,18 +23,20 @@ class GameControllerTests
     
 
     @Test
-    void testLoadedMusics()
+    void testLoadedMusics() throws InterruptedException
     {
         boolean isException = false;
         Sound expectedStartMusic = null;
         Sound expectedGameSirent = null;
         Sound expectedChomp = null;
+        GameController gameController = null;
         try
         {
             gameManager = new Game();
             window = new Window(gameManager);
-            GameController gameController = new GameController(window, gameManager);
-            gameManager.init(window, gameController);
+            gameController = new GameController(window, gameManager);
+            gameController.start();
+            Thread.sleep(500);
 
             expectedStartMusic = new Sound("." + File.separator + "assets" + File.separator + "pacman_beginning.wav");
             expectedGameSirent = new Sound("." + File.separator + "assets" + File.separator + "siren.wav");
@@ -51,6 +53,10 @@ class GameControllerTests
         assertEquals(expectedGameSirent.getFile(), gameManager.getGameSiren().getFile());
         assertEquals(expectedChomp.getFile(), gameManager.getChomps()[0].getFile());
         assertFalse(isException);
+        if (gameController != null)
+        {
+        	gameController.stopGame();
+        }
     }
 
 }

@@ -63,7 +63,7 @@ public class PhysicsThreadTests
         {
             collision.stopThread();
             collision.notifyAll();
-            collision.join(500);
+            collision.join(5000);
             if (collision.isAlive())
             {
                 collision.interrupt();

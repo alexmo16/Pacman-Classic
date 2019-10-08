@@ -4,6 +4,7 @@ import com.pacman.controller.GameController;
 import com.pacman.model.IGame;
 import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.GameObject;
+import com.pacman.utils.Settings;
 import com.pacman.view.IWindow;
 
 /**
@@ -22,11 +23,13 @@ public class RenderThread extends Thread
 	private IGame game;
 	private GameController gameController;
 	private boolean isRunning = false;
+	private long waitTime;
 	
 	public RenderThread(IGame g, GameController gc)
 	{
 		game = g;
 		gameController = gc;
+		waitTime = (long) (Settings.UPDATE_RATE * 0.9 * 1000);
 	}
 
     private void updateAnimation(long timeDiff) 
@@ -67,16 +70,21 @@ public class RenderThread extends Thread
         System.out.println("Start: Render Thread");
         while (isRunning) 
         {
-        	synchronized (gameController)
+			try
 			{
-				try
+				synchronized (this) 
 				{
-					gameController.wait();
-				} catch (InterruptedException e)
-				{
-					e.printStackTrace();
+					this.wait(waitTime);
 				}
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
 			}
+			
+        	if (!gameController.getTimeToRender())
+            {
+           		continue;
+            }
         	
         	updateAnimation(System.currentTimeMillis() - beforeTime);
         	window.render();

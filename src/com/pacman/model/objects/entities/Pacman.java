@@ -42,7 +42,8 @@ public class Pacman extends Entity implements IPublisher, Animation
 	private int animationState = 0;
 	private boolean endOfAnimation = false;
     private int score = 0;
-	public  final int LIFES = 3;
+	public final int LIFES = 3;
+	private final int SCORE_NEW_LIFE = 10000;
     private int lifes;
     private boolean canGetBonusLife = true;
     private boolean collision = false;
@@ -99,7 +100,7 @@ public class Pacman extends Entity implements IPublisher, Animation
     {
         score += consumable.getPoints();
         
-        if (score >= 10000 && canGetBonusLife)
+        if (score >= SCORE_NEW_LIFE && canGetBonusLife)
         {
         	canGetBonusLife = false;
         	lifes += 1;
@@ -115,7 +116,7 @@ public class Pacman extends Entity implements IPublisher, Animation
         score += killScore;
         eatenGhosts++;
         
-        if (score >= 10000 && canGetBonusLife)
+        if (score >= SCORE_NEW_LIFE && canGetBonusLife)
         {
         	canGetBonusLife = false;
         	lifes += 1;

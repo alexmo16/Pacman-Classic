@@ -11,4 +11,5 @@ public interface IBehaviour
 	}
 	
 	public void getNewDirection();
+
 }

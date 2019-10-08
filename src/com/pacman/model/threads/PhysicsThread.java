@@ -171,7 +171,16 @@ public class PhysicsThread extends Thread
     {
 
         Ghost ghost = new Ghost(obj.getHitBoxX(), obj.getHitBoxY(), ((Ghost) obj).getType());
-        IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        IBehaviour behaviour;
+        
+        if ( !game.getPacman().isInvincible() )
+        {
+        	 behaviour = ghostBehaviourFactory.createBehaviour(ghost, ((Ghost)obj).getBehaviourID(), game);
+        } else 
+        {
+        	behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM, game);
+        }
+        
         ghost.setBehaviour(behaviour);
         
         ghost.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(), game.getCurrentLevel().getAuthTilesGhostRoom());
@@ -203,7 +212,17 @@ public class PhysicsThread extends Thread
     {
 
         Ghost ghost = new Ghost(((Ghost) obj).getHitBoxX(), ((Ghost) obj).getHitBoxY(), ((Ghost) obj).getType());
-        IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        ghost.setSameCorridor(((Ghost)obj).getSameCorridor());
+        IBehaviour behaviour;
+        
+        if ( !game.getPacman().isInvincible() )
+        {
+        	 behaviour = ghostBehaviourFactory.createBehaviour(ghost, ((Ghost)obj).getBehaviourID(), game);
+        } else 
+        {
+        	behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.FEAR, game);
+        }
+        
         ghost.setBehaviour(behaviour);
         
         ghost.setAlive();
@@ -306,7 +325,7 @@ public class PhysicsThread extends Thread
 
         }
         Ghost ghost = new Ghost(1.0, 1.0, GhostType.BLINKY);
-        IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM, game);
         ghost.setBehaviour(behaviour);
         return ghost;
     }
@@ -319,6 +338,126 @@ public class PhysicsThread extends Thread
 
         game.getNewDirectionPacman().setDirection(game.getNewDirection());
         game.getNewDirectionPacman().updatePosition(game.getNewDirectionPacman().getDirection());
+    }
+    
+    private synchronized void isSameCorridor(Ghost ghost)
+    {
+ 
+
+		int coordGhostX = (int) ghost.getHitBoxX();
+		int coordGhostY = (int) ghost.getHitBoxY();
+		int coordPacmanX = (int)game.getPacman().getHitBoxX();
+		int coordPacmanY = (int)game.getPacman().getHitBoxY();
+
+		
+		boolean isCorridor = false;
+		boolean isX = true;
+		if (coordGhostX == coordPacmanX )
+		{
+			
+			isCorridor = true;
+			isX = true;
+			
+		}
+		else if (coordGhostY == coordPacmanY)
+		{
+			isCorridor = true;
+			isX = false;
+		}
+		
+		if(isCorridor)
+		{
+			if (!isX)
+			{
+				if(coordGhostX < coordPacmanX)
+				{
+					for(int i = coordGhostX ; i < coordPacmanX; i++ )
+					{
+						if(!isAuth( i, coordGhostY, ghost))
+						{
+							sendCorridorGhost("notcorridor", ghost);
+							return;
+						}
+					}
+					sendCorridorGhost("corridor", ghost);
+					return;
+				}
+				else if(coordGhostX > coordPacmanX)
+				{
+					for(int i = coordPacmanX ; i <  coordGhostX; i++ )
+					{
+						if(!isAuth( i,  coordGhostY, ghost))
+						{
+							sendCorridorGhost("notcorridor", ghost);
+							return;
+							
+						}
+					}
+					sendCorridorGhost("corridor", ghost);
+					return;
+				}
+			}
+			else
+			{
+				if(coordGhostY < coordPacmanY)
+				{
+					
+					for(int i =  coordGhostY ; i <  coordPacmanY; i++ )
+					{
+						if(!isAuth( coordGhostX,  i, ghost))
+						{
+							sendCorridorGhost("notcorridor", ghost);
+							return;
+							
+						}
+					}
+					sendCorridorGhost("corridor", ghost);
+					return;
+				}
+				else if (coordGhostY > coordPacmanY)
+				{
+					for(int i =  coordPacmanY ; i <  coordGhostY; i++ )
+					{
+						if(!isAuth( coordGhostX, i, ghost))
+						{
+							sendCorridorGhost("notcorridor", ghost);
+							return;
+							
+						}
+					}
+					sendCorridorGhost("corridor", ghost);
+					return;
+				}
+    			
+			}
+		}
+		else 
+		{
+			sendCorridorGhost("notcorridor", ghost);
+			return;
+		}
+    	
+    }
+    
+    private void sendCorridorGhost(String string, Ghost ghost)
+    {
+    	if(ghost.getType() == GhostType.BLINKY)
+    	{
+    		game.addStringBlinkyCorridorQueue(string);
+    	}
+
+    	else if(ghost.getType() == GhostType.INKY)
+    	{
+    		game.addStringInkyCorridorQueue(string);
+    	}
+    	else if(ghost.getType() == GhostType.PINKY)
+    	{
+    		game.addStringPinkyCorridorQueue(string);
+    	}
+    	else if(ghost.getType() == GhostType.CLYDE)
+    	{
+    		game.addStringClydeCorridorQueue(string);
+    	}
     }
 
     @Override
@@ -348,6 +487,10 @@ public class PhysicsThread extends Thread
 
             checkConsumablesCollision();
             executeWallStrategy();
+            for(Ghost ghost : game.getGhosts())
+            {
+            	isSameCorridor(ghost);
+            }
         }
         System.out.println("Stop: Physics Thread");
     }
@@ -383,6 +526,7 @@ public class PhysicsThread extends Thread
             game.addGhostQueue(collisionGhost);
         }
     }
+    
 
     public void stopThread()
     {

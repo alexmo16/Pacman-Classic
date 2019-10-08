@@ -85,6 +85,12 @@ public class Game implements IGame
     
     private static PriorityBlockingQueue<String> collisionGhostQueue;
     private static LinkedTransferQueue<Ghost> ghostQueue;
+    
+    private static PriorityBlockingQueue<String> stringBlinkyCorridorQueue;
+    private static PriorityBlockingQueue<String> stringInkyCorridorQueue;
+    private static PriorityBlockingQueue<String> stringPinkyCorridorQueue;
+    private static PriorityBlockingQueue<String> stringClydeCorridorQueue;
+    
 
     private IGameState initState;
     private IGameState stopState;
@@ -124,7 +130,12 @@ public class Game implements IGame
         
         collisionGhostQueue = new PriorityBlockingQueue<String>(10);
         ghostQueue = new LinkedTransferQueue<Ghost>();
-
+        
+        stringBlinkyCorridorQueue = new PriorityBlockingQueue<String>(10);
+        stringInkyCorridorQueue = new PriorityBlockingQueue<String>(10);
+        stringPinkyCorridorQueue = new PriorityBlockingQueue<String>(10);
+        stringClydeCorridorQueue = new PriorityBlockingQueue<String>(10);
+        
         loadEntities();
         if (pacman != null)
         {
@@ -845,6 +856,121 @@ public class Game implements IGame
         }
     }
 
+    public synchronized PriorityBlockingQueue<String> getStringBlinkyCorridorQueue()
+    {
+        return stringBlinkyCorridorQueue;
+    }
+    
+    public synchronized void addStringBlinkyCorridorQueue(String g)
+    {
+        try
+        {
+        	
+            stringBlinkyCorridorQueue.offer(g);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public synchronized String readStringBlinkyCorridorQueue()
+    {
+        try
+        {
+            return stringBlinkyCorridorQueue.poll();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public synchronized PriorityBlockingQueue<String> getStringInkyCorridorQueue()
+    {
+        return stringInkyCorridorQueue;
+    }
+    
+    public synchronized void addStringInkyCorridorQueue(String g)
+    {
+        try
+        {
+        	
+            stringInkyCorridorQueue.offer(g);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public synchronized String readStringInkyCorridorQueue()
+    {
+        try
+        {
+            return stringInkyCorridorQueue.poll();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public synchronized PriorityBlockingQueue<String> getStringPinkyCorridorQueue()
+    {
+        return stringPinkyCorridorQueue;
+    }
+    
+    public synchronized void addStringPinkyCorridorQueue(String g)
+    {
+        try
+        {
+        	
+            stringPinkyCorridorQueue.offer(g);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public synchronized String readStringPinkyCorridorQueue()
+    {
+        try
+        {
+            return stringPinkyCorridorQueue.poll();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public synchronized PriorityBlockingQueue<String> getStringClydeCorridorQueue()
+    {
+        return stringClydeCorridorQueue;
+    }
+    
+    public synchronized void addStringClydeCorridorQueue(String g)
+    {
+        try
+        {
+        	
+            stringClydeCorridorQueue.offer(g);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
+    public synchronized String readStringClydeCorridorQueue()
+    {
+        try
+        {
+            return stringClydeCorridorQueue.poll();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
 	public void setLevelDataFile(String lvl) 
 	{
 		levelDataFile = lvl;

@@ -1,8 +1,11 @@
 package com.pacman.model.objects.entities;
 
+import java.util.Random;
+
 import com.pacman.model.objects.Animation;
 import com.pacman.model.objects.Sprites;
 import com.pacman.model.objects.entities.behaviours.IBehaviour;
+import com.pacman.model.objects.entities.behaviours.IBehaviour.behavioursID;
 import com.pacman.model.world.Direction;
 import com.pacman.model.world.GhostType;
 import com.pacman.utils.Settings;
@@ -44,6 +47,12 @@ public class Ghost extends Entity implements Animation
 	private final int ghostPoint = 200;
 	
 	private IBehaviour behaviour;
+	
+	private boolean sameCorridor = false;
+	
+	private Random random;
+	
+	private int locker = 0;
 	
     public Ghost(double x, double y, GhostType t)
     {
@@ -203,4 +212,63 @@ public class Ghost extends Entity implements Animation
 	{
 		behaviour = b;
 	}
+	
+	public void setSameCorridor(boolean bool)
+	{
+		sameCorridor = bool;
+		/*if( sameCorridor)
+		{
+			setCurrentAnimation(Animation.FRIGHTENED);
+		}
+		else 
+		{
+			setCurrentAnimation(Animation.MOVING);
+		}*/
+	}
+	
+	public boolean getSameCorridor()
+	{
+		return sameCorridor;
+	}
+	
+	public behavioursID getBehaviourID()
+	{
+
+		if ( getType() == GhostType.PINKY )
+		{
+			return behavioursID.AMBUSH;
+		} else if ( getType() == GhostType.BLINKY )
+		{
+			return behavioursID.CHASE;
+		} else if ( getType() == GhostType.INKY )
+		{
+			if (getSameCorridor())
+			{
+				if (locker == 0)
+				{
+					random = new Random();
+					locker = random.nextInt(2)+1;
+				}
+				
+				if (locker == 1)
+				{
+					return behavioursID.FEAR;
+				} else
+				{
+					return behavioursID.CHASE;
+				}
+			} else {
+				locker = 0;
+				return behavioursID.RANDOM;
+			}
+			
+			
+		} else 
+		{
+			return behavioursID.RANDOM;
+		}
+	}
+	
+	
+
 }

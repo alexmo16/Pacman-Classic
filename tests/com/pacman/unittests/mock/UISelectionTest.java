@@ -20,6 +20,9 @@ import com.pacman.view.menus.MenuType;
 
 class UISelectionTest 
 {	
+	private final int WAIT_TIME_ROBOT = 200; // ms
+	private final int WAIT_TIME_START_GAME = 1000; // ms
+	
 	@Test
 	void testStartGame() throws AWTException
 	{
@@ -28,7 +31,7 @@ class UISelectionTest
 		GameController engine = new GameController(window, game);
         window.addGameController(engine);
         engine.start();
-        sleep(1000);
+        sleep(WAIT_TIME_START_GAME);
         
 		assertTrue(engine.getIsRunning());
 		
@@ -40,7 +43,7 @@ class UISelectionTest
         }
         robot.keyPress(KeyEvent.VK_ENTER);
         
-        sleep(500);
+        sleep(WAIT_TIME_ROBOT);
         
         IGameState state = game.getCurrentState();
         if (state == null)
@@ -69,7 +72,7 @@ class UISelectionTest
 		GameController engine = new GameController(window, game);
         window.addGameController(engine);
         engine.start();
-        sleep(1000);
+        sleep(WAIT_TIME_START_GAME);
         
 		assertTrue(engine.getIsRunning());
 		
@@ -79,76 +82,76 @@ class UISelectionTest
         while (window.getMenuOption() != MenuOption.AUDIO)
         {
         	robot.keyPress(KeyEvent.VK_DOWN);
-        	sleep(100);
+        	sleep(WAIT_TIME_ROBOT);
         }
         robot.keyPress(KeyEvent.VK_ENTER);
-        sleep(100);
+        sleep(WAIT_TIME_ROBOT);
         
         MenuType menuType = window.getMenuType();
         assertTrue(menuType == MenuType.AUDIO);
         while (window.getMenuOption() != MenuOption.BACK)
         {
         	robot.keyPress(KeyEvent.VK_DOWN);
-        	sleep(100);
+        	sleep(WAIT_TIME_ROBOT);
         }
         robot.keyPress(KeyEvent.VK_ENTER);
-        sleep(100);
+        sleep(WAIT_TIME_ROBOT);
         
         // Help
         while (window.getMenuOption() != MenuOption.HELP)
         {
         	robot.keyPress(KeyEvent.VK_DOWN);
-        	sleep(100);
+        	sleep(WAIT_TIME_ROBOT);
         }
         robot.keyPress(KeyEvent.VK_ENTER);
-        sleep(100);
+        sleep(WAIT_TIME_ROBOT);
         
         menuType = window.getMenuType();
         assertTrue(menuType == MenuType.HELP);
         while (window.getMenuOption() != MenuOption.BACK)
         {
         	robot.keyPress(KeyEvent.VK_DOWN);
-        	sleep(100);
+        	sleep(WAIT_TIME_ROBOT);
         }
         robot.keyPress(KeyEvent.VK_ENTER);
         while (window.getMenuOption() != MenuOption.START)
         {
         	robot.keyPress(KeyEvent.VK_UP);
-        	sleep(100);
+        	sleep(WAIT_TIME_ROBOT);
         }
         
         // HighScore
         while (window.getMenuOption() != MenuOption.HIGHSCORES)
         {
         	robot.keyPress(KeyEvent.VK_DOWN);
-        	sleep(100);
+        	sleep(WAIT_TIME_ROBOT);
         }
         robot.keyPress(KeyEvent.VK_ENTER);
-        sleep(100);
+        sleep(WAIT_TIME_ROBOT);
         
         menuType = window.getMenuType();
         assertTrue(menuType == MenuType.HIGHSCORES);
         while (window.getMenuOption() != MenuOption.BACK)
         {
         	robot.keyPress(KeyEvent.VK_DOWN);
-        	sleep(100);
+        	sleep(WAIT_TIME_ROBOT);
         }
         robot.keyPress(KeyEvent.VK_ENTER);
         while (window.getMenuOption() != MenuOption.START)
         {
         	robot.keyPress(KeyEvent.VK_UP);
-        	sleep(100);
+        	sleep(WAIT_TIME_ROBOT);
         }
         
         // Exit
         while (window.getMenuOption() != MenuOption.EXIT)
         {
         	robot.keyPress(KeyEvent.VK_DOWN);
-        	sleep(100);
+        	sleep(WAIT_TIME_ROBOT);
         }
         robot.keyPress(KeyEvent.VK_ENTER);
         
-        sleep(100);
+        sleep(WAIT_TIME_ROBOT);
 		assertFalse(engine.getIsRunning());
 	}
 	

@@ -9,7 +9,7 @@ public enum ViewType
 {
 	MAIN_MENU("MainMenu"),
 	GAME("Game"),
-	NEW_HIGHSCORE("New highscore");
+	NEW_HIGHSCORE("New High Score");
 
     private final String value;
 

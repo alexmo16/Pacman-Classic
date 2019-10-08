@@ -55,6 +55,11 @@ public class PlayingState implements IGameState, IObserver
         {
             Level level = game.getCurrentLevel();
             level.getEnergizers().remove(energizer);
+            Pacman pacman = game.getPacman();
+            if (!pacman.isInvincible())
+        	{
+        		pacman.resetEatenGhosts();
+        	}
             game.activateEnergizer();
         }
 
@@ -371,7 +376,8 @@ public class PlayingState implements IGameState, IObserver
         TimerThread intermissionTimer = game.getIntermissionThread();
         if (intermissionTimer == null || !intermissionTimer.isAlive())
         {
-            game.getPacman().setInvincibility(true);
+        	Pacman pacman = game.getPacman();
+            pacman.setInvincibility(true);
             intermissionTimer = new TimerThread(intermissionTime);
             intermissionTimer.setEndCallback(() ->
             {
@@ -408,8 +414,9 @@ public class PlayingState implements IGameState, IObserver
 
     private void endEnergizer()
     {
-    	game.getPacman().resetEatenGhosts();
-        game.getPacman().setInvincibility(false);
+    	Pacman pacman = game.getPacman();
+    	if (pacman == null) return;
+    	pacman.setInvincibility(false);
         setGhostsAnimation(Animation.MOVING);
         game.playInGameMusic();
     }

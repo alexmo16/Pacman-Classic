@@ -20,6 +20,7 @@ import com.pacman.model.objects.entities.behaviours.IBehaviour;
 import com.pacman.model.objects.entities.behaviours.IBehaviour.behavioursID;
 import com.pacman.model.threads.TimerThread;
 import com.pacman.model.world.Direction;
+import com.pacman.model.world.GhostType;
 import com.pacman.model.world.Level;
 import com.pacman.utils.IObserver;
 import com.pacman.utils.IPublisher.UpdateID;
@@ -128,6 +129,7 @@ public class PlayingState implements IGameState, IObserver
             collisionGhost();
             collisionConsumable();
             collisionPacman();
+            corridorGhost();
         }
     }
     
@@ -215,6 +217,53 @@ public class PlayingState implements IGameState, IObserver
         }
     }
 
+    private void corridorGhost()
+    {
+
+    	String stringBlinky = game.readStringBlinkyCorridorQueue();
+    	String stringInky = game.readStringInkyCorridorQueue();
+    	String stringPinky = game.readStringPinkyCorridorQueue();
+    	String stringClyde = game.readStringClydeCorridorQueue();
+    	String string = null;
+    
+    	for(Ghost ghost : game.getGhosts()) 
+    	{
+    		if (ghost.getType() == GhostType.BLINKY)
+    		{
+    			string = stringBlinky;
+    			game.getStringBlinkyCorridorQueue().clear();
+    		}
+    		if (ghost.getType() == GhostType.INKY)
+    		{
+    			string = stringInky;
+    			game.getStringInkyCorridorQueue().clear();
+    		}
+    		if (ghost.getType() == GhostType.PINKY)
+    		{
+    			string = stringPinky;
+    			game.getStringPinkyCorridorQueue().clear();
+    		}
+    		if (ghost.getType() == GhostType.CLYDE)
+    		{
+    			string = stringClyde;
+    			game.getStringClydeCorridorQueue().clear();
+    		}
+    		if(string != null)
+        	{
+    	    	if ( string.equals("corridor") && !ghost.getSameCorridor())
+    	    	{
+    	    		ghost.setSameCorridor(true);
+    	    	}
+    	    	else if (string.equals("notcorridor") && ghost.getSameCorridor())
+    	    	{
+    	    		ghost.setSameCorridor(false);
+    	    	}
+
+        	}
+    	}    	
+    	
+    }
+    
     public synchronized void setCollision(String string)
     {
         collision = string;
@@ -310,7 +359,7 @@ public class PlayingState implements IGameState, IObserver
     public void ghostSpawn(GameObject obj)
     {
         Ghost ghost = new Ghost(obj.getHitBoxX(), obj.getHitBoxY(), ((Ghost) obj).getType());
-        IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM);
+        IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.AMBUSH, game);
         ghost.setBehaviour(behaviour);
         
         ghost.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(), game.getCurrentLevel().getAuthTilesGhostRoom());

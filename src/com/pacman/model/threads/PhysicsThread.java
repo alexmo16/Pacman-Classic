@@ -344,36 +344,35 @@ public class PhysicsThread extends Thread
     {
  
 
-		int coordGhostX = (int) ghost.getHitBoxX();
-		int coordGhostY = (int) ghost.getHitBoxY();
-		int coordPacmanX = (int)game.getPacman().getHitBoxX();
-		int coordPacmanY = (int)game.getPacman().getHitBoxY();
+		double coordGhostX = ghost.getHitBoxX();
+		double coordGhostY = ghost.getHitBoxY();
+		double coordPacmanX = game.getPacman().getHitBoxX();
+		double coordPacmanY = game.getPacman().getHitBoxY();
 
 		
 		boolean isCorridor = false;
 		boolean isX = true;
-		if (coordGhostX == coordPacmanX )
+		if (coordGhostX +0.05 == coordPacmanX)
 		{
 			
 			isCorridor = true;
 			isX = true;
 			
 		}
-		else if (coordGhostY == coordPacmanY)
+		else if (coordGhostY + 0.05== coordPacmanY)
 		{
 			isCorridor = true;
 			isX = false;
 		}
-		
 		if(isCorridor)
 		{
 			if (!isX)
 			{
 				if(coordGhostX < coordPacmanX)
 				{
-					for(int i = coordGhostX ; i < coordPacmanX; i++ )
+					for(int i = (int) coordGhostX ; i < (int) coordPacmanX; i++ )
 					{
-						if(!isAuth( i, coordGhostY, ghost))
+						if(!isAuth( i, (int) coordGhostY, ghost))
 						{
 							sendCorridorGhost("notcorridor", ghost);
 							return;
@@ -384,9 +383,9 @@ public class PhysicsThread extends Thread
 				}
 				else if(coordGhostX > coordPacmanX)
 				{
-					for(int i = coordPacmanX ; i <  coordGhostX; i++ )
+					for(int i = (int)coordPacmanX ; i <  (int)coordGhostX; i++ )
 					{
-						if(!isAuth( i,  coordGhostY, ghost))
+						if(!isAuth( i,  (int)coordGhostY, ghost))
 						{
 							sendCorridorGhost("notcorridor", ghost);
 							return;
@@ -402,9 +401,9 @@ public class PhysicsThread extends Thread
 				if(coordGhostY < coordPacmanY)
 				{
 					
-					for(int i =  coordGhostY ; i <  coordPacmanY; i++ )
+					for(int i =  (int)coordGhostY ; i <  (int)coordPacmanY; i++ )
 					{
-						if(!isAuth( coordGhostX,  i, ghost))
+						if(!isAuth( (int)coordGhostX,  i, ghost))
 						{
 							sendCorridorGhost("notcorridor", ghost);
 							return;
@@ -416,9 +415,9 @@ public class PhysicsThread extends Thread
 				}
 				else if (coordGhostY > coordPacmanY)
 				{
-					for(int i =  coordPacmanY ; i <  coordGhostY; i++ )
+					for(int i =  (int)coordPacmanY ; i <  (int)coordGhostY; i++ )
 					{
-						if(!isAuth( coordGhostX, i, ghost))
+						if(!isAuth( (int)coordGhostX, i, ghost))
 						{
 							sendCorridorGhost("notcorridor", ghost);
 							return;

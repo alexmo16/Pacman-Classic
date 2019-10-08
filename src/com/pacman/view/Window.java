@@ -121,25 +121,37 @@ public class Window implements WindowListener, IWindow
     @Override
     public void windowIconified(WindowEvent e)
     {
-    	gameController.pauseGame();
+    	if (gameController != null)
+    	{
+    		gameController.pauseGame();
+    	}
     }
 
     @Override
     public void windowDeiconified(WindowEvent e)
     {
-    	gameController.resumeGame();
+    	if (gameController != null)
+    	{
+    		gameController.resumeGame();
+    	}
     }
 
     @Override
     public void windowActivated(WindowEvent e)
     {
-    	gameController.resumeGame();
+    	if (gameController != null)
+    	{
+    		gameController.resumeGame();
+    	}
     }
 
     @Override
     public void windowDeactivated(WindowEvent e)
     {
-    	gameController.pauseGame();
+    	if (gameController != null)
+    	{
+    		gameController.pauseGame();
+    	}
     }
 	
     public JFrame getFrame()

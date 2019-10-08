@@ -343,4 +343,10 @@ public class Pacman extends Entity implements IPublisher, Animation
 			return killScore;
 		}
 	}
+
+
+	public final int getEatenGhosts() 
+	{
+		return eatenGhosts;
+	}
 }

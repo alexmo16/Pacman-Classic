@@ -95,9 +95,11 @@ class SoundControllerTest
 	{
 		boolean isException = false;
 		boolean isPlayed = false;
+		Sound sound = null;
+		
 		try
 		{
-			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			sound = new Sound( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.playLoopBack();
 			assertTrue( isPlayed );
 			
@@ -112,6 +114,10 @@ class SoundControllerTest
 		
 		assertFalse( isException );
 		assertTrue( isPlayed );
+		if (sound != null)
+		{
+			sound.stop();
+		}
 	}
 	
 	@Test
@@ -119,9 +125,10 @@ class SoundControllerTest
 	{
 		boolean isException = false;
 		boolean isPlayed = false;
+		Sound sound = null;
 		try
 		{
-			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			sound = new Sound( "./tests/testAssets/clip.wav" );
 			isPlayed = sound.playLoopBack();
 			sound.setVolume(50);
 			sound.stop();
@@ -132,6 +139,10 @@ class SoundControllerTest
 		
 		assertFalse( isException );
 		assertTrue( isPlayed );
+		if (sound != null)
+		{
+			sound.stop();
+		}
 	}
 	
 	@Test
@@ -139,9 +150,10 @@ class SoundControllerTest
 	{
 		boolean isException = false;
 		boolean isPlayed = false;
+		Sound sound = null;
 		try 
 		{
-			Sound sound = new Sound( "./tests/testAssets/clip.wav" );
+			sound = new Sound( "./tests/testAssets/clip.wav" );
 			Settings.setMusicMute(true);
 			isPlayed = sound.playLoopBack();
 			sound.setVolume(50);
@@ -152,6 +164,10 @@ class SoundControllerTest
 		
 		assertFalse( isException );
 		assertTrue( isPlayed );
+		if (sound != null)
+		{
+			sound.stop();
+		}
 	}
 	
 	@Test

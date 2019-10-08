@@ -30,6 +30,7 @@ public class GameController extends Thread
     private IWindow window;
  
     private AtomicBoolean isRunning = new AtomicBoolean(false);
+	private AtomicBoolean timeToRender = new AtomicBoolean(false);
     private volatile static int fps = 0;
     
     /**
@@ -84,8 +85,6 @@ public class GameController extends Thread
 				interrupt();
 				throw new InterruptedByTimeoutException();
 			}
-			
-			System.exit(0);
 
 		} catch (InterruptedByTimeoutException | InterruptedException e)
 		{
@@ -108,7 +107,7 @@ public class GameController extends Thread
 		System.out.println("Start: Game loop Thread");
 		init();
 
-		boolean render = false;
+		boolean render;
 		double firstTime = 0;
 		double lastTime = getCurrentTimeInMillis();
 		double deltaTime = 0;
@@ -122,6 +121,7 @@ public class GameController extends Thread
 			lastTime = firstTime;
 			firstTime = getCurrentTimeInMillis();
 			deltaTime = firstTime - lastTime;
+			
 			unprocessedTime += deltaTime;
 
 			// Pour etre sur que le render et l'update sont synchronisé avec le 60 fps.
@@ -134,10 +134,7 @@ public class GameController extends Thread
 
 			if (render)
 			{
-				synchronized (this)
-				{
-					notify();
-				}
+				timeToRender.set(true);
 			}
 			
 			sleepTime = Settings.UPDATE_RATE - deltaTime;
@@ -477,5 +474,12 @@ public class GameController extends Thread
 	public synchronized void setFps(int frames)
 	{
 		fps = frames;
+	}
+	
+	public boolean getTimeToRender()
+	{
+		boolean toReturn = timeToRender.get();
+		timeToRender.set(false);
+		return toReturn;
 	}
 }

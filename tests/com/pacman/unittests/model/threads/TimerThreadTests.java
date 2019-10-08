@@ -16,7 +16,7 @@ class TimerThreadTests
     void testOn3SecondsTimer()
     {
         boolean isException = false;
-        int JOIN_TIMER = 500;
+        int JOIN_TIMER = 5000;
         
         this.time = 3;
         Thread th = new TimerThread(time);

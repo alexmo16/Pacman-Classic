@@ -30,7 +30,6 @@ class PacmanMovementTest
         engine.start();
         game.setLevelDataFile(mapPath);
         
-       // engine.start();
         Sleep(1000);
         assertTrue(engine.getIsRunning());
         

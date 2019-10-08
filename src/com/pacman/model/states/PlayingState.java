@@ -146,7 +146,7 @@ public class PlayingState implements IGameState, IObserver
     {
         if (game.getTimerThread() == null && !game.getPacman().isInvincible())
         {
-            game.setTimerThread(new TimerThread(1));
+            game.setTimerThread(new TimerThread(0.5));
             game.startTimerThread();
         }
         if (!game.getTimerThread().isAlive() && !game.getPacman().isInvincible() && game.getGhosts().size() != 0)

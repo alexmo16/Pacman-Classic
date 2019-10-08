@@ -18,9 +18,9 @@ public class TimerThread extends Thread
     private int specialCallbackTime;
     private Lambda specialCallback = () -> {};
 
-    public TimerThread(int timer)
+    public TimerThread(double timer)
     {
-        this.timeInMs = timer * 1000;
+        this.timeInMs = (int) (timer * 1000);
     }
 
     private boolean verifStop()

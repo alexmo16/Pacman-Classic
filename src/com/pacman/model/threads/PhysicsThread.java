@@ -348,18 +348,19 @@ public class PhysicsThread extends Thread
 		double coordGhostY = ghost.getHitBoxY();
 		double coordPacmanX = game.getPacman().getHitBoxX();
 		double coordPacmanY = game.getPacman().getHitBoxY();
-
+		double coordMin = 0;
+		double coordMax = 0;
 		
 		boolean isCorridor = false;
 		boolean isX = true;
-		if (coordGhostX +0.05 == coordPacmanX)
+		if (coordGhostX + 0.05 == coordPacmanX)
 		{
 			
 			isCorridor = true;
 			isX = true;
 			
 		}
-		else if (coordGhostY + 0.05== coordPacmanY)
+		else if (coordGhostY + 0.05 == coordPacmanY)
 		{
 			isCorridor = true;
 			isX = false;
@@ -370,65 +371,47 @@ public class PhysicsThread extends Thread
 			{
 				if(coordGhostX < coordPacmanX)
 				{
-					for(int i = (int) coordGhostX ; i < (int) coordPacmanX; i++ )
-					{
-						if(!isAuth( i, (int) coordGhostY, ghost))
-						{
-							sendCorridorGhost("notcorridor", ghost);
-							return;
-						}
-					}
-					sendCorridorGhost("corridor", ghost);
-					return;
+					coordMin = coordGhostX;
+					coordMax = coordPacmanX;
 				}
 				else if(coordGhostX > coordPacmanX)
 				{
-					for(int i = (int)coordPacmanX ; i <  (int)coordGhostX; i++ )
-					{
-						if(!isAuth( i,  (int)coordGhostY, ghost))
-						{
-							sendCorridorGhost("notcorridor", ghost);
-							return;
-							
-						}
-					}
-					sendCorridorGhost("corridor", ghost);
-					return;
+					coordMin = coordPacmanX;
+					coordMax = coordGhostX;
 				}
+				
 			}
 			else
 			{
 				if(coordGhostY < coordPacmanY)
 				{
-					
-					for(int i =  (int)coordGhostY ; i <  (int)coordPacmanY; i++ )
-					{
-						if(!isAuth( (int)coordGhostX,  i, ghost))
-						{
-							sendCorridorGhost("notcorridor", ghost);
-							return;
-							
-						}
-					}
-					sendCorridorGhost("corridor", ghost);
-					return;
+					coordMin = coordGhostY;
+					coordMax = coordPacmanY;
+
 				}
 				else if (coordGhostY > coordPacmanY)
 				{
-					for(int i =  (int)coordPacmanY ; i <  (int)coordGhostY; i++ )
-					{
-						if(!isAuth( (int)coordGhostX, i, ghost))
-						{
-							sendCorridorGhost("notcorridor", ghost);
-							return;
-							
-						}
-					}
-					sendCorridorGhost("corridor", ghost);
-					return;
+					coordMin = coordPacmanY;
+					coordMax = coordGhostY;
+
 				}
     			
 			}
+			for(int i =  (int)coordMin ; i <  (int)coordMax; i++ )
+			{
+				
+				
+				if ((!isX && !isAuth( i, (int) coordGhostY, ghost)) || (isX && !isAuth( (int)coordGhostX,  i, ghost)))
+				{
+					sendCorridorGhost("notcorridor", ghost);
+					return;
+					
+				}
+				
+			}
+			sendCorridorGhost("corridor", ghost);
+			return;
+			
 		}
 		else 
 		{

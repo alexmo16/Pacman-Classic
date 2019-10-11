@@ -100,7 +100,7 @@ public class Ghost extends Entity implements Animation
 		updateSprite();
 	}
 	
-	public boolean getAlive()
+	public synchronized boolean getAlive()
 	{
 		return isAlive;
 	}

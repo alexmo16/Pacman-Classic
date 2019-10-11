@@ -114,7 +114,7 @@ public class PhysicsThread extends Thread
      * 
      * @param collisionString
      */
-    public void executeWallStrategy()
+    public synchronized void executeWallStrategy()
     {
         Pacman pacman = game.getPacman();
         if (middleOfATiles(pacman))
@@ -143,7 +143,7 @@ public class PhysicsThread extends Thread
     /**
      * Check if pacman eats a Gum
      */
-    public void checkConsumablesCollision()
+    public synchronized void checkConsumablesCollision()
     {
 
         if (middleOfATiles(game.getPacman()))
@@ -167,7 +167,7 @@ public class PhysicsThread extends Thread
 
     }
 
-    public void ghostSpawn(GameObject obj)
+    public synchronized void ghostSpawn(GameObject obj)
     {
 
         Ghost ghost = new Ghost(obj.getHitBoxX(), obj.getHitBoxY(), ((Ghost) obj).getType());
@@ -208,7 +208,7 @@ public class PhysicsThread extends Thread
 
     }
 
-    public void ghostMove(Entity obj)
+    public synchronized void ghostMove(Entity obj)
     {
 
         Ghost ghost = new Ghost(((Ghost) obj).getHitBoxX(), ((Ghost) obj).getHitBoxY(), ((Ghost) obj).getType());
@@ -510,7 +510,7 @@ public class PhysicsThread extends Thread
     }
     
 
-    public void stopThread()
+    public synchronized void stopThread()
     {
         this.isRunning = false;
     }

@@ -157,7 +157,7 @@ public class PlayingState implements IGameState, IObserver
         if (!game.getTimerThread().isAlive() && !game.getPacman().isInvincible() && game.getGhosts().size() != 0)
         {
             Random random = new Random();
-            int randomInt = 0;
+            int randomInt = random.nextInt(game.getGhosts().size());
 
             if (!game.getGhosts().get(randomInt).getAlive())
             {

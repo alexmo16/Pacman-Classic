@@ -4,7 +4,11 @@ This is a pacman game made in Java during an Agile course of 6 weeks at the Univ
 
 Hope you enjoy!
 
+[![MAIN_MENU](https://github.com/alexmo16/Pacman-Classic/blob/master/mainmenu.PNG)]
 
+[![IN_GAME](https://github.com/alexmo16/Pacman-Classic/blob/master/ingame.PNG)]
+
+[![ENERGIZER](https://github.com/alexmo16/Pacman-Classic/blob/master/energizer.PNG)]
 
 Authors:
 - Alexis Morel

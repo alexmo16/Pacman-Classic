@@ -40,12 +40,12 @@ public abstract class GameObject
     	spriteOffset = so;
     }
     
-    public synchronized double getHitBoxX()
+    public double getHitBoxX()
     {
     	return new BigDecimal(hitBox.getX() ,mc).doubleValue();
     }
     
-    public synchronized double getHitBoxY()
+    public double getHitBoxY()
     {
     	return new BigDecimal(hitBox.getY() ,mc).doubleValue();	
     }

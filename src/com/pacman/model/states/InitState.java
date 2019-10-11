@@ -58,6 +58,12 @@ public class InitState implements IGameState
         
         game.getCollisionGhostQueue().clear();
         game.getGhostQueue().clear();
+        
+        game.setPacmanXBlinky(0);
+		game.setPacmanYBlinky(0);
+		
+		game.setPacmanXInky(0);
+		game.setPacmanYInky(0);
 		
 		for (int i = 0; i < game.getGhosts().size(); i++)
 	    {

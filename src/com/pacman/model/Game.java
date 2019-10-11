@@ -60,6 +60,12 @@ public class Game implements IGame
 
     private Direction nextTilesDirection;
     private Direction newDirection;
+    
+    private double pacmanXBlinky;
+    private double pacmanYBlinky;
+    
+    private double pacmanXInky;
+    private double pacmanYInky;
 
     private volatile ArrayList<Entity> entities;
 
@@ -135,6 +141,12 @@ public class Game implements IGame
         stringInkyCorridorQueue = new PriorityBlockingQueue<String>(10);
         stringPinkyCorridorQueue = new PriorityBlockingQueue<String>(10);
         stringClydeCorridorQueue = new PriorityBlockingQueue<String>(10);
+        
+        double pacmanXBlinky = 0;
+        double pacmanYBlinky = 0;
+        
+        double pacmanXInky = 0;
+        double pacmanYInky = 0;
         
         loadEntities();
         if (pacman != null)
@@ -561,6 +573,47 @@ public class Game implements IGame
             this.timerThread.start();
         }
     }
+    
+    public double getPacmanXBlinky()
+    {
+    	return pacmanXBlinky;
+    }
+    
+    public void setPacmanXBlinky(double value)
+    {
+    	pacmanXBlinky = value;
+    }
+    
+    public double getPacmanYBlinky()
+    {
+    	return pacmanYBlinky;
+    }
+    
+    public void setPacmanYBlinky(double value)
+    {
+    	pacmanYBlinky = value;
+    }
+    
+    public double getPacmanXInky()
+    {
+    	return pacmanXInky;
+    }
+    
+    public void setPacmanXInky(double value)
+    {
+    	pacmanXInky = value;
+    }
+    
+    public double getPacmanYInky()
+    {
+    	return pacmanYInky;
+    }
+    
+    public void setPacmanYInky(double value)
+    {
+    	pacmanYInky = value;
+    }
+
 
     public void notifyPhysics()
     {

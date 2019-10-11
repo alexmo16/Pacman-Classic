@@ -376,6 +376,12 @@ public class PlayingState implements IGameState, IObserver
         TimerThread intermissionTimer = game.getIntermissionThread();
         if (intermissionTimer == null || !intermissionTimer.isAlive())
         {
+            game.setPacmanXBlinky(0);
+    		game.setPacmanYBlinky(0);
+    		
+    		game.setPacmanXInky(0);
+    		game.setPacmanYInky(0);
+    		
         	Pacman pacman = game.getPacman();
             pacman.setInvincibility(true);
             intermissionTimer = new TimerThread(intermissionTime);

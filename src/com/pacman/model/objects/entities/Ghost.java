@@ -54,6 +54,16 @@ public class Ghost extends Entity implements Animation
 	
 	private int locker = 0;
 	
+	public Ghost()
+    {
+        super(0, 0, Direction.UP);
+        type = GhostType.BLINKY;
+        isAlive = false;
+        isSpawning = false;
+        isInTheGate = false;
+        updateSprite();
+    }
+	
     public Ghost(double x, double y, GhostType t)
     {
         super(x, y, Direction.UP);
@@ -145,6 +155,11 @@ public class Ghost extends Entity implements Animation
 		isAlive = false;
 	}
 	
+	public void setType(GhostType gt) 
+	{
+		type = gt;
+	}
+	
 	public GhostType getType()
 	{
 		return type;
@@ -216,14 +231,14 @@ public class Ghost extends Entity implements Animation
 	public void setSameCorridor(boolean bool)
 	{
 		sameCorridor = bool;
-		/*if( sameCorridor)
+		if( sameCorridor)
 		{
 			setCurrentAnimation(Animation.FRIGHTENED);
 		}
 		else 
 		{
 			setCurrentAnimation(Animation.MOVING);
-		}*/
+		}
 	}
 	
 	public boolean getSameCorridor()

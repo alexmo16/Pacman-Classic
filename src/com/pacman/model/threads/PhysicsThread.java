@@ -170,7 +170,7 @@ public class PhysicsThread extends Thread
     public void ghostSpawn(GameObject obj)
     {
 
-        Ghost ghost = new Ghost(obj.getHitBoxX(), obj.getHitBoxY(), ((Ghost) obj).getType());
+        Ghost ghost = new Ghost(obj.getHitBoxX() - 0.05, obj.getHitBoxY() - 0.05, ((Ghost) obj).getType());
         IBehaviour behaviour;
         
         if ( !game.getPacman().isInvincible() )
@@ -211,7 +211,8 @@ public class PhysicsThread extends Thread
     public void ghostMove(Entity obj)
     {
 
-        Ghost ghost = new Ghost(((Ghost) obj).getHitBoxX(), ((Ghost) obj).getHitBoxY(), ((Ghost) obj).getType());
+        Ghost ghost = new Ghost(((Ghost) obj).getHitBoxX() - 0.05 , ((Ghost) obj).getHitBoxY() - 0.05, ((Ghost) obj).getType());
+        ghost.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(), game.getCurrentLevel().getAuthTilesGhostRoom());
         ghost.setSameCorridor(((Ghost)obj).getSameCorridor());
         IBehaviour behaviour;
         
@@ -226,7 +227,6 @@ public class PhysicsThread extends Thread
         ghost.setBehaviour(behaviour);
         
         ghost.setAlive();
-        ghost.setAuthTiles(game.getCurrentLevel().getAuthTilesGhost(), game.getCurrentLevel().getAuthTilesGhostRoom());
         ghost.setDirection(((Ghost) obj).getDirection());
         ghost.getNewDirection();
         ghost.updatePosition(ghost.getDirection());
@@ -353,14 +353,14 @@ public class PhysicsThread extends Thread
 		
 		boolean isCorridor = false;
 		boolean isX = true;
-		if (coordGhostX + 0.05 == coordPacmanX)
+		if (coordGhostX == coordPacmanX)
 		{
 			
 			isCorridor = true;
 			isX = true;
 			
 		}
-		else if (coordGhostY + 0.05 == coordPacmanY)
+		else if (coordGhostY == coordPacmanY)
 		{
 			isCorridor = true;
 			isX = false;

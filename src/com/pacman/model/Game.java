@@ -189,9 +189,7 @@ public class Game implements IGame
                     maze.add(new Wall(x, y, currentLevel.getTile(x, y)));
                 } else if (currentLevel.getTile(x, y) == Tile.PAC_MAN_START.getValue())
                 {
-                    // TODO : Make no sens to hard code some value in the game. Only the Pacman
-                    // object himself shoudl know about it's correct position.
-                    pacman = new Pacman(x + 0.05, y + 0.05);
+                    pacman = new Pacman(x, y);
                     newDirectionPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
                     nextTilesPacman = new Pacman(getPacman().getHitBox().getX(), getPacman().getHitBox().getY());
                     entities.add(pacman);

@@ -22,7 +22,7 @@ public abstract class Entity extends GameObject
     {
         super(x, y, new Point2D.Double(0.5, 0.5), new Rectangle2D.Double(x + 0.05, y + 0.05, 0.9, 0.9));
         direction = dir;
-        spawn = new Point2D.Double(x,  y);
+        spawn = new Point2D.Double(x + 0.05,  y + 0.05);
         spawnDirection = dir;
     }
 

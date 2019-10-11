@@ -40,14 +40,14 @@ class PacmanMovementTest
         }
         robot.keyPress(KeyEvent.VK_ENTER);
         
-    	double x = game.getPacman().getPosition().getX();
-    	double y = game.getPacman().getPosition().getY();
+    	double x = game.getPacman().getHitBoxX();
+    	double y = game.getPacman().getHitBoxY();
         
         Sleep(7000); 
 		
 		// Init direction
-		assertTrue(game.getPacman().getPosition().getX() < x);
-		assertTrue(game.getPacman().getPosition().getY() == y);
+		assertTrue(game.getPacman().getHitBoxX() < x);
+		assertTrue(game.getPacman().getHitBoxY() == y);
 		x = game.getPacman().getPosition().getX();
 		y = game.getPacman().getPosition().getY();
 		

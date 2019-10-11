@@ -231,6 +231,7 @@ public class Ghost extends Entity implements Animation
 	public void setSameCorridor(boolean bool)
 	{
 		sameCorridor = bool;
+		/*
 		if( sameCorridor)
 		{
 			setCurrentAnimation(Animation.FRIGHTENED);
@@ -239,6 +240,7 @@ public class Ghost extends Entity implements Animation
 		{
 			setCurrentAnimation(Animation.MOVING);
 		}
+		*/
 	}
 	
 	public boolean getSameCorridor()

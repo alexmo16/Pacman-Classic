@@ -119,14 +119,18 @@ public class PhysicsThreadTests
 		/****middleOfATiles()****/
 		Pacman pacman = new Pacman(1.0,15.0);
 		Pacman pacmanNewDirection = new Pacman(0.0,15.0); 
+		Pacman pacmanNextTiles = new Pacman(0.0,15.0);
 		
 		Mockito.when(game.getPacman()).thenReturn(pacman);
 		
 		/****collisionWall(game.getNewDirectionPacman());****/
 		
 		Mockito.when(game.getNewDirectionPacman()).thenReturn(pacmanNewDirection);
+		Mockito.when(game.getNextTilesPacman()).thenReturn(pacmanNextTiles);
+		Mockito.when(game.getNewDirection()).thenReturn(Direction.LEFT);
+		Mockito.when(game.getNextTilesDirection()).thenReturn(Direction.LEFT);
 		collision.executeWallStrategy();
-		assertEquals(28.55, pacman.getHitBoxX());
+		assertEquals(1.05, pacman.getHitBoxX());
 		assertEquals(15.05, pacman.getHitBoxY());
 	}
     
@@ -157,7 +161,7 @@ public class PhysicsThreadTests
 		Mockito.when(game.getNextTilesDirection()).thenReturn(Direction.LEFT);
 		collision.executeWallStrategy();
 
-		assertEquals(28.55, pacman.getHitBoxX());
+		assertEquals(1.05, pacman.getHitBoxX());
 		assertEquals(15.05, pacman.getHitBoxY());
 		
 		pacman = new Pacman(2.0,2.0);
@@ -169,7 +173,7 @@ public class PhysicsThreadTests
 		Mockito.when(game.getNewDirection()).thenReturn(Direction.RIGHT);
 		Mockito.when(game.getNextTilesDirection()).thenReturn(Direction.RIGHT);
 		collision.executeWallStrategy();
-		assertEquals(2.15, pacman.getHitBoxX());
+		assertEquals(2.05, pacman.getHitBoxX());
 		assertEquals(2.05, pacman.getHitBoxY());	
 	}
 	
@@ -178,14 +182,17 @@ public class PhysicsThreadTests
 	{
 		/****middleOfATiles()****/
 		Pacman pacman = new Pacman(2.0,2.0);
-		Pacman pacmanNewDirection = new Pacman(2.0,2.1); 
+		Pacman pacmanNewDirection = new Pacman(2.2,2.0); 
+		Pacman pacmanNextTiles = new Pacman(2.2,2.0);
 		
 		Mockito.when(game.getPacman()).thenReturn(pacman);
 		
 		Mockito.when(game.getNewDirectionPacman()).thenReturn(pacmanNewDirection);
+		Mockito.when(game.getNextTilesPacman()).thenReturn(pacmanNextTiles);
 		pacmanNewDirection.setDirection(Direction.RIGHT);
+		pacmanNextTiles.setDirection(Direction.RIGHT);
 		collision.executeWallStrategy();
-		assertEquals(2.15, pacman.getHitBoxX());
+		assertEquals(2.05, pacman.getHitBoxX());
 		assertEquals(2.05, pacman.getHitBoxY());
 
 		
@@ -285,7 +292,7 @@ public class PhysicsThreadTests
 	@Test
 	void test_checkPacDotCollision()
 	{
-	    int expectedSize = level.getPacDots().size() - 1;
+	    int expectedSize = level.getPacDots().size();
 		Pacman pacman = new Pacman(2.0, 2.0);
 		
 		Mockito.when(game.getPacman()).thenReturn(pacman);
@@ -298,7 +305,7 @@ public class PhysicsThreadTests
 	@Test
     void test_checkEnergizerCollision()
     {
-        int expectedSize = level.getEnergizers().size() - 1;
+        int expectedSize = level.getEnergizers().size();
         Pacman pacman = new Pacman(2.0, 4.0);
         
         Mockito.when(game.getPacman()).thenReturn(pacman);
@@ -315,11 +322,14 @@ public class PhysicsThreadTests
     	
     	Ghost ghost = new Ghost(16,15,GhostType.BLINKY);
     	IBehaviour behaviour = ghostBehaviourFactory.createBehaviour(ghost, behavioursID.RANDOM, game);
+        Pacman pacman = Mockito.mock(Pacman.class);
+        
         ghost.setBehaviour(behaviour);
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhostRoom()).thenReturn(authGhost);
-
+    	Mockito.when(game.getPacman()).thenReturn(pacman);
+    	Mockito.when(pacman.isInvincible()).thenReturn(false);
     	
     	collision.ghostSpawn(ghost);
     	
@@ -336,7 +346,9 @@ public class PhysicsThreadTests
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhostRoom()).thenReturn(authGhost);
-
+    	Pacman pacman = Mockito.mock(Pacman.class);
+    	Mockito.when(game.getPacman()).thenReturn(pacman);
+    	Mockito.when(pacman.isInvincible()).thenReturn(false);
     	
     	collision.ghostSpawn(ghost);
     	
@@ -353,6 +365,9 @@ public class PhysicsThreadTests
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhostRoom()).thenReturn(authGhost);
+    	Pacman pacman = Mockito.mock(Pacman.class);
+    	Mockito.when(game.getPacman()).thenReturn(pacman);
+    	Mockito.when(pacman.isInvincible()).thenReturn(false);
 
     	
     	collision.ghostSpawn(ghost);
@@ -370,6 +385,9 @@ public class PhysicsThreadTests
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhostRoom()).thenReturn(authGhost);
+    	Pacman pacman = Mockito.mock(Pacman.class);
+    	Mockito.when(game.getPacman()).thenReturn(pacman);
+    	Mockito.when(pacman.isInvincible()).thenReturn(false);
 
     	
     	collision.ghostSpawn(ghost);
@@ -388,11 +406,14 @@ public class PhysicsThreadTests
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhostRoom()).thenReturn(authGhost);
+    	Pacman pacman = Mockito.mock(Pacman.class);
+    	Mockito.when(game.getPacman()).thenReturn(pacman);
+    	Mockito.when(pacman.isInvincible()).thenReturn(false);
 
     	
     	collision.ghostSpawn(ghost);
     	
-    	assertEquals(14.95, ghost.getHitBoxY());
+    	assertEquals(15.05, ghost.getHitBoxY());
     }
 
     @Test
@@ -406,6 +427,9 @@ public class PhysicsThreadTests
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhostRoom()).thenReturn(authGhost);
+    	Pacman pacman = Mockito.mock(Pacman.class);
+    	Mockito.when(game.getPacman()).thenReturn(pacman);
+    	Mockito.when(pacman.isInvincible()).thenReturn(false);
 
     	
     	collision.ghostSpawn(ghost);
@@ -426,6 +450,9 @@ public class PhysicsThreadTests
     	Mockito.when(game.getCurrentLevel()).thenReturn(Mockito.mock(Level.class));
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhost()).thenReturn(authGhost);
     	Mockito.when(game.getCurrentLevel().getAuthTilesGhostRoom()).thenReturn(authGhost);
+    	Pacman pacman = Mockito.mock(Pacman.class);
+    	Mockito.when(game.getPacman()).thenReturn(pacman);
+    	Mockito.when(pacman.isInvincible()).thenReturn(false);
     	
     	collision.ghostMove(ghost);
     	

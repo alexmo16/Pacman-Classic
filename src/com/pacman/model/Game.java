@@ -441,7 +441,7 @@ public class Game implements IGame
         return chomps;
     }
 
-    public Pacman getPacman()
+    public synchronized Pacman getPacman()
     {
         return pacman;
     }
@@ -656,7 +656,7 @@ public class Game implements IGame
         }
     }
 
-    public ArrayList<Ghost> getGhosts()
+    public synchronized ArrayList<Ghost> getGhosts()
     {
         ArrayList<Ghost> ghosts = new ArrayList<Ghost>();
         for (Entity entity : entities)
